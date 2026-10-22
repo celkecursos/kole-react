@@ -22,29 +22,29 @@ npm run typecheck
 
 ```bash
 # do npm (depois de publicado)
-npm i @celke/kole-react @fontsource-variable/inter
+npm i @celke/kole-react
 # direto do GitHub (o `prepare` gera o dist/ na instalação)
-npm i github:celkecursos/kole-react @fontsource-variable/inter
+npm i github:celkecursos/kole-react
 # de um pacote local: gere o .tgz na pasta da biblioteca e instale no app
 npm pack                                   # → celke-kole-react-0.1.0.tgz
-npm i ../layout-proprio-biblioteca/celke-kole-react-0.1.0.tgz @fontsource-variable/inter
+npm i ../kole-react/celke-kole-react-0.1.0.tgz
 ```
 
-Evite `npm i ../layout-proprio-biblioteca` (pasta): o npm cria um link e o bundler
+Evite `npm i ../kole-react` (pasta): o npm cria um link e o bundler
 pega o React do `node_modules` da biblioteca — dois Reacts no app quebram os hooks
 (_Invalid hook call_). Se precisar do link durante o desenvolvimento, use
 `resolve: { dedupe: ['react', 'react-dom'] }` no `vite.config` do app.
 
-Requisitos: React 18.2+ ou 19. A fonte Inter é opcional (sem ela, cai na fonte do
-sistema). O pacote é só ESM, traz os tipos TypeScript e já vem marcado com
-`'use client'`, então funciona no App Router do Next.js.
+Requisitos: React 18.2+ ou 19. A fonte Inter já vem dentro do pacote (o
+`estilos.css` carrega só os alfabetos que a página usa). O pacote é só ESM, traz
+os tipos TypeScript e já vem marcado com `'use client'`, então funciona no App
+Router do Next.js.
 
 Publicar uma versão nova: `npm version patch` e `npm publish` (o `prepare` roda o
 build; confira o conteúdo antes com `npm pack --dry-run`).
 
 ```tsx
 // main.tsx
-import '@fontsource-variable/inter';
 import '@celke/kole-react/estilos.css';
 import { ProvedorUi, Estrutura } from '@celke/kole-react';
 
