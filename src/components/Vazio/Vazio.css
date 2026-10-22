@@ -1,0 +1,40 @@
+.lp-vazio {
+  text-align: center;
+  border: var(--hairline) dashed var(--border-2);
+  border-radius: var(--r-card);
+  padding: 1.25rem 0.875rem;
+  background: var(--surf-2);
+}
+.lp-vazio-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.875rem;
+  height: 2.875rem;
+  border-radius: 50%;
+  background: var(--pri-bg);
+  margin-bottom: 0.5625rem;
+}
+.lp-vazio-ic :is(.lp-ic, .lp-icone) {
+  font-size: 1.625rem;
+  color: var(--pri);
+  display: inline-flex;
+}
+.lp-vazio-titulo {
+  font-size: var(--fs-corpo);
+  font-weight: 800;
+  color: var(--ink);
+}
+.lp-vazio-desc {
+  font-size: var(--fs-caption);
+  color: var(--t3);
+  line-height: 1.5;
+  max-width: 16rem;
+  margin: 0.1875rem auto 0;
+}
+.lp-vazio-acoes {
+  display: flex;
+  gap: 0.4375rem;
+  justify-content: center;
+  margin-top: 0.8125rem;
+}

@@ -1,0 +1,172 @@
+.lp-erro {
+  --er-cor: var(--pri);
+  --er-cor-2: var(--acento-claro);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+  isolation: isolate;
+  font-family: var(--font-ui);
+}
+.lp-erro--cheia {
+  min-height: 100dvh;
+}
+.lp-erro--contida {
+  min-height: 28rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+}
+.lp-erro--warn {
+  --er-cor: var(--warn-solid);
+  --er-cor-2: var(--acento);
+}
+.lp-erro--err {
+  --er-cor: var(--err-solid);
+  --er-cor-2: var(--acento);
+}
+
+/* ---- fundo decorativo (o mesmo da tela de login) ---- */
+.lp-erro-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.lp-erro-mancha {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(4rem);
+}
+.lp-erro-mancha--1 {
+  top: -10rem;
+  left: -10rem;
+  width: 32rem;
+  height: 32rem;
+  background: color-mix(in srgb, var(--er-cor) 14%, transparent);
+}
+.lp-erro-mancha--2 {
+  right: -8rem;
+  bottom: -12rem;
+  width: 28rem;
+  height: 28rem;
+  background: color-mix(in srgb, var(--er-cor-2) 14%, transparent);
+}
+.lp-erro-grade {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
+  opacity: 0.45;
+}
+
+/* ---- cabeçalho com a marca ---- */
+.lp-erro-cab {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem;
+}
+.lp-erro-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+.lp-erro-escudo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-card);
+  background: var(--navy);
+  color: var(--acento-claro);
+  font-size: 1.125rem;
+}
+.lp-erro-marca {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.lp-erro-marca strong {
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--brand-ink);
+}
+.lp-erro-marca span {
+  font-size: var(--fs-caption);
+  color: var(--t3);
+}
+
+/* ---- conteúdo ---- */
+.lp-erro-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  text-align: center;
+}
+.lp-erro-selo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--r-dialog);
+  background: color-mix(in srgb, var(--er-cor) 12%, var(--surface));
+  color: var(--er-cor);
+  font-size: 1.625rem;
+  box-shadow: 0 0 0 0.375rem color-mix(in srgb, var(--er-cor) 6%, transparent);
+}
+.lp-erro-codigo {
+  margin: 0;
+  font-size: clamp(5rem, 18vw, 9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, var(--er-cor), var(--er-cor-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+.lp-erro--contida .lp-erro-codigo {
+  font-size: clamp(4rem, 10vw, 6rem);
+}
+.lp-erro-titulo {
+  margin: 0;
+  font-size: var(--fs-titulo);
+  font-weight: 800;
+  color: var(--ink);
+}
+.lp-erro-desc {
+  font-size: var(--fs-corpo);
+  line-height: 1.6;
+  color: var(--t3);
+}
+.lp-erro-desc p {
+  margin: 0;
+}
+.lp-erro-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+}
+.lp-erro-detalhe {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--t4);
+}

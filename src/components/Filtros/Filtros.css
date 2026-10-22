@@ -1,0 +1,102 @@
+.lp-filtros {
+  position: relative;
+}
+.lp-ff {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+.lp-ff--secao {
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  padding: 0.875rem 0.875rem 1rem;
+}
+.lp-ff-leg {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0 0.4375rem;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  color: var(--pri);
+}
+.lp-ff-leg .lp-ic {
+  font-size: 0.9375rem;
+}
+.lp-fb {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  padding: 0.5rem 0.625rem;
+}
+.lp-fb--secao {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 0;
+  align-items: flex-end;
+}
+.lp-fb-campos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.lp-fb-campos > * {
+  flex: 0 1 14rem;
+  min-width: 10rem;
+}
+.lp-fb-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+}
+.lp-fb-consultar {
+  position: relative;
+  display: inline-flex;
+}
+.lp-fb-ponto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: var(--r-pill);
+  background: var(--warn-solid);
+  border: 0.125rem solid var(--surface);
+  pointer-events: none;
+}
+.lp-fb-avisos {
+  margin-top: 0.5rem;
+}
+.lp-fb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0.5rem 0 0;
+}
+.lp-fb-chips .lp-chip-rotulo {
+  max-width: 18rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+@media (max-width: 40rem) {
+  .lp-fb {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lp-fb-acoes {
+    justify-content: flex-end;
+  }
+}

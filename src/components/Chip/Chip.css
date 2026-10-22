@@ -1,0 +1,46 @@
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t2);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  border: var(--hairline) solid var(--border-2);
+  border-radius: var(--r-field);
+  padding: 0.25rem 0.5rem;
+}
+.lp-chip-campo {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--t3);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+}
+.lp-chip-remover {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0.0625rem;
+  margin: 0;
+  border-radius: var(--r-field);
+  color: var(--t3);
+  cursor: pointer;
+  font-size: var(--fs-caption);
+  line-height: 1;
+}
+.lp-chip-remover::after {
+  content: '';
+  position: absolute;
+  inset: -0.4375rem;
+}
+.lp-chip-remover:hover {
+  color: var(--ink);
+}
+.lp-chip-remover:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}

@@ -1,0 +1,41 @@
+.lp-acao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  background: transparent;
+  color: var(--t3);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+.lp-acao .lp-ic,
+.lp-acao .lp-icone {
+  font-size: 1.0625rem;
+  display: inline-flex;
+}
+.lp-acao--pri {
+  color: var(--pri);
+}
+.lp-acao--destaque {
+  color: var(--destaque-ink);
+}
+.lp-acao--err {
+  color: var(--err-fg);
+}
+.lp-acao:hover:not(:disabled) {
+  background: var(--surf-2);
+}
+.lp-acao:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}
+.lp-acao:disabled {
+  color: var(--tdis);
+  background: transparent;
+  cursor: not-allowed;
+}

@@ -1,0 +1,316 @@
+/* ---- visualizador ---- */
+.lp-visu {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 16rem;
+  background: var(--surf-3);
+}
+.lp-visu > * {
+  flex: 1;
+  min-width: 0;
+}
+.lp-visu-indisponivel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.lp-visu-baixar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: var(--d-h);
+  padding: 0 var(--d-bpx);
+  border-radius: var(--r-pill);
+  background: var(--pri);
+  color: var(--on-pri);
+  font-weight: 600;
+  font-size: var(--d-fs);
+  text-decoration: none;
+}
+.lp-visu-baixar:hover {
+  background: var(--pri-ink);
+}
+.lp-visu-pdf {
+  width: 100%;
+  min-height: 70vh;
+  border: none;
+  background: var(--surface);
+}
+.lp-visu-video {
+  width: 100%;
+  max-height: 80vh;
+  background: #000;
+}
+.lp-visu-audio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+}
+.lp-visu-audio > .lp-ic {
+  font-size: 2.5rem;
+  color: var(--t4);
+}
+.lp-visu-audio-nome {
+  font-weight: 600;
+  color: var(--ink);
+}
+.lp-visu-img {
+  position: relative;
+  display: flex;
+}
+.lp-visu-palco {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 16rem;
+  outline: none;
+  touch-action: none;
+}
+.lp-visu-palco:focus-visible {
+  box-shadow: inset 0 0 0 0.125rem var(--pri);
+}
+.lp-visu-palco.is-ampliado {
+  cursor: grab;
+}
+.lp-visu-palco.is-ampliado:active {
+  cursor: grabbing;
+}
+.lp-visu-palco img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  transition: transform 0.15s ease;
+}
+.lp-visu-barra {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.25rem 0.375rem;
+  border-radius: var(--r-pill);
+  background: var(--surf-raised);
+  border: var(--hairline) solid var(--border);
+  box-shadow: 0 0.25rem 0.75rem var(--overlay-shadow);
+}
+.lp-visu-zoom {
+  min-width: 3rem;
+  text-align: center;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- diálogo de arquivo ---- */
+.lp-dlg-arq .lp-dlg-corpo {
+  background: var(--surf-3);
+}
+.lp-dlg-arq-pos {
+  margin-right: auto;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t3);
+}
+
+/* ---- campo anexo ---- */
+.lp-anexo-zona {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 1.25rem 1rem;
+  border: 0.09375rem dashed var(--border-2);
+  border-radius: var(--r-card);
+  background: var(--surf-2);
+  color: var(--t3);
+  font-size: var(--d-fs);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.lp-anexo-zona > .lp-ic {
+  font-size: 1.5rem;
+  color: var(--pri);
+}
+.lp-anexo-zona:hover,
+.lp-anexo-zona.is-sobre {
+  border-color: var(--pri);
+  background: var(--pri-bg);
+}
+.lp-anexo-zona:focus-within {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+.lp-anexo-zona.is-invalid {
+  border-color: var(--err-solid);
+}
+.lp-anexo-zona.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.lp-anexo-zona strong {
+  color: var(--pri);
+}
+.lp-anexo-zona small {
+  font-size: var(--fs-caption);
+  color: var(--t4);
+}
+.lp-anexo-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-anexo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.375rem 0.375rem 0.375rem 0.5rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-field);
+  background: var(--surface);
+}
+.lp-anexo-abrir {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.lp-anexo-thumb {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--r-field);
+  background: var(--surf-3);
+  color: var(--t3);
+  overflow: hidden;
+}
+.lp-anexo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lp-anexo-txt {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.lp-anexo-nome {
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lp-anexo-tam {
+  font-size: var(--fs-caption);
+  color: var(--t4);
+}
+
+/* ---- foto ---- */
+.lp-foto {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--surf-3);
+  box-shadow: inset 0 0 0 var(--hairline) var(--border);
+  isolation: isolate;
+  flex: none;
+}
+.lp-foto--sm {
+  height: 6rem;
+  width: 4.5rem;
+}
+.lp-foto--md {
+  height: 10rem;
+  width: 7.5rem;
+}
+.lp-foto--lg {
+  height: 15rem;
+  width: 11.25rem;
+}
+.lp-foto-fundo {
+  position: absolute;
+  inset: -1rem;
+  background-size: cover;
+  background-position: center;
+  filter: blur(1rem) saturate(1.1);
+  opacity: 0.7;
+  z-index: -1;
+}
+.lp-foto-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.25rem 0.5rem rgb(0 0 0 / 0.3));
+}
+.lp-foto-ampliar {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0.375rem;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+}
+.lp-foto-lupa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--r-pill);
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.lp-foto-ampliar:hover .lp-foto-lupa,
+.lp-foto-ampliar:focus-visible .lp-foto-lupa {
+  opacity: 1;
+}
+.lp-foto-ampliar:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+  border-radius: var(--r-card);
+}
+.lp-foto-sobreposto {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.lp-foto-sobreposto > * {
+  pointer-events: auto;
+}

@@ -1,0 +1,470 @@
+.lp-abas--pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--topbar-h, 0rem));
+  margin: calc(-1 * var(--content-pad, 0rem));
+  background: var(--bg);
+}
+.lp-abas-banda {
+  position: sticky;
+  top: calc(-1 * var(--content-pad, 0rem));
+  z-index: 3;
+  background: var(--surface);
+}
+.lp-abas-cab {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem 0.375rem;
+}
+.lp-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border: var(--hairline) solid var(--border-2);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--t3);
+  cursor: pointer;
+}
+.lp-voltar:hover {
+  color: var(--pri);
+  border-color: var(--pri);
+}
+.lp-voltar:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-abas-titulos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lp-abas-titulo {
+  margin: 0;
+  font-size: var(--fs-titulo);
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.lp-abas-ident {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t3);
+  padding-left: 0.5rem;
+  border-left: var(--hairline) solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-abas-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lp-abas-barra {
+  display: flex;
+  align-items: stretch;
+  border-bottom: var(--hairline) solid var(--border);
+  overflow-x: auto;
+}
+.lp-abas--pagina .lp-abas-barra {
+  padding: 0 1rem;
+  background: var(--surface);
+}
+.lp-abas-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4375rem;
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  border: 0;
+  border-radius: var(--r-field) var(--r-field) 0 0;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: var(--d-fs);
+  font-weight: 600;
+  color: var(--t3);
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: inset 0 -0.1875rem 0 transparent;
+}
+.lp-abas-tab:hover {
+  color: var(--pri);
+  background: var(--surf-2);
+}
+.lp-abas-tab.is-on {
+  color: var(--pri);
+  font-weight: 700;
+  background: var(--pri-bg);
+  box-shadow: inset 0 -0.1875rem 0 var(--acento-claro);
+}
+.lp-abas-tab.is-off,
+.lp-abas-tab.is-off:hover {
+  color: var(--t4);
+  background: transparent;
+  cursor: not-allowed;
+}
+.lp-abas-tab:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-abas-ic :is(.lp-ic, .lp-icone) {
+  font-size: 0.875rem;
+  display: inline-flex;
+}
+.lp-abas-pend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.3125rem;
+  border-radius: var(--r-pill);
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  border: var(--hairline) solid var(--warn-bd);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  flex: none;
+}
+.lp-abas-painel {
+  padding-top: 1rem;
+}
+.lp-abas--pagina .lp-abas-painel {
+  padding: 1rem;
+}
+.lp-abas-seta {
+  font-size: 0.875em;
+  opacity: 0.8;
+}
+.lp-abas-grupo {
+  display: flex;
+}
+
+/* ---- alinhamento ---- */
+.lp-abas--alinha-preencher .lp-abas-tab,
+.lp-abas--alinha-preencher .lp-abas-grupo {
+  flex: 1 1 auto;
+}
+.lp-abas--alinha-justificado .lp-abas-tab,
+.lp-abas--alinha-justificado .lp-abas-grupo {
+  flex: 1 1 0;
+}
+.lp-abas-grupo .lp-abas-tab {
+  flex: 1 1 auto;
+}
+.lp-abas--alinha-centro .lp-abas-barra {
+  justify-content: center;
+}
+.lp-abas--alinha-fim .lp-abas-barra {
+  justify-content: flex-end;
+}
+
+/* ---- cabeçalho na linha das abas ---- */
+.lp-abas-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+.lp-abas-cabecalho {
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--ink);
+}
+.lp-abas-topo .lp-abas-barra {
+  border-bottom: 0;
+}
+
+/* ---- ícone acima do rótulo ---- */
+.lp-abas--icone-acima .lp-abas-tab {
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-block: 0.5rem;
+}
+.lp-abas--icone-acima .lp-abas-ic :is(.lp-ic, .lp-icone) {
+  font-size: 1.125rem;
+}
+
+/* ---- painel em caixa ---- */
+.lp-abas--painel-caixa .lp-abas-painel {
+  margin-top: 0.875rem;
+  padding: 1rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+}
+
+/* ---- barra no rodapé ---- */
+.lp-abas--barra-base {
+  display: flex;
+  flex-direction: column;
+}
+.lp-abas--barra-base > :is(.lp-abas-barra, .lp-abas-topo) {
+  order: 2;
+  margin-top: 0.875rem;
+  padding-top: 0.875rem;
+  border-top: var(--hairline) solid var(--border);
+  border-bottom: 0;
+}
+.lp-abas--barra-base:not(.lp-abas--painel-caixa) .lp-abas-painel {
+  padding-top: 0;
+}
+.lp-abas--barra-base.lp-abas--painel-caixa .lp-abas-painel {
+  margin-top: 0;
+}
+
+/* ---- variantes sem trilho de baixo ---- */
+.lp-abas:is(.lp-abas--pilulas, .lp-abas--suave, .lp-abas--contorno, .lp-abas--segmentado, .lp-abas--passos, .lp-abas--cartao, .lp-abas--blocos) .lp-abas-barra {
+  gap: 0.375rem;
+  border-bottom: 0;
+}
+/* abas soltas quebram linha em vez de rolar de lado */
+.lp-abas:is(.lp-abas--pilulas, .lp-abas--suave, .lp-abas--contorno, .lp-abas--segmentado, .lp-abas--passos, .lp-abas--blocos) .lp-abas-barra {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.lp-abas:is(.lp-abas--pilulas, .lp-abas--suave, .lp-abas--contorno, .lp-abas--segmentado, .lp-abas--passos, .lp-abas--cartao, .lp-abas--blocos) .lp-abas-tab {
+  min-height: 2.25rem;
+  box-shadow: none;
+  border-radius: var(--r-btn);
+}
+
+/* clássica: aba com borda que se funde ao painel */
+.lp-abas--classica .lp-abas-barra {
+  gap: 0.125rem;
+  overflow: visible;
+}
+.lp-abas--classica .lp-abas-tab {
+  margin-bottom: calc(-1 * var(--hairline));
+  border: var(--hairline) solid transparent;
+  border-radius: var(--r-btn) var(--r-btn) 0 0;
+  box-shadow: none;
+}
+.lp-abas--classica .lp-abas-tab:hover {
+  background: var(--surf-2);
+  border-color: var(--border) var(--border) transparent;
+  color: var(--ink);
+}
+.lp-abas--classica .lp-abas-tab.is-on {
+  background: var(--surface);
+  border-color: var(--border) var(--border) var(--surface);
+  color: var(--ink);
+}
+
+/* pílulas: ativa sólida */
+.lp-abas--pilulas .lp-abas-tab.is-on {
+  background: var(--pri);
+  color: var(--on-pri);
+}
+
+/* suave: ativa em fundo claro */
+.lp-abas--suave .lp-abas-tab.is-on {
+  background: var(--pri-bg);
+  color: var(--pri);
+}
+
+/* contorno: todas com borda, ativa sólida */
+.lp-abas--contorno .lp-abas-tab {
+  border: var(--hairline) solid color-mix(in srgb, var(--pri) 45%, transparent);
+  color: var(--pri);
+}
+.lp-abas--contorno .lp-abas-tab:hover {
+  background: var(--pri-bg);
+}
+.lp-abas--contorno .lp-abas-tab.is-on {
+  background: var(--pri);
+  border-color: var(--pri);
+  color: var(--on-pri);
+}
+
+/* segmentado: trilho com a ativa destacada */
+.lp-abas--segmentado .lp-abas-barra {
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: var(--r-card);
+  background: var(--surf-3);
+}
+.lp-abas--segmentado .lp-abas-tab {
+  min-height: 2rem;
+  border-radius: var(--r-field);
+}
+.lp-abas--segmentado .lp-abas-tab:hover {
+  background: var(--surface);
+}
+.lp-abas--segmentado .lp-abas-tab.is-on {
+  background: var(--pri);
+  color: var(--on-pri);
+  box-shadow: 0 0.0625rem 0.1875rem var(--overlay-shadow);
+}
+
+/* passos: círculo numerado acima do rótulo */
+.lp-abas--passos .lp-abas-barra {
+  gap: 1.75rem;
+}
+.lp-abas--passos .lp-abas-tab,
+.lp-abas--passos .lp-abas-tab:hover {
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+}
+.lp-abas-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0.125rem solid var(--border-2);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--t3);
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.lp-abas--passos .lp-abas-tab:hover .lp-abas-num {
+  border-color: var(--pri);
+}
+.lp-abas--passos .lp-abas-tab.is-on .lp-abas-num {
+  border-color: var(--pri);
+  background: var(--pri);
+  color: var(--on-pri);
+}
+.lp-abas--passos .lp-abas-tab.is-on {
+  background: transparent;
+}
+
+/* cartão: ativa e painel na mesma cor */
+.lp-abas--cartao .lp-abas-barra {
+  gap: 0.125rem;
+}
+.lp-abas--cartao .lp-abas-tab {
+  border-radius: var(--r-btn) var(--r-btn) 0 0;
+}
+.lp-abas--cartao .lp-abas-tab.is-on {
+  background: var(--pri);
+  color: var(--on-pri);
+}
+.lp-abas--cartao .lp-abas-painel {
+  padding: 1rem;
+  border-radius: var(--r-btn);
+  background: var(--pri);
+  color: var(--on-pri);
+}
+
+/* blocos: caixas com seta apontando para o painel */
+.lp-abas--blocos .lp-abas-tab {
+  position: relative;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 6.5rem;
+  padding: 0.625rem 0.875rem;
+  border: var(--hairline) solid var(--border);
+  background: var(--surf-2);
+}
+.lp-abas--blocos .lp-abas-ic :is(.lp-ic, .lp-icone) {
+  font-size: 1.125rem;
+}
+.lp-abas--blocos .lp-abas-tab.is-on {
+  background: var(--pri);
+  border-color: var(--pri);
+  color: var(--on-pri);
+}
+.lp-abas--blocos .lp-abas-tab.is-on::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border: 0.4375rem solid transparent;
+  border-top-color: var(--pri);
+}
+.lp-abas--blocos.lp-abas--vertical .lp-abas-tab.is-on::after {
+  top: 50%;
+  left: 100%;
+  translate: 0 -50%;
+  border-color: transparent;
+  border-left-color: var(--pri);
+}
+
+/* desabilitada vence o estilo da variante */
+.lp-abas .lp-abas-tab.is-off,
+.lp-abas .lp-abas-tab.is-off:hover {
+  background: transparent;
+  border-color: transparent;
+  color: var(--t4);
+  opacity: 0.7;
+}
+
+/* ---- vertical ---- */
+.lp-abas--vertical {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.lp-abas--vertical .lp-abas-barra {
+  flex: none;
+  flex-direction: column;
+  min-width: 9rem;
+  overflow: visible;
+  border-bottom: 0;
+}
+.lp-abas--vertical .lp-abas-tab {
+  justify-content: flex-start;
+}
+.lp-abas--vertical.lp-abas--icone-acima .lp-abas-tab,
+.lp-abas--vertical.lp-abas--blocos .lp-abas-tab {
+  justify-content: center;
+}
+.lp-abas--vertical.lp-abas--sublinhado .lp-abas-barra {
+  border-inline-end: var(--hairline) solid var(--border);
+}
+.lp-abas--vertical.lp-abas--sublinhado .lp-abas-tab {
+  border-radius: var(--r-field) 0 0 var(--r-field);
+  box-shadow: inset -0.1875rem 0 0 transparent;
+}
+.lp-abas--vertical.lp-abas--sublinhado .lp-abas-tab.is-on {
+  box-shadow: inset -0.1875rem 0 0 var(--acento-claro);
+}
+.lp-abas--vertical .lp-abas-paineis {
+  flex: 1;
+  min-width: 0;
+}
+.lp-abas--vertical:not(.lp-abas--painel-caixa) .lp-abas-painel {
+  padding-top: 0;
+}
+.lp-abas--vertical.lp-abas--painel-caixa .lp-abas-painel {
+  margin-top: 0;
+}
+
+/* responsiva: empilha no celular */
+@media (max-width: 35.99rem) {
+  .lp-abas--responsiva .lp-abas-barra {
+    flex-direction: column;
+  }
+  .lp-abas--responsiva .lp-abas-tab {
+    flex: none;
+  }
+}
+@media (max-width: 40rem) {
+  .lp-abas--vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lp-abas--vertical .lp-abas-barra {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .lp-abas--blocos.lp-abas--vertical .lp-abas-tab.is-on::after {
+    display: none;
+  }
+}

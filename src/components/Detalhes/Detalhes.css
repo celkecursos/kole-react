@@ -1,0 +1,28 @@
+.lp-det {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+.lp-det--linha {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.75rem;
+}
+.lp-det-rotulo {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t3);
+}
+.lp-det--linha .lp-det-rotulo {
+  flex: none;
+}
+.lp-det-valor {
+  font-size: var(--fs-corpo-2);
+  color: var(--ink);
+}
+.lp-det--linha .lp-det-valor {
+  margin-inline-start: auto;
+  text-align: right;
+}

@@ -1,0 +1,22 @@
+.lp-cards-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.lp-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--lp-cards-min, 16rem), 100%), 1fr));
+  gap: 0.75rem;
+}
+.lp-cards.is-atualizando {
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+.lp-cards-cel {
+  display: flex;
+  min-width: 0;
+}
+.lp-cards-cel > * {
+  flex: 1;
+  min-width: 0;
+}

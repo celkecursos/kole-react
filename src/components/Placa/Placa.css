@@ -1,0 +1,38 @@
+/* arte de dado: cores e fonte da placa real, iguais nos dois temas */
+.lp-placa {
+  display: inline-flex;
+  align-self: flex-start;
+  flex-direction: column;
+  min-width: 7.5rem;
+  border: 0.125rem solid #1b1b1b;
+  border-radius: 0.375rem;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 0.0625rem 0.125rem rgb(0 0 0 / 0.2);
+  line-height: 1;
+}
+.lp-placa-faixa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.375rem;
+  background: #003399;
+  color: #ffffff;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.lp-placa-uf {
+  letter-spacing: 0.04em;
+}
+.lp-placa-numero {
+  padding: 0.3125rem 0.5rem 0.375rem;
+  color: #1b1b1b;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: center;
+  white-space: nowrap;
+}

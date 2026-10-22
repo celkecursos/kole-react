@@ -1,0 +1,323 @@
+/* ============================================================
+   Celke Kole — controles de formulário e utilitárias globais.
+
+   `.lp-input`     — <input>/<textarea> com o visual de campo.
+   `.lp-ctl-frame` — moldura para controles ricos SEM borda própria
+                     (select, grupos com sufixo): a moldura desenha
+                     borda/altura/foco; o controle dentro é transparente.
+   Tudo token-driven — zero hex/px solto.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--fs-corpo);
+}
+
+.lp-input {
+  appearance: none;
+  width: 100%;
+  height: var(--d-h);
+  padding: 0 var(--d-px);
+  font-family: var(--font-ui);
+  font-size: var(--d-fs);
+  color: var(--ink);
+  background: var(--surface);
+  border: var(--hairline) solid var(--border-2);
+  border-radius: var(--r-field);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.lp-input::placeholder {
+  color: var(--t5);
+}
+.lp-input:hover:not(:disabled):not(:focus) {
+  border-color: var(--t4);
+}
+.lp-input:focus {
+  border-color: var(--pri);
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}
+.lp-input[aria-invalid='true'] {
+  border-color: var(--err-solid);
+}
+.lp-input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 0.1875rem var(--err-bg);
+}
+.lp-input:disabled {
+  background: var(--surf-3);
+  color: var(--tdis);
+  cursor: not-allowed;
+}
+/* pista de somente-leitura só no input solto */
+.lp-input:read-only:not(:disabled):not(.lp-input--bare) {
+  background: var(--surf-2);
+  border-style: dashed;
+}
+/* ícones nativos de data/hora seguem a tinta do tema */
+.lp-input::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+[data-theme='dark'] .lp-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* BARE: dentro de moldura alheia (pill inline, .lp-ctl-frame) */
+.lp-input--bare,
+.lp-input--bare:hover,
+.lp-input--bare:focus,
+.lp-input--bare[aria-invalid='true'],
+.lp-input--bare[aria-invalid='true']:focus,
+.lp-input--bare:disabled {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  height: auto;
+  min-height: 0;
+  width: 100%;
+}
+
+textarea.lp-input {
+  height: auto;
+  min-height: calc(var(--d-h) * 2);
+  padding: var(--d-row) var(--d-px);
+  line-height: 1.45;
+  resize: vertical;
+}
+
+/* ---- moldura p/ controles ricos ---- */
+.lp-ctl-frame {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--d-h);
+  padding: 0 var(--d-px);
+  background: var(--surface);
+  border: var(--hairline) solid var(--border-2);
+  border-radius: var(--r-field);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.lp-ctl-frame:hover:not(.is-disabled) {
+  border-color: var(--t4);
+}
+.lp-ctl-frame:focus-within {
+  border-color: var(--pri);
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}
+.lp-ctl-frame.is-invalid,
+.lp-ctl-frame.is-invalid:hover {
+  border-color: var(--err-solid);
+}
+.lp-ctl-frame.is-invalid:focus-within {
+  box-shadow: 0 0 0 0.1875rem var(--err-bg);
+}
+.lp-ctl-frame.is-disabled {
+  background: var(--surf-3);
+  pointer-events: none;
+}
+.lp-ctl-frame.is-disabled > * {
+  color: var(--tdis);
+}
+.lp-ctl-frame input {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  min-height: calc(var(--d-h) - 0.375rem);
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  font-family: var(--font-ui);
+  font-size: var(--d-fs);
+  color: var(--ink);
+}
+.lp-ctl-frame input::placeholder {
+  color: var(--t5);
+}
+
+/* ícone-sufixo clicável (lupa, chevron, limpar) */
+.lp-ctl-suffix {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  color: var(--t4);
+  cursor: pointer;
+  font-size: var(--d-fs);
+}
+.lp-ctl-suffix:hover {
+  color: var(--pri);
+}
+.lp-ctl-suffix:disabled {
+  color: var(--tdis);
+  cursor: default;
+}
+
+/* ---- selo numérico ---- */
+.lp-contador {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--t3);
+  color: var(--surface);
+}
+.lp-contador--err {
+  background: var(--err-solid);
+  color: var(--ink-on-solid);
+}
+
+/* ---- texto só para leitor de tela ---- */
+.lp-sr {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  margin: -0.0625rem;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- pintura por severidade (compartilhada: alerta, status, toast) ---- */
+[data-sev='ok'] {
+  background: var(--ok-bg);
+  border-color: var(--ok-bd);
+}
+[data-sev='info'] {
+  background: var(--info-bg);
+  border-color: var(--info-bd);
+}
+[data-sev='warn'] {
+  background: var(--warn-bg);
+  border-color: var(--warn-bd);
+}
+[data-sev='err'] {
+  background: var(--err-bg);
+  border-color: var(--err-bd);
+}
+[data-sev='neutral'] {
+  background: var(--border);
+  border-color: var(--border-2);
+}
+
+/* ---- cores de componente (alerta, badge): cada um lê só estas 5 variáveis ----
+   fg = texto/ícone sobre fundo claro · bg/bd = fundo e borda suaves ·
+   solid = cor cheia · ink = texto sobre a cor cheia */
+[data-cor='pri'] {
+  --cor-fg: var(--pri);
+  --cor-bg: var(--pri-bg);
+  --cor-bd: var(--pri-bd);
+  --cor-solid: var(--pri);
+  --cor-ink: var(--on-pri);
+}
+[data-cor='destaque'] {
+  --cor-fg: var(--destaque-fg);
+  --cor-bg: color-mix(in srgb, var(--acento) 12%, var(--surface));
+  --cor-bd: color-mix(in srgb, var(--acento) 38%, var(--surface));
+  --cor-solid: var(--acento);
+  --cor-ink: var(--navy); /* marinho sobre laranja: 8,2:1 (branco daria 2,3:1) */
+}
+[data-cor='ok'] {
+  --cor-fg: var(--ok-fg);
+  --cor-bg: var(--ok-bg);
+  --cor-bd: var(--ok-bd);
+  --cor-solid: var(--ok-solid);
+  --cor-ink: var(--ink-on-ok);
+}
+[data-cor='info'] {
+  --cor-fg: var(--info-fg);
+  --cor-bg: var(--info-bg);
+  --cor-bd: var(--info-bd);
+  --cor-solid: var(--info-solid);
+  --cor-ink: var(--ink-on-info);
+}
+[data-cor='warn'] {
+  --cor-fg: var(--warn-fg);
+  --cor-bg: var(--warn-bg);
+  --cor-bd: var(--warn-bd);
+  --cor-solid: var(--warn-solid);
+  --cor-ink: var(--ink-on-warn);
+}
+[data-cor='err'] {
+  --cor-fg: var(--err-fg);
+  --cor-bg: var(--err-bg);
+  --cor-bd: var(--err-bd);
+  --cor-solid: var(--err-solid);
+  --cor-ink: var(--ink-on-err);
+}
+[data-cor='neutral'] {
+  --cor-fg: var(--t2);
+  --cor-bg: var(--surf-3);
+  --cor-bd: var(--border-2);
+  --cor-solid: var(--ink);
+  --cor-ink: var(--surface);
+}
+
+/* ---- grade de formulário: larguras de coluna ---- */
+.lp-col-2 {
+  grid-column: span 2;
+}
+.lp-col-3 {
+  grid-column: span 3;
+}
+.lp-col-full {
+  grid-column: 1 / -1;
+}
+
+/* ---- ícones (Lucide, SVG) ----
+   O SVG mede 1em: o tamanho vem do font-size de quem o contém, e o traço
+   usa currentColor — as mesmas regras de cor/tamanho que valiam para a fonte. */
+.lp-ic {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
+.lp-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  line-height: 1;
+}
+.lp-icone > svg {
+  width: 1em;
+  height: 1em;
+}
+.lp-ic--girar {
+  animation: lp-ic-gira 0.9s linear infinite;
+}
+@keyframes lp-ic-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-ic--girar {
+    animation-duration: 2.4s;
+  }
+}

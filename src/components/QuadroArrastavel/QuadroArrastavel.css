@@ -1,0 +1,79 @@
+.lp-quadro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--d-gap);
+  align-items: start;
+}
+.lp-quadro.is-arrastando {
+  cursor: grabbing;
+  user-select: none;
+}
+.lp-quadro-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--d-gap);
+  min-height: 6rem;
+  border-radius: var(--r-card);
+}
+.lp-quadro.is-arrastando .lp-quadro-coluna {
+  outline: var(--hairline) dashed var(--border-2);
+  outline-offset: 0.25rem;
+}
+.lp-quadro-item {
+  position: relative;
+  min-width: 0;
+}
+/* o lugar do item que está sendo arrastado */
+.lp-quadro-item.is-vazio {
+  border-radius: var(--r-card);
+  outline: 0.125rem dashed var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-quadro-item.is-vazio > * {
+  visibility: hidden;
+}
+/* pego pelo teclado */
+.lp-quadro-item.is-pego > * {
+  box-shadow: 0 0 0 0.1875rem var(--pri), 0 0.75rem 1.5rem var(--overlay-shadow);
+}
+
+.lp-quadro-alca {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-field);
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  font-size: 1rem;
+  cursor: grab;
+  touch-action: none;
+}
+.lp-quadro-alca:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.lp-quadro-alca:focus-visible {
+  opacity: 1;
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-quadro-alca.is-pego {
+  opacity: 1;
+  background: var(--pri);
+  color: var(--on-pri);
+}
+
+/* cópia que segue o ponteiro */
+.lp-quadro-fantasma {
+  position: fixed;
+  z-index: var(--z-toast);
+  pointer-events: none;
+  rotate: 1.5deg;
+  opacity: 0.92;
+  filter: drop-shadow(0 1rem 1.5rem var(--overlay-shadow));
+}

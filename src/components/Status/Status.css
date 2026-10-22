@@ -1,0 +1,29 @@
+.lp-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  border: var(--hairline) solid transparent;
+  border-radius: var(--r-field);
+  padding: 0.1875rem 0.6875rem;
+  white-space: nowrap;
+}
+.lp-status .lp-ic {
+  font-size: 0.8125rem;
+}
+.lp-status[data-sev='ok'] {
+  color: var(--ok-fg);
+}
+.lp-status[data-sev='warn'] {
+  color: var(--warn-fg);
+}
+.lp-status[data-sev='err'] {
+  color: var(--err-fg);
+}
+.lp-status[data-sev='neutral'] {
+  color: var(--t3);
+}
+.lp-status[data-sev='info'] {
+  color: var(--info-fg);
+}

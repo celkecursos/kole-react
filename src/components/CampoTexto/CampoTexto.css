@@ -1,0 +1,44 @@
+.lp-campo-texto {
+  position: relative;
+  width: 100%;
+}
+.lp-campo-texto-ic {
+  position: absolute;
+  left: var(--d-px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--t4);
+  font-size: var(--d-fs);
+  pointer-events: none;
+  z-index: 1;
+}
+.lp-campo-texto.tem-icone .lp-input {
+  padding-left: calc(var(--d-px) + 1.375em);
+}
+.lp-campo-texto--inline {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.lp-campo-texto--inline .lp-campo-texto-ic {
+  left: calc(var(--rotulo-w, 0px) + 0.5rem);
+}
+.lp-campo-texto--inline.tem-icone .lp-input {
+  padding-left: calc(var(--rotulo-w, 0px) + 0.375rem + 1.375em);
+}
+
+/* com prefixo/sufixo: a moldura é a borda */
+.lp-campo-frame {
+  gap: 0.375rem;
+}
+.lp-campo-frame-ic {
+  flex: none;
+  color: var(--t4);
+  font-size: var(--d-fs);
+}
+.lp-campo-prefixo {
+  flex: none;
+  font-size: var(--d-fs);
+  font-weight: 600;
+  color: var(--t4);
+}

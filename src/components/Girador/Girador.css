@@ -1,0 +1,99 @@
+.lp-girador {
+  --gir-cor: var(--pri);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  vertical-align: middle;
+  color: var(--gir-cor);
+}
+.lp-girador-forma {
+  display: inline-flex;
+  flex: none;
+  width: var(--gir-tam);
+  height: var(--gir-tam);
+}
+.lp-girador-rotulo {
+  font-family: var(--font-ui);
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+}
+
+/* anel: borda com um trecho vazado, girando */
+.lp-girador--anel .lp-girador-forma {
+  border: max(0.125rem, calc(var(--gir-tam) * 0.12)) solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: lp-girador-gira 0.75s linear infinite;
+}
+/* pulso: círculo que cresce e some */
+.lp-girador--pulso .lp-girador-forma {
+  border-radius: 50%;
+  background: currentColor;
+  animation: lp-girador-pulsa 0.75s linear infinite;
+}
+/* pontos: três pontos piscando em sequência */
+.lp-girador--pontos .lp-girador-forma {
+  align-items: center;
+  justify-content: space-between;
+  width: calc(var(--gir-tam) * 1.6);
+}
+.lp-girador--pontos .lp-girador-forma > span {
+  width: 28%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  animation: lp-girador-ponto 1.2s ease-in-out infinite;
+}
+.lp-girador--pontos .lp-girador-forma > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.lp-girador--pontos .lp-girador-forma > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes lp-girador-gira {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes lp-girador-pulsa {
+  0% {
+    scale: 0;
+  }
+  50% {
+    opacity: 1;
+    scale: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes lp-girador-ponto {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    scale: 0.75;
+  }
+  40% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+/* menos movimento: continua indicando atividade, só mais devagar */
+@media (prefers-reduced-motion: reduce) {
+  .lp-girador-forma,
+  .lp-girador-forma > span {
+    animation-duration: 2.4s !important;
+  }
+}
+
+/* ---- cores ---- */
+.lp-girador--atual { --gir-cor: currentColor; }
+.lp-girador--secundario { --gir-cor: var(--t3); }
+.lp-girador--ok { --gir-cor: var(--ok-solid); }
+.lp-girador--warn { --gir-cor: var(--warn-solid); }
+.lp-girador--err { --gir-cor: var(--err-solid); }
+.lp-girador--info { --gir-cor: var(--info-solid); }
+.lp-girador--destaque { --gir-cor: var(--acento); }
+.lp-girador--escuro { --gir-cor: var(--ink); }

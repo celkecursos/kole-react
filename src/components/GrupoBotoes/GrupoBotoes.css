@@ -1,0 +1,77 @@
+/* Os filhos podem ser o próprio .lp-btn ou o .lp-dica-alvo que o envolve. */
+.lp-grupo-btn {
+  display: inline-flex;
+  align-items: stretch;
+  isolation: isolate;
+  vertical-align: middle;
+}
+.lp-grupo-btn > * {
+  display: inline-flex;
+}
+.lp-grupo-btn > * + * {
+  margin-inline-start: calc(-1 * var(--hairline));
+}
+.lp-grupo-btn .lp-btn:is(:hover, :focus-visible, .is-pressionado) {
+  position: relative;
+  z-index: 1;
+}
+
+/* cantos: só as pontas do grupo ficam arredondadas */
+.lp-grupo-btn > .lp-btn:not(:first-child),
+.lp-grupo-btn > :not(:first-child) > .lp-btn {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.lp-grupo-btn > .lp-btn:not(:last-child),
+.lp-grupo-btn > :not(:last-child) > .lp-btn {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* botões sólidos colados: filete separando um do outro */
+.lp-grupo-btn > .lp-btn:is(.lp-btn--solido, .lp-btn--gradiente):not(:first-child),
+.lp-grupo-btn > :not(:first-child) > .lp-btn:is(.lp-btn--solido, .lp-btn--gradiente) {
+  border-inline-start-color: color-mix(in srgb, var(--btn-tinta-solida) 24%, var(--btn-fundo));
+}
+
+/* ---- vertical ---- */
+.lp-grupo-btn--vertical {
+  flex-direction: column;
+}
+.lp-grupo-btn--vertical > * + * {
+  margin-inline-start: 0;
+  margin-block-start: calc(-1 * var(--hairline));
+}
+.lp-grupo-btn--vertical .lp-btn {
+  width: 100%;
+}
+.lp-grupo-btn--vertical > .lp-btn,
+.lp-grupo-btn--vertical > * > .lp-btn {
+  border-radius: 0;
+}
+.lp-grupo-btn--vertical > .lp-btn:first-child,
+.lp-grupo-btn--vertical > :first-child > .lp-btn {
+  border-start-start-radius: var(--r-btn);
+  border-start-end-radius: var(--r-btn);
+}
+.lp-grupo-btn--vertical > .lp-btn:last-child,
+.lp-grupo-btn--vertical > :last-child > .lp-btn {
+  border-end-start-radius: var(--r-btn);
+  border-end-end-radius: var(--r-btn);
+}
+.lp-grupo-btn--vertical > .lp-btn:is(.lp-btn--solido, .lp-btn--gradiente):not(:first-child),
+.lp-grupo-btn--vertical > :not(:first-child) > .lp-btn:is(.lp-btn--solido, .lp-btn--gradiente) {
+  border-inline-start-color: var(--btn-fundo);
+  border-block-start-color: color-mix(in srgb, var(--btn-tinta-solida) 24%, var(--btn-fundo));
+}
+
+/* ---- barra de ferramentas ---- */
+.lp-barra-btn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+.lp-barra-btn--entre {
+  justify-content: space-between;
+}

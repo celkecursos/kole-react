@@ -1,0 +1,289 @@
+.lp-login {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  isolation: isolate;
+}
+
+/* ---- fundo decorativo ---- */
+.lp-login-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.lp-login-mancha {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(4rem);
+}
+.lp-login-mancha--1 {
+  top: -10rem;
+  left: -10rem;
+  width: 32rem;
+  height: 32rem;
+  background: color-mix(in srgb, var(--pri) 14%, transparent);
+}
+.lp-login-mancha--2 {
+  right: -8rem;
+  bottom: -12rem;
+  width: 28rem;
+  height: 28rem;
+  background: color-mix(in srgb, var(--acento-claro) 14%, transparent);
+}
+.lp-login-grade {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
+  opacity: 0.45;
+}
+
+/* ---- cabeçalho ---- */
+.lp-login-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+}
+.lp-login-marca {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.lp-login-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+.lp-login-escudo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-card);
+  background: var(--navy);
+  color: var(--acento-claro);
+  font-size: 1.125rem;
+  flex: none;
+}
+.lp-login-nome {
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--brand-ink);
+  line-height: 1.15;
+}
+.lp-login-sub {
+  font-size: var(--fs-caption);
+  color: var(--t3);
+}
+.lp-login-tema {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--t2);
+  cursor: pointer;
+}
+.lp-login-tema:hover {
+  color: var(--pri);
+  border-color: var(--pri-bd);
+}
+.lp-login-tema:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+
+/* ---- corpo ---- */
+.lp-login-main {
+  flex: 1;
+  display: grid;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1rem 2rem 3rem;
+}
+.lp-login--conteudo .lp-login-main {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.lp-login--formulario .lp-login-main {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+/* apresentação */
+.lp-login-apres {
+  display: flex;
+  flex-direction: column;
+  max-width: 28rem;
+}
+.lp-login-chamada {
+  margin: 0;
+  font-size: var(--fs-corpo-2);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--destaque-ink);
+}
+.lp-login-apres-titulo {
+  margin: 0.75rem 0 0;
+  font-size: 2.25rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.lp-login-apres-desc {
+  margin: 1rem 0 0;
+  font-size: var(--fs-corpo);
+  line-height: 1.55;
+  color: var(--t3);
+}
+.lp-login-destaques {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-login-destaques li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-corpo);
+  color: var(--ink);
+}
+.lp-login-destaque-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--pri);
+  box-shadow: 0 0.0625rem 0.125rem color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.lp-login-extra {
+  margin-top: 2.5rem;
+}
+
+/* cartão */
+.lp-login-cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 28rem;
+  justify-self: center;
+  padding: 2rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: 0 1.25rem 2.5rem -0.75rem var(--overlay-shadow);
+}
+.lp-login-cartao-cab {
+  display: flex;
+  flex-direction: column;
+}
+.lp-login-filete {
+  width: 3rem;
+  height: 0.25rem;
+  margin-bottom: 1rem;
+  border-radius: var(--r-pill);
+  background: linear-gradient(to right, var(--pri), var(--acento-claro));
+}
+.lp-login-titulo {
+  margin: 0;
+  font-size: var(--fs-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.lp-login-desc {
+  margin: 0.25rem 0 0;
+  font-size: var(--fs-corpo-2);
+  color: var(--t3);
+}
+.lp-login-form,
+.lp-login-otp {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.lp-login-senha {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.lp-login-link-senha {
+  align-self: flex-end;
+}
+.lp-login-link-senha a,
+.lp-login-acoes a {
+  color: var(--pri);
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+.lp-login-link-senha a:hover,
+.lp-login-link-senha a:focus-visible,
+.lp-login-acoes a:hover,
+.lp-login-acoes a:focus-visible {
+  text-decoration: underline;
+}
+.lp-login-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+}
+.lp-login-rodape {
+  font-size: var(--fs-caption);
+  color: var(--t4);
+  text-align: center;
+}
+.lp-login-otp-campo .lp-input {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+}
+
+@media (max-width: 64rem) {
+  .lp-login--conteudo .lp-login-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lp-login-apres {
+    display: none;
+  }
+}
+@media (max-width: 40rem) {
+  .lp-login-cab {
+    padding: 1rem;
+  }
+  .lp-login-main {
+    padding: 0.5rem 1rem 2rem;
+  }
+  .lp-login-cartao {
+    padding: 1.5rem;
+  }
+}

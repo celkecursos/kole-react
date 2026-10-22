@@ -1,0 +1,28 @@
+.lp-skel {
+  display: block;
+  background: var(--surf-2);
+  border-radius: var(--r-field);
+  position: relative;
+  overflow: hidden;
+}
+.lp-skel--circulo {
+  border-radius: 50%;
+}
+.lp-skel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ink) 8%, transparent), transparent);
+  animation: lp-skel 1.4s ease-in-out infinite;
+}
+@keyframes lp-skel {
+  to {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-skel::after {
+    animation: none;
+  }
+}

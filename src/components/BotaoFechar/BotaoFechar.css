@@ -1,0 +1,43 @@
+.lp-fechar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--t3);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.lp-fechar:hover:not(:disabled) {
+  background: var(--surf-3);
+  color: var(--ink);
+}
+.lp-fechar:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+.lp-fechar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.lp-fechar--pequeno {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.8125rem;
+}
+.lp-fechar--claro {
+  color: rgb(255 255 255 / 0.85);
+}
+.lp-fechar--claro:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.15);
+  color: #ffffff;
+}
+.lp-fechar--claro:focus-visible {
+  outline-color: #ffffff;
+}

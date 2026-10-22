@@ -1,0 +1,163 @@
+.lp-carrossel {
+  --cr-controle: #ffffff;
+  --cr-sombra: rgb(0 0 0 / 0.35);
+  position: relative;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  font-family: var(--font-ui);
+  user-select: none;
+}
+.lp-carrossel--escuro {
+  --cr-controle: #0b1a36;
+  --cr-sombra: rgb(255 255 255 / 0.5);
+}
+.lp-carrossel-janela {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.lp-carrossel--sem-arraste .lp-carrossel-janela {
+  cursor: default;
+}
+.lp-carrossel-janela:active {
+  cursor: grabbing;
+}
+.lp-carrossel-trilho {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+.lp-carrossel-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+}
+.lp-carrossel-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* esmaecer: slides empilhados, só o atual visível */
+.lp-carrossel--esmaecer .lp-carrossel-trilho {
+  display: grid;
+}
+.lp-carrossel--esmaecer .lp-carrossel-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.lp-carrossel--esmaecer .lp-carrossel-slide.is-atual {
+  opacity: 1;
+}
+
+/* ---- legenda ---- */
+.lp-carrossel-legenda {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 2.5rem 3.5rem 2.25rem;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent);
+  color: #ffffff;
+  text-align: center;
+}
+.lp-carrossel--escuro .lp-carrossel-legenda {
+  background: linear-gradient(to top, rgb(255 255 255 / 0.75), transparent);
+  color: #0b1a36;
+}
+.lp-carrossel-legenda strong {
+  font-size: var(--fs-titulo-secao);
+  font-weight: 700;
+}
+.lp-carrossel-legenda span {
+  font-size: var(--fs-corpo-2);
+  opacity: 0.9;
+}
+
+/* ---- setas, indicadores e pausa ---- */
+.lp-carrossel-seta,
+.lp-carrossel-pausa {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--cr-sombra) 60%, transparent);
+  color: var(--cr-controle);
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+.lp-carrossel-seta {
+  top: 50%;
+  translate: 0 -50%;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 1.125rem;
+}
+.lp-carrossel-seta--ant {
+  left: 0.625rem;
+}
+.lp-carrossel-seta--prox {
+  right: 0.625rem;
+}
+.lp-carrossel-pausa {
+  right: 0.625rem;
+  bottom: 0.625rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.8125rem;
+}
+.lp-carrossel-seta:hover,
+.lp-carrossel-pausa:hover {
+  opacity: 1;
+}
+.lp-carrossel-seta:focus-visible,
+.lp-carrossel-pausa:focus-visible,
+.lp-carrossel-ind:focus-visible {
+  opacity: 1;
+  outline: 0.125rem solid var(--cr-controle);
+  outline-offset: 0.125rem;
+}
+.lp-carrossel-indicadores {
+  position: absolute;
+  left: 50%;
+  bottom: 0.875rem;
+  translate: -50% 0;
+  display: flex;
+  gap: 0.375rem;
+}
+.lp-carrossel-ind {
+  width: 1.5rem;
+  height: 0.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--cr-controle);
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity 0.15s ease, width 0.2s ease;
+}
+.lp-carrossel-ind.is-atual {
+  width: 2rem;
+  opacity: 1;
+}
+/* com indicadores, a legenda sobe para não ficar atrás deles */
+.lp-carrossel:has(.lp-carrossel-indicadores) .lp-carrossel-legenda {
+  padding-bottom: 2.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-carrossel-trilho,
+  .lp-carrossel-slide,
+  .lp-carrossel-ind {
+    transition: none;
+  }
+}

@@ -1,0 +1,81 @@
+.lp-citacao {
+  --ct-cor: var(--pri);
+  --ct-halo: var(--pri-bg);
+  position: relative;
+  margin: 0;
+  font-family: var(--font-ui);
+}
+.lp-citacao-texto {
+  margin: 0;
+  font-size: var(--fs-corpo);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.lp-citacao-autor {
+  margin-top: 0.5rem;
+  font-size: var(--fs-corpo-2);
+  color: var(--t3);
+}
+.lp-citacao-autor cite {
+  font-style: italic;
+}
+
+/* simples: filete colorido na lateral */
+.lp-citacao--simples {
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-inline-start: 0.1875rem solid var(--ct-cor);
+}
+.lp-citacao--simples.lp-citacao--fim {
+  padding: 0.25rem 1rem 0.25rem 0;
+  border-inline-start: 0;
+  border-inline-end: 0.1875rem solid var(--ct-cor);
+}
+.lp-citacao--simples.lp-citacao--centro {
+  padding: 0.25rem 0;
+  border-inline-start: 0;
+}
+
+/* cartão: fundo claro, ícone no canto e aspas grandes ao fundo */
+.lp-citacao--cartao {
+  padding: 1.25rem 1.25rem 1rem;
+  border: var(--hairline) solid color-mix(in srgb, var(--ct-cor) 30%, transparent);
+  border-inline-start: 0.1875rem solid var(--ct-cor);
+  border-radius: var(--r-card);
+  background: var(--ct-halo);
+  overflow: hidden;
+}
+.lp-citacao--cartao::before {
+  content: '\201C';
+  position: absolute;
+  top: -0.75rem;
+  left: 0.5rem;
+  font-family: Georgia, serif;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--ct-cor);
+  opacity: 0.15;
+  pointer-events: none;
+}
+.lp-citacao-ic {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: var(--ct-cor);
+}
+.lp-citacao--centro {
+  text-align: center;
+}
+.lp-citacao--fim {
+  text-align: end;
+}
+
+/* ---- cores ---- */
+.lp-citacao--secundario { --ct-cor: var(--t3); --ct-halo: var(--surf-3); }
+.lp-citacao--ok { --ct-cor: var(--ok-fg); --ct-halo: var(--ok-bg); }
+.lp-citacao--warn { --ct-cor: var(--warn-fg); --ct-halo: var(--warn-bg); }
+.lp-citacao--err { --ct-cor: var(--err-fg); --ct-halo: var(--err-bg); }
+.lp-citacao--info { --ct-cor: var(--info-fg); --ct-halo: var(--info-bg); }
+.lp-citacao--destaque { --ct-cor: var(--destaque-fg); --ct-halo: color-mix(in srgb, var(--acento) 12%, var(--surface)); }
+.lp-citacao--escuro { --ct-cor: var(--ink); --ct-halo: var(--surf-3); }

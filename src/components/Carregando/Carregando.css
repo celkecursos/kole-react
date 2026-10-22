@@ -1,0 +1,119 @@
+.lp-carr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0;
+}
+.lp-carr-painel {
+  display: contents;
+}
+.lp-carr--overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  padding: 0;
+  background: var(--backdrop);
+  cursor: progress;
+}
+.lp-carr--overlay .lp-carr-painel {
+  display: flex;
+  padding: 1.5rem 2rem;
+  background: var(--surf-raised);
+  border: var(--hairline) solid var(--overlay-edge);
+  border-radius: var(--r-dialog);
+  box-shadow: 0 0.5rem 2rem var(--overlay-shadow);
+  outline: none;
+}
+.lp-carr-pilha {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: lp-respira 2.2s ease-in-out infinite;
+}
+.lp-carr-logo {
+  display: block;
+  width: 2.25rem;
+  height: auto;
+}
+.lp-carr-traco {
+  width: 1.5rem;
+  height: 0.0625rem;
+  border-radius: 0.0625rem;
+  background: color-mix(in srgb, var(--acento) 60%, transparent);
+}
+.lp-carr-anel {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0.1875rem solid color-mix(in srgb, var(--acento) 25%, transparent);
+  border-top-color: var(--acento);
+  border-radius: 50%;
+  animation: lp-gira 0.8s linear infinite;
+}
+.lp-carr-txt {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.125rem;
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--t2);
+}
+.lp-carr-pontos {
+  display: inline-flex;
+  align-items: center;
+}
+.lp-carr-pontos > span {
+  width: 0.1875rem;
+  height: 0.1875rem;
+  margin-left: 0.1875rem;
+  border-radius: 50%;
+  background: var(--acento);
+  opacity: 0.25;
+  animation: lp-ponto 1.4s ease-in-out infinite;
+}
+.lp-carr-pontos > span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.lp-carr-pontos > span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+@keyframes lp-respira {
+  0%,
+  to {
+    transform: scale(0.985);
+    opacity: 0.84;
+  }
+  50% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+}
+@keyframes lp-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes lp-ponto {
+  0%,
+  to {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-carr-pilha,
+  .lp-carr-anel,
+  .lp-carr-pontos > span {
+    animation: none;
+  }
+  .lp-carr-pontos > span {
+    opacity: 0.55;
+  }
+}

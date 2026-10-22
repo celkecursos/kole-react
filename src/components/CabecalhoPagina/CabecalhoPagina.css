@@ -1,0 +1,61 @@
+.lp-cab {
+  display: block;
+  background: var(--surface);
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  padding: 1.5rem;
+}
+.lp-cab-topo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.lp-cab-titulos {
+  flex: 1;
+  min-width: 0;
+}
+.lp-cab-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--r-field);
+  background: var(--pri-bg);
+  color: var(--pri);
+  font-size: var(--fs-titulo);
+}
+.lp-cab-tile .lp-ic {
+  font-size: var(--fs-titulo);
+}
+.lp-cab-categoria {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--t4);
+}
+.lp-cab-trilha {
+  margin-top: 0.1875rem;
+}
+.lp-cab-titulo {
+  margin: 0;
+  font-size: var(--fs-titulo);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.lp-cab-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.lp-cab-descricao {
+  margin-top: 1rem;
+  font-size: var(--fs-corpo);
+  line-height: 1.625;
+  color: var(--t2);
+}

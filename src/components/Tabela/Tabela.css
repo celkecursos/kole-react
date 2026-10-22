@@ -1,0 +1,203 @@
+.lp-tbl-card {
+  background: var(--surface);
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-btn);
+  overflow: hidden;
+}
+.lp-tbl-carregando {
+  display: flex;
+  flex-direction: column;
+}
+.lp-tbl-carregando-cab {
+  height: calc(0.875rem + var(--fs-caption));
+  background: var(--thead-bg);
+  border-bottom: var(--hairline) solid var(--thead-divisor);
+}
+.lp-tbl-carregando-lin {
+  display: flex;
+  align-items: center;
+  height: calc(var(--d-row) * 2 + 1.875rem);
+  padding-inline: 0.8125rem;
+  border-bottom: var(--hairline) solid var(--border);
+}
+.lp-tbl-carregando-lin:last-child {
+  border-bottom: 0;
+}
+.lp-tbl-vazio {
+  padding: 1rem 0.8125rem;
+}
+.lp-tbl-scroll {
+  overflow: auto;
+  transition: opacity 0.16s ease;
+}
+.lp-tbl-scroll.is-atualizando {
+  opacity: 0.55;
+}
+.lp-tbl-scroll:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+.lp-tbl thead tr {
+  background: var(--thead-bg);
+  border-bottom: var(--hairline) solid var(--thead-divisor);
+}
+.lp-tbl th {
+  text-align: left;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--thead-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.4375rem 0.625rem;
+  white-space: nowrap;
+}
+.lp-tbl tbody tr {
+  border-top: var(--hairline) solid var(--border);
+}
+.lp-tbl tbody tr:first-child {
+  border-top: none;
+}
+.lp-tbl tbody tr:nth-child(2n) {
+  background: var(--surf-2);
+}
+.lp-tbl tbody tr:hover {
+  background: var(--pri-bg);
+}
+.lp-tbl td {
+  padding: var(--d-row) 0.625rem;
+  font-size: var(--d-fs);
+  color: var(--t2);
+  vertical-align: middle;
+}
+.lp-tbl td.is-destaque {
+  font-weight: 600;
+  color: var(--ink);
+}
+.lp-tbl td.is-maiuscula {
+  text-transform: uppercase;
+}
+.lp-tbl :is(th, td).is-centro {
+  text-align: center;
+}
+.lp-tbl :is(th, td).is-direita {
+  text-align: right;
+}
+.lp-tbl--grade :is(th + th, td + td) {
+  border-inline-start: var(--hairline) solid var(--border);
+}
+.lp-tbl--grade th + th {
+  border-inline-start-color: color-mix(in srgb, var(--pri) 22%, transparent);
+}
+.lp-tbl-ordenar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1875rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  outline: none;
+}
+.lp-tbl-ordenar:focus-visible {
+  box-shadow: 0 0 0 0.125rem var(--pri-bg);
+  border-radius: 0.125rem;
+}
+.lp-tbl-ordenar .lp-ic {
+  font-size: 0.6875rem;
+  color: var(--thead-ink-muted);
+}
+.lp-tbl-ordenar .lp-ic.is-on {
+  color: var(--thead-ink);
+}
+.lp-tbl-col-acoes,
+.lp-tbl-col-sel {
+  width: 0.0625rem;
+  white-space: nowrap;
+}
+.lp-tbl th.lp-tbl-col-acoes,
+.lp-tbl :is(th, td).lp-tbl-col-sel {
+  text-align: center;
+}
+.lp-tbl-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3125rem;
+}
+.lp-tbl tbody tr.is-clicavel {
+  cursor: pointer;
+}
+.lp-tbl tbody tr.is-sel,
+.lp-tbl tbody tr.is-sel:nth-child(2n) {
+  background: var(--pri-bg);
+}
+.lp-tbl tbody tr.is-sel td:first-child {
+  box-shadow: inset 0.1875rem 0 0 var(--pri);
+}
+
+/* caixa de seleção (mesma receita do CampoMarcacao) */
+.lp-tbl-sel {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.lp-tbl-sel-in {
+  position: absolute;
+  opacity: 0;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  cursor: inherit;
+}
+.lp-tbl-sel-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border: var(--hairline) solid var(--border-2);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+.lp-tbl-sel:hover .lp-tbl-sel-visual {
+  border-color: var(--t4);
+}
+.lp-tbl-sel-in:focus-visible ~ .lp-tbl-sel-visual {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}
+.lp-tbl-sel-in:is(:checked, :indeterminate) ~ .lp-tbl-sel-visual {
+  background: var(--pri);
+  border-color: var(--pri);
+}
+.lp-tbl-sel-in:checked ~ .lp-tbl-sel-visual::after {
+  content: '';
+  width: 0.3125rem;
+  height: 0.5625rem;
+  margin-top: -0.125rem;
+  border: solid var(--on-pri);
+  border-width: 0 0.125rem 0.125rem 0;
+  transform: rotate(45deg);
+}
+.lp-tbl-sel-in:indeterminate ~ .lp-tbl-sel-visual::after {
+  content: '';
+  width: 0.5rem;
+  height: 0.125rem;
+  border-radius: 0.0625rem;
+  background: var(--on-pri);
+}

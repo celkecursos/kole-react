@@ -1,0 +1,104 @@
+.lp-dica-alvo {
+  display: inline-flex;
+}
+/* elemento desabilitado: os eventos vão para o alvo, que abre a dica */
+.lp-dica-alvo > :disabled {
+  pointer-events: none;
+}
+.lp-dica-alvo[tabindex]:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+  border-radius: var(--r-btn);
+}
+.lp-dica {
+  --dc-bg: var(--dica-bg);
+  --dc-ink: var(--dica-ink);
+  --dc-borda: var(--dica-edge);
+  position: fixed;
+  z-index: var(--z-toast);
+  max-width: 18rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--r-field);
+  background: var(--dc-bg);
+  color: var(--dc-ink);
+  border: var(--hairline) solid var(--dc-borda);
+  box-shadow: 0 0.375rem 1rem var(--overlay-shadow);
+  font-family: var(--font-ui);
+  font-size: var(--fs-caption);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  animation: lp-dica-entra 0.12s ease;
+}
+.lp-dica--cima {
+  transform: translate(-50%, -100%);
+}
+.lp-dica--baixo {
+  transform: translate(-50%, 0);
+}
+.lp-dica--direita {
+  transform: translate(0, -50%);
+}
+.lp-dica--esquerda {
+  transform: translate(-100%, -50%);
+}
+
+/* setinha apontando para o elemento */
+.lp-dica::after {
+  content: '';
+  position: absolute;
+  border: 0.25rem solid transparent;
+}
+.lp-dica--cima::after {
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border-top-color: var(--dc-bg);
+}
+.lp-dica--baixo::after {
+  bottom: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border-bottom-color: var(--dc-bg);
+}
+.lp-dica--direita::after {
+  right: 100%;
+  top: 50%;
+  translate: 0 -50%;
+  border-right-color: var(--dc-bg);
+}
+.lp-dica--esquerda::after {
+  left: 100%;
+  top: 50%;
+  translate: 0 -50%;
+  border-left-color: var(--dc-bg);
+}
+
+@keyframes lp-dica-entra {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-dica {
+    animation: none;
+  }
+}
+
+/* ---- cores ---- */
+.lp-dica:is(.lp-dica--pri, .lp-dica--secundario, .lp-dica--ok, .lp-dica--warn, .lp-dica--err, .lp-dica--info, .lp-dica--destaque) {
+  --dc-borda: var(--dc-bg);
+}
+.lp-dica--pri { --dc-bg: var(--pri); --dc-ink: var(--on-pri); }
+.lp-dica--secundario { --dc-bg: var(--t3); --dc-ink: var(--surface); }
+.lp-dica--ok { --dc-bg: var(--ok-solid); --dc-ink: var(--ink-on-ok); }
+.lp-dica--warn { --dc-bg: var(--warn-solid); --dc-ink: var(--ink-on-warn); }
+.lp-dica--err { --dc-bg: var(--err-solid); --dc-ink: var(--ink-on-err); }
+.lp-dica--info { --dc-bg: var(--info-solid); --dc-ink: var(--ink-on-info); }
+/* laranja da marca: texto marinho no sólido (branco daria 2,3:1) */
+.lp-dica--destaque { --dc-bg: var(--acento); --dc-ink: var(--navy); }
+.lp-dica--claro {
+  --dc-bg: var(--surf-raised);
+  --dc-ink: var(--ink);
+  --dc-borda: var(--border);
+}

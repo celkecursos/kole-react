@@ -1,0 +1,29 @@
+/* grid 0fr → 1fr anima a altura (ou largura) até o tamanho real do conteúdo */
+.lp-recolhivel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease, visibility 0.25s;
+  visibility: hidden;
+}
+.lp-recolhivel.is-aberto {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+.lp-recolhivel--horizontal {
+  grid-template-rows: none;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns 0.25s ease, visibility 0.25s;
+}
+.lp-recolhivel--horizontal.is-aberto {
+  grid-template-columns: 1fr;
+}
+.lp-recolhivel-interno {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-recolhivel {
+    transition: none;
+  }
+}

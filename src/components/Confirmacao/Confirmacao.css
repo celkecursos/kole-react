@@ -1,0 +1,54 @@
+.lp-conf {
+  gap: 0.875rem;
+  padding: 1.25rem;
+}
+.lp-conf-cab {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.lp-conf-selo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  flex: none;
+  background: var(--pri-bg);
+  color: var(--pri);
+}
+.lp-conf-selo[data-sev-conf='ok'] {
+  background: var(--ok-bg);
+  color: var(--ok-solid);
+}
+.lp-conf-selo[data-sev-conf='warn'] {
+  background: var(--warn-bg);
+  color: var(--warn-solid);
+}
+.lp-conf-selo[data-sev-conf='err'] {
+  background: var(--err-bg);
+  color: var(--err-solid);
+}
+.lp-conf-selo .lp-ic {
+  font-size: 1.0625rem;
+}
+.lp-conf-titulo {
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.lp-conf-msg {
+  margin: 0;
+  font-size: var(--fs-corpo-2);
+  line-height: 1.55;
+  color: var(--t3);
+}
+.lp-conf-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}

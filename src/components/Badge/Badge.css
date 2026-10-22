@@ -1,0 +1,109 @@
+/* cores: [data-cor] em base.css (--cor-fg/-bg/-bd/-solid/-ink) */
+.lp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  flex: none;
+  border: var(--hairline) solid transparent;
+  border-radius: 0.3125rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.lp-badge--pequeno {
+  min-width: 1.25rem;
+  padding: 0.125rem 0.4375rem;
+  font-size: var(--fs-micro);
+}
+.lp-badge--medio {
+  min-width: 1.5rem;
+  padding: 0.25rem 0.625rem;
+  font-size: var(--fs-caption);
+}
+/* acompanha o texto em volta (ex.: dentro de um h1) */
+.lp-badge--herdar {
+  padding: 0.12em 0.4em;
+  font-size: 0.75em;
+  border-radius: 0.3em;
+}
+.lp-badge--pilula {
+  border-radius: var(--r-pill);
+}
+
+.lp-badge--solido {
+  background: var(--cor-solid);
+  border-color: var(--cor-solid);
+  color: var(--cor-ink);
+}
+.lp-badge--suave {
+  background: var(--cor-bg);
+  border-color: var(--cor-bg);
+  color: var(--cor-fg);
+}
+.lp-badge--contorno {
+  background: transparent;
+  border-color: var(--cor-solid);
+  color: var(--cor-fg);
+}
+.lp-badge--gradiente {
+  background: linear-gradient(135deg, var(--cor-solid), color-mix(in srgb, var(--cor-solid) 70%, var(--acento)));
+  border-color: transparent;
+  color: var(--cor-ink);
+}
+.lp-badge--gradiente:is([data-cor='destaque'], [data-cor='neutral']) {
+  background: linear-gradient(135deg, var(--cor-solid), color-mix(in srgb, var(--cor-solid) 65%, var(--pri)));
+}
+.lp-badge--inverso {
+  background: var(--surface);
+  border-color: var(--surface);
+  color: var(--cor-fg);
+}
+
+/* ---- ComBadge: marca no canto de outro elemento ---- */
+.lp-com-badge {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+.lp-com-badge-marca {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: 0 0 0 0.125rem var(--surface);
+}
+.lp-com-badge-marca.is-superior-direita {
+  top: 0;
+  right: 0;
+  transform: translate(45%, -45%);
+}
+.lp-com-badge-marca.is-inferior-direita {
+  bottom: 0;
+  right: 0;
+  transform: translate(45%, 45%);
+}
+.lp-com-badge-marca.is-superior-esquerda {
+  top: 0;
+  left: 0;
+  transform: translate(-45%, -45%);
+}
+.lp-com-badge-marca.is-inferior-esquerda {
+  bottom: 0;
+  left: 0;
+  transform: translate(-45%, 45%);
+}
+.lp-com-badge-ponto {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: var(--r-pill);
+  background: var(--cor-solid);
+}
+.lp-com-badge-ponto.is-superior-direita,
+.lp-com-badge-ponto.is-inferior-direita {
+  transform: translate(25%, -25%);
+}
+.lp-com-badge-ponto.is-inferior-direita {
+  transform: translate(25%, 25%);
+}

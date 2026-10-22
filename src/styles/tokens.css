@@ -1,0 +1,325 @@
+/* ============================================================
+   Celke Kole — Design Tokens
+   Fonte única de verdade. NÃO usar hex/px solto em componente.
+   Já é importado por `@celke/kole-react/estilos.css`.
+   ============================================================ */
+
+:root {
+  /* ---- Marca (paleta Celke: marinho + azul elétrico + laranja) ----
+     `--acento*` = o LARANJA de destaque (item ativo, barra de aba, spinner). */
+  --acento:        #f7931e;
+  --acento-claro:  #ff9a2e;
+  --acento-borda:   #e07b0c;                  /* borda do tile do ativo (sidebar) */
+  --acento-tint:   rgba(255, 154, 46, .16);  /* laranja translúcido (grupo aberto, recolhido) */
+  --acento-suave:     #ffb057;                  /* sub-item ativo (texto) — 9,5:1 sobre o marinho */
+  /* laranja como TINTA sobre superfície (ícone de ação "Editar"): o laranja
+     da marca dá 2,3:1 no branco — este tom escurecido passa dos 3:1 de ícone */
+  --destaque-ink:  #d97706;
+  /* laranja como TEXTO (alerta de destaque): 4,7:1 no fundo laranja-claro e
+     5,2:1 no branco — o --destaque-ink (3:1) só serve para ícone */
+  --destaque-fg:   #c2410c;
+
+  /* ---- Superfícies / texto (TEMA CLARO = padrão) ---- */
+  --bg:        #f2f5fa;
+  --surface:   #ffffff;
+  --surf-2:    #f8fafd;
+  --surf-3:    #f1f4f9;
+  /* superfície FLUTUANTE (modal/painel de select/calendário) e o degrau de
+     apoio sobre ela (faixa do footer, hover de opção). No claro empatam com
+     surface/surf-2 (a sombra recorta); no escuro sobem um degrau de LUZ —
+     elevação escura se comunica clareando, não sombreando. */
+  --surf-raised:   #ffffff;
+  --surf-raised-2: #f8fafd;
+  /* chão do diálogo que carrega SEÇÕES (Form em modal). No claro é o
+     canvas da página: a seção (--surface) vira o mesmo card branco do form em
+     página. Sem ele, seção e corpo eram o mesmo branco (--surf-raised empata
+     com --surface no claro) e o grupo ficava só no contorno — mais fraco que a
+     borda dos campos dentro dele. */
+  --dlg-canvas:    var(--bg);
+  --border:    #e0e6ef;
+  --border-2:  #c9d2e0;
+
+  --ink:   #0e1726;  /* texto principal      */
+  --t2:    #334055;  /* texto forte          */
+  --t3:    #55627a;  /* texto de apoio       */
+  --t4:    #7a879c;  /* rótulos / secundário */
+  --t5:    #9ca7b8;  /* placeholder          */
+  --tdis:  #bfc8d5;  /* desabilitado         */
+
+  /* ---- Ação (azul elétrico da marca) ----
+     A cor de AÇÃO é o azul da capa, separado do marinho da sidebar: botão,
+     link, ícone e anel de foco têm cor própria e se distinguem do texto.
+     Trocar o azul de ação = trocar ESTAS linhas.
+     Contraste (medido): branco sobre --pri 5,57:1; --pri sobre --pri-bg 4,91:1. */
+  --pri:     #1f5fe0;
+  --pri-bg:  #eaf1ff;  /* azul a ~6% — halo de foco, tile, faixa, item ativo */
+  --pri-bd:  #c3d6fb;  /* borda sobre --pri-bg                               */
+  /* `--pri-ink` = tinta sobre `--pri-bg` E o passo de HOVER do botão sólido:
+     com tinta branca, o hover ESCURECE (7,68:1). */
+  --pri-ink: #174bb8;
+  --on-pri:  #ffffff;  /* texto/ícone sobre o azul sólido */
+
+  /* ---- Cor institucional da marca (marinho) ----
+     `--navy` é o token semântico da marca; sidebar/thead/backdrop/avatar/form
+     derivam dele via var(--navy). */
+  --navy:       #0b1a36;  /* marinho da capa */
+  --brand-ink:  #0b1a36;  /* marinho (wordmark do sistema na topbar) */
+
+  /* ---- Sidebar / cores da sidebar (navy) (Variação D do anexo de sidebar; constante nos
+     dois temas — o sidebar é superfície escura sempre) ---- */
+  --sidebar-bg:          var(--navy);              /* fundo do sidebar (= --navy) */
+  --sidebar-ink-strong:  #ffffff;                  /* texto branco (marca/ativo) */
+  --sidebar-ink:         #d6e2f5;                  /* texto forte (item ativo/marca) */
+  --sidebar-ink-2:       #a9bcda;                  /* texto/ícone de item inativo */
+  --sidebar-ink-muted:   #6f86ad;                  /* rótulos de grupo / ícones 2ºrios */
+  --sidebar-tile:        rgba(255, 255, 255, .06); /* tile do ícone (inativo) */
+  --sidebar-tile-hover:  rgba(255, 255, 255, .12); /* tile no hover */
+  --sidebar-item-hover:  rgba(255, 255, 255, .06); /* fundo do item no hover */
+  --sidebar-item-active: rgba(255, 255, 255, .04); /* fundo do item ativo */
+  --sidebar-item-open:   rgba(255, 255, 255, .03); /* fundo do grupo aberto (expandido) */
+  --sidebar-item-open-c: rgba(255, 255, 255, .05); /* fundo do grupo aberto (recolhido) */
+  --sidebar-active-tile: var(--acento-claro);      /* tile do ativo (laranja) */
+  --sidebar-active-icon: var(--navy);              /* ícone sobre o tile laranja (8,2:1) */
+  --sidebar-active-bar:  var(--acento-claro);      /* barra inset 3px do ativo */
+  --sidebar-guide:       rgba(255, 255, 255, .10); /* guia à esquerda do submenu */
+  --sidebar-grp-line:    rgba(255, 255, 255, .07); /* linha do rótulo de grupo */
+  --sidebar-divider:     rgba(255, 255, 255, .08); /* divisórias do sidebar */
+  --sidebar-edge:        rgba(255, 255, 255, .08); /* aresta externa (costura com o
+                         conteúdo) — no escuro navy ≈ surface e a separação
+                         se comunica com LUZ, não com contraste de fundo */
+  --sidebar-flyout:      #12264a;                  /* fundo do flyout (recolhido) */
+  --sidebar-flyout-bd:   #1f3a6b;                  /* borda do flyout */
+  --sidebar-shadow:        rgba(8, 18, 40, .28);   /* sombra do sidebar flutuante */
+  --sidebar-flyout-shadow: rgba(0, 0, 0, .42);     /* sombra do flyout */
+
+  /* ---- Status ----
+     -fg calibrado ≥ 4.5:1 sobre o -bg par (DoD; medido: ok 5.53, warn 5.06) */
+  --ok-fg: #136f36; --ok-bg: #e7f4ec; --ok-bd: #bfe3cd; --ok-solid: #15803d;
+  --warn-fg:#a54c08; --warn-bg:#fbeede; --warn-bd:#f3d5a8; --warn-solid:#b45309;
+  --err-fg: #b42318; --err-bg: #fbeae8; --err-bd: #f1c3bd; --err-solid: #b42318;
+  /* info = azul próprio (≠ --pri, puxado para o ciano): severidade
+     token-backed de "informativo/em análise". */
+  --info-fg:#0b6b9e; --info-bg:#e8f6fd; --info-bd:#b3e0f5; --info-solid:#0b72aa;
+  /* Tinta sobre cor SÓLIDA saturada (--navy, --err-solid dos campos inválidos):
+     branca. Vale onde o fundo é escuro nos DOIS temas. */
+  --ink-on-solid: #ffffff;
+
+  /* ---- Botão sólido por severidade: tinta + passo de hover ----
+     A premissa antiga ("branco serve nos dois temas") não se sustenta: no dark
+     os sólidos CLAREIAM, e branco sobre o verde dava 3,42:1 e sobre o âmbar
+     3,71:1 — reprovados. Aqui cada severidade declara a própria tinta, e o
+     hover é TOKEN (não `color-mix` no CSS do componente): o número volta pro
+     tokens.css e o contraste fica auditável estado a estado.
+     Direção do hover: ele se afasta da TINTA. Tinta branca → escurece; tinta
+     escura → clareia (a mesma doutrina de "no escuro, elevação é luz"). */
+  --ink-on-ok:   #ffffff;
+  --ink-on-warn: #ffffff;
+  --ink-on-err:  #ffffff;
+  --ink-on-info: #ffffff;
+  --ok-solid-hover:   #146d3a;
+  --warn-solid-hover: #96480f;
+  --err-solid-hover:  #96211b;
+  --info-solid-hover: #095f8e;
+
+  /* ---- Cabeçalho de listagem — aliases SEMÂNTICOS. Traje "marca diluída":
+     tinta da marca a 18% sobre a superfície — um degrau ACIMA do hover das
+     linhas (--pri-bg) e visivelmente mais fundo que o fundo do sistema
+     (--bg #f2f4f6; a 12% os dois quase empatavam), escala monotônica
+     cabeçalho > hover > zebra. ---- */
+  --thead-bg:        color-mix(in srgb, var(--pri) 9%, var(--surface));
+  --thead-ink:       var(--pri);
+  --thead-ink-2:     var(--pri);
+  --thead-ink-muted: color-mix(in srgb, var(--pri) 55%, transparent);
+  /* divisória que FECHA a faixa: tinta da marca a 35%, 1px. Em --pri puro
+     (2px) era o traço mais forte da tela (12:1 contra a faixa); a 35% fica na
+     família das verticais do cabeçalho (22%), um degrau acima delas. */
+  --thead-divisor:   color-mix(in srgb, var(--pri) 35%, transparent);
+
+  /* ---- Traço ---- */
+  --hairline: 0.0625rem;  /* filete de 1px em rem (divisórias, bordas finas) */
+
+  /* ---- Raio ---- */
+  --r-field: 6px;
+  --r-btn:   8px;    /* retângulo padrão de controles/superfícies (alerta, paginação,
+                        diálogo, cards de listagem…) — botão de AÇÃO usa --r-pill
+                        desde a inversão ação×situação (2026-07-17) */
+  --r-card:  9px;
+  --r-dialog:12px;
+  --r-pill:  100rem; /* "infinito": fecha pílula em QUALQUER altura — 20px fixos
+                        deixavam flancos retos acima de 40px (mordeu no login, cozy
+                        --d-h 44px; o clamp do CSS só reduz raio EXCEDENTE) */
+
+  /* ---- Overlays (máscara + recorte de superfície flutuante) ----
+     No claro, a máscara navy dima o conteúdo atrás e a SOMBRA recorta o
+     modal. No escuro navy ≈ fundo (a máscara não dima nada) e sombra some
+     sobre preto — a máscara vira preto e o recorte passa a ser uma hairline
+     (elevação no escuro se comunica com luz/borda, não com sombra). */
+  --backdrop:     color-mix(in srgb, var(--navy) 45%, transparent);
+  --overlay-edge: transparent;
+  /* sombra padrão de superfície flutuante (painel de select/calendário,
+     toast, dialog) — semântica própria, NÃO reusar a --sidebar-shadow do layout */
+  --overlay-shadow: rgba(8, 18, 40, .28);
+
+  /* superfície da DICA (tooltip) — balão de TINTA: alto contraste e efêmero,
+     DISTINTO dos painéis flutuantes claros (select/calendário). No claro a
+     tinta é escura (texto claro). No escuro clareia um degrau (elevação = luz)
+     p/ não sumir no fundo. Contraste ≥ 4.5:1 nos dois temas (DoD). */
+  --dica-bg:   #12264a;
+  --dica-ink:  #f4f6f8;
+  --dica-edge: transparent;
+
+  /* ---- Camadas ----
+     Sidebar E topbar criam stacking context: os menus internos (--z-flyout)
+     valem o z da PRÓPRIA moldura contra o resto da tela; topbar < sidebar para
+     o drawer/backdrop mobile (--z-sidebar) cobrir a topbar. Conteúdo de página
+     não entra na escala: o form em página vive NO FLUXO (sticky local), não
+     como overlay.
+     Obs.: overlay do CDK (select/calendário/dialog) é `popover` — vive na TOP
+     LAYER do browser, ACIMA de toda esta escala e sem depender dela (z-index
+     de documento não ordena a top layer). Quem precisa passar por cima de um
+     modal entra na top layer também: é o que o host do toast faz (feedback é
+     a última palavra da tela e nunca nasce atrás do backdrop). Já o
+     Carregando bloqueante usa --z-dialog de propósito: é espera de
+     PÁGINA, não cobre modal aberto. O --z-toast segue como o degrau do toast
+     no documento — fallback de browser sem Popover API. */
+  --z-topbar: 25;
+  --z-sidebar:   30;
+  --z-flyout: 40;
+  --z-dialog: 70;
+  --z-toast:  1100;
+
+  /* Pouso do toast: abaixo da topbar do layout (3rem) + respiro — toast não
+     cobre sino/perfil/tema. A altura da topbar é var LOCAL da Estrutura
+     (:host); o host do toast vive na RAIZ do app e não a herda — por isso o
+     valor é token global. App com moldura própria (altura outra) sobrepõe. */
+  --toast-top: 4rem;
+
+  /* ---- Densidade (sobrescrita pelas classes .density-*) — default confortável ---- */
+  --d-h:   36px;   /* altura de controle  */
+  --d-px:  11px;   /* padding horizontal de campo */
+  --d-bpx: 16px;   /* padding horizontal de botão */
+  --d-fs:  14px;   /* corpo denso (input/célula/botão) */
+  --d-row: 8px;    /* padding de linha    */
+  --d-gap: 13px;   /* gap de grid de form */
+  --d-card:16px;   /* padding de cartão   */
+
+  /* ---- Tipografia ---- */
+  /* Inter (variável, do @fontsource) = fonte da interface. Mono NÃO baixa
+     fonte: o papel "código/identificador" (CPF, placa, n/total) fica com a mono
+     do SISTEMA — 1 fonte no bundle, e 0/O · 1/l seguem distinguíveis. */
+  --font-ui:   'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', monospace;
+
+  /* ---- Escala tipográfica (padronização 2026-07-06) ----
+     TEXTO SÓ NASCE DESTES TOKENS (ou de --d-fs, o corpo denso por
+     densidade). Ancorada no consenso enterprise-denso (Carbon/Fluent/
+     Ant/Fiori: corpo 14, secundário 12): PISO informativo = caption
+     (12px); micro (11px) SÓ para caps estruturais com tracking (rótulo
+     de grupo do sidebar, título de índice). Exceções documentadas fora da
+     escala: glifo de ícone (geometria), pt de impressão, display do
+     login, artwork de dado (placa Mercosul, iniciais de avatar). */
+  --fs-micro:        0.6875rem; /* 11px — caps estruturais, contadores  */
+  --fs-caption:      0.75rem;   /* 12px — label de campo, hint/erro, th,
+                                   metadados, paginação                 */
+  --fs-corpo-2:      0.8125rem; /* 13px — secundário denso (item de nav,
+                                   menus, subtítulo de card)            */
+  --fs-corpo:        0.875rem;  /* 14px — corpo de leitura do app       */
+  --fs-titulo-secao: 1rem;      /* 16px — seção de form, título de diálogo */
+  --fs-titulo:       1.25rem;   /* 20px — título de página (ÚNICO)      */
+  --fs-display:      1.5rem;    /* 24px — números/heros de dashboards   */
+  --fs-display-2:    2.125rem;  /* 34px — hero (saudação do login)      */
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   TEMA ESCURO — mesmos nomes, valores dessaturados.
+   Ative com <html data-theme="dark"> (ou .theme-dark).
+   SÓ NA TELA (@media screen): papel é sempre claro — sem isso,
+   imprimir no escuro sai tinta quase-branca sobre papel branco.
+   ============================================================ */
+@media screen {
+  [data-theme="dark"], .theme-dark {
+    --bg:        #070d1a;
+    --surface:   #0f1729;
+    --surf-2:    #141e33;
+    --surf-3:    #19243c;
+    /* flutuante sobe um degrau de luz; o apoio sobe outro (hover visível) */
+    --surf-raised:   #141e33;
+    --surf-raised-2: #19243c;
+    /* o chão do diálogo com seções é a própria elevação: a seção (--surface)
+       afunda um degrau nela. O --bg da página abriria um buraco no modal. */
+    --dlg-canvas:    var(--surf-raised);
+    --border:    #223152;
+    --border-2:  #2e3f63;
+
+    --ink:  #e8eef8;
+    --t2:   #b4c0d4;
+    --t3:   #8a98b0;
+    --t4:   #6e7c95;
+    --t5:   #56637b;
+    --tdis: #3f4a60;
+
+    /* No escuro o azul de ação CLAREIA para manter contraste com o fundo
+       marinho (5,59:1 sobre --surface); a tinta sobre ele fica escura (5,96:1)
+       e o hover segue clareando, coerente com "elevação = luz". */
+    --pri:     #4d8dff;
+    --pri-bg:  #13254a;
+    --pri-bd:  #24427a;
+    --pri-ink: #77a8ff;
+    --on-pri:  #06101f;  /* texto/ícone sobre o azul claro do tema escuro */
+
+    --navy:      #0a1428;
+    --destaque-ink: #ff9a2e;  /* 8,4:1 sobre --surface */
+    --destaque-fg:  #ffb057;  /* 8,1:1 sobre o fundo do alerta de destaque */
+    --brand-ink: #e8eef8;
+
+    /* thead "marinho diluído": no escuro a mix da marca empataria com a própria
+       superfície (navy escuro sobre fundo escuro) — elevação aqui é LUZ, um
+       degrau acima (mesma régua dos overlays). Tintas seguem dos aliases
+       (--pri já vira claro neste tema). */
+    --thead-bg: var(--surf-raised-2);
+
+    --ok-fg:#59d98c; --ok-bg:#14301f; --ok-bd:#235639; --ok-solid:#2f9e54;
+    --warn-fg:#f0b057; --warn-bg:#2e2208; --warn-bd:#564214; --warn-solid:#c2710c;
+    --err-fg:#f47369; --err-bg:#331513; --err-bd:#5a2620; --err-solid:#cf4034;
+    --info-fg:#6fd0ff; --info-bg:#0b2233; --info-bd:#1d4a66; --info-solid:#2aa8e6;
+
+    /* Verde e âmbar CLAREIAM no escuro: branco por cima reprovava (3,42:1 e
+       3,71:1) — a tinta vira escura e o hover CLAREIA (afasta-se da tinta).
+       O vermelho continua escuro o bastante p/ tinta branca (4,73:1), então
+       segue branco e escurecendo — é a exceção, e é por isso que a tinta é
+       declarada POR severidade em vez de uma regra só. */
+    --ink-on-ok:   #0d1117;
+    --ink-on-warn: #0d1117;
+    --ink-on-err:  #ffffff;
+    --ink-on-info: #0d1117;
+    --ok-solid-hover:   #54af73;
+    --warn-solid-hover: #cd8b38;
+    --err-solid-hover:  #ac3a33;
+    --info-solid-hover: #5cbdee;
+
+    /* overlays: navy 45% não dima nada aqui (navy ≈ fundo) e sombra não
+       existe sobre preto — máscara vira preto e o recorte vira hairline */
+    --backdrop:     rgb(0 0 0 / 0.6);
+    --overlay-edge: var(--border-2);
+
+    /* dica: no escuro a tinta CLAREIA (elevação = luz) p/ destacar do fundo,
+       com aresta sutil como os demais flutuantes */
+    --dica-bg:   #24314d;
+    --dica-ink:  #eef2f8;
+    --dica-edge: var(--border-2);
+
+    color-scheme: dark;
+  }
+}
+
+/* ============================================================
+   DENSIDADE — aplique a classe no layout (ex.: <body class="density-compact">)
+   ============================================================ */
+.density-compact      { --d-h:30px; --d-px:9px;  --d-bpx:14px; --d-fs:13px; --d-row:5px;  --d-gap:10px; --d-card:12px; }
+.density-comfortable  { --d-h:36px; --d-px:11px; --d-bpx:16px; --d-fs:14px; --d-row:8px;  --d-gap:13px; --d-card:16px; }
+.density-cozy         { --d-h:44px; --d-px:13px; --d-bpx:18px; --d-fs:15px; --d-row:11px; --d-gap:16px; --d-card:20px; }
+
+/* Base recomendada */
+body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); }

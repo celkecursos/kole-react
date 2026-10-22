@@ -1,0 +1,235 @@
+.lp-prog,
+.lp-prog--pri {
+  --pg-fundo: var(--pri);
+  --pg-tinta: var(--on-pri);
+  --pg-halo: var(--pri-bg);
+  --pg-cor: var(--pri);
+}
+.lp-prog {
+  --pg-h: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  font-family: var(--font-ui);
+}
+.lp-prog--xs { --pg-h: 0.25rem; }
+.lp-prog--sm { --pg-h: 0.375rem; }
+.lp-prog--lg { --pg-h: 0.75rem; }
+.lp-prog--xl { --pg-h: 1rem; }
+
+/* ---- trilha e barra ---- */
+.lp-prog-trilha {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: var(--pg-h);
+  border-radius: var(--r-pill);
+  background: var(--surf-3);
+}
+.lp-prog--trilha-colorida .lp-prog-trilha {
+  background: var(--pg-halo);
+}
+.lp-prog-barra {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background-color: var(--pg-fundo);
+  color: var(--pg-tinta);
+  transition: width 0.4s ease;
+}
+/* várias barras: só as pontas da trilha arredondam */
+.lp-prog-barra + .lp-prog-barra {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.lp-prog-barra:has(+ .lp-prog-barra) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.lp-prog-texto {
+  font-size: min(0.6875rem, calc(var(--pg-h) * 0.75));
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.lp-prog-barra--listrado {
+  background-image: linear-gradient(
+    45deg,
+    rgb(255 255 255 / 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgb(255 255 255 / 0.2) 50%,
+    rgb(255 255 255 / 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+.lp-prog-barra--animado {
+  animation: lp-prog-listras 1s linear infinite;
+}
+@keyframes lp-prog-listras {
+  from {
+    background-position: 1rem 0;
+  }
+}
+.lp-prog-barra--gradiente {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--pg-fundo) 45%, var(--surface)), var(--pg-fundo));
+}
+.lp-prog-barra--entrada {
+  animation: lp-prog-entra 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-prog-barra--entrada.lp-prog-barra--animado {
+  animation: lp-prog-entra 1.1s cubic-bezier(0.22, 1, 0.36, 1), lp-prog-listras 1s linear infinite;
+}
+@keyframes lp-prog-entra {
+  from {
+    width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-prog-barra {
+    transition: none;
+    animation: none !important;
+  }
+}
+
+/* ---- valor no fim e etiqueta ---- */
+.lp-prog-valor {
+  flex: none;
+  min-width: 2.25rem;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--pg-cor);
+  text-align: end;
+}
+.lp-prog-etiqueta {
+  flex: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-field);
+  background: var(--pg-fundo);
+  color: var(--pg-tinta);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ---- marcador, marcos, balão e pílula na ponta ---- */
+.lp-prog-marcador,
+.lp-prog-marco,
+.lp-prog-balao,
+.lp-prog-pilula {
+  position: absolute;
+  top: 50%;
+  translate: -50% -50%;
+}
+.lp-prog-marcador,
+.lp-prog-balao,
+.lp-prog-pilula {
+  left: var(--prog-pct);
+  transition: left 0.4s ease;
+}
+.lp-prog-marcador {
+  width: calc(var(--pg-h) + 0.5rem);
+  height: calc(var(--pg-h) + 0.5rem);
+  border: 0.1875rem solid var(--pg-fundo);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  box-shadow: 0 0 0 0.1875rem var(--pg-halo);
+}
+.lp-prog-marco {
+  width: calc(var(--pg-h) + 0.25rem);
+  height: calc(var(--pg-h) + 0.25rem);
+  border-radius: var(--r-pill);
+  background: var(--border-2);
+  box-shadow: 0 0 0 0.125rem var(--surface);
+}
+.lp-prog-marco.is-atingido {
+  background: var(--pg-fundo);
+}
+.lp-prog--com-balao {
+  padding-top: 1.875rem;
+}
+.lp-prog-balao {
+  top: auto;
+  bottom: calc(100% + 0.5rem);
+  translate: -50% 0;
+  padding: 0.1875rem 0.4375rem;
+  border-radius: var(--r-field);
+  background: var(--pg-fundo);
+  color: var(--pg-tinta);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.lp-prog-balao::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border: 0.25rem solid transparent;
+  border-top-color: var(--pg-fundo);
+}
+.lp-prog-pilula {
+  padding: 0.125rem 0.5rem;
+  border: var(--hairline) solid var(--pg-cor);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--pg-cor);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---- cores ---- */
+.lp-prog--secundario {
+  --pg-fundo: var(--t3);
+  --pg-tinta: var(--surface);
+  --pg-halo: var(--surf-3);
+  --pg-cor: var(--t2);
+}
+.lp-prog--ok {
+  --pg-fundo: var(--ok-solid);
+  --pg-tinta: var(--ink-on-ok);
+  --pg-halo: var(--ok-bg);
+  --pg-cor: var(--ok-fg);
+}
+.lp-prog--warn {
+  --pg-fundo: var(--warn-solid);
+  --pg-tinta: var(--ink-on-warn);
+  --pg-halo: var(--warn-bg);
+  --pg-cor: var(--warn-fg);
+}
+.lp-prog--err {
+  --pg-fundo: var(--err-solid);
+  --pg-tinta: var(--ink-on-err);
+  --pg-halo: var(--err-bg);
+  --pg-cor: var(--err-fg);
+}
+.lp-prog--info {
+  --pg-fundo: var(--info-solid);
+  --pg-tinta: var(--ink-on-info);
+  --pg-halo: var(--info-bg);
+  --pg-cor: var(--info-fg);
+}
+/* laranja da marca: texto marinho no sólido (branco daria 2,3:1) */
+.lp-prog--destaque {
+  --pg-fundo: var(--acento);
+  --pg-tinta: var(--navy);
+  --pg-halo: color-mix(in srgb, var(--acento) 12%, var(--surface));
+  --pg-cor: var(--destaque-fg);
+}
+.lp-prog--escuro {
+  --pg-fundo: var(--ink);
+  --pg-tinta: var(--surface);
+  --pg-halo: var(--surf-3);
+  --pg-cor: var(--ink);
+}
