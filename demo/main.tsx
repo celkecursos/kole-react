@@ -37,6 +37,7 @@ import { PaginaCardsArrastaveis } from './paginas/avancado/CardsArrastaveis';
 import { PaginaModais } from './paginas/avancado/Modais';
 import { PaginaAvaliacoes } from './paginas/avancado/Avaliacoes';
 import { PaginaWidgets } from './paginas/avancado/Widgets';
+import { PaginaConversas } from './paginas/avancado/Conversas';
 import { PaginaErro } from './paginas/Erro';
 
 const NAV: SecaoNav[] = [
@@ -106,6 +107,7 @@ const NAV: SecaoNav[] = [
       { rotulo: 'Modais e fechar', icone: 'app-window', rota: '/avancado/modais' },
       { rotulo: 'Avaliações', icone: 'star', rota: '/avancado/avaliacoes' },
       { rotulo: 'Widgets', icone: 'layout-grid', rota: '/avancado/widgets' },
+      { rotulo: 'Conversas', icone: 'message-square', rota: '/avancado/conversas' },
     ],
   },
   {
@@ -192,6 +194,7 @@ function App() {
   else if (rota === '/avancado/modais') pagina = <PaginaModais />;
   else if (rota === '/avancado/avaliacoes') pagina = <PaginaAvaliacoes />;
   else if (rota === '/avancado/widgets') pagina = <PaginaWidgets />;
+  else if (rota === '/avancado/conversas') pagina = <PaginaConversas />;
   else if (rota === '/ui/trilha') pagina = <PaginaTrilhas modeloAtual={modeloTrilha} aoMudarModelo={mudarModeloTrilha} navegar={navegar} />;
   else if (rota === '/perfil' || rota.startsWith('/perfil/'))
     pagina = <PaginaPerfil rota={rota} navegar={navegar} perfil={perfil} aoSalvar={setPerfil} />;

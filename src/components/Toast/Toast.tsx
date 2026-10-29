@@ -261,3 +261,8 @@ export function useToast(): ApiToast {
   if (!ctx) throw new Error('useToast precisa de <ProvedorToast> (ou <ProvedorUi>) acima na árvore.');
   return ctx;
 }
+
+/** Igual a `useToast`, mas devolve `null` fora do provedor. */
+export function useToastOpcional(): ApiToast | null {
+  return useContext(Ctx);
+}

@@ -1081,3 +1081,12 @@
 .demo-cards-avatares { display: flex; margin-top: 0.75rem; }
 .demo-cards-avatares > * + * { margin-left: -0.375rem; }
 .demo-cards-avatares .lp-avatar { box-shadow: 0 0 0 0.125rem var(--surface); }
+
+/* ---- conversas ---- */
+.demo-chat-pagina {
+  height: calc(100dvh - 16rem);
+  min-height: 26rem;
+}
+.demo-chat-card {
+  height: 26rem;
+}

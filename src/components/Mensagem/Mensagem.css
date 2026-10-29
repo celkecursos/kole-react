@@ -1,0 +1,230 @@
+.lp-mensagem {
+  --msg-bg: var(--surf-2);
+  --msg-ink: var(--ink);
+  --msg-borda: var(--border);
+  --msg-raio: var(--r-dialog);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+  font-family: var(--font-ui);
+}
+.lp-mensagem-avatar {
+  flex: none;
+  /* alinha o avatar com a bolha, não com o nome acima dela */
+  padding-top: 0.125rem;
+}
+.lp-mensagem-coluna {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+  max-width: 75%;
+}
+.lp-mensagem-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding-inline: 0.25rem;
+  font-size: var(--fs-caption);
+  color: var(--t4);
+}
+.lp-mensagem-nome {
+  font-weight: 700;
+  color: var(--t2);
+}
+.lp-mensagem-meta time {
+  font-variant-numeric: tabular-nums;
+}
+.lp-mensagem-bolha {
+  max-width: 100%;
+  min-width: 0;
+  padding: var(--d-row) var(--d-px);
+  font-size: var(--d-fs);
+  line-height: 1.5;
+  color: var(--msg-ink);
+  background: var(--msg-bg);
+  border: var(--hairline) solid var(--msg-borda);
+  border-radius: var(--msg-raio);
+  border-start-start-radius: var(--r-field);
+}
+.lp-mensagem-conteudo {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.lp-mensagem-conteudo--texto {
+  white-space: pre-wrap;
+}
+/* conteúdo rico (Markdown do app): nada estoura a largura da bolha */
+.lp-mensagem-conteudo :is(img, video, svg) {
+  max-width: 100%;
+  height: auto;
+}
+.lp-mensagem-conteudo pre {
+  max-width: 100%;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-corpo-2);
+}
+.lp-mensagem-conteudo code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+.lp-mensagem-conteudo > :first-child {
+  margin-top: 0;
+}
+.lp-mensagem-conteudo > :last-child {
+  margin-bottom: 0;
+}
+.lp-mensagem-conteudo a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.lp-mensagem-rodape {
+  margin-top: var(--d-row);
+}
+
+/* ---- usuário: à direita, na cor de ação ---- */
+.lp-mensagem--usuario {
+  --msg-bg: var(--pri);
+  --msg-ink: var(--on-pri);
+  --msg-borda: var(--pri);
+  flex-direction: row-reverse;
+}
+.lp-mensagem--usuario .lp-mensagem-coluna {
+  align-items: flex-end;
+}
+.lp-mensagem--usuario .lp-mensagem-bolha {
+  border-start-start-radius: var(--msg-raio);
+  border-start-end-radius: var(--r-field);
+}
+.lp-mensagem--usuario .lp-mensagem-conteudo :is(code, pre) {
+  background: color-mix(in srgb, var(--on-pri) 14%, transparent);
+}
+
+/* ---- sistema: aviso centralizado e discreto ---- */
+.lp-mensagem--sistema {
+  justify-content: center;
+  text-align: center;
+}
+.lp-mensagem--sistema .lp-mensagem-conteudo {
+  max-width: 90%;
+  padding: 0.125rem 0.75rem;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--t3);
+  background: var(--surf-3);
+  border-radius: var(--r-pill);
+}
+
+/* ---- estados ---- */
+.lp-mensagem.is-enviando .lp-mensagem-bolha {
+  opacity: 0.7;
+}
+.lp-mensagem-situacao {
+  padding-inline: 0.25rem;
+  font-size: var(--fs-caption);
+  color: var(--t4);
+}
+.lp-mensagem.is-erro .lp-mensagem-bolha {
+  border-color: var(--err-solid);
+  box-shadow: 0 0 0 0.0625rem var(--err-solid);
+}
+.lp-mensagem-erro {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  max-width: 100%;
+  padding: 0.25rem 0.375rem 0.25rem 0.625rem;
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  color: var(--err-fg);
+  background: var(--err-bg);
+  border: var(--hairline) solid var(--err-bd);
+  border-radius: var(--r-btn);
+}
+.lp-mensagem-erro-ic {
+  font-size: 1rem;
+}
+.lp-mensagem-erro-txt {
+  flex: 1 1 8rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.lp-mensagem-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+}
+
+/* ---- gerando: três pontos (sem conteúdo) ou cursor no fim do texto ---- */
+.lp-mensagem-digitando {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: calc(var(--d-fs) * 1.5);
+}
+.lp-mensagem-digitando > span[aria-hidden] {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: var(--t4);
+  animation: lp-mensagem-ponto 1.2s ease-in-out infinite;
+}
+.lp-mensagem-digitando > span[aria-hidden]:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.lp-mensagem-digitando > span[aria-hidden]:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.lp-mensagem-cursor {
+  display: inline-block;
+  width: 0.45em;
+  height: 1em;
+  margin-inline-start: 0.125em;
+  vertical-align: -0.12em;
+  border-radius: 0.0625rem;
+  background: currentColor;
+  opacity: 0.55;
+  animation: lp-mensagem-cursor 1s step-end infinite;
+}
+@keyframes lp-mensagem-ponto {
+  0%,
+  60%,
+  to {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-0.1875rem);
+  }
+}
+@keyframes lp-mensagem-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-mensagem-digitando > span[aria-hidden],
+  .lp-mensagem-cursor {
+    animation: none;
+  }
+  .lp-mensagem-digitando > span[aria-hidden] {
+    opacity: 0.6;
+  }
+}
+
+/* conversa estreita (celular, painel lateral): a bolha usa quase toda a largura */
+@container lp-conversa (max-width: 36rem) {
+  .lp-mensagem-coluna {
+    max-width: 92%;
+  }
+  .lp-mensagem:has(> .lp-mensagem-avatar) .lp-mensagem-coluna {
+    max-width: calc(100% - 2.5rem);
+  }
+}

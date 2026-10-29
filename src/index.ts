@@ -220,6 +220,12 @@ export { Carregando, type CarregandoProps } from './components/Carregando/Carreg
 export { Girador, type GiradorProps, type CorGirador } from './components/Girador/Girador';
 export { Progresso, type ProgressoProps, type CorProgresso, type SegmentoProgresso } from './components/Progresso/Progresso';
 
+// Conversa
+export { Conversa, type ConversaProps } from './components/Conversa/Conversa';
+export { Mensagem, type MensagemProps, type AutorMensagem, type EstadoMensagem } from './components/Mensagem/Mensagem';
+export { CampoMensagem, type CampoMensagemProps } from './components/CampoMensagem/CampoMensagem';
+export { Referencias, type ReferenciasProps, type ItemReferencia } from './components/Referencias/Referencias';
+
 // Arquivos
 export { VisualizadorArquivo, type VisualizadorArquivoProps } from './components/Arquivo/VisualizadorArquivo';
 export { DialogoArquivo, type DialogoArquivoProps } from './components/Arquivo/DialogoArquivo';

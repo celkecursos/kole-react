@@ -106,6 +106,79 @@ Para links de verdade do roteador (ctrl+clique abre em nova aba), passe
 | Arquivos | `CampoAnexo`, `VisualizadorArquivo`, `DialogoArquivo`, `Foto` |
 | Dados | `Tabela`, `ListaCards`, `Paginacao`, `Indicador`/`Indicadores`, `Detalhes`, `Status`, `Chip`, `Avatar`, `Placa` |
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
+| Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
+
+### Conversa (chat)
+
+`Conversa` é a área rolável (acompanha o fim durante o streaming e para de
+puxar se a pessoa rolar para cima); `Mensagem` é a bolha; `CampoMensagem` é o
+campo de envio (Enter envia, Shift+Enter quebra a linha); `Referencias` lista
+as fontes de uma resposta. A conversa ocupa a altura do contêiner pai, e a
+busca da resposta (rede, streaming, Markdown) fica com o app.
+
+```tsx
+import { useState } from 'react';
+import {
+  CampoMensagem,
+  Conversa,
+  Mensagem,
+  Referencias,
+  type AutorMensagem,
+  type EstadoMensagem,
+  type ItemReferencia,
+} from '@celke/kole-react';
+
+interface ItemChat {
+  id: string;
+  autor: AutorMensagem;
+  estado: EstadoMensagem;
+  texto: string;
+  hora: Date;
+  fontes?: ItemReferencia[]; // { id, titulo, detalhe?, trecho?, href? }
+}
+
+interface ChatProps {
+  mensagens: ItemChat[];
+  gerando: boolean;
+  enviar: (texto: string) => void;
+  parar: () => void;
+}
+
+export function Chat({ mensagens, gerando, enviar, parar }: ChatProps) {
+  const [texto, setTexto] = useState('');
+  return (
+    <div style={{ height: '32rem' }}>
+      <Conversa
+        campo={
+          <CampoMensagem
+            valor={texto}
+            aoMudar={setTexto}
+            aoEnviar={(t) => {
+              enviar(t);
+              setTexto('');
+            }}
+            gerando={gerando}
+            aoParar={parar}
+          />
+        }
+      >
+        {mensagens.map((m) => (
+          <Mensagem
+            key={m.id}
+            autor={m.autor} // 'usuario' | 'assistente' | 'sistema'
+            estado={m.estado} // 'enviando' | 'gerando' | 'concluida' | 'erro'
+            hora={m.hora}
+            copiavel={m.autor === 'assistente'}
+            rodape={m.fontes && <Referencias itens={m.fontes} />}
+          >
+            {m.texto}
+          </Mensagem>
+        ))}
+      </Conversa>
+    </div>
+  );
+}
+```
 
 Utilitários (lógica pura, também exportados): validadores BR (`isCpf`, `isCnpj`,
 `isCnh`, `isImei`, `validar(tipo, valor)`…), `TIPOS_CAMPO` (máscara +
