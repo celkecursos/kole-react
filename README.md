@@ -4,51 +4,27 @@ Biblioteca de componentes **React** para sistemas administrativos. Design tokens
 próprios (cores, raios, densidade, tema claro/escuro), CSS puro e sem dependência
 de Tailwind.
 
-## Rodar a demo
+## Instalação
 
 ```bash
-npm install
-npm run dev          # http://localhost:5173 — app de exemplo com todos os componentes
-```
-
-## Gerar a biblioteca
-
-```bash
-npm run build        # dist/index.js + tipos (.d.ts) + dist/estilos.css + dist/tokens.css
-npm run typecheck
-```
-
-## Usar num app React
-
-```bash
-# do npm (depois de publicado)
 npm i @celke/kole-react
-# direto do GitHub (o `prepare` gera o dist/ na instalação)
-npm i github:celkecursos/kole-react
-# de um pacote local: gere o .tgz na pasta da biblioteca e instale no app
-npm pack                                   # → celke-kole-react-0.1.0.tgz
-npm i ../kole-react/celke-kole-react-0.1.0.tgz
 ```
-
-Evite `npm i ../kole-react` (pasta): o npm cria um link e o bundler
-pega o React do `node_modules` da biblioteca — dois Reacts no app quebram os hooks
-(_Invalid hook call_). Se precisar do link durante o desenvolvimento, use
-`resolve: { dedupe: ['react', 'react-dom'] }` no `vite.config` do app.
 
 Requisitos: React 18.2+ ou 19. A fonte Inter já vem dentro do pacote (o
 `estilos.css` carrega só os alfabetos que a página usa). O pacote é só ESM, traz
 os tipos TypeScript e já vem marcado com `'use client'`, então funciona no App
 Router do Next.js.
 
-Publicar uma versão nova: `npm version patch` e `npm publish` (o `prepare` roda o
-build; confira o conteúdo antes com `npm pack --dry-run`).
+## Uso
 
 ```tsx
 // main.tsx
+import { createRoot } from 'react-dom/client';
 import '@celke/kole-react/estilos.css';
-import { ProvedorUi, Estrutura } from '@celke/kole-react';
+import { ProvedorUi } from '@celke/kole-react';
+import { App } from './App';
 
-createRoot(root).render(
+createRoot(document.getElementById('root')!).render(
   <ProvedorUi>
     <App />
   </ProvedorUi>,
@@ -61,9 +37,10 @@ confirmação (`useConfirmacao`).
 ### Layout com React Router
 
 ```tsx
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Estrutura } from '@celke/kole-react';
 
-function Layout() {
+export function Layout({ sair }: { sair: () => void }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
@@ -83,7 +60,7 @@ function Layout() {
       aoNavegar={navigate}
       usuario={{ nome: 'Gabrielly Ribeiro', cargo: 'Gerente comercial' }}
       menuUsuario={[{ id: 'sair', rotulo: 'Sair', icone: 'log-out', destrutivo: true }]}
-      aoEscolherMenuUsuario={(id) => id === 'sair' && logout()}
+      aoEscolherMenuUsuario={(id) => id === 'sair' && sair()}
     >
       <Outlet />
     </Estrutura>
@@ -188,7 +165,8 @@ placeholder + regra por tipo), `ESTADOS`/`TIPOS_PESSOA`, por extenso
 pt-BR (`parseDataBr`, `formatDataBr`…), `tituloDeEntidade`/`nomeDeArquivo`,
 anexos (`formatBytes`, `tipoDeArquivo`, `iconeArquivo`), senha
 (`validarSenha`, `forcaSenha`), picklist, JWT (`decodificarJwt`, `jwtExpirado`…)
-e `severidadeCor`. A demo tem uma página interativa de cada um (`#/utilitarios`).
+e `severidadeCor`. A demo do repositório tem uma página interativa de cada um
+(`#/utilitarios`).
 
 Convenções:
 
@@ -214,11 +192,26 @@ Convenções:
 
 ## Tema e tokens
 
-Toda cor/medida vem de `src/styles/tokens.css` (CSS vars). Para mudar a marca,
-edite os tokens — por exemplo `--navy` (marinho da sidebar), `--pri` (azul de ação) e
-`--acento-claro` (laranja do item ativo). O tema escuro usa
-`<html data-theme="dark">`; a densidade, as classes `density-compact`,
-`density-comfortable` e `density-cozy` no `<body>` (o `ProvedorUi` cuida das duas).
+Toda cor/medida vem de variáveis CSS (os tokens). Para mudar a marca, redefina
+os tokens no CSS do app, carregado **depois** do `estilos.css` — por exemplo
+`--navy` (marinho da sidebar), `--pri` (azul de ação) e `--acento-claro` (laranja
+do item ativo). O tema escuro tem valores próprios, então redefina lá também:
+
+```css
+:root {
+  --pri: #0f766e;
+  --pri-ink: #115e59;
+}
+[data-theme='dark'] {
+  --pri: #2dd4bf;
+  --pri-ink: #5eead4;
+}
+```
+
+O tema escuro usa `<html data-theme="dark">`; a densidade, as classes
+`density-compact`, `density-comfortable` e `density-cozy` no `<body>` (o
+`ProvedorUi` cuida das duas). A lista completa de tokens, com os valores dos
+dois temas, está em `@celke/kole-react/tokens.css`.
 
 Para usar só os tokens fora do React: `@import '@celke/kole-react/tokens.css';`.
 
@@ -226,10 +219,37 @@ Para usar só os tokens fora do React: `@import '@celke/kole-react/tokens.css';`
 
 Classes CSS usam o prefixo `lp-`.
 
+## Desenvolvimento
+
+```bash
+npm install
+npm run dev          # http://localhost:5173 — demo com todos os componentes
+npm run typecheck
+npm run build        # dist/index.js + tipos (.d.ts) + dist/estilos.css + dist/tokens.css
+```
+
+Para testar uma versão que ainda não está no npm, instale direto do GitHub
+(o `prepare` gera o `dist/` na instalação) ou de um pacote local:
+
+```bash
+npm i github:celkecursos/kole-react
+# ou: gere o .tgz na pasta da biblioteca e instale no app
+npm pack                                   # → celke-kole-react-<versão>.tgz
+npm i ../kole-react/celke-kole-react-<versão>.tgz
+```
+
+Evite `npm i ../kole-react` (pasta): o npm cria um link e o bundler
+pega o React do `node_modules` da biblioteca — dois Reacts no app quebram os hooks
+(_Invalid hook call_). Se precisar do link durante o desenvolvimento, use
+`resolve: { dedupe: ['react', 'react-dom'] }` no `vite.config` do app.
+
+Publicar uma versão nova: `npm version patch` e `npm publish` (o `prepare` roda o
+build; confira o conteúdo antes com `npm pack --dry-run`).
+
 ## Autor
 
 Criado por **Cesar Szpak**.
 
 ## Licença
 
-MIT © 2026 Celke — veja o arquivo [LICENSE](LICENSE).
+MIT © 2026 Celke — veja o arquivo [LICENSE](https://github.com/celkecursos/kole-react/blob/main/LICENSE).
