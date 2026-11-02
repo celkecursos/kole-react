@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 (ainda não publicada)
+## 0.3.0
 
 Novidades:
 
