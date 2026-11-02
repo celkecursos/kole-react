@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 (ainda não publicada)
+
+Novidades:
+
+- `ItemNav.recarregar` e `Marca.recarregar`: a página marcada abre com recarga
+  completa. O link vira um `<a>` comum, sem passar por `renderLink` nem
+  `aoNavegar`, no menu, na busca do menu (`ItemBusca.recarregar`) e na trilha.
+  Serve para app com páginas fora do React, como um Laravel com Inertia e
+  Blade (veja "Páginas fora do React no mesmo app" no README). Sem o campo,
+  nada muda.
+
 ## 0.2.0
 
 Mudanças que podem alterar a aparência de quem já usa a biblioteca:

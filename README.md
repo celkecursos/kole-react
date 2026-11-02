@@ -101,6 +101,37 @@ export function Layout({ sair }: { sair: () => void }) {
 Para links de verdade do roteador (ctrl+clique abre em nova aba), passe
 `renderLink={(p) => <Link to={p.href} className={p.className} onClick={p.onClick} aria-current={p['aria-current']}>{p.children}</Link>}`.
 
+### Páginas fora do React no mesmo app (Inertia + Blade)
+
+Num app Laravel com páginas Inertia e páginas Blade, o `<Link>` do Inertia só
+serve para as páginas Inertia. Marque as outras com `recarregar: true`: o link
+vira um `<a>` comum (sem `renderLink` nem `aoNavegar`) e abre com recarga
+completa. Vale para o menu, a busca do menu e a trilha. Se a marca aponta para
+uma página Blade, use `marca={{ …, recarregar: true }}`.
+
+```tsx
+import { Link, router, usePage } from '@inertiajs/react';
+
+<Estrutura
+  nav={[
+    {
+      itens: [
+        { rotulo: 'Painel', icone: 'house', rota: '/painel' },                    // Inertia
+        { rotulo: 'Relatórios', icone: 'file-text', rota: '/relatorios', recarregar: true }, // Blade
+      ],
+    },
+  ]}
+  rotaAtual={usePage().url}
+  aoNavegar={(rota) => router.visit(rota)}
+  renderLink={(p) => <Link href={p.href} className={p.className} onClick={p.onClick} aria-current={p['aria-current']}>{p.children}</Link>}
+  …
+/>
+```
+
+Do Blade para o Inertia não precisa de nada: um link comum abre a página
+Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
+[`celke/kole-laravel`](https://github.com/celkecursos/kole-laravel).
+
 ## Componentes
 
 | Grupo | Componentes |
