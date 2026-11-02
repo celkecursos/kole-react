@@ -25,6 +25,7 @@ export {
   ProvedorPreferencias,
   usePreferencias,
   usePreferenciasOpcional,
+  scriptTemaInicial,
   type Preferencias,
   type ProvedorPreferenciasProps,
   type Tema,

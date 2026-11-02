@@ -70,6 +70,11 @@ body {
 [data-theme='dark'] .lp-input::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
+@media (prefers-color-scheme: dark) {
+  [data-theme='system'] .lp-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
 
 /* BARE: dentro de moldura alheia (pill inline, .lp-ctl-frame) */
 .lp-input--bare,

@@ -262,7 +262,7 @@
   text-align: center;
 }
 .lp-login-otp-campo .lp-input {
-  font-family: var(--font-mono);
+  font-family: var(--lp-font-mono);
   font-size: 1.5rem;
   letter-spacing: 0.5em;
   text-align: center;

@@ -580,7 +580,7 @@
 }
 
 .lp-versao {
-  font-family: var(--font-mono);
+  font-family: var(--lp-font-mono);
   font-size: var(--fs-caption);
   color: var(--sidebar-ink-muted);
   white-space: nowrap;
