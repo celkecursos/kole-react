@@ -27,6 +27,11 @@ export interface ItemNav {
   rota?: string;
   filhos?: ItemNav[];
   desabilitado?: boolean;
+  /**
+   * Página fora da navegação SPA (ex.: tela Blade num app Inertia): o link vira
+   * um `<a>` comum, sem `renderLink` nem `aoNavegar`, e abre com recarga completa.
+   */
+  recarregar?: boolean;
 }
 
 export interface SecaoNav {
@@ -41,6 +46,8 @@ export interface Marca {
   /** URL da imagem do logo (sem ela, mostra um escudo). */
   logo?: string;
   href?: string;
+  /** O `href` da marca abre com recarga completa (ver `ItemNav.recarregar`). */
+  recarregar?: boolean;
 }
 
 export interface UsuarioEstrutura {
@@ -160,7 +167,14 @@ function achatar(nav: SecaoNav[]): ItemBusca[] {
     for (const i of itens) {
       if (i.desabilitado) continue;
       if (i.filhos?.length) visitar(i.filhos, [...trilha, i.rotulo], i.icone ?? icone);
-      else if (i.rota) lista.push({ rotulo: i.rotulo, rota: i.rota, icone: i.icone ?? icone, trilha: trilha.join(' › ') || undefined });
+      else if (i.rota)
+        lista.push({
+          rotulo: i.rotulo,
+          rota: i.rota,
+          icone: i.icone ?? icone,
+          trilha: trilha.join(' › ') || undefined,
+          recarregar: i.recarregar || undefined,
+        });
     }
   };
   nav.forEach((s) => visitar(s.itens, s.rotulo ? [s.rotulo] : []));
@@ -291,6 +305,20 @@ export function Estrutura({
     return melhor;
   }, [nav, rotaAtual]);
   const ativo = useCallback((rota?: string) => !!rota && rota === rotaAtiva, [rotaAtiva]);
+  // rotas com recarga completa: a trilha e a marca montam links só com a rota,
+  // então a marcação do item vale para qualquer link que aponte para ela
+  const rotasRecarregar = useMemo(() => {
+    const rotas = new Set<string>();
+    if (marca.recarregar) rotas.add(marca.href ?? '/');
+    const visitar = (itens: ItemNav[]) => {
+      for (const i of itens) {
+        if (i.recarregar && i.rota) rotas.add(i.rota);
+        if (i.filhos) visitar(i.filhos);
+      }
+    };
+    nav.forEach((secao) => visitar(secao.itens));
+    return rotas;
+  }, [nav, marca.recarregar, marca.href]);
   const grupoAtivo = (item: ItemNav): boolean => !!item.filhos?.some((f) => ativo(f.rota) || grupoAtivo(f));
 
   // sanfona: com a sidebar expandida os grupos abrem para baixo
@@ -331,6 +359,7 @@ export function Estrutura({
 
   const link = (item: ItemNav, className: string, conteudo: ReactNode) => {
     const on = ativo(item.rota);
+    const recarregar = !!item.recarregar || (!!item.rota && rotasRecarregar.has(item.rota));
     const props: PropsLink = {
       href: item.rota ?? '#',
       className: cx(className, on && 'lp-active', item.desabilitado && 'lp-is-disabled'),
@@ -342,14 +371,14 @@ export function Estrutura({
           e.preventDefault();
           return;
         }
-        if (aoNavegar && item.rota) {
+        if (aoNavegar && item.rota && !recarregar) {
           e.preventDefault();
           aoNavegar(item.rota);
         }
         aoNavegou();
       },
     };
-    return renderLink ? renderLink(props, item) : <a {...props} />;
+    return renderLink && !recarregar ? renderLink(props, item) : <a {...props} />;
   };
 
   // trilha da página atual: Início › seção › grupo(s) › item do menu
@@ -364,7 +393,7 @@ export function Estrutura({
     };
     // `link` lê aoNavegar/renderLink do render atual
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nav, ativo, marca.href, aoNavegar, renderLink, modeloTrilha]);
+  }, [nav, ativo, marca.href, aoNavegar, renderLink, modeloTrilha, rotasRecarregar]);
 
   /** Filhos de um grupo aberto para baixo (qualquer profundidade). */
   const renderFilhos = (itens: ItemNav[], chavePai: string): ReactNode =>
@@ -498,7 +527,7 @@ export function Estrutura({
               href={marca.href ?? '/'}
               aria-label={marca.nome}
               onClick={(e) => {
-                if (aoNavegar) {
+                if (aoNavegar && !marca.recarregar) {
                   e.preventDefault();
                   aoNavegar(marca.href ?? '/');
                 }

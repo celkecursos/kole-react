@@ -11,6 +11,8 @@ export interface ItemBusca {
   icone?: IconeProp;
   /** Caminho no menu (ex.: "Cadastros › Pessoas"). */
   trilha?: string;
+  /** Página fora da navegação SPA (ex.: tela Blade num app Inertia): abre com recarga completa, sem `aoNavegar`. */
+  recarregar?: boolean;
 }
 
 export interface BuscaProps {
@@ -84,8 +86,8 @@ export function Busca({
     aoMudarTermo?.(v);
   };
 
-  const navegar = (rota: string, e?: MouseEvent) => {
-    if (aoNavegar) {
+  const navegar = (rota: string, e?: MouseEvent, recarregar?: boolean) => {
+    if (aoNavegar && !recarregar) {
       e?.preventDefault();
       aoNavegar(rota);
     }
@@ -156,7 +158,7 @@ export function Busca({
                   <>
                     <div className="lp-pb-ttl">Menu</div>
                     {menu.map((r) => (
-                      <a key={r.rota} className="lp-pb-item" href={r.rota} onClick={(e) => navegar(r.rota, e)}>
+                      <a key={r.rota} className="lp-pb-item" href={r.rota} onClick={(e) => navegar(r.rota, e, r.recarregar)}>
                         <Icone icone={r.icone ?? 'chevron-right'} />
                         <span>{r.rotulo}</span>
                         {r.trilha && <span className="lp-pb-trilha">{r.trilha}</span>}
