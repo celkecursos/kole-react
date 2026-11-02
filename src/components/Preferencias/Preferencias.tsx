@@ -2,7 +2,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { ProvedorConfirmacao } from '../Confirmacao/Confirmacao';
 import { ProvedorToast } from '../Toast/Toast';
 
-export type Tema = 'claro' | 'escuro';
+/** `sistema` = segue o modo do sistema operacional, inclusive quando ele muda com a página aberta. */
+export type Tema = 'claro' | 'escuro' | 'sistema';
 export type Densidade = 'compacta' | 'confortavel' | 'espacosa';
 
 const CLASSE_DENSIDADE: Record<Densidade, string> = {
@@ -11,8 +12,20 @@ const CLASSE_DENSIDADE: Record<Densidade, string> = {
   espacosa: 'density-cozy',
 };
 
+const ATRIBUTO_TEMA: Record<Tema, string> = { claro: 'light', escuro: 'dark', sistema: 'system' };
+
+const CONSULTA_ESCURO = '(prefers-color-scheme: dark)';
+
+/**
+ * Sem escolha salva nem `temaInicial`, segue o sistema operacional. Antes, o
+ * tema do sistema era lido na primeira visita e salvo como claro/escuro, e o
+ * app parava de acompanhar se o sistema mudasse depois.
+ */
+const TEMA_PADRAO: Tema = 'sistema';
+
 export interface Preferencias {
   tema: Tema;
+  /** O tema que está na tela: com `sistema`, o do sistema operacional agora. */
   escuro: boolean;
   densidade: Densidade;
   definirTema: (t: Tema) => void;
@@ -32,30 +45,71 @@ function ler(): Partial<{ tema: Tema; densidade: Densidade }> {
   }
 }
 
-function temaDoSistema(): Tema {
+function sistemaEscuro(): boolean {
   try {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
+    return window.matchMedia(CONSULTA_ESCURO).matches;
   } catch {
-    return 'claro';
+    return false;
   }
+}
+
+/** Acompanha o modo do sistema operacional, só enquanto o tema é `sistema`. */
+function useSistemaEscuro(ativo: boolean): boolean {
+  const [escuro, setEscuro] = useState(sistemaEscuro);
+  useEffect(() => {
+    if (!ativo) return undefined;
+    let consulta: MediaQueryList;
+    try {
+      consulta = window.matchMedia(CONSULTA_ESCURO);
+    } catch {
+      return undefined;
+    }
+    setEscuro(consulta.matches);
+    const aoMudar = (e: MediaQueryListEvent) => setEscuro(e.matches);
+    consulta.addEventListener('change', aoMudar);
+    return () => consulta.removeEventListener('change', aoMudar);
+  }, [ativo]);
+  return escuro;
+}
+
+/**
+ * Script para o `<head>` que aplica tema e densidade ANTES da primeira pintura.
+ * Sem ele, o `ProvedorPreferencias` só aplica no primeiro efeito, e quem salvou
+ * o tema escuro vê a página clara piscar ao abrir. Lê a mesma chave do
+ * `localStorage`; passe o mesmo `temaInicial`/`densidadeInicial` do provedor.
+ *
+ * SSR: `<script dangerouslySetInnerHTML={{ __html: scriptTemaInicial() }} />`.
+ * Vite/HTML estático: o README traz o script pronto para colar no index.html.
+ */
+export function scriptTemaInicial({ temaInicial, densidadeInicial = 'confortavel' }: { temaInicial?: Tema; densidadeInicial?: Densidade } = {}): string {
+  return (
+    `(function(){var p={};try{p=JSON.parse(localStorage.getItem(${JSON.stringify(CHAVE)})||"{}")||{}}catch(e){}` +
+    `var t=p.tema||${JSON.stringify(temaInicial ?? TEMA_PADRAO)};` +
+    `var h=document.documentElement;h.setAttribute("data-theme",${JSON.stringify(ATRIBUTO_TEMA)}[t]||"light");` +
+    `var d=${JSON.stringify(CLASSE_DENSIDADE)}[p.densidade||${JSON.stringify(densidadeInicial)}];if(d)h.classList.add(d)})();`
+  );
 }
 
 export interface ProvedorPreferenciasProps {
   children: ReactNode;
+  /** Tema enquanto a pessoa não escolhe outro. Padrão: `sistema`. */
   temaInicial?: Tema;
   densidadeInicial?: Densidade;
 }
 
 /**
- * Tema (claro/escuro) e densidade, lembrados no navegador. Aplica
- * `data-theme` no <html> e a classe de densidade no <body>.
+ * Tema (claro/escuro/sistema) e densidade, lembrados no navegador. Aplica
+ * `data-theme` (`light`/`dark`/`system`) no <html> e a classe de densidade no
+ * <body>. Para não piscar ao abrir, use também o `scriptTemaInicial` no <head>.
  */
 export function ProvedorPreferencias({ children, temaInicial, densidadeInicial = 'confortavel' }: ProvedorPreferenciasProps) {
-  const [tema, setTema] = useState<Tema>(() => ler().tema ?? temaInicial ?? temaDoSistema());
+  const [tema, setTema] = useState<Tema>(() => ler().tema ?? temaInicial ?? TEMA_PADRAO);
   const [densidade, setDensidade] = useState<Densidade>(() => ler().densidade ?? densidadeInicial);
+  const escuroDoSistema = useSistemaEscuro(tema === 'sistema');
+  const escuro = tema === 'escuro' || (tema === 'sistema' && escuroDoSistema);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', tema === 'escuro' ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', ATRIBUTO_TEMA[tema] ?? 'light');
   }, [tema]);
 
   useEffect(() => {
@@ -72,18 +126,19 @@ export function ProvedorPreferencias({ children, temaInicial, densidadeInicial =
     }
   }, [tema, densidade]);
 
-  const alternarTema = useCallback(() => setTema((t) => (t === 'escuro' ? 'claro' : 'escuro')), []);
+  // alterna o que está na tela: no `sistema`, sai dele para o oposto do atual
+  const alternarTema = useCallback(() => setTema(escuro ? 'claro' : 'escuro'), [escuro]);
 
   const valor = useMemo<Preferencias>(
     () => ({
       tema,
-      escuro: tema === 'escuro',
+      escuro,
       densidade,
       definirTema: setTema,
       alternarTema,
       definirDensidade: setDensidade,
     }),
-    [tema, densidade, alternarTema],
+    [tema, escuro, densidade, alternarTema],
   );
 
   return <Ctx.Provider value={valor}>{children}</Ctx.Provider>;

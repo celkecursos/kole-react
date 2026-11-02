@@ -3,3 +3,8 @@ dist
 dist-demo
 *.log
 *.tgz
+test-results
+playwright-report
+# referência visual: só a de Linux (a do CI) vai para o git
+tests/visual/__referencia__/*
+!tests/visual/__referencia__/linux/

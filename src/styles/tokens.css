@@ -208,7 +208,7 @@
      fonte: o papel "código/identificador" (CPF, placa, n/total) fica com a mono
      do SISTEMA — 1 fonte no bundle, e 0/O · 1/l seguem distinguíveis. */
   --font-ui:   'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', monospace;
+  --lp-font-mono: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', monospace;
 
   /* ---- Escala tipográfica (padronização 2026-07-06) ----
      TEXTO SÓ NASCE DESTES TOKENS (ou de --d-fs, o corpo denso por
@@ -234,7 +234,10 @@
 
 /* ============================================================
    TEMA ESCURO — mesmos nomes, valores dessaturados.
-   Ative com <html data-theme="dark"> (ou .theme-dark).
+   Ative com <html data-theme="dark"> (ou .theme-dark). Com
+   <html data-theme="system">, segue o modo do sistema operacional:
+   o build copia ESTE bloco para um @media (prefers-color-scheme: dark)
+   (scripts/css-kole.mjs) — mantenha só declarações aqui, sem regras aninhadas.
    SÓ NA TELA (@media screen): papel é sempre claro — sem isso,
    imprimir no escuro sai tinta quase-branca sobre papel branco.
    ============================================================ */

@@ -1,0 +1,82 @@
+/* ============================================================
+   Celke Kole — ponte com o Tailwind 4 (opcional).
+   Importe no CSS do app, DEPOIS do Tailwind:
+
+     @layer theme, base, kole, components, utilities;
+     @import 'tailwindcss';
+     @import '@celke/kole-react/tailwind.css';
+
+   - `dark:` passa a seguir o tema do kole (<html data-theme>), não o do
+     sistema — com `data-theme="system"`, segue o sistema.
+   - Os tokens viram utilitários com o MESMO nome: --pri → bg-pri,
+     --ink → text-ink, --border → border-border, --r-card → rounded-card.
+     São `var(--token)`, então trocam de tema junto com o kole.
+   ============================================================ */
+
+@custom-variant dark {
+  &:where([data-theme='dark'], [data-theme='dark'] *, .theme-dark, .theme-dark *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where([data-theme='system'], [data-theme='system'] *) {
+      @slot;
+    }
+  }
+}
+
+@theme inline {
+  /* superfícies e texto */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surf-2: var(--surf-2);
+  --color-surf-3: var(--surf-3);
+  --color-surf-raised: var(--surf-raised);
+  --color-border: var(--border);
+  --color-border-2: var(--border-2);
+  --color-ink: var(--ink);
+  --color-t2: var(--t2);
+  --color-t3: var(--t3);
+  --color-t4: var(--t4);
+  --color-t5: var(--t5);
+  --color-tdis: var(--tdis);
+
+  /* marca e ação */
+  --color-pri: var(--pri);
+  --color-pri-bg: var(--pri-bg);
+  --color-pri-bd: var(--pri-bd);
+  --color-pri-ink: var(--pri-ink);
+  --color-on-pri: var(--on-pri);
+  --color-navy: var(--navy);
+  --color-acento: var(--acento);
+  --color-destaque-ink: var(--destaque-ink);
+  --color-destaque-fg: var(--destaque-fg);
+
+  /* severidades */
+  --color-ok-fg: var(--ok-fg);
+  --color-ok-bg: var(--ok-bg);
+  --color-ok-bd: var(--ok-bd);
+  --color-ok-solid: var(--ok-solid);
+  --color-warn-fg: var(--warn-fg);
+  --color-warn-bg: var(--warn-bg);
+  --color-warn-bd: var(--warn-bd);
+  --color-warn-solid: var(--warn-solid);
+  --color-err-fg: var(--err-fg);
+  --color-err-bg: var(--err-bg);
+  --color-err-bd: var(--err-bd);
+  --color-err-solid: var(--err-solid);
+  --color-info-fg: var(--info-fg);
+  --color-info-bg: var(--info-bg);
+  --color-info-bd: var(--info-bd);
+  --color-info-solid: var(--info-solid);
+
+  /* raios */
+  --radius-field: var(--r-field);
+  --radius-btn: var(--r-btn);
+  --radius-card: var(--r-card);
+  --radius-dialog: var(--r-dialog);
+  --radius-pill: var(--r-pill);
+
+  /* fontes: o font-sans/font-mono do Tailwind viram as do kole */
+  --font-sans: var(--font-ui);
+  --font-mono: var(--lp-font-mono);
+}

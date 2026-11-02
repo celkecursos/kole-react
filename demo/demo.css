@@ -64,13 +64,13 @@
   font-size: var(--fs-corpo-2);
 }
 .demo-util code {
-  font-family: var(--font-mono);
+  font-family: var(--lp-font-mono);
   font-size: var(--fs-caption);
   color: var(--t2);
   overflow-wrap: anywhere;
 }
 .demo-util-res {
-  font-family: var(--font-mono);
+  font-family: var(--lp-font-mono);
   font-size: var(--fs-caption);
   padding: 0.25rem 0.5rem;
   border-radius: var(--r-field);
@@ -624,7 +624,7 @@
 .demo-tipo-texto ins { text-decoration-color: var(--ok-fg); }
 .demo-tipo-texto code,
 .demo-tipo-escala code {
-  font-family: var(--font-mono);
+  font-family: var(--lp-font-mono);
   font-size: var(--fs-caption);
   color: var(--t3);
 }
@@ -673,7 +673,7 @@
 .demo-tipo-sigla { font-size: 90%; text-transform: uppercase; }
 .demo-tipo-hr { margin: 0.875rem 0; border: 0; border-top: var(--hairline) solid var(--border); }
 .demo-tipo-hr--grossa { border-top-width: 0.1875rem; border-top-color: var(--pri); width: 3rem; }
-.demo-tipo-mono { margin: 0; font-family: var(--font-mono); font-size: var(--fs-corpo-2); color: var(--ink); }
+.demo-tipo-mono { margin: 0; font-family: var(--lp-font-mono); font-size: var(--fs-corpo-2); color: var(--ink); }
 .demo-tipo-mudo { margin: 0; font-size: var(--fs-corpo-2); color: var(--t4); }
 .demo-tipo-mudo a { color: inherit; font-weight: 600; }
 .demo-tipo-texto-p { margin: 0; font-size: var(--fs-corpo-2); color: var(--ink); }
@@ -761,7 +761,7 @@
   border: var(--hairline) solid var(--border);
   border-radius: var(--r-field);
   background: var(--surf-2);
-  font-family: var(--font-mono);
+  font-family: var(--lp-font-mono);
   font-size: var(--fs-caption);
   color: var(--t3);
 }
