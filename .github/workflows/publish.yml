@@ -1,0 +1,46 @@
+# Publica no npm a versão do package.json, sem token: o npm confia neste workflow
+# (Trusted Publisher configurado em npmjs.com → @celke/kole-react → Settings) pelo
+# OpenID Connect do GitHub. Gera também o atestado de procedência (provenance).
+#
+# Rode à mão na main: Actions → Publicar → Run workflow.
+name: Publicar
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # a publicação confiável (OIDC) precisa do npm 11.5.1 ou mais novo
+      - run: npm install -g npm@latest
+
+      - name: Conferir a versão
+        run: |
+          versao=$(node -p "require('./package.json').version")
+          if npm view "@celke/kole-react@$versao" version >/dev/null 2>&1; then
+            echo "::error::A versão $versao já está no npm. Suba a versão no package.json (npm version minor/patch) e registre no CHANGELOG."
+            exit 1
+          fi
+          echo "Publicando a versão $versao"
+
+      # o `prepare` roda o build da biblioteca
+      - run: npm ci
+      - run: npm run typecheck
+
+      - run: npm publish

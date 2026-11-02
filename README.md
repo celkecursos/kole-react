@@ -354,8 +354,12 @@ pega o React do `node_modules` da biblioteca — dois Reacts no app quebram os h
 
 Publicar uma versão nova: `npm version patch` (só correção) ou `npm version minor`
 (muda a aparência ou a API — antes da 1.0, o `^0.x` dos apps não pega a minor
-sozinho), registre no [CHANGELOG](CHANGELOG.md) e `npm publish` (o `prepare` roda
-o build; confira o conteúdo antes com `npm pack --dry-run`).
+sozinho), registre no [CHANGELOG](CHANGELOG.md) e confira o conteúdo com
+`npm pack --dry-run`. Depois do merge na `main`, publique pelo GitHub: Actions →
+Publicar → Run workflow (`.github/workflows/publish.yml`). O npm confia nesse
+workflow pela publicação confiável (Trusted Publisher, sem token nem segundo
+fator) e o pacote sai com o atestado de procedência. O workflow recusa versão
+que já está no npm.
 
 ## Autor
 
