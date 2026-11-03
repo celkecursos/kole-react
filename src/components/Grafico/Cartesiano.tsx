@@ -21,6 +21,7 @@ import {
   corDaSerie,
   textoDetalhe,
   usePontoAtivo,
+  useRevelacao,
   useSeriesOcultas,
   type ItemLegenda,
   type LinhaDetalhe,
@@ -207,6 +208,7 @@ function Plano({
   faixas = [],
   divergente,
   rotulosNasBarras,
+  animacao,
   largura,
   ocultas,
   ladoDe,
@@ -395,6 +397,9 @@ function Plano({
   const marcarPontos = pontos ?? n <= 60;
   const nome = descricao ? `${titulo}. ${descricao}` : titulo;
   const desenhos: ReactNode[] = [];
+  // linhas, áreas e pontos: revelados juntos pelo recorte na entrada animada
+  const tracos: ReactNode[] = [];
+  const { recorte, definicao } = useRevelacao(animacao, largura, altura);
 
   // barras
   if (barras.length) {
@@ -415,22 +420,22 @@ function Plano({
         const cor = corDe(s, v);
         desenhos.push(
           horizontal ? (
-            <rect key={`b${s.chave}${i}`} x={Math.min(b0, pv)} y={inicio} width={tam} height={grossura} rx={1.5} fill={cor} />
+            <rect key={`b${s.chave}${i}`} className={v < 0 ? 'lp-graf-barra is-neg' : 'lp-graf-barra'} x={Math.min(b0, pv)} y={inicio} width={tam} height={grossura} rx={1.5} fill={cor} />
           ) : (
-            <rect key={`b${s.chave}${i}`} x={inicio} y={fim} width={grossura} height={tam} rx={1.5} fill={cor} />
+            <rect key={`b${s.chave}${i}`} className={v < 0 ? 'lp-graf-barra is-neg' : 'lp-graf-barra'} x={inicio} y={fim} width={grossura} height={tam} rx={1.5} fill={cor} />
           ),
         );
         if (rotulosNasBarras) {
           const texto = formatarValor(v, { ...eixoDe(ladoDe(s)), unidade: undefined });
           if (horizontal) {
             desenhos.push(
-              <text key={`r${s.chave}${i}`} className="lp-graf-texto" x={v < 0 ? pv - 4 : pv + 4} y={inicio + grossura / 2 + 4} textAnchor={v < 0 ? 'end' : 'start'}>
+              <text key={`r${s.chave}${i}`} className="lp-graf-texto lp-graf-depois" x={v < 0 ? pv - 4 : pv + 4} y={inicio + grossura / 2 + 4} textAnchor={v < 0 ? 'end' : 'start'}>
                 {texto}
               </text>,
             );
           } else if (larguraTexto(texto) <= cada + 6) {
             desenhos.push(
-              <text key={`r${s.chave}${i}`} className="lp-graf-texto" x={inicio + grossura / 2} y={v < 0 ? pv + 14 : pv - 4} textAnchor="middle">
+              <text key={`r${s.chave}${i}`} className="lp-graf-texto lp-graf-depois" x={inicio + grossura / 2} y={v < 0 ? pv + 14 : pv - 4} textAnchor="middle">
                 {texto}
               </text>,
             );
@@ -454,16 +459,16 @@ function Plano({
       trechos(pts).forEach((t, k) => {
         if (t.length < 2) return;
         const d = `${caminho(t)}L${t[t.length - 1][0].toFixed(1)} ${b0.toFixed(1)}L${t[0][0].toFixed(1)} ${b0.toFixed(1)}Z`;
-        desenhos.push(<path key={`a${s.chave}${k}`} className="lp-graf-area-serie" d={d} fill={cor} />);
+        tracos.push(<path key={`a${s.chave}${k}`} className="lp-graf-area-serie" d={d} fill={cor} />);
       });
     }
-    desenhos.push(
+    tracos.push(
       <path key={`l${s.chave}`} className="lp-graf-linha" d={caminho(pts)} stroke={cor} strokeDasharray={s.tracejada ? '6 4' : undefined} />,
     );
     // ponto sem vizinhos (entre dois `null`) não vira traço: marca sempre
     trechos(pts).forEach((t, k) => {
       if (marcarPontos || t.length === 1)
-        t.forEach(([x, y], m) => desenhos.push(<circle key={`p${s.chave}${k}-${m}`} className="lp-graf-ponto" cx={x} cy={y} r={3} fill={cor} />));
+        t.forEach(([x, y], m) => tracos.push(<circle key={`p${s.chave}${k}-${m}`} className="lp-graf-ponto" cx={x} cy={y} r={3} fill={cor} />));
     });
   });
 
@@ -489,7 +494,8 @@ function Plano({
         setAtivo(null);
       }}
     >
-      <svg className="lp-graf-svg" width={largura} height={altura} aria-hidden="true">
+      <svg className={horizontal ? 'lp-graf-svg lp-graf-svg--horizontal' : 'lp-graf-svg'} width={largura} height={altura} aria-hidden="true">
+        {definicao}
         {retFaixas.map((f, i) => (
           <g key={`f${i}`}>
             <rect className="lp-graf-faixa" x={f.x} y={y0} width={f.w} height={y1 - y0} />
@@ -590,19 +596,20 @@ function Plano({
           ))}
 
         {desenhos}
+        <g clipPath={recorte}>{tracos}</g>
 
         {referencias.map((r, i) => {
           const esc = escalaDo(r.eixo ?? 'esquerdo');
           const p = esc(r.valor);
           return horizontal ? (
-            <g key={`ref${i}`}>
+            <g key={`ref${i}`} className="lp-graf-depois">
               <line className="lp-graf-ref" x1={p} x2={p} y1={y0} y2={y1} />
               <text className="lp-graf-texto lp-graf-texto--fundo" x={p + 4} y={y0 - 4}>
                 {r.rotulo}
               </text>
             </g>
           ) : (
-            <g key={`ref${i}`}>
+            <g key={`ref${i}`} className="lp-graf-depois">
               <line className="lp-graf-ref" x1={x0} x2={x1} y1={p} y2={p} />
               <text className="lp-graf-texto lp-graf-texto--fundo" x={x1 - 4} y={p - 5} textAnchor="end">
                 {r.rotulo}

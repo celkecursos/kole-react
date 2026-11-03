@@ -182,3 +182,66 @@
   font-weight: 700;
   fill: var(--graf-texto);
 }
+
+/* ---- entrada animada (prop `animacao`): só CSS, só na primeira vez que o
+   elemento aparece. Com "reduzir movimento" no sistema, nada se mexe. ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .lp-graf--animado .lp-graf-revela {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: lp-graf-revela 0.7s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+  }
+  .lp-graf--animado .lp-graf-barra {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: lp-graf-cresce-y 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  .lp-graf--animado .lp-graf-barra.is-neg {
+    transform-origin: center top;
+  }
+  .lp-graf--animado .lp-graf-svg--horizontal .lp-graf-barra {
+    transform-origin: left center;
+    animation-name: lp-graf-cresce-x;
+  }
+  .lp-graf--animado .lp-graf-svg--horizontal .lp-graf-barra.is-neg {
+    transform-origin: right center;
+  }
+  /* rótulos e referências chegam depois dos dados */
+  .lp-graf--animado .lp-graf-depois {
+    animation: lp-graf-surge 0.3s ease-out 0.5s both;
+  }
+  .lp-graf--animado .lp-graf-ponto-disp {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: lp-graf-pop 0.4s cubic-bezier(0.3, 0.7, 0.4, 1.2) both;
+  }
+  .lp-graf--animado .lp-graf-mapa-cel {
+    animation: lp-graf-surge 0.35s ease-out both;
+  }
+}
+@keyframes lp-graf-revela {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes lp-graf-cresce-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes lp-graf-cresce-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes lp-graf-surge {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes lp-graf-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}

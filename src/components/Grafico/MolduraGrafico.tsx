@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useCallback, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import { Botao } from '../Botao/Botao';
 import { Skeleton } from '../Skeleton/Skeleton';
@@ -74,6 +74,7 @@ export function MolduraGrafico({
   carregando,
   textoVazio = 'Sem dados para mostrar.',
   verDados = true,
+  animacao,
   className,
   semDados,
   itensLegenda = [],
@@ -88,7 +89,7 @@ export function MolduraGrafico({
   const t = comoTabela && !carregando && !semDados ? tabela() : null;
 
   return (
-    <figure className={cx('lp-graf', className)}>
+    <figure className={cx('lp-graf', animacao && 'lp-graf--animado', className)}>
       <div className="lp-graf-topo">
         <figcaption className="lp-graf-titulo">{titulo}</figcaption>
         {verDados && !carregando && !semDados && (
@@ -205,6 +206,26 @@ export function CaixaDetalhes({ x, y = 8, largura, titulo, linhas }: { x: number
 /** Texto da caixa de detalhes para o leitor de tela (a caixa visual fica escondida dele). */
 export function textoDetalhe(titulo: string, linhas: LinhaDetalhe[]): string {
   return [titulo, ...linhas.map((l) => `${l.rotulo}: ${l.valor}`)].join('. ');
+}
+
+/**
+ * Recorte que revela o desenho da esquerda para a direita, na entrada animada
+ * (linhas, áreas e pontos). O retângulo cobre o SVG todo: no fim da animação,
+ * não corta nada.
+ */
+export function useRevelacao(animacao: boolean | undefined, largura: number, altura: number) {
+  const id = `lp-graf-rev-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  if (!animacao) return { recorte: undefined, definicao: null };
+  return {
+    recorte: `url(#${id})`,
+    definicao: (
+      <defs>
+        <clipPath id={id}>
+          <rect className="lp-graf-revela" x={0} y={-20} width={largura} height={altura + 40} />
+        </clipPath>
+      </defs>
+    ),
+  };
 }
 
 /** Cor padrão da série pela posição: `--graf-1`, `--graf-2`… */

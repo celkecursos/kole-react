@@ -11,3 +11,15 @@
   stroke-linejoin: round;
   stroke-linecap: round;
 }
+@media (prefers-reduced-motion: no-preference) {
+  .lp-graf-mini--animado .lp-graf-mini-revela {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: lp-graf-mini-revela 0.8s cubic-bezier(0.3, 0.6, 0.3, 1) both;
+  }
+}
+@keyframes lp-graf-mini-revela {
+  from {
+    transform: scaleX(0);
+  }
+}

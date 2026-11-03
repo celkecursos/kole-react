@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import {
+  Botao,
   CabecalhoPagina,
   GraficoBarras,
   GraficoCombinado,
@@ -150,6 +152,8 @@ const PENULTIMO = MENSAL[MENSAL.length - 2];
 const variacao = (atual: number, anterior: number) => arred(((atual - anterior) / anterior) * 100, 2);
 
 export function PaginaGraficos() {
+  // trocar a key monta os gráficos de novo: é assim que a entrada animada se repete
+  const [rodada, setRodada] = useState(0);
   return (
     <div className="demo-pilha">
       <CabecalhoPagina titulo="Gráficos" icone="chart-line" trilha>
@@ -318,6 +322,101 @@ export function PaginaGraficos() {
       </div>
 
       <Bloco
+        titulo="Animação"
+        descricao={
+          <>
+            Com <code>animacao</code>, as linhas se desenham, as barras crescem a partir do zero e os pontos surgem, só na
+            primeira vez que o gráfico aparece. Com "reduzir movimento" ligado no sistema, nada se mexe.
+          </>
+        }
+      >
+        <div className="demo-linha">
+          <Botao rotulo="Repetir a animação" icone="rotate-cw" severidade="secundario" tamanho="pequeno" onClick={() => setRodada((r) => r + 1)} />
+        </div>
+        <div key={rodada} className="demo-pilha">
+          <Indicadores>
+            <Indicador
+              rotulo="Faturamento de junho"
+              valor={emReais(ULTIMO.faturamento)}
+              icone="wallet"
+              cor="var(--graf-1)"
+              tendencia={MENSAL.slice(-12).map((d) => d.faturamento)}
+              animacao
+              descricao="últimos 12 meses"
+            />
+            <Indicador
+              rotulo="Pedidos em junho"
+              valor={ULTIMO.pedidos}
+              icone="shopping-cart"
+              cor="var(--graf-3)"
+              tendencia={MENSAL.slice(-12).map((d) => d.pedidos)}
+              animacao
+              descricao="últimos 12 meses"
+            />
+          </Indicadores>
+          <div className="demo-colunas">
+            <GraficoCombinado
+              titulo="Pedidos e ticket médio"
+              dados={COMBINADO}
+              eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
+              eixoY={{ rotulo: 'Pedidos' }}
+              eixoYDireito={{ rotulo: 'Ticket médio', formatar: emCentavos }}
+              barras={[{ chave: 'pedidos', rotulo: 'Pedidos' }]}
+              linhas={[{ chave: 'ticket', rotulo: 'Ticket médio', cor: 'var(--graf-2)' }]}
+              animacao
+            />
+            <GraficoBarras
+              titulo="Faturamento acima ou abaixo da meta"
+              dados={DESVIO_META}
+              eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
+              eixoY={{ rotulo: 'Diferença', unidade: 'mil R$' }}
+              series={[{ chave: 'desvio', rotulo: 'Diferença para a meta' }]}
+              divergente
+              animacao
+            />
+            <GraficoBarras
+              titulo="Clientes que mais compraram"
+              dados={RANKING}
+              eixoX={{ chave: 'cliente', tipo: 'categoria', rotulo: 'Cliente' }}
+              eixoY={{ rotulo: 'Total em pedidos', formatar: emReais }}
+              series={[{ chave: 'total', rotulo: 'Total em pedidos' }]}
+              orientacao="horizontal"
+              rotulosNasBarras
+              referencias={[{ valor: MEDIA_RANKING, rotulo: 'Média' }]}
+              animacao
+            />
+            <GraficoDispersao
+              titulo="Preço × unidades vendidas"
+              dados={DISPERSAO}
+              eixoX={{ rotulo: 'Preço', formatar: emCentavos }}
+              eixoY={{ rotulo: 'Unidades vendidas' }}
+              chaveX="preco"
+              chaveY="unidades"
+              chaveRotulo="produto"
+              chaveDestaque="promocao"
+              rotuloPontos="Produtos"
+              rotuloDestaque="Em promoção"
+              regressao
+              animacao
+            />
+          </div>
+          <GraficoLinha
+            titulo="Faturamento mensal"
+            dados={FATURAMENTO}
+            eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
+            eixoY={{ rotulo: 'Faturamento', formatar: emReais }}
+            series={[
+              { chave: 'faturamento', rotulo: 'Faturamento' },
+              { chave: 'meta', rotulo: 'Meta', tracejada: true },
+            ]}
+            area
+            referencias={[{ valor: MEDIA_MENSAL, rotulo: `Média mensal (${emReais(MEDIA_MENSAL)})` }]}
+            animacao
+          />
+        </div>
+      </Bloco>
+
+      <Bloco
         titulo="Mapa de calor"
         descricao="Pedidos por hora e dia da semana. A grade rola na vertical com os dias presos no topo; células hachuradas são horas sem registro."
       >
@@ -330,6 +429,7 @@ export function PaginaGraficos() {
           unidade="pedidos"
           rotuloLinhas="Hora"
           altura={360}
+          animacao
         />
       </Bloco>
     </div>

@@ -84,6 +84,7 @@ function PlanoDispersao({
   chaveRotulo,
   chaveDestaque,
   regressao,
+  animacao,
   largura,
   ocultas,
 }: GraficoDispersaoProps & { largura: number; ocultas: ReadonlySet<string> }) {
@@ -217,11 +218,13 @@ function PlanoDispersao({
               {tituloX}
             </text>
           )}
-          {segmento && <line className="lp-graf-ref lp-graf-regressao" x1={segmento[0]} y1={segmento[1]} x2={segmento[2]} y2={segmento[3]} />}
+          {segmento && <line className="lp-graf-ref lp-graf-regressao lp-graf-depois" x1={segmento[0]} y1={segmento[1]} x2={segmento[2]} y2={segmento[3]} />}
           {visiveis.map((v, i) => (
             <circle
               key={v.indice}
-              className="lp-graf-ponto"
+              className="lp-graf-ponto lp-graf-ponto-disp"
+              // na entrada animada, os pontos surgem da esquerda para a direita
+              style={animacao ? { animationDelay: `${Math.round((i / Math.max(1, visiveis.length - 1)) * 350)}ms` } : undefined}
               cx={escX(v.x)}
               cy={escY(v.y)}
               r={i === ativo ? 6 : v.destaque ? 5 : 4.5}
@@ -229,7 +232,7 @@ function PlanoDispersao({
             />
           ))}
           {estat && !ocultas.has('regressao') && (
-            <text className="lp-graf-estat" x={x1 - 4} y={y0 + 14} textAnchor="end">
+            <text className="lp-graf-estat lp-graf-depois" x={x1 - 4} y={y0 + 14} textAnchor="end">
               {estat}
             </text>
           )}

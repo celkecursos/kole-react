@@ -4,7 +4,7 @@
 
 Novidades:
 
-- Gráficos em SVG próprio, sem dependência nova e sem animação: `GraficoLinha`
+- Gráficos em SVG próprio, sem dependência nova: `GraficoLinha`
   (área, faixas sombreadas no eixo X, linhas de referência, séries tracejadas),
   `GraficoBarras` (agrupadas, divergentes, horizontais para ranking, valores nas
   barras), `GraficoCombinado` (barras e linhas com dois eixos Y, com o eixo de
@@ -14,6 +14,10 @@ Novidades:
   Comum a todos: largura do container, legenda que esconde séries, caixa de
   detalhes pelo mouse, toque e setas do teclado, "Ver dados" em `Tabela`,
   `carregando` e `textoVazio`. `null` é sem dado, nunca zero.
+- `animacao` em todos os gráficos e no `Indicador` (minigráfico), padrão
+  `false`: entrada animada só em CSS (linhas se desenham, barras crescem a
+  partir do zero, pontos e células surgem), uma vez só, quando o gráfico
+  aparece. Desligada com `prefers-reduced-motion`.
 - `regressaoLinear(pontos)`: `{ inclinacao, intercepto, r, r2, n }` ou `null`
   com menos de 3 pontos ou variância zero.
 - `Indicador.tendencia`: minigráfico abaixo do valor, na cor do `cor`. Sem a
@@ -22,7 +26,8 @@ Novidades:
 - Tokens `--graf-1` a `--graf-6`, `--graf-pos`, `--graf-neg`, `--graf-seq-1` a
   `--graf-seq-5`, `--graf-grade`, `--graf-eixo`, `--graf-texto` e `--graf-faixa`,
   nos temas claro e escuro.
-- Demo: página Gráficos (Advanced UI) com cada componente e variação.
+- Demo: página Gráficos (Advanced UI) com cada componente e variação, e um
+  bloco Animação com o botão de repetir a entrada.
 
 ## 0.3.0
 

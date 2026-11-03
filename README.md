@@ -221,7 +221,7 @@ export function Chat({ mensagens, gerando, enviar, parar }: ChatProps) {
 
 ### Gráficos
 
-Desenhados em SVG próprio, sem biblioteca de gráficos e sem animação. A largura
+Desenhados em SVG próprio, sem biblioteca de gráficos. A largura
 acompanha o container (o desenho é refeito no tamanho novo, sem esticar o texto),
 os números e as datas saem em pt-BR (`1.234,5`, `jan/21`) e as cores vêm dos
 tokens `--graf-*`, então funcionam nos temas claro, escuro e sistema.
@@ -233,6 +233,15 @@ esconde ou mostra a série), `carregando`, `textoVazio` e `verDados` (padrão
 completo para quem não enxerga o gráfico). Passe o mouse, toque ou foque o
 gráfico e use as setas do teclado: uma caixa mostra o valor de cada série. `null`
 é "sem dado": falha na linha, barra ausente, célula hachurada, nunca zero.
+
+**Animação** (`animacao`, padrão `false`): na entrada, as linhas se desenham da
+esquerda para a direita, as barras crescem a partir do zero e os pontos e as
+células surgem; rótulos e referências chegam depois. É só CSS e roda uma vez,
+quando o gráfico aparece: dados que chegam depois (atualização periódica, por
+exemplo) não reiniciam a animação. Com "reduzir movimento" ligado no sistema
+(`prefers-reduced-motion`), nada se mexe. O `Indicador` também aceita `animacao`
+para o minigráfico da `tendencia`. Prefira deixar desligado em painéis abertos
+todo dia: a animação ajuda em apresentações, mas atrasa a leitura.
 
 ```tsx
 import {

@@ -63,6 +63,12 @@ export interface GraficoBaseProps {
   carregando?: boolean;
   /** Sem dados, mostra o `Vazio` com este texto. */
   textoVazio?: string;
+  /**
+   * Anima a entrada do gráfico (linhas se desenham, barras crescem a partir do zero).
+   * Só na primeira vez que aparece, não a cada atualização dos dados, e nunca com
+   * "reduzir movimento" ligado no sistema. Padrão `false`.
+   */
+  animacao?: boolean;
   /** Padrão `true`. Botão que alterna entre o gráfico e uma `Tabela` com os mesmos valores. */
   verDados?: boolean;
   className?: string;

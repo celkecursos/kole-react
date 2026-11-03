@@ -73,6 +73,7 @@ function GradeCalor({
   minimo,
   maximo,
   legendaEscala = true,
+  animacao,
   largura,
   mapa,
   eixo,
@@ -144,7 +145,11 @@ function GradeCalor({
                   <div
                     key={`${l}-${c}`}
                     className={cx('lp-graf-mapa-cel', sem && 'is-sem-dado', ativo?.[0] === i && ativo?.[1] === j && 'is-ativa')}
-                    style={sem ? undefined : { background: `var(--graf-seq-${passo(v)})` }}
+                    style={{
+                      ...(sem ? undefined : { background: `var(--graf-seq-${passo(v)})` }),
+                      // na entrada animada, as linhas surgem de cima para baixo
+                      ...(animacao ? { animationDelay: `${Math.min(i * 25, 450)}ms` } : undefined),
+                    }}
                     onPointerEnter={() => setAtivo([i, j])}
                     onPointerDown={() => setAtivo([i, j])}
                   />
