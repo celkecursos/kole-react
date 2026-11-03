@@ -145,6 +145,7 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Dados | `Tabela`, `ListaCards`, `Paginacao`, `Indicador`/`Indicadores`, `Detalhes`, `Status`, `Chip`, `Avatar`, `Placa` |
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
 | Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
+| Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
 
 ### Conversa (chat)
 
@@ -217,6 +218,127 @@ export function Chat({ mensagens, gerando, enviar, parar }: ChatProps) {
   );
 }
 ```
+
+### Gráficos
+
+Desenhados em SVG próprio, sem biblioteca de gráficos. A largura
+acompanha o container (o desenho é refeito no tamanho novo, sem esticar o texto),
+os números e as datas saem em pt-BR (`1.234,5`, `jan/21`) e as cores vêm dos
+tokens `--graf-*`, então funcionam nos temas claro, escuro e sistema.
+
+Comum a todos: `titulo` (obrigatório; vira o nome acessível), `descricao` (resumo
+para leitor de tela), `altura` (padrão `280` px), `legenda` (padrão `true`; clicar
+esconde ou mostra a série), `carregando`, `textoVazio` e `verDados` (padrão
+`true`; alterna entre o gráfico e uma `Tabela` com os mesmos valores, o caminho
+completo para quem não enxerga o gráfico). Passe o mouse, toque ou foque o
+gráfico e use as setas do teclado: uma caixa mostra o valor de cada série. `null`
+é "sem dado": falha na linha, barra ausente, célula hachurada, nunca zero.
+
+**Animação** (`animacao`, padrão `false`): na entrada, as linhas se desenham da
+esquerda para a direita, as barras crescem a partir do zero e os pontos e as
+células surgem; rótulos e referências chegam depois. É só CSS e roda uma vez,
+quando o gráfico aparece: dados que chegam depois (atualização periódica, por
+exemplo) não reiniciam a animação. Com "reduzir movimento" ligado no sistema
+(`prefers-reduced-motion`), nada se mexe. O `Indicador` também aceita `animacao`
+para o minigráfico da `tendencia`. Prefira deixar desligado em painéis abertos
+todo dia: a animação ajuda em apresentações, mas atrasa a leitura.
+
+```tsx
+import {
+  GraficoBarras,
+  GraficoCombinado,
+  GraficoDispersao,
+  GraficoLinha,
+  Indicador,
+  MapaCalor,
+  regressaoLinear,
+} from '@celke/kole-react';
+
+const reais = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+
+// séries no tempo: faixa sombreada no eixo X e linha de referência
+<GraficoLinha
+  titulo="Faturamento mensal"
+  dados={[{ mes: '2025-10', valor: 248000 }, { mes: '2025-11', valor: null }, { mes: '2025-12', valor: 342000 }]}
+  eixoX={{ chave: 'mes', tipo: 'data' }}
+  eixoY={{ rotulo: 'Faturamento', formatar: reais }}
+  series={[{ chave: 'valor', rotulo: 'Faturamento' }]}
+  area
+  faixas={[{ de: '2025-11', ate: '2025-12', rotulo: 'Fim de ano' }]}
+  referencias={[{ valor: 260000, rotulo: 'Média mensal' }]}
+/>;
+
+// barras: várias séries ficam agrupadas; `divergente` pinta acima e abaixo de zero;
+// `orientacao="horizontal"` serve para rankings (rótulo longo quebra em duas linhas)
+<GraficoBarras
+  titulo="Faturamento acima ou abaixo da meta"
+  dados={[{ mes: '2026-05', diferenca: -12 }, { mes: '2026-06', diferenca: 8.5 }]}
+  eixoX={{ chave: 'mes', tipo: 'data' }}
+  eixoY={{ unidade: 'mil R$' }}
+  series={[{ chave: 'diferenca', rotulo: 'Diferença para a meta' }]}
+  divergente
+/>;
+
+// dois eixos: a legenda diz o eixo de cada série ("Ticket médio (R$, eixo direito)")
+<GraficoCombinado
+  titulo="Pedidos e ticket médio"
+  dados={[{ mes: '2026-05', pedidos: 1420, ticket: 198.4 }, { mes: '2026-06', pedidos: 1510, ticket: 203.1 }]}
+  eixoX={{ chave: 'mes', tipo: 'data' }}
+  eixoY={{ rotulo: 'Pedidos' }}
+  eixoYDireito={{ rotulo: 'Ticket médio', unidade: 'R$' }}
+  barras={[{ chave: 'pedidos', rotulo: 'Pedidos' }]}
+  linhas={[{ chave: 'ticket', rotulo: 'Ticket médio' }]}
+/>;
+
+// um ponto por item; `regressao` desenha a reta e mostra r, r² e n
+<GraficoDispersao
+  titulo="Preço × unidades vendidas"
+  dados={produtos} // [{ produto: 'Café torrado — 500 g', preco: 18.9, unidades: 610, promocao: false }, …]
+  eixoX={{ rotulo: 'Preço', unidade: 'R$' }}
+  eixoY={{ rotulo: 'Unidades vendidas' }}
+  chaveX="preco"
+  chaveY="unidades"
+  chaveRotulo="produto"
+  chaveDestaque="promocao"
+  regressao
+  nota="Estatísticas a mais (como o p-valor) são calculadas pelo app."
+/>;
+
+// grade de células (ex.: hora × dia da semana); com muitas linhas, rola com os rótulos das colunas presos no topo
+<MapaCalor
+  titulo="Pedidos por hora e dia da semana"
+  linhas={['08h', '09h']}
+  colunas={['seg', 'ter']}
+  valores={[{ linha: '08h', coluna: 'seg', valor: 72 }, { linha: '08h', coluna: 'ter', valor: null }]}
+  unidade="pedidos"
+/>;
+
+// minigráfico abaixo do valor, na cor do indicador
+<Indicador rotulo="Pedidos em junho" valor={1510} cor="var(--graf-3)" tendencia={[1180, 1240, 1320, 1290, 1420, 1510]} />;
+
+// a mesma conta da dispersão, para usar no app: { inclinacao, intercepto, r, r2, n } ou null
+const reta = regressaoLinear([{ x: 4.99, y: 880 }, { x: 18.9, y: 610 }, { x: 39.9, y: 190 }]);
+```
+
+Tipos do eixo X: `categoria` (texto, uma faixa por item), `data` (`Date`,
+timestamp ou texto `aaaa-mm-dd`/`aaaa-mm`; o rótulo se ajusta a dados diários,
+mensais ou anuais) e `numero`. Os rótulos do eixo X nunca se sobrepõem: se não
+couberem, aparece um a cada N. `eixo.formatar` troca o formato dos números
+(eixo, caixa de detalhes e tabela).
+
+Tokens (definidos nos dois temas; redefina no CSS do app para mudar a paleta):
+
+| Token | Uso |
+|---|---|
+| `--graf-1` a `--graf-6` | Cores das séries, nessa ordem (contraste de 3:1 ou mais contra `--surface`) |
+| `--graf-pos` / `--graf-neg` | Barras divergentes, acima e abaixo de zero |
+| `--graf-seq-1` a `--graf-seq-5` | Escala do mapa de calor, do valor mais baixo ao mais alto |
+| `--graf-grade`, `--graf-eixo`, `--graf-texto` | Linhas de grade, eixos e rótulos |
+| `--graf-faixa` | Faixa sombreada de destaque |
+
+**Volume de pontos:** cada gráfico é fluido até cerca de 2.000 pontos. Séries
+maiores devem chegar agregadas (por exemplo, os pedidos de anos somados por mês
+em vez de um ponto por pedido, ou o mapa de calor em vez de uma linha só).
 
 Utilitários (lógica pura, também exportados): validadores BR (`isCpf`, `isCnpj`,
 `isCnh`, `isImei`, `validar(tipo, valor)`…), `TIPOS_CAMPO` (máscara +

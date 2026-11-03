@@ -1,0 +1,10 @@
+/* contorno da cor do fundo: a estatística e a reta continuam legíveis sobre os pontos */
+.lp-graf-estat {
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.lp-graf-regressao {
+  stroke-width: 1.75;
+}

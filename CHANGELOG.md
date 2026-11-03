@@ -1,5 +1,34 @@
 # Changelog
 
+## Não publicado
+
+Novidades:
+
+- Gráficos em SVG próprio, sem dependência nova: `GraficoLinha`
+  (área, faixas sombreadas no eixo X, linhas de referência, séries tracejadas),
+  `GraficoBarras` (agrupadas, divergentes, horizontais para ranking, valores nas
+  barras), `GraficoCombinado` (barras e linhas com dois eixos Y, com o eixo de
+  cada série na legenda), `GraficoDispersao` (reta de regressão com `r`, `r²` e
+  `n`, pontos destacados, `nota`) e `MapaCalor` (grade com escala sequencial,
+  célula sem dado hachurada, rolagem vertical com as colunas presas no topo).
+  Comum a todos: largura do container, legenda que esconde séries, caixa de
+  detalhes pelo mouse, toque e setas do teclado, "Ver dados" em `Tabela`,
+  `carregando` e `textoVazio`. `null` é sem dado, nunca zero.
+- `animacao` em todos os gráficos e no `Indicador` (minigráfico), padrão
+  `false`: entrada animada só em CSS (linhas se desenham, barras crescem a
+  partir do zero, pontos e células surgem), uma vez só, quando o gráfico
+  aparece. Desligada com `prefers-reduced-motion`.
+- `regressaoLinear(pontos)`: `{ inclinacao, intercepto, r, r2, n }` ou `null`
+  com menos de 3 pontos ou variância zero.
+- `Indicador.tendencia`: minigráfico abaixo do valor, na cor do `cor`. Sem a
+  prop, o indicador fica como antes. O desenho também é exportado como
+  `Minigrafico`.
+- Tokens `--graf-1` a `--graf-6`, `--graf-pos`, `--graf-neg`, `--graf-seq-1` a
+  `--graf-seq-5`, `--graf-grade`, `--graf-eixo`, `--graf-texto` e `--graf-faixa`,
+  nos temas claro e escuro.
+- Demo: página Gráficos (Advanced UI) com cada componente e variação, e um
+  bloco Animação com o botão de repetir a entrada.
+
 ## 0.3.0
 
 Novidades:

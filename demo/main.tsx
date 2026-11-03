@@ -38,6 +38,7 @@ import { PaginaModais } from './paginas/avancado/Modais';
 import { PaginaAvaliacoes } from './paginas/avancado/Avaliacoes';
 import { PaginaWidgets } from './paginas/avancado/Widgets';
 import { PaginaConversas } from './paginas/avancado/Conversas';
+import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaErro } from './paginas/Erro';
 import { NAV } from './nav';
 
@@ -107,6 +108,7 @@ function App() {
   else if (rota === '/avancado/avaliacoes') pagina = <PaginaAvaliacoes />;
   else if (rota === '/avancado/widgets') pagina = <PaginaWidgets />;
   else if (rota === '/avancado/conversas') pagina = <PaginaConversas />;
+  else if (rota === '/avancado/graficos') pagina = <PaginaGraficos />;
   else if (rota === '/ui/trilha') pagina = <PaginaTrilhas modeloAtual={modeloTrilha} aoMudarModelo={mudarModeloTrilha} navegar={navegar} />;
   else if (rota === '/perfil' || rota.startsWith('/perfil/'))
     pagina = <PaginaPerfil rota={rota} navegar={navegar} perfil={perfil} aoSalvar={setPerfil} />;

@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
+import { Minigrafico } from '../Grafico/Minigrafico';
 import { Skeleton } from '../Skeleton/Skeleton';
 import './Indicador.css';
 
@@ -18,6 +19,10 @@ export interface IndicadorProps {
   variacao?: number;
   /** Qual direção é boa (verde). Padrão: `alta`; use `baixa` para despesas, rejeições… */
   variacaoBoa?: 'alta' | 'baixa';
+  /** Série para um minigráfico abaixo do valor, na cor de `cor` (ou `--graf-1`). Sem eixos: só a forma da tendência. */
+  tendencia?: number[];
+  /** Anima o minigráfico da `tendencia` ao aparecer (nunca com "reduzir movimento"). Padrão `false`. */
+  animacao?: boolean;
   /** Linha miúda abaixo do valor (ex.: "há 6 min"). */
   descricao?: ReactNode;
   /** Rodapé (variação, comparação…). */
@@ -29,7 +34,7 @@ const NUM = new Intl.NumberFormat('pt-BR');
 const PCT = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /** Card de KPI para dashboards. */
-export function Indicador({ rotulo, valor, icone, cor, href, aoClicar, carregando, variacao, variacaoBoa = 'alta', descricao, children, className }: IndicadorProps) {
+export function Indicador({ rotulo, valor, icone, cor, href, aoClicar, carregando, variacao, variacaoBoa = 'alta', tendencia, animacao, descricao, children, className }: IndicadorProps) {
   const texto = typeof valor === 'number' ? NUM.format(valor) : valor;
   const subiu = (variacao ?? 0) >= 0;
   const boa = subiu === (variacaoBoa === 'alta');
@@ -63,6 +68,7 @@ export function Indicador({ rotulo, valor, icone, cor, href, aoClicar, carregand
           </span>
         </div>
       )}
+      {tendencia && !carregando && <Minigrafico valores={tendencia} animacao={animacao} />}
       {descricao && <div className="lp-ind-desc">{descricao}</div>}
       {children && <div className="lp-ind-rodape">{children}</div>}
     </div>
