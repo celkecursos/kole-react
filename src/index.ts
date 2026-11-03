@@ -221,6 +221,25 @@ export { Carregando, type CarregandoProps } from './components/Carregando/Carreg
 export { Girador, type GiradorProps, type CorGirador } from './components/Girador/Girador';
 export { Progresso, type ProgressoProps, type CorProgresso, type SegmentoProgresso } from './components/Progresso/Progresso';
 
+// Gráficos
+export { GraficoLinha, type GraficoLinhaProps } from './components/Grafico/GraficoLinha';
+export { GraficoBarras, type GraficoBarrasProps } from './components/Grafico/GraficoBarras';
+export { GraficoCombinado, type GraficoCombinadoProps } from './components/Grafico/GraficoCombinado';
+export { GraficoDispersao, type GraficoDispersaoProps } from './components/Grafico/GraficoDispersao';
+export { MapaCalor, type MapaCalorProps, type CelulaMapaCalor } from './components/Grafico/MapaCalor';
+export { Minigrafico, type MinigraficoProps } from './components/Grafico/Minigrafico';
+export { regressaoLinear, type RegressaoLinear } from './components/Grafico/escalas';
+export type {
+  ValorGrafico,
+  SerieGrafico,
+  EixoGrafico,
+  EixoXGrafico,
+  ReferenciaGrafico,
+  FaixaGrafico,
+  DadoGrafico,
+  GraficoBaseProps,
+} from './components/Grafico/tipos';
+
 // Conversa
 export { Conversa, type ConversaProps } from './components/Conversa/Conversa';
 export { Mensagem, type MensagemProps, type AutorMensagem, type EstadoMensagem } from './components/Mensagem/Mensagem';

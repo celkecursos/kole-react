@@ -229,6 +229,30 @@
   --fs-display:      1.5rem;    /* 24px — números/heros de dashboards   */
   --fs-display-2:    2.125rem;  /* 34px — hero (saudação do login)      */
 
+  /* ---- Gráficos ----
+     Séries: --graf-1 a --graf-6, nesta ordem (a primeira série usa a 1).
+     Todas com 3:1 ou mais sobre --surface (claro: 4,3 a 5,9; escuro: 5,6 a 8,4).
+     --graf-pos/--graf-neg: barras divergentes (acima/abaixo de zero).
+     --graf-seq-1 a 5: mapa de calor, do valor mais baixo ao mais alto.
+     Grade, eixo e texto são apoio: ficam abaixo dos dados de propósito. */
+  --graf-1: #1f5fe0;
+  --graf-2: #d9480f;
+  --graf-3: #13795b;
+  --graf-4: #7c3aed;
+  --graf-5: #c2185b;
+  --graf-6: #0e7490;
+  --graf-pos: #1f5fe0;
+  --graf-neg: #c2410c;
+  --graf-seq-1: #e3edfd;
+  --graf-seq-2: #b3cdf7;
+  --graf-seq-3: #77a5ee;
+  --graf-seq-4: #3b78dc;
+  --graf-seq-5: #1a4aa6;
+  --graf-grade: #edf1f7;
+  --graf-eixo:  #9ca7b8;
+  --graf-texto: #55627a;
+  --graf-faixa: rgba(31, 95, 224, .07);
+
   color-scheme: light;
 }
 
@@ -312,6 +336,26 @@
     --dica-bg:   #24314d;
     --dica-ink:  #eef2f8;
     --dica-edge: var(--border-2);
+
+    /* gráficos: as séries clareiam para manter 3:1 ou mais sobre o fundo escuro;
+       o mapa de calor vai do escuro (baixo) ao claro (alto) */
+    --graf-1: #4d8dff;
+    --graf-2: #ff8a4c;
+    --graf-3: #34c78a;
+    --graf-4: #b48cff;
+    --graf-5: #f06ba8;
+    --graf-6: #2cc3d9;
+    --graf-pos: #4d8dff;
+    --graf-neg: #ff8a4c;
+    --graf-seq-1: #15284a;
+    --graf-seq-2: #1f477f;
+    --graf-seq-3: #2f6bc0;
+    --graf-seq-4: #4f92f0;
+    --graf-seq-5: #9cc4ff;
+    --graf-grade: #1a2640;
+    --graf-eixo:  #4a5b7e;
+    --graf-texto: #8a98b0;
+    --graf-faixa: rgba(77, 141, 255, .1);
 
     color-scheme: dark;
   }

@@ -1,0 +1,184 @@
+.lp-graf {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.lp-graf-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.75rem;
+}
+.lp-graf-titulo {
+  min-width: 0;
+  font-size: var(--fs-corpo-2);
+  font-weight: 700;
+  color: var(--ink);
+}
+.lp-graf-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem 0.375rem;
+}
+.lp-graf-leg-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-caption);
+  color: var(--t2);
+  cursor: pointer;
+}
+.lp-graf-leg-item:hover {
+  background: var(--surf-2);
+}
+.lp-graf-leg-item:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-graf-leg-item.is-oculta {
+  color: var(--t5);
+  text-decoration: line-through;
+}
+.lp-graf-leg-item.is-oculta .lp-graf-amostra {
+  opacity: 0.35;
+}
+.lp-graf-amostra {
+  flex: none;
+}
+.lp-graf-area {
+  position: relative;
+  min-width: 0;
+}
+.lp-graf-nota {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--t3);
+}
+
+/* área desenhada: recebe foco e as setas do teclado */
+.lp-graf-plot {
+  position: relative;
+  border-radius: var(--r-field);
+  outline: none;
+  touch-action: pan-y;
+}
+.lp-graf-plot:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+.lp-graf-svg {
+  display: block;
+  overflow: visible;
+}
+.lp-graf-texto {
+  font-family: var(--font-ui);
+  font-size: var(--fs-caption);
+  fill: var(--graf-texto);
+}
+.lp-graf-texto--eixo {
+  font-weight: 700;
+}
+/* contorno da cor do fundo: o rótulo continua legível sobre linhas e barras */
+.lp-graf-texto--fundo {
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.lp-graf-grade {
+  stroke: var(--graf-grade);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.lp-graf-eixo {
+  stroke: var(--graf-eixo);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.lp-graf-zero {
+  stroke: var(--graf-texto);
+  stroke-width: 1.5;
+  shape-rendering: crispEdges;
+}
+.lp-graf-faixa {
+  fill: var(--graf-faixa);
+}
+.lp-graf-ref {
+  stroke: var(--graf-texto);
+  stroke-width: 1.25;
+  stroke-dasharray: 5 4;
+}
+.lp-graf-linha {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.lp-graf-area-serie {
+  opacity: 0.14;
+}
+.lp-graf-ponto {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+.lp-graf-mira {
+  stroke: var(--graf-eixo);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+  pointer-events: none;
+}
+.lp-graf-mira-faixa {
+  fill: var(--graf-grade);
+  pointer-events: none;
+}
+
+/* caixa de detalhes */
+.lp-graf-caixa {
+  position: absolute;
+  z-index: 2;
+  min-width: 9rem;
+  max-width: min(18rem, 80%);
+  padding: 0.5rem 0.625rem;
+  border: var(--hairline) solid var(--overlay-edge);
+  border-radius: var(--r-btn);
+  background: var(--surf-raised);
+  box-shadow: 0 0.25rem 0.875rem var(--overlay-shadow);
+  font-size: var(--fs-caption);
+  color: var(--t2);
+  pointer-events: none;
+}
+.lp-graf-caixa-titulo {
+  margin-bottom: 0.25rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.lp-graf-caixa-linha {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  line-height: 1.6;
+}
+.lp-graf-caixa-rotulo {
+  flex: 1;
+  min-width: 0;
+}
+.lp-graf-caixa-valor {
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lp-graf-estat {
+  font-family: var(--font-ui);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  fill: var(--graf-texto);
+}

@@ -1,0 +1,13 @@
+.lp-graf-mini {
+  display: block;
+  width: 100%;
+  height: 2rem;
+  overflow: visible;
+}
+.lp-graf-mini polyline {
+  fill: none;
+  stroke: var(--ind-cor, var(--graf-1));
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}

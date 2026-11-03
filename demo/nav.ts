@@ -68,6 +68,7 @@ export const NAV: SecaoNav[] = [
       { rotulo: 'Modais e fechar', icone: 'app-window', rota: '/avancado/modais' },
       { rotulo: 'Avaliações', icone: 'star', rota: '/avancado/avaliacoes' },
       { rotulo: 'Widgets', icone: 'layout-grid', rota: '/avancado/widgets' },
+      { rotulo: 'Gráficos', icone: 'chart-line', rota: '/avancado/graficos' },
       { rotulo: 'Conversas', icone: 'message-square', rota: '/avancado/conversas' },
     ],
   },
