@@ -1,6 +1,10 @@
-# Publica no npm a versão do package.json, sem token: o npm confia neste workflow
+# Prepara no npm a versão do package.json, sem token: o npm confia neste workflow
 # (Trusted Publisher configurado em npmjs.com → @celke/kole-react → Settings) pelo
 # OpenID Connect do GitHub. Gera também o atestado de procedência (provenance).
+#
+# O Trusted Publisher tem a permissão "npm stage publish": o workflow só deixa a
+# versão em espera (staged) e ela vai ao ar depois que um mantenedor aprova com
+# 2FA — `npm stage list @celke/kole-react` e `npm stage approve <id>`, ou pelo site.
 #
 # Rode à mão na main: Actions → Publicar → Run workflow.
 name: Publicar
@@ -37,10 +41,10 @@ jobs:
             echo "::error::A versão $versao já está no npm. Suba a versão no package.json (npm version minor/patch) e registre no CHANGELOG."
             exit 1
           fi
-          echo "Publicando a versão $versao"
+          echo "Preparando a versão $versao"
 
       # o `prepare` roda o build da biblioteca
       - run: npm ci
       - run: npm run typecheck
 
-      - run: npm publish
+      - run: npm stage publish
