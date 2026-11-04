@@ -510,9 +510,11 @@ Publicar uma versão nova: `npm version patch` (só correção) ou `npm version 
 sozinho), registre no [CHANGELOG](CHANGELOG.md) e confira o conteúdo com
 `npm pack --dry-run`. Depois do merge na `main`, publique pelo GitHub: Actions →
 Publicar → Run workflow (`.github/workflows/publish.yml`). O npm confia nesse
-workflow pela publicação confiável (Trusted Publisher, sem token nem segundo
-fator) e o pacote sai com o atestado de procedência. O workflow recusa versão
-que já está no npm.
+workflow pela publicação confiável (Trusted Publisher, sem token) e o pacote
+sai com o atestado de procedência. O workflow só deixa a versão em espera
+(`npm stage publish`): ela vai ao ar depois que um mantenedor aprova com o
+segundo fator, com `npm stage list @celke/kole-react` e `npm stage approve <id>`
+(ou pelo site do npm). O workflow recusa versão que já está no npm.
 
 ## Autor
 
