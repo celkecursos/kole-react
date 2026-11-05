@@ -1,6 +1,6 @@
 # Changelog
 
-## Não publicado
+## 0.4.1
 
 Correções:
 
