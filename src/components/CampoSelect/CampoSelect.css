@@ -6,6 +6,12 @@
   width: 100%;
   min-width: 0;
 }
+/* select (lista de opções): o campo inteiro abre a lista, inclusive a borda
+   interna, então é mão em tudo. O CampoBusca usa as mesmas classes, mas lá se
+   digita para buscar: fica com o cursor de texto. */
+.lp-sel--lista {
+  cursor: pointer;
+}
 .lp-campo--inline .lp-sel {
   height: 100%;
 }
@@ -37,6 +43,13 @@
   flex: 1 1 0%;
   min-width: 0;
   text-overflow: ellipsis;
+}
+.lp-sel--lista .lp-sel-input {
+  cursor: pointer;
+}
+/* select com busca: o cursor de digitar só aparece com a lista aberta, quando se digita para filtrar */
+.lp-sel--lista .lp-sel-input[aria-expanded='true'] {
+  cursor: text;
 }
 .lp-sel-seta .lp-ic {
   font-size: 0.6875rem;

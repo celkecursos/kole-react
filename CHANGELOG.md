@@ -1,5 +1,15 @@
 # Changelog
 
+## Não publicado
+
+Correções:
+
+- `CampoSelect`, `CampoSelectMultiplo` e os campos feitos com eles (`CampoUf`,
+  `CampoUfMultiplo`, `CampoTipoPessoa`…): cursor de mão em todo o campo, inclusive
+  com `comBusca`, que mostrava o cursor de texto. Com busca, o cursor de texto só
+  aparece com a lista aberta, para digitar o filtro. Clicar na borda interna do
+  campo também abre e fecha a lista. O `CampoBusca` continua com o cursor de texto.
+
 ## 0.4.0
 
 Novidades:
