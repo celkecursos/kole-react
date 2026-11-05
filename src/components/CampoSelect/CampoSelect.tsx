@@ -198,7 +198,16 @@ function SelectInterno<V>({
     >
       <div
         ref={moldura}
-        className={cx('lp-sel', !inline && 'lp-ctl-frame', erro && 'is-invalid', disabled && 'is-disabled')}
+        className={cx('lp-sel', 'lp-sel--lista', !inline && 'lp-ctl-frame', erro && 'is-invalid', disabled && 'is-disabled')}
+        // clique na borda interna (fora do texto, da seta e do limpar) também abre/fecha
+        onClick={(e) => {
+          if (e.target !== e.currentTarget || disabled) return;
+          if (aberto) fechar();
+          else {
+            abrir();
+            gatilho.current?.focus();
+          }
+        }}
       >
         {comBusca ? (
           <input
