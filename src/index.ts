@@ -221,6 +221,32 @@ export { Carregando, type CarregandoProps } from './components/Carregando/Carreg
 export { Girador, type GiradorProps, type CorGirador } from './components/Girador/Girador';
 export { Progresso, type ProgressoProps, type CorProgresso, type SegmentoProgresso } from './components/Progresso/Progresso';
 
+// Site público
+export {
+  EstruturaSite,
+  RodapeSite,
+  type EstruturaSiteProps,
+  type ItemSite,
+  type RodapeSiteProps,
+  type ColunaRodape,
+  type LinkRodape,
+} from './components/Site/EstruturaSite';
+export { SecaoSite, type SecaoSiteProps } from './components/Site/SecaoSite';
+export { DestaqueSite, type DestaqueSiteProps } from './components/Site/DestaqueSite';
+export { CampoPesquisa, type CampoPesquisaProps } from './components/Site/CampoPesquisa';
+export { CabecalhoSecao, type CabecalhoSecaoProps } from './components/Site/CabecalhoSecao';
+export { CardConteudo, type CardConteudoProps } from './components/Site/CardConteudo';
+export { ListaNumerada, type ListaNumeradaProps, type ItemListaNumerada } from './components/Site/ListaNumerada';
+export { FiltroPilulas, type FiltroPilulasProps, type OpcaoFiltroPilulas } from './components/Site/FiltroPilulas';
+export { CardRecurso, type CardRecursoProps } from './components/Site/CardRecurso';
+export { FaixaNumeros, type FaixaNumerosProps, type NumeroSite } from './components/Site/FaixaNumeros';
+export { CardDepoimento, type CardDepoimentoProps } from './components/Site/CardDepoimento';
+export { CardPlano, type CardPlanoProps } from './components/Site/CardPlano';
+export { FaixaChamada, type FaixaChamadaProps } from './components/Site/FaixaChamada';
+export { ConteudoArtigo, type ConteudoArtigoProps } from './components/Site/ConteudoArtigo';
+export { Newsletter, type NewsletterProps } from './components/Site/Newsletter';
+export { SumarioPagina, type SumarioPaginaProps, type ItemSumario } from './components/Site/SumarioPagina';
+
 // Gráficos
 export { GraficoLinha, type GraficoLinhaProps } from './components/Grafico/GraficoLinha';
 export { GraficoBarras, type GraficoBarrasProps } from './components/Grafico/GraficoBarras';

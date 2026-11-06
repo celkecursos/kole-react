@@ -1,0 +1,89 @@
+.lp-pesquisa {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: min(100%, 25rem);
+  padding: 0.25rem 0.25rem 0.25rem 1rem;
+  border: var(--hairline) solid var(--border-2);
+  border-radius: var(--r-pill);
+  background: var(--surf-2);
+}
+.lp-pesquisa:focus-within {
+  border-color: var(--pri);
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}
+.lp-pesquisa-ic {
+  flex: none;
+  color: var(--t4);
+}
+.lp-pesquisa-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-corpo);
+  color: var(--ink);
+}
+.lp-pesquisa-input::placeholder {
+  color: var(--t5);
+}
+/* o "x" nativo do type=search destoa da pílula */
+.lp-pesquisa-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+.lp-pesquisa-botao {
+  flex: none;
+  height: 2.375rem;
+  padding: 0 1.125rem;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--pri);
+  color: var(--on-pri);
+  font: inherit;
+  font-size: var(--fs-corpo);
+  font-weight: 700;
+  cursor: pointer;
+}
+.lp-pesquisa-botao:hover {
+  background: var(--pri-ink);
+}
+.lp-pesquisa-botao:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+
+/* na faixa marinha: pílula branca grande, botão laranja (cores fixas de propósito:
+   a faixa é escura nos dois temas, então a pílula também é branca nos dois) */
+.lp-pesquisa--destaque {
+  width: min(100%, 35rem);
+  padding: 0.375rem 0.375rem 0.375rem 1.25rem;
+  border-color: transparent;
+  background: var(--sidebar-ink-strong);
+  box-shadow: 0 1.25rem 2.5rem -1rem rgb(0 0 0 / 0.5);
+}
+.lp-pesquisa--destaque:focus-within {
+  border-color: var(--acento-claro);
+  box-shadow: 0 0 0 0.1875rem var(--acento-tint), 0 1.25rem 2.5rem -1rem rgb(0 0 0 / 0.5);
+}
+.lp-pesquisa--destaque .lp-pesquisa-ic {
+  color: var(--t4);
+}
+.lp-pesquisa--destaque .lp-pesquisa-input {
+  font-size: 1rem;
+  color: var(--navy);
+}
+.lp-pesquisa--destaque .lp-pesquisa-input::placeholder {
+  color: var(--t4);
+}
+.lp-pesquisa--destaque .lp-pesquisa-botao {
+  height: 2.875rem;
+  padding: 0 1.5rem;
+  background: var(--acento);
+  color: var(--navy);
+  font-size: 0.9375rem;
+}
+.lp-pesquisa--destaque .lp-pesquisa-botao:hover {
+  background: var(--acento-claro);
+}

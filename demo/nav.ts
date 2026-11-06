@@ -73,6 +73,22 @@ export const NAV: SecaoNav[] = [
     ],
   },
   {
+    rotulo: 'Site',
+    itens: [
+      { rotulo: 'Home do site', icone: 'app-window', rota: '/site' },
+      { rotulo: 'Home com faixa clara', icone: 'sun', rota: '/site/inicio-claro' },
+      { rotulo: 'Sobre', icone: 'users', rota: '/site/sobre' },
+      { rotulo: 'Serviços e planos', icone: 'package', rota: '/site/servicos' },
+      { rotulo: 'Blog', icone: 'file-text', rota: '/site/blog' },
+      { rotulo: 'Post', icone: 'file-pen', rota: '/site/blog/post' },
+      { rotulo: 'Post com coluna lateral', icone: 'panel-right', rota: '/site/blog/post-lateral' },
+      { rotulo: 'Contato', icone: 'mail', rota: '/site/contato' },
+      { rotulo: 'Termos de uso', icone: 'file-text', rota: '/site/termos' },
+      { rotulo: 'Política de Privacidade', icone: 'shield', rota: '/site/privacidade' },
+      { rotulo: 'Política de Cookies', icone: 'file-text', rota: '/site/cookies' },
+    ],
+  },
+  {
     rotulo: 'Error',
     itens: [
       { rotulo: 'Erro 401', icone: 'lock', rota: '/erro/401' },

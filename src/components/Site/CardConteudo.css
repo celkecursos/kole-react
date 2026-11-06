@@ -1,0 +1,195 @@
+.lp-cc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-site-2);
+  background: var(--surface);
+  color: var(--ink);
+}
+.lp-cc-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-width: 0;
+}
+.lp-cc-etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t4);
+}
+.lp-cc-titulo {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+.lp-cc-resumo {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--t3);
+  text-wrap: pretty;
+}
+.lp-cc-rodape {
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  color: var(--t4);
+}
+.lp-cc-midia > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* link do título esticado sobre o cartão inteiro */
+.lp-cc-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.lp-cc-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+.lp-cc-link:focus-visible {
+  outline: none;
+}
+.lp-cc--acionavel:has(.lp-cc-link:focus-visible) {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+.lp-cc--acionavel:hover {
+  border-color: var(--pri-bd);
+  box-shadow: var(--sombra-site);
+}
+.lp-cc--acionavel:hover .lp-cc-titulo {
+  color: var(--pri-ink);
+}
+
+/* destaque: mídia no topo, título grande */
+.lp-cc--destaque {
+  border-radius: var(--r-site);
+  box-shadow: var(--sombra-site);
+}
+.lp-cc--destaque .lp-cc-corpo {
+  padding: 1.5rem;
+  gap: 0.75rem;
+}
+.lp-cc--destaque .lp-cc-titulo {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.lp-cc--destaque .lp-cc-midia > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  object-fit: cover;
+}
+
+/* compacto: miniatura quadrada à esquerda */
+.lp-cc--compacto {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 0.875rem;
+}
+.lp-cc--compacto .lp-cc-corpo {
+  gap: 0.375rem;
+}
+.lp-cc--compacto .lp-cc-titulo {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+.lp-cc--compacto .lp-cc-midia {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+.lp-cc--compacto .lp-cc-midia > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* linha: item de listagem com quadro à direita */
+.lp-cc--linha {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.375rem 1.5rem;
+}
+.lp-cc-lateral {
+  min-width: 4.75rem;
+  padding: 0.75rem 0.875rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surf-2);
+  text-align: center;
+}
+@media (max-width: 36rem) {
+  .lp-cc--linha {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lp-cc-lateral {
+    justify-self: start;
+  }
+}
+
+/* vertical: mídia 16:9 no topo (grade de posts, equipe) */
+.lp-cc--vertical {
+  border-radius: 1.125rem;
+}
+.lp-cc--vertical .lp-cc-midia {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.lp-cc--vertical .lp-cc-corpo {
+  padding: 1.25rem 1.375rem 1.375rem;
+  gap: 0.5rem;
+}
+.lp-cc--vertical .lp-cc-titulo {
+  font-size: 1.125rem;
+}
+
+/* horizontal: mídia à esquerda (vira vertical em tela estreita) */
+.lp-cc--horizontal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18.75rem), 1fr));
+  border-radius: var(--r-site);
+  box-shadow: var(--sombra-site);
+}
+.lp-cc--horizontal .lp-cc-midia {
+  min-height: 15rem;
+  overflow: hidden;
+}
+.lp-cc--horizontal .lp-cc-corpo {
+  justify-content: center;
+  padding: 1.625rem;
+  gap: 0.75rem;
+}
+.lp-cc--horizontal .lp-cc-titulo {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}

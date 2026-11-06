@@ -1,0 +1,67 @@
+.lp-recurso {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 1.5rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: 1.125rem;
+  background: var(--surface);
+  color: var(--ink);
+}
+.lp-recurso--horizontal {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.lp-recurso-ic {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  background: var(--pri-bg);
+  color: var(--pri);
+  font-size: 1.375rem;
+}
+.lp-recurso--horizontal .lp-recurso-ic {
+  width: 3rem;
+  height: 3rem;
+}
+.lp-recurso-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--destaque-ink);
+}
+.lp-recurso-tx {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.lp-recurso-sobre {
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  color: var(--t4);
+}
+.lp-recurso-titulo {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.lp-recurso--horizontal:has(.lp-recurso-sobre) .lp-recurso-tx {
+  gap: 0.125rem;
+}
+.lp-recurso--horizontal:has(.lp-recurso-sobre) .lp-recurso-titulo {
+  font-size: var(--fs-corpo);
+}
+.lp-recurso-desc {
+  line-height: 1.55;
+  color: var(--t3);
+}
+.lp-recurso-acao {
+  margin-top: 0.25rem;
+}

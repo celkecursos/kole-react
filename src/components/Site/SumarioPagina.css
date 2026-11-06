@@ -1,0 +1,43 @@
+.lp-sumario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+.lp-sumario-titulo {
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--t4);
+}
+.lp-sumario-lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: var(--hairline) solid var(--border);
+}
+.lp-sumario-link {
+  display: block;
+  margin-left: -0.0625rem;
+  padding: 0.4375rem 0 0.4375rem 0.875rem;
+  border-left: 0.125rem solid transparent;
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--t3);
+  text-decoration: none;
+}
+.lp-sumario-link:hover {
+  color: var(--ink);
+}
+.lp-sumario-link.is-atual {
+  border-left-color: var(--acento);
+  color: var(--pri-ink);
+}
+.lp-sumario-link:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+  border-radius: 0.25rem;
+}

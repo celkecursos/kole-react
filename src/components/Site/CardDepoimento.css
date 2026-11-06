@@ -1,0 +1,43 @@
+.lp-depo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+  min-width: 0;
+  margin: 0;
+  padding: 1.5rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: 1.125rem;
+  background: var(--surface);
+  box-shadow: var(--sombra-site);
+}
+.lp-depo-nota {
+  font-size: 0.9375rem;
+  letter-spacing: 0.125rem;
+  color: var(--destaque-ink);
+}
+.lp-depo-nota-vazia {
+  color: var(--border-2);
+}
+.lp-depo-texto {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--t2);
+}
+.lp-depo-autor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.lp-depo-nome {
+  display: block;
+  font-size: var(--fs-corpo);
+  font-weight: 700;
+  color: var(--ink);
+}
+.lp-depo-cargo {
+  display: block;
+  font-size: var(--fs-corpo-2);
+  color: var(--t4);
+}

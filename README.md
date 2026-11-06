@@ -145,6 +145,7 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Dados | `Tabela`, `ListaCards`, `Paginacao`, `Indicador`/`Indicadores`, `Detalhes`, `Status`, `Chip`, `Avatar`, `Placa` |
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
 | Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
+| Site público | `EstruturaSite`, `RodapeSite`, `SecaoSite`, `DestaqueSite`, `CabecalhoSecao`, `CampoPesquisa`, `CardConteudo`, `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`, `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`, `SumarioPagina`, `Newsletter` |
 | Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
 
 ### Conversa (chat)
@@ -218,6 +219,111 @@ export function Chat({ mensagens, gerando, enviar, parar }: ChatProps) {
   );
 }
 ```
+
+### Site público
+
+Para a parte aberta do sistema (site institucional, loja, portal) há uma moldura
+própria, sem o menu lateral: `EstruturaSite`, com barra de aviso opcional,
+cabeçalho fixo (marca, menu horizontal, botão de tema e as `acoes`), conteúdo e
+`RodapeSite`. No celular, o menu vai para um painel aberto pelo botão Menu. Os
+links são `<a href>` de verdade: dentro da `EstruturaSite`, os cartões, as listas e
+a `Trilha` navegam pelo `aoNavegar`/`renderLink` do app, e Ctrl+clique ou o botão
+do meio abrem em nova aba. A demo tem as páginas modelo de um site genérico (menu
+**Site**): Home (faixa escura ou clara), Sobre, Serviços e planos, Blog, Post (sem
+e com coluna lateral), Contato e as páginas legais (Termos de uso, Política de Privacidade e Política de
+Cookies, com texto de exemplo a ser revisado por um advogado).
+
+```tsx
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import {
+  Botao,
+  CabecalhoSecao,
+  CardConteudo,
+  CardDepoimento,
+  CardPlano,
+  CardRecurso,
+  DestaqueSite,
+  EstruturaSite,
+  FaixaChamada,
+  FaixaNumeros,
+  ListaNumerada,
+  Newsletter,
+  RodapeSite,
+  SecaoSite,
+} from '@celke/kole-react';
+
+export function LayoutSite() {
+  const { pathname } = useLocation();
+  return (
+    <EstruturaSite
+      marca={{ nome: 'Sua Marca', href: '/', logo: '/logo.svg' }}
+      nav={[
+        { rotulo: 'Home', rota: '/' },
+        { rotulo: 'Serviços', rota: '/servicos' },
+        { rotulo: 'Contato', rota: '/contato' },
+      ]}
+      rotaAtual={pathname}
+      renderLink={(p) => (
+        <Link to={p.href} className={p.className} onClick={p.onClick} aria-current={p['aria-current']}>
+          {p.children}
+        </Link>
+      )}
+      aviso={<><b>Novidade:</b> conheça a nova versão.</>}
+      acoes={<Botao rotulo="Fale conosco" />}
+      rodape={
+        <RodapeSite
+          nome="Sua Marca"
+          descricao="O que a empresa faz e para quem."
+          extra={<Newsletter aparencia="linha" rotuloBotao="Assinar" aoInscrever={async (email) => { /* envie ao servidor */ }} />}
+          colunas={[{ titulo: 'Navegação', links: [{ rotulo: 'Serviços', rota: '/servicos' }] }]}
+          copyright="© 2026 Sua Marca"
+          redes={[{ rotulo: 'Instagram', rota: 'https://instagram.com/suamarca' }]}
+        />
+      }
+    >
+      <Outlet />
+    </EstruturaSite>
+  );
+}
+
+export function Home() {
+  return (
+    <>
+      {/* aparencia="claro" centraliza o texto e põe a `midia` embaixo */}
+      <DestaqueSite selo="Seu slogan" titulo="Uma frase forte sobre o seu negócio." realce="negócio" lateral={<img src="/produto.png" alt="" />}>
+        <Botao rotulo="Começar agora" severidade="destaque" tamanho="grande" />
+        <FaixaNumeros aparencia="simples" itens={[{ valor: '+1.200', rotulo: 'clientes' }]} />
+      </DestaqueSite>
+      <SecaoSite>
+        <CabecalhoSecao sobretitulo="Diferenciais" titulo="Por que escolher a Sua Marca" />
+        <CardRecurso icone="shield" titulo="Seguro e confiável">Garantias e cuidados com o cliente.</CardRecurso>
+        <ListaNumerada itens={[{ titulo: 'Contato inicial', descricao: 'O cliente conta o que precisa.' }]} />
+        <FaixaNumeros itens={[{ valor: '98', sufixo: '%', rotulo: 'de satisfação' }]} />
+        <CardDepoimento texto="O atendimento foi rápido e o resultado veio." nome="Nome do Cliente" cargo="Cargo · Empresa" />
+        <CardConteudo href="/blog/post" midia={<img src="/post.jpg" alt="" />} titulo="Título do post" />
+        <CardPlano nome="Profissional" preco="99" periodo="/mês" itens={['Suporte prioritário']} destaque acao={<Botao rotulo="Assinar" bloco />} />
+        <FaixaChamada titulo="Pronto para começar?" acoes={<Botao rotulo="Solicitar contato" severidade="destaque" />} />
+      </SecaoSite>
+    </>
+  );
+}
+```
+
+`CardConteudo` tem cinco formatos: `vertical` (grade de posts), `destaque`,
+`horizontal` (post em destaque), `compacto` e `linha` (listagem com quadro à
+direita). `CardRecurso` serve para diferenciais, serviços (`formato="horizontal"`),
+valores (`numero`) e canais de contato (`sobretitulo`). `ConteudoArtigo` estiliza o
+texto de posts e páginas como termos de uso; HTML vindo de Markdown deve chegar
+sanitizado. `SumarioPagina` lista as seções de uma página longa (pelo `id` dos
+títulos), marca a seção em leitura e rola até ela sem trocar o endereço, então
+funciona também em app com rotas no `#hash`. `Newsletter` confere o e-mail antes de chamar `aoInscrever`. Para
+perguntas frequentes, use o `Acordeao` (`icone="mais"`).
+
+Tokens próprios do site: `--site-largura`, `--r-site`, `--r-site-2`,
+`--sombra-site`, `--fs-site-hero`, `--fs-site-titulo`, `--fs-site-secao` e os tons
+sobre o marinho (`--site-escuro-*`). A cor de ação é o `--pri` de sempre: para a cor
+da marca do cliente, redefina `--pri`, `--pri-ink`, `--pri-bg` e `--pri-bd` (veja
+"Tema e tokens").
 
 ### Gráficos
 
@@ -444,9 +550,16 @@ A ponte `@celke/kole-react/tailwind.css` faz duas coisas:
   `text-t3`, `border-border`, `bg-pri`, `text-ok-fg`, `bg-err-bg`,
   `rounded-card`, `rounded-pill`… Como apontam para os tokens, trocam de tema
   junto com o kole. `font-sans` e `font-mono` passam a ser as fontes do kole.
+  Para o site público: `max-w-site`, `rounded-site`, `rounded-site-2`,
+  `shadow-site`, `text-site-hero`, `text-site-titulo`, `text-site-secao` e, sobre
+  o marinho, `bg-navy text-site-escuro-t3`.
 
 A densidade não chega aos utilitários: `p-4` e `h-10` são fixos, só os
 componentes `lp-*` mudam com ela.
+
+Vale igual para o site e para o sistema: os componentes de site (`EstruturaSite`,
+`DestaqueSite`…) estão no mesmo `estilos.css`, na mesma camada `kole`, então
+`<SecaoSite className="mt-8" />` funciona e o preflight não desfaz o estilo deles.
 
 ## Desenvolvimento
 

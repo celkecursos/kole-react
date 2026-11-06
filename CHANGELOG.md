@@ -1,5 +1,27 @@
 # Changelog
 
+## Não publicado
+
+Novidades:
+
+- Componentes de site público: `EstruturaSite` (barra de aviso, cabeçalho fixo
+  com marca, menu horizontal, botão de tema e ações; no celular, menu em painel),
+  `RodapeSite` (colunas, newsletter e redes), `SecaoSite`, `DestaqueSite` (faixa
+  de abertura escura ou clara, com título em realce), `CabecalhoSecao`,
+  `CampoPesquisa`, `CardConteudo` (vertical, destaque, horizontal, compacto e
+  linha), `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`,
+  `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`,
+  `SumarioPagina` e `Newsletter`. Links de verdade, que dentro da `EstruturaSite` navegam pelo
+  `aoNavegar`/`renderLink` do app e abrem em nova aba com Ctrl+clique.
+- Tokens do site: `--site-largura`, `--r-site`, `--r-site-2`, `--sombra-site`,
+  `--fs-site-hero`, `--fs-site-titulo`, `--fs-site-secao` e `--site-escuro-*`.
+- `tailwind.css`: utilitários do site (`max-w-site`, `rounded-site`,
+  `shadow-site`, `text-site-hero`, `text-site-escuro-t3`…).
+- Demo: menu Site com as páginas modelo de um site genérico (Home com faixa
+  escura e clara, Sobre, Serviços e planos, Blog, Post sem e com coluna
+  lateral, Contato, Termos de uso,
+  Política de Privacidade e Política de Cookies).
+
 ## 0.4.1
 
 Correções:
