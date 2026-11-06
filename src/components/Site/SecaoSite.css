@@ -1,0 +1,25 @@
+.lp-site-secao--superficie {
+  background: var(--surface);
+  border-bottom: var(--hairline) solid var(--border);
+}
+.lp-site-secao--escuro {
+  background: var(--navy);
+  color: var(--site-escuro-ink);
+}
+.lp-site-secao-in {
+  display: flex;
+  flex-direction: column;
+  gap: 1.375rem;
+  max-width: var(--site-largura);
+  margin: 0 auto;
+  padding: 3rem 1.25rem;
+}
+.lp-site-secao--compacto > .lp-site-secao-in {
+  padding-block: 1.5rem;
+}
+.lp-site-secao--amplo > .lp-site-secao-in {
+  padding-block: 4rem 4.5rem;
+}
+.lp-site-secao--estreita > .lp-site-secao-in {
+  max-width: 55rem;
+}

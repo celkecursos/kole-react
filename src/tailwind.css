@@ -76,6 +76,20 @@
   --radius-dialog: var(--r-dialog);
   --radius-pill: var(--r-pill);
 
+  /* site público: max-w-site, rounded-site, shadow-site, text-site-hero,
+     text-site-escuro-t3 (texto sobre o marinho)… */
+  --container-site: var(--site-largura);
+  --radius-site: var(--r-site);
+  --radius-site-2: var(--r-site-2);
+  --shadow-site: var(--sombra-site);
+  --text-site-hero: var(--fs-site-hero);
+  --text-site-titulo: var(--fs-site-titulo);
+  --text-site-secao: var(--fs-site-secao);
+  --color-site-escuro-ink: var(--site-escuro-ink);
+  --color-site-escuro-t2: var(--site-escuro-t2);
+  --color-site-escuro-t3: var(--site-escuro-t3);
+  --color-site-escuro-t4: var(--site-escuro-t4);
+
   /* fontes: o font-sans/font-mono do Tailwind viram as do kole */
   --font-sans: var(--font-ui);
   --font-mono: var(--lp-font-mono);

@@ -229,6 +229,26 @@
   --fs-display:      1.5rem;    /* 24px — números/heros de dashboards   */
   --fs-display-2:    2.125rem;  /* 34px — hero (saudação do login)      */
 
+  /* ---- Site público (EstruturaSite e companhia) ----
+     Mais respiro que o sistema: conteúdo até 1240px, cantos mais redondos e
+     títulos maiores. Sobre o marinho (faixas, rodapé) o texto usa os mesmos
+     tons claros da barra lateral, que é escura nos dois temas. */
+  --site-largura: 77.5rem;
+  --r-site:   1.25rem;  /* 20px — cartões grandes, faixas */
+  --r-site-2: 1rem;     /* 16px — cartões de lista */
+  --sombra-site: 0 1px 2px rgba(14, 23, 38, .04), 0 8px 24px -12px rgba(14, 23, 38, .12);
+  --site-escuro-ink: var(--sidebar-ink-strong);
+  --site-escuro-t2:  var(--sidebar-ink);
+  --site-escuro-t3:  var(--sidebar-ink-2);
+  --site-escuro-t4:  var(--sidebar-ink-muted);
+  --site-escuro-superficie: rgba(255, 255, 255, .06);
+  --site-escuro-borda: rgba(255, 255, 255, .12);
+  --site-brilho: rgba(31, 95, 224, .45);
+  /* títulos do site: fluidos entre o celular e a tela larga */
+  --fs-site-hero:   clamp(2.125rem, 4.8vw, 3.625rem);
+  --fs-site-titulo: clamp(1.875rem, 3.6vw, 2.625rem);
+  --fs-site-secao:  1.75rem;
+
   /* ---- Gráficos ----
      Séries: --graf-1 a --graf-6, nesta ordem (a primeira série usa a 1).
      Todas com 3:1 ou mais sobre --surface (claro: 4,3 a 5,9; escuro: 5,6 a 8,4).
@@ -336,6 +356,10 @@
     --dica-bg:   #24314d;
     --dica-ink:  #eef2f8;
     --dica-edge: var(--border-2);
+
+    /* site: sombra vira contorno de luz (sombra some sobre o escuro) */
+    --sombra-site: 0 0 0 1px rgba(255, 255, 255, .03);
+    --site-brilho: rgba(77, 141, 255, .3);
 
     /* gráficos: as séries clareiam para manter 3:1 ou mais sobre o fundo escuro;
        o mapa de calor vai do escuro (baixo) ao claro (alto) */

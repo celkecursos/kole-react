@@ -1,0 +1,44 @@
+.lp-faixa-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2.75rem 2.25rem;
+  border-radius: 1.5rem;
+}
+.lp-faixa-cta--pri {
+  background: var(--pri);
+  color: var(--on-pri);
+}
+.lp-faixa-cta--escuro {
+  background: var(--navy);
+  color: var(--site-escuro-ink);
+}
+.lp-faixa-cta-tx {
+  max-width: 38.75rem;
+}
+.lp-faixa-cta-titulo {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.lp-faixa-cta-desc {
+  margin: 0.625rem 0 0;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+.lp-faixa-cta-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+/* botão de contorno na cor do texto da faixa */
+.lp-faixa-cta .lp-btn--contorno {
+  --btn-borda: currentColor;
+  --btn-tinta: currentColor;
+  --btn-halo: color-mix(in srgb, currentColor 12%, transparent);
+}

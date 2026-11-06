@@ -40,6 +40,7 @@ import { PaginaWidgets } from './paginas/avancado/Widgets';
 import { PaginaConversas } from './paginas/avancado/Conversas';
 import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaErro } from './paginas/Erro';
+import { PaginaSite } from './paginas/site/Site';
 import { NAV } from './nav';
 
 function rotaDoHash() {
@@ -119,6 +120,8 @@ function App() {
   // a tela de login ocupa a janela inteira, fora da moldura do sistema
   if (rota === '/login' || rota === '/login/simples')
     return <PaginaLogin key={rota} navegar={navegar} modelo={rota === '/login' ? 'conteudo' : 'formulario'} />;
+  // o site público tem a própria moldura (EstruturaSite), fora da do sistema
+  if (rota === '/site' || rota.startsWith('/site/')) return <PaginaSite rota={rota} navegar={navegar} />;
   // as páginas de erro também ocupam a janela inteira
   if (rota === '/erro/401' || rota === '/erro/404' || rota === '/erro/500')
     return <PaginaErro codigo={rota.slice('/erro/'.length) as '401' | '404' | '500'} navegar={navegar} />;
