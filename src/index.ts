@@ -247,6 +247,16 @@ export { ConteudoArtigo, type ConteudoArtigoProps } from './components/Site/Cont
 export { Newsletter, type NewsletterProps } from './components/Site/Newsletter';
 export { SumarioPagina, type SumarioPaginaProps, type ItemSumario } from './components/Site/SumarioPagina';
 
+// Calendário
+export {
+  Calendario,
+  type CalendarioProps,
+  type EventoCalendario,
+  type CorEvento,
+  type VisaoCalendario,
+  type PeriodoCalendario,
+} from './components/Calendario/Calendario';
+
 // Gráficos
 export { GraficoLinha, type GraficoLinhaProps } from './components/Grafico/GraficoLinha';
 export { GraficoBarras, type GraficoBarrasProps } from './components/Grafico/GraficoBarras';

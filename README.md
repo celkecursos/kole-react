@@ -146,6 +146,7 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
 | Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
 | Site público | `EstruturaSite`, `RodapeSite`, `SecaoSite`, `DestaqueSite`, `CabecalhoSecao`, `CampoPesquisa`, `CardConteudo`, `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`, `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`, `SumarioPagina`, `Newsletter` |
+| Calendário | `Calendario` (visões mês, semana, dia e lista) |
 | Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
 
 ### Conversa (chat)
@@ -324,6 +325,55 @@ Tokens próprios do site: `--site-largura`, `--r-site`, `--r-site-2`,
 sobre o marinho (`--site-escuro-*`). A cor de ação é o `--pri` de sempre: para a cor
 da marca do cliente, redefina `--pri`, `--pri-ink`, `--pri-bg` e `--pri-bd` (veja
 "Tema e tokens").
+
+### Calendário
+
+`Calendario` mostra eventos na visão **mês** (grade de 6 semanas, hoje em
+destaque, até `maxPorDia` eventos por dia e "+N mais", que abre a lista do dia),
+nas visões **semana** e **dia** (faixa de horários de `horaInicio` a `horaFim`,
+eventos posicionados pela hora, os que se sobrepõem lado a lado, faixa de dia
+inteiro no topo e a linha vermelha do "agora") e na visão **lista** (eventos
+agrupados por dia, a melhor no celular). O app guarda
+e busca os eventos: o componente avisa o período visível em `aoMudarPeriodo` e os
+cliques em `aoClicarDia` (ex.: criar evento) e `aoClicarEvento`.
+
+```tsx
+import { Calendario, type EventoCalendario } from '@celke/kole-react';
+
+const eventos: EventoCalendario[] = [
+  { id: 1, titulo: 'Reunião de vendas', inicio: new Date(2026, 10, 9, 8, 30), fim: new Date(2026, 10, 9, 9, 30), cor: 'pri', categoria: 'Reunião' },
+  { id: 2, titulo: 'Promoção de Pix', inicio: new Date(2026, 10, 12), fim: new Date(2026, 10, 18), diaInteiro: true, cor: 'graf-2' },
+];
+
+<Calendario
+  eventos={eventos}
+  inicioSemana={1} // 0 = domingo (padrão), 1 = segunda
+  aoMudarPeriodo={({ inicio, fim }) => {
+    /* buscar os eventos de [inicio, fim) */
+  }}
+  aoClicarDia={(dia) => {
+    /* abrir o formulário de novo evento */
+  }}
+  aoClicarEvento={(evento) => {
+    /* abrir o evento */
+  }}
+  horaInicio={7} // semana e dia: faixa de horários (padrão 7h às 21h)
+  horaFim={21}
+  aoClicarHorario={(dataHora) => {
+    /* semana e dia: clique num horário vazio, arredondado para a meia hora */
+  }}
+/>;
+```
+
+Cores do evento pelos tokens: `pri`, `ok`, `warn`, `err`, `info`, `destaque` e
+`graf-1` a `graf-6`. Teclado na visão mês: setas andam pelos dias, Home/End vão
+ao começo e ao fim da semana, Page Up/Down trocam de mês e Enter equivale ao
+clique no dia. Na semana e no dia, um cursor de 30 minutos: ↑/↓ mudam o horário,
+←/→ o dia (passando para a semana ou o dia vizinho), Home/End vão ao primeiro e
+ao último horário e Enter chama `aoClicarHorario` (sem ele, abre o evento daquele
+horário). O leitor de tela ouve o dia, a hora e os eventos do horário. `visoes` escolhe quais visões aparecem na barra (padrão: as quatro).
+No celular, a semana mostra os eventos como faixas de cor; use dia ou lista para
+ler os títulos.
 
 ### Gráficos
 

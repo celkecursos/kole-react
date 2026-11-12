@@ -1,0 +1,558 @@
+.lp-cal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: 0;
+}
+.lp-cal-barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem;
+}
+.lp-cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.lp-cal-titulo {
+  margin: 0 0 0 0.5rem;
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* ---- visão mês ---- */
+.lp-cal-mes {
+  overflow: hidden;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.lp-cal-linha {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.lp-cal-linha + .lp-cal-linha {
+  border-top: var(--hairline) solid var(--border);
+}
+.lp-cal-cab {
+  background: var(--thead-bg);
+}
+.lp-cal-cab-dia {
+  padding: 0.5rem;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--thead-ink);
+}
+.lp-cal-dia {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  min-height: 7rem;
+  padding: 0.375rem;
+  outline: none;
+}
+.lp-cal-dia + .lp-cal-dia,
+.lp-cal-cab-dia + .lp-cal-cab-dia {
+  border-left: var(--hairline) solid var(--border);
+}
+.density-compact .lp-cal-dia {
+  min-height: 5.5rem;
+}
+.lp-cal-dia.is-clicavel {
+  cursor: pointer;
+}
+.lp-cal-dia.is-clicavel:hover {
+  background: var(--surf-2);
+}
+.lp-cal-dia:focus-visible {
+  box-shadow: inset 0 0 0 0.125rem var(--pri);
+}
+.lp-cal-dia.is-fora {
+  background: var(--surf-2);
+}
+.lp-cal-dia.is-fora .lp-cal-num {
+  color: var(--t5);
+}
+.lp-cal-num {
+  display: grid;
+  place-items: center;
+  align-self: flex-end;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+.lp-cal-dia.is-hoje .lp-cal-num {
+  background: var(--pri);
+  color: var(--on-pri);
+  font-weight: 800;
+}
+.lp-cal-eventos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+}
+
+/* ---- evento: cor por token ---- */
+.lp-cal-evento--pri { --ev-cor: var(--pri); }
+.lp-cal-evento--ok { --ev-cor: var(--ok-solid); }
+.lp-cal-evento--warn { --ev-cor: var(--warn-solid); }
+.lp-cal-evento--err { --ev-cor: var(--err-solid); }
+.lp-cal-evento--info { --ev-cor: var(--info-solid); }
+.lp-cal-evento--destaque { --ev-cor: var(--destaque-ink); }
+.lp-cal-evento--graf-1 { --ev-cor: var(--graf-1); }
+.lp-cal-evento--graf-2 { --ev-cor: var(--graf-2); }
+.lp-cal-evento--graf-3 { --ev-cor: var(--graf-3); }
+.lp-cal-evento--graf-4 { --ev-cor: var(--graf-4); }
+.lp-cal-evento--graf-5 { --ev-cor: var(--graf-5); }
+.lp-cal-evento--graf-6 { --ev-cor: var(--graf-6); }
+
+.lp-cal-evento {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.125rem 0.375rem;
+  border: 0;
+  border-left: 0.1875rem solid var(--ev-cor);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--ev-cor) 12%, var(--surface));
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-caption);
+  text-align: left;
+  cursor: pointer;
+}
+.lp-cal-evento:hover {
+  background: color-mix(in srgb, var(--ev-cor) 22%, var(--surface));
+}
+.lp-cal-evento:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-cal-evento.is-dia-inteiro {
+  border-left: 0;
+  background: var(--ev-cor);
+  color: var(--surface);
+  font-weight: 600;
+}
+.lp-cal-evento-hora {
+  flex: none;
+  font-weight: 700;
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+}
+.lp-cal-evento-tx {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lp-cal-evento.is-completo {
+  padding: 0.5rem 0.625rem;
+  font-size: var(--fs-corpo);
+}
+.lp-cal-mais {
+  align-self: flex-start;
+  padding: 0.125rem 0.375rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--pri);
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  cursor: pointer;
+}
+.lp-cal-mais:hover {
+  background: var(--pri-bg);
+}
+.lp-cal-mais:focus-visible {
+  outline: 0.125rem solid var(--pri);
+}
+.lp-cal-dia-todos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+/* celular: a grade vira bolinhas e o texto some (a visão lista é a boa no celular) */
+@media (max-width: 40rem) {
+  .lp-cal-dia {
+    min-height: 3.5rem;
+    padding: 0.25rem 0.125rem;
+    align-items: center;
+  }
+  .lp-cal-num {
+    align-self: center;
+  }
+  .lp-cal-eventos {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .lp-cal-dia .lp-cal-evento {
+    width: 0.375rem;
+    height: 0.375rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ev-cor);
+  }
+  .lp-cal-dia .lp-cal-evento > * {
+    display: none;
+  }
+  .lp-cal-mais {
+    padding: 0;
+    font-size: var(--fs-micro);
+  }
+  .lp-cal-titulo {
+    font-size: var(--fs-corpo);
+  }
+}
+
+/* ---- visão lista ---- */
+.lp-cal-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.lp-cal-lista-dia + .lp-cal-lista-dia {
+  border-top: var(--hairline) solid var(--border);
+}
+.lp-cal-lista-data {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.5rem 0.875rem;
+  background: var(--thead-bg);
+  font-size: var(--fs-corpo-2);
+  font-weight: 700;
+  color: var(--thead-ink);
+}
+.lp-cal-lista-hoje {
+  padding: 0.0625rem 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--pri);
+  color: var(--on-pri);
+  font-size: var(--fs-micro);
+  text-transform: uppercase;
+}
+.lp-cal-lista-eventos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-cal-lista-item {
+  display: grid;
+  grid-template-columns: 0.625rem 7.5rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 0;
+  border-top: var(--hairline) solid var(--border);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--d-fs);
+  text-align: left;
+  cursor: pointer;
+}
+.lp-cal-lista-eventos li:first-child .lp-cal-lista-item {
+  border-top: 0;
+}
+.lp-cal-lista-item:hover {
+  background: var(--surf-2);
+}
+.lp-cal-lista-item:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-cal-ponto {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--ev-cor);
+}
+.lp-cal-lista-hora {
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+}
+.lp-cal-lista-titulo {
+  font-weight: 600;
+}
+.lp-cal-lista-cat {
+  font-size: var(--fs-caption);
+  color: var(--t4);
+}
+@media (max-width: 40rem) {
+  .lp-cal-lista-item {
+    grid-template-columns: 0.625rem minmax(0, 1fr);
+    row-gap: 0.125rem;
+  }
+  .lp-cal-lista-titulo,
+  .lp-cal-lista-cat {
+    grid-column: 2;
+  }
+}
+
+/* ---- semana e dia: faixa de horários ---- */
+.lp-cal-horas {
+  --cal-hora: 3rem;
+  --cal-escala: 3.75rem;
+  overflow: hidden;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.density-compact .lp-cal-horas {
+  --cal-hora: 2.5rem;
+}
+.density-cozy .lp-cal-horas {
+  --cal-hora: 3.5rem;
+}
+.lp-cal-horas-linha {
+  display: grid;
+  grid-template-columns: var(--cal-escala) repeat(var(--cal-dias), minmax(0, 1fr));
+}
+.lp-cal-horas-linha > * + * {
+  border-left: var(--hairline) solid var(--border);
+}
+.lp-cal-horas-cab {
+  background: var(--thead-bg);
+  border-bottom: var(--hairline) solid var(--border);
+}
+.lp-cal-horas-dia {
+  display: flex;
+  justify-content: center;
+  padding: 0.375rem 0.25rem;
+}
+.lp-cal-horas-dia-bt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.125rem 0.5rem;
+  border: 0;
+  border-radius: var(--r-btn);
+  background: transparent;
+  color: var(--thead-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.lp-cal-horas-dia-bt:hover {
+  background: var(--pri-bg);
+}
+.lp-cal-horas-dia-bt:focus-visible {
+  outline: 0.125rem solid var(--pri);
+}
+.lp-cal-horas-dia-nome {
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.lp-cal-horas-dia-num {
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--ink);
+}
+.lp-cal-horas-dia.is-hoje .lp-cal-horas-dia-num {
+  background: var(--pri);
+  color: var(--on-pri);
+}
+.lp-cal-horas-rot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0.5rem;
+  font-size: var(--fs-micro);
+  color: var(--t4);
+  text-align: right;
+}
+.lp-cal-horas-inteiro {
+  border-bottom: var(--hairline) solid var(--border);
+}
+.lp-cal-horas-inteiro-cel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+  padding: 0.25rem;
+}
+.lp-cal-horas-corpo {
+  position: relative;
+}
+.lp-cal-horas-escala {
+  display: flex;
+  flex-direction: column;
+}
+.lp-cal-horas-marca {
+  height: var(--cal-hora);
+  padding: 0.125rem 0.5rem 0 0;
+  font-size: var(--fs-caption);
+  color: var(--t4);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* uma linha por hora e a meia hora tracejada, desenhadas no fundo da coluna */
+.lp-cal-horas-col {
+  position: relative;
+  min-width: 0;
+  background:
+    repeating-linear-gradient(to bottom, var(--border) 0 var(--hairline), transparent var(--hairline) var(--cal-hora)),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--cal-hora) / 2), var(--surf-3) calc(var(--cal-hora) / 2) calc(var(--cal-hora) / 2 + var(--hairline)), transparent calc(var(--cal-hora) / 2 + var(--hairline)) var(--cal-hora));
+}
+.lp-cal-horas-col.is-hoje {
+  background-color: color-mix(in srgb, var(--pri) 4%, transparent);
+}
+.lp-cal-horas-col.is-clicavel {
+  cursor: copy;
+}
+.lp-cal-bloco {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+  min-height: 1.25rem;
+  overflow: hidden;
+  padding: 0.1875rem 0.375rem;
+  border: 0;
+  border-left: 0.1875rem solid var(--ev-cor);
+  border-radius: 0.3125rem;
+  background: color-mix(in srgb, var(--ev-cor) 16%, var(--surface));
+  box-shadow: 0 0 0 var(--hairline) var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-caption);
+  text-align: left;
+  cursor: pointer;
+}
+.lp-cal-bloco:hover {
+  background: color-mix(in srgb, var(--ev-cor) 26%, var(--surface));
+  z-index: 1;
+}
+.lp-cal-bloco:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  z-index: 2;
+}
+.lp-cal-bloco-titulo {
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-cal-bloco-hora {
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* evento curto: título e hora na mesma linha */
+.lp-cal-bloco.is-curto {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+.lp-cal-bloco.is-curto .lp-cal-bloco-titulo {
+  min-width: 0;
+}
+/* bloco estreito (três ou mais lado a lado na semana): uma linha só, com reticências */
+.lp-cal-bloco.is-estreito .lp-cal-bloco-titulo,
+.lp-cal-bloco.is-estreito .lp-cal-bloco-hora {
+  white-space: nowrap;
+}
+/* linha do "agora" */
+.lp-cal-agora {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 0.125rem;
+  margin-top: -0.0625rem;
+  background: var(--err-solid);
+  pointer-events: none;
+}
+.lp-cal-agora::before {
+  content: '';
+  position: absolute;
+  left: -0.3125rem;
+  top: -0.25rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--err-solid);
+}
+@media (max-width: 40rem) {
+  .lp-cal-horas {
+    --cal-escala: 2.75rem;
+  }
+  .lp-cal-horas-marca {
+    padding-right: 0.25rem;
+    font-size: var(--fs-micro);
+  }
+  .lp-cal-horas:not(.lp-cal-horas--dia) .lp-cal-horas-dia-bt {
+    padding: 0.125rem 0;
+  }
+  .lp-cal-horas:not(.lp-cal-horas--dia) .lp-cal-horas-dia-num {
+    min-width: 1.625rem;
+    height: 1.625rem;
+    font-size: var(--fs-corpo-2);
+  }
+  /* semana no celular: as colunas são estreitas demais para texto; o bloco vira faixa de cor
+     (o título continua no title e na visão dia) */
+  .lp-cal-horas:not(.lp-cal-horas--dia) .lp-cal-bloco {
+    padding: 0;
+    border-left: 0;
+    background: var(--ev-cor);
+  }
+  .lp-cal-horas:not(.lp-cal-horas--dia) .lp-cal-bloco > * {
+    display: none;
+  }
+  .lp-cal-horas:not(.lp-cal-horas--dia) .lp-cal-horas-inteiro-cel .lp-cal-evento {
+    height: 0.375rem;
+    padding: 0;
+    border: 0;
+    background: var(--ev-cor);
+  }
+  .lp-cal-horas:not(.lp-cal-horas--dia) .lp-cal-horas-inteiro-cel .lp-cal-evento > * {
+    display: none;
+  }
+}
+/* cursor do teclado na faixa de horários: só aparece com o foco */
+.lp-cal-cursor {
+  position: absolute;
+  left: 0.125rem;
+  right: 0.125rem;
+  z-index: 2;
+  border-radius: 0.25rem;
+  outline: none;
+  pointer-events: none;
+}
+.lp-cal-cursor:focus-visible {
+  box-shadow: inset 0 0 0 0.125rem var(--pri);
+  background: color-mix(in srgb, var(--pri) 10%, transparent);
+}

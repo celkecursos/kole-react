@@ -1,5 +1,16 @@
 # Changelog
 
+## Não publicado
+
+Novidades:
+
+- `Calendario`: visões mês, semana, dia e lista; eventos com cor pelos tokens,
+  "+N mais" por dia, faixa de horários com eventos lado a lado quando se
+  sobrepõem e linha do "agora"; `aoMudarPeriodo`, `aoClicarDia`,
+  `aoClicarEvento` e `aoClicarHorario`; semana começando no domingo ou na
+  segunda e navegação pelo teclado em todas as visões (na semana e no dia, um
+  cursor de 30 minutos). Demo: página Calendário.
+
 ## 0.5.0
 
 Novidades:
