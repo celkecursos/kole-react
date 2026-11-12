@@ -1,6 +1,6 @@
 # Changelog
 
-## Não publicado
+## 0.5.0
 
 Novidades:
 
