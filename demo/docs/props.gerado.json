@@ -1140,6 +1140,129 @@
       }
     ]
   },
+  "Calendario": {
+    "interface": "CalendarioProps",
+    "arquivo": "src/components/Calendario/Calendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "eventos",
+        "tipo": "EventoCalendario[]",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "dataInicial",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Mês mostrado no começo. Padrão: hoje."
+      },
+      {
+        "nome": "visaoInicial",
+        "tipo": "'mes' | 'semana' | 'dia' | 'lista'",
+        "obrigatorio": false,
+        "padrao": "'mes'",
+        "descricao": "Padrão: `mes`."
+      },
+      {
+        "nome": "visoes",
+        "tipo": "VisaoCalendario[]",
+        "obrigatorio": false,
+        "padrao": "['mes', 'semana', 'dia', 'lista']",
+        "descricao": "Visões oferecidas na barra. Padrão: mês, semana, dia e lista."
+      },
+      {
+        "nome": "inicioSemana",
+        "tipo": "0 | 1",
+        "obrigatorio": false,
+        "padrao": "0",
+        "descricao": "Primeiro dia da semana: `0` = domingo (padrão), `1` = segunda."
+      },
+      {
+        "nome": "maxPorDia",
+        "tipo": "number",
+        "obrigatorio": false,
+        "padrao": "3",
+        "descricao": "Eventos por dia na visão mês antes do \"+N mais\". Padrão: `3`."
+      },
+      {
+        "nome": "aoMudarPeriodo",
+        "tipo": "(periodo: PeriodoCalendario) => void",
+        "obrigatorio": false,
+        "descricao": "O período visível mudou: o app busca os eventos dele. Chamado também ao montar."
+      },
+      {
+        "nome": "aoClicarDia",
+        "tipo": "(dia: Date) => void",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "aoClicarEvento",
+        "tipo": "(evento: EventoCalendario) => void",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "carregando",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "textoVazio",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Nenhum evento neste mês.'",
+        "descricao": "Visão lista sem eventos no mês."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Calendário'",
+        "descricao": "Nome do calendário para leitor de tela."
+      },
+      {
+        "nome": "hoje",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "\"Hoje\" do calendário (para testes). Padrão: a data atual."
+      },
+      {
+        "nome": "horaInicio",
+        "tipo": "number",
+        "obrigatorio": false,
+        "padrao": "7",
+        "descricao": "Semana e dia: primeira e última hora da faixa de horários. Padrão: 7 e 21."
+      },
+      {
+        "nome": "horaFim",
+        "tipo": "number",
+        "obrigatorio": false,
+        "padrao": "21",
+        "descricao": ""
+      },
+      {
+        "nome": "aoClicarHorario",
+        "tipo": "(dataHora: Date) => void",
+        "obrigatorio": false,
+        "descricao": "Semana e dia: clique num horário vazio, arredondado para a meia hora (ex.: criar evento ali)."
+      },
+      {
+        "nome": "agora",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Hora da linha do \"agora\" (para testes). Padrão: a hora atual, atualizada a cada minuto."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "Campo": {
     "interface": "CampoProps",
     "arquivo": "src/components/Campo/Campo.tsx",
@@ -4308,6 +4431,55 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "EventoCalendario": {
+    "interface": "EventoCalendario",
+    "arquivo": "src/components/Calendario/Calendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "inicio",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "fim",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Sem `fim`, o evento ocupa só o horário (ou o dia) de início."
+      },
+      {
+        "nome": "diaInteiro",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Evento sem horário (aparece primeiro no dia, sem hora)."
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6'",
+        "obrigatorio": false,
+        "descricao": "Padrão: `pri`."
+      },
+      {
+        "nome": "categoria",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Texto miúdo na visão lista (ex.: \"Entrega\", \"Reunião\")."
       }
     ]
   },
@@ -7480,6 +7652,31 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "PeriodoCalendario": {
+    "interface": "PeriodoCalendario",
+    "arquivo": "src/components/Calendario/Calendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "inicio",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "fim",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": "Exclusivo: o primeiro dia depois do período."
+      },
+      {
+        "nome": "visao",
+        "tipo": "'mes' | 'semana' | 'dia' | 'lista'",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
