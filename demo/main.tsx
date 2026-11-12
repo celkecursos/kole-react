@@ -41,6 +41,7 @@ import { PaginaConversas } from './paginas/avancado/Conversas';
 import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaErro } from './paginas/Erro';
 import { PaginaSite } from './paginas/site/Site';
+import { version } from '../package.json';
 import { NAV } from './nav';
 import { paginaDocs } from './docs/rotas';
 
@@ -154,7 +155,8 @@ function App() {
       menuDesenvolvimento={[{ id: 'cache', rotulo: 'Limpar cache', icone: 'refresh-cw' }]}
       aoEscolherMenuDesenvolvimento={() => toast.ok('Cache limpo')}
       ambiente={{ rotulo: 'Homologação', severidade: 'warn' }}
-      versao="v0.1.0"
+      // a versão do pacote, lida do package.json: acompanha cada release
+      versao={`v${version}`}
       rodape={
         <>
           <span>© 2026 Celke · Licença MIT</span>

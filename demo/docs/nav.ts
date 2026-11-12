@@ -6,6 +6,7 @@ export const GUIAS = [
   { rota: '/docs/instalacao', rotulo: 'Instalação', icone: 'download' },
   { rota: '/docs/tema', rotulo: 'Tema e tokens', icone: 'palette' },
   { rota: '/docs/tailwind', rotulo: 'Tailwind', icone: 'code' },
+  { rota: '/docs/carregamento', rotulo: 'Carregamento', icone: 'loader-circle' },
   { rota: '/docs/changelog', rotulo: 'Changelog', icone: 'history' },
 ];
 
