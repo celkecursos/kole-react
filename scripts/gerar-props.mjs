@@ -1,6 +1,6 @@
 // Gera demo/docs/props.gerado.json: as props de cada componente, lidas dos tipos TypeScript.
 //
-// Para cada interface `XxxProps` exportada por src/index.ts, registra nome, tipo,
+// Para cada interface exportada por src/index.ts (`XxxProps` vira a chave `Xxx`), registra nome, tipo,
 // se é obrigatória, valor padrão (lido da desestruturação no componente `Xxx`),
 // descrição (JSDoc) e de qual interface veio. Props herdadas de tipos do React
 // (atributos nativos do HTML) não entram: viram só uma nota em `externos`.
@@ -95,10 +95,13 @@ const modulo = checker.getSymbolAtLocation(indice);
 for (let simbolo of checker.getExportsOfModule(modulo)) {
   if (simbolo.flags & ts.SymbolFlags.Alias) simbolo = checker.getAliasedSymbol(simbolo);
   const decl = simbolo.declarations?.find(ts.isInterfaceDeclaration);
-  if (!decl || !decl.name.text.endsWith('Props')) continue;
+  if (!decl) continue;
 
+  // XxxProps → chave "Xxx" (o componente); outras interfaces (OpcoesToast, Coluna…) → o próprio nome
   const interfaceNome = decl.name.text;
-  const componente = interfaceNome.slice(0, -'Props'.length);
+  const ehProps = interfaceNome.endsWith('Props');
+  const componente = ehProps ? interfaceNome.slice(0, -'Props'.length) : interfaceNome;
+  if (resultado[componente]) continue;
   const arquivo = decl.getSourceFile();
   const padroes = padroesDoComponente(arquivo, componente);
 

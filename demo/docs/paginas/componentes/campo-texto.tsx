@@ -1,8 +1,8 @@
-import { C } from '../Codigo';
-import { Exemplo } from '../Exemplo';
-import { PaginaComponente } from '../PaginaDoc';
+import { C } from '../../Codigo';
+import { Exemplo } from '../../Exemplo';
+import { PaginaComponente } from '../../PaginaDoc';
 
-export function DocCampoTexto() {
+export default function Pagina() {
   return (
     <PaginaComponente
       titulo="Campo de texto"

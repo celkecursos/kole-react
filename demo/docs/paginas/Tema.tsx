@@ -104,11 +104,14 @@ export function DocTema() {
       <Secao id="experimente" titulo="Experimente">
         <p className="doc-p">As amostras abaixo leem os tokens ao vivo: troque o tema e a densidade e veja os valores mudarem.</p>
         <div className="demo-linha">
-          <GrupoBotoes rotulo="Tema" aparencia="contorno" tamanho="pequeno">
-            {TEMAS.map((t) => (
-              <Botao key={t.id} rotulo={t.rotulo} icone={t.icone} pressionado={tema === t.id} onClick={() => definirTema(t.id)} />
-            ))}
-          </GrupoBotoes>
+          {/* o teste visual compara o tema "sistema" com a referência do escuro: o botão marcado é a única diferença */}
+          <span data-visual-ignorar>
+            <GrupoBotoes rotulo="Tema" aparencia="contorno" tamanho="pequeno">
+              {TEMAS.map((t) => (
+                <Botao key={t.id} rotulo={t.rotulo} icone={t.icone} pressionado={tema === t.id} onClick={() => definirTema(t.id)} />
+              ))}
+            </GrupoBotoes>
+          </span>
           <GrupoBotoes rotulo="Densidade" aparencia="contorno" tamanho="pequeno">
             {DENSIDADES.map((d) => (
               <Botao key={d.id} rotulo={d.rotulo} pressionado={densidade === d.id} onClick={() => definirDensidade(d.id)} />

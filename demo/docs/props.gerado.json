@@ -378,6 +378,123 @@
       }
     ]
   },
+  "Anexo": {
+    "interface": "Anexo",
+    "arquivo": "src/utils/anexos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "tamanho",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": "Tamanho em bytes."
+      },
+      {
+        "nome": "tipo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "MIME (pode chegar vazio do navegador)."
+      },
+      {
+        "nome": "url",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Endereço do arquivo já armazenado (abrir/baixar)."
+      },
+      {
+        "nome": "miniatura",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Miniatura da MESMA imagem, quando o backend serve dois tamanhos."
+      }
+    ]
+  },
+  "ApiToast": {
+    "interface": "ApiToast",
+    "arquivo": "src/components/Toast/Toast.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "mostrar",
+        "tipo": "(o: OpcoesToast) => number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "ok",
+        "tipo": "(titulo: string, detalhe?: string) => number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "info",
+        "tipo": "(titulo: string, detalhe?: string) => number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "warn",
+        "tipo": "(titulo: string, detalhe?: string) => number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "err",
+        "tipo": "(titulo: string, detalhe?: string) => number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "fechar",
+        "tipo": "(id: number) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "ApresentacaoLogin": {
+    "interface": "ApresentacaoLogin",
+    "arquivo": "src/components/TelaLogin/TelaLogin.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "chamada",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Chamada em caixa alta acima do título (ex.: \"Plataforma comercial\")."
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "descricao",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "destaques",
+        "tipo": "{ icone: IconeProp; texto: string }[]",
+        "obrigatorio": false,
+        "descricao": "Até 3–4 pontos fortes do sistema, cada um com ícone."
+      },
+      {
+        "nome": "extra",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Conteúdo livre abaixo dos destaques (ilustração, gráfico, depoimento)."
+      }
+    ]
+  },
   "Avaliacao": {
     "interface": "AvaliacaoProps",
     "arquivo": "src/components/Avaliacao/Avaliacao.tsx",
@@ -1192,6 +1309,19 @@
         "obrigatorio": false,
         "descricao": "Aviso não-bloqueante (âmbar).",
         "de": "CampoBaseProps"
+      }
+    ]
+  },
+  "CampoAnexoRef": {
+    "interface": "CampoAnexoRef",
+    "arquivo": "src/components/Arquivo/CampoAnexo.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "arquivoDe",
+        "tipo": "(anexo: Pick<Anexo, 'nome' | 'tamanho'>) => File | null",
+        "obrigatorio": true,
+        "descricao": "O `File` da sessão por trás do anexo, ou `null` (anexo já salvo no backend)."
       }
     ]
   },
@@ -3059,6 +3189,31 @@
       }
     ]
   },
+  "CelulaMapaCalor": {
+    "interface": "CelulaMapaCalor",
+    "arquivo": "src/components/Grafico/MapaCalor.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "linha",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "coluna",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "valor",
+        "tipo": "ValorGrafico",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "Chip": {
     "interface": "ChipProps",
     "arquivo": "src/components/Chip/Chip.tsx",
@@ -3156,6 +3311,117 @@
       }
     ]
   },
+  "Coluna": {
+    "interface": "Coluna",
+    "arquivo": "src/components/Tabela/Tabela.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "campo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Chave do campo no registro (aceita caminho com ponto: `endereco.cidade`)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "ordenavel",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "alinhamento",
+        "tipo": "'esquerda' | 'centro' | 'direita'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "destaque",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Texto forte (coluna principal)."
+      },
+      {
+        "nome": "maiuscula",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "largura",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "formato",
+        "tipo": "(valor: unknown, linha: T) => ReactNode",
+        "obrigatorio": false,
+        "descricao": "Formata o valor cru da célula."
+      },
+      {
+        "nome": "severidade",
+        "tipo": "(linha: T) => Severidade",
+        "obrigatorio": false,
+        "descricao": "Renderiza a célula como selo de situação."
+      },
+      {
+        "nome": "render",
+        "tipo": "(linha: T) => ReactNode",
+        "obrigatorio": false,
+        "descricao": "Célula totalmente customizada."
+      }
+    ]
+  },
+  "ColunaArrastavel": {
+    "interface": "ColunaArrastavel",
+    "arquivo": "src/components/QuadroArrastavel/QuadroArrastavel.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Nome da coluna (anunciado ao mover pelo teclado)."
+      },
+      {
+        "nome": "itens",
+        "tipo": "T[]",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "ColunaRodape": {
+    "interface": "ColunaRodape",
+    "arquivo": "src/components/Site/EstruturaSite.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "links",
+        "tipo": "LinkRodape[]",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "ComBadge": {
     "interface": "ComBadgeProps",
     "arquivo": "src/components/Badge/Badge.tsx",
@@ -3212,6 +3478,25 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "Confirmar": {
+    "interface": "Confirmar",
+    "arquivo": "src/components/Confirmacao/Confirmacao.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "remover",
+        "tipo": "(opcoes?: OpcoesRemocao) => Promise<boolean>",
+        "obrigatorio": true,
+        "descricao": "Atalho institucional de exclusão de dado salvo (irreversível)."
+      },
+      {
+        "nome": "avisar",
+        "tipo": "(opcoes: OpcoesAviso) => Promise<void>",
+        "obrigatorio": true,
+        "descricao": "Só ciência — \"alertar\" é `avisar({ severidade: 'err' })`."
       }
     ]
   },
@@ -3281,6 +3566,25 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "CredenciaisLogin": {
+    "interface": "CredenciaisLogin",
+    "arquivo": "src/components/TelaLogin/TelaLogin.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "usuario",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "senha",
+        "tipo": "string",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
@@ -3587,6 +3891,105 @@
         "tipo": "'padrao' | 'pri' | 'secundario' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'claro'",
         "obrigatorio": false,
         "padrao": "'padrao'",
+        "descricao": ""
+      }
+    ]
+  },
+  "EixoGrafico": {
+    "interface": "EixoGrafico",
+    "arquivo": "src/components/Grafico/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Ex.: \"Vendas\"."
+      },
+      {
+        "nome": "unidade",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Ex.: \"mil R$\"; aparece no eixo e na caixa de detalhes."
+      },
+      {
+        "nome": "formatar",
+        "tipo": "(valor: number) => string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "minimo",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "maximo",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "EixoXGrafico": {
+    "interface": "EixoXGrafico",
+    "arquivo": "src/components/Grafico/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "chave",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "tipo",
+        "tipo": "'categoria' | 'data' | 'numero'",
+        "obrigatorio": true,
+        "descricao": "`data` aceita `Date`, timestamp ou texto `aaaa-mm-dd` / `aaaa-mm`."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Cabeçalho da coluna na tabela do \"Ver dados\" (padrão: Categoria, Data ou Valor)."
+      },
+      {
+        "nome": "formatar",
+        "tipo": "(valor: string | number | Date) => string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "Entidade": {
+    "interface": "Entidade",
+    "arquivo": "src/utils/entidade.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Substantivo em minúsculas, como entra na frase (`veículo`)."
+      },
+      {
+        "nome": "novo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Frases completas para os modos que fogem da regra (ex.: `Firmar contrato`)."
+      },
+      {
+        "nome": "editar",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "leitura",
+        "tipo": "string",
+        "obrigatorio": false,
         "descricao": ""
       }
     ]
@@ -3953,6 +4356,31 @@
       }
     ]
   },
+  "FaixaGrafico": {
+    "interface": "FaixaGrafico",
+    "arquivo": "src/components/Grafico/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "de",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "ate",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "FaixaNumeros": {
     "interface": "FaixaNumerosProps",
     "arquivo": "src/components/Site/FaixaNumeros.tsx",
@@ -4055,6 +4483,31 @@
       {
         "nome": "style",
         "tipo": "CSSProperties",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "FiltroAplicado": {
+    "interface": "FiltroAplicado",
+    "arquivo": "src/components/Filtros/Filtros.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "campo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aoRemover",
+        "tipo": "() => void",
         "obrigatorio": false,
         "descricao": ""
       }
@@ -4164,6 +4617,25 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ForcaSenha": {
+    "interface": "ForcaSenha",
+    "arquivo": "src/utils/senha.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "score",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": "0 (vazia) a 4. Abaixo do mínimo fica preso em 1."
+      },
+      {
+        "nome": "nivel",
+        "tipo": "'vazia' | 'fraca' | 'media' | 'forte'",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
@@ -5334,6 +5806,43 @@
       }
     ]
   },
+  "ItemBusca": {
+    "interface": "ItemBusca",
+    "arquivo": "src/components/Busca/Busca.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rota",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "trilha",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Caminho no menu (ex.: \"Cadastros › Pessoas\")."
+      },
+      {
+        "nome": "recarregar",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Página fora da navegação SPA (ex.: tela Blade num app Inertia): abre com recarga completa, sem `aoNavegar`."
+      }
+    ]
+  },
   "ItemLista": {
     "interface": "ItemListaProps",
     "arquivo": "src/components/Lista/Lista.tsx",
@@ -5436,6 +5945,346 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemListaNumerada": {
+    "interface": "ItemListaNumerada",
+    "arquivo": "src/components/Site/ListaNumerada.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Chave do item (padrão: o título)."
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "detalhe",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Linha miúda abaixo (ex.: data, quantidade)."
+      },
+      {
+        "nome": "descricao",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Texto abaixo do título, em tamanho de leitura (ex.: passos de \"Como funciona\")."
+      },
+      {
+        "nome": "href",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemMenu": {
+    "interface": "ItemMenu",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "destrutivo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "divisorAntes",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemMenuForm": {
+    "interface": "ItemMenuForm",
+    "arquivo": "src/components/Form/Form.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "href",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Com `href` o item vira link (ex.: `#/pedidos/novo/itens`)."
+      },
+      {
+        "nome": "pendencias",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Chip de pendências ao lado do rótulo."
+      },
+      {
+        "nome": "desabilitado",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemMenuSuspenso": {
+    "interface": "ItemMenuSuspenso",
+    "arquivo": "src/components/MenuSuspenso/MenuSuspenso.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Devolvido em `aoEscolher` (sem id, vai o rótulo)."
+      },
+      {
+        "nome": "tipo",
+        "tipo": "'item' | 'titulo' | 'divisor' | 'texto'",
+        "obrigatorio": false,
+        "descricao": "`item` (padrão) · `titulo` = cabeçalho de seção · `divisor` · `texto` = linha não clicável."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "extra",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Texto miúdo à direita (atalho, contagem)."
+      },
+      {
+        "nome": "href",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Vira link (`<a href>`) em vez de botão."
+      },
+      {
+        "nome": "ativo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "desabilitado",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "destrutivo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemNav": {
+    "interface": "ItemNav",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "rota",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Folha: destino. Grupo: omita e use `filhos`."
+      },
+      {
+        "nome": "filhos",
+        "tipo": "ItemNav[]",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "desabilitado",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "recarregar",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Página fora da navegação SPA (ex.: tela Blade num app Inertia): o link vira um `<a>` comum, sem `renderLink` nem `aoNavegar`, e abre com recarga completa."
+      }
+    ]
+  },
+  "ItemReferencia": {
+    "interface": "ItemReferencia",
+    "arquivo": "src/components/Referencias/Referencias.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "ReactNode",
+        "obrigatorio": true,
+        "descricao": "Nome da fonte (documento, página, artigo…)."
+      },
+      {
+        "nome": "detalhe",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Linha curta ao lado do título (ex.: \"Página 3\")."
+      },
+      {
+        "nome": "trecho",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Trecho citado; aparece truncado, com opção de expandir."
+      },
+      {
+        "nome": "href",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Torna o título um link (abre em nova aba)."
+      }
+    ]
+  },
+  "ItemSite": {
+    "interface": "ItemSite",
+    "arquivo": "src/components/Site/EstruturaSite.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rota",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemSumario": {
+    "interface": "ItemSumario",
+    "arquivo": "src/components/Site/SumarioPagina.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "`id` do título da seção na página."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "ItemTrilha": {
+    "interface": "ItemTrilha",
+    "arquivo": "src/components/Trilha/Trilha.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rota",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "LinkRodape": {
+    "interface": "LinkRodape",
+    "arquivo": "src/components/Site/EstruturaSite.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rota",
+        "tipo": "string",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
@@ -5745,6 +6594,43 @@
       }
     ]
   },
+  "Marca": {
+    "interface": "Marca",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "subtitulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "logo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "URL da imagem do logo (sem ela, mostra um escudo)."
+      },
+      {
+        "nome": "href",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "recarregar",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "O `href` da marca abre com recarga completa (ver `ItemNav.recarregar`)."
+      }
+    ]
+  },
   "Mensagem": {
     "interface": "MensagemProps",
     "arquivo": "src/components/Mensagem/Mensagem.tsx",
@@ -6042,6 +6928,37 @@
       }
     ]
   },
+  "MetaTipoCampo": {
+    "interface": "MetaTipoCampo",
+    "arquivo": "src/utils/tiposCampo.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "mascara",
+        "tipo": "Mascara",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "placeholder",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "validar",
+        "tipo": "(valor: string) => string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "caixaAlta",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`true` = sempre maiúscula (placa) · `false` = nunca (e-mail)."
+      }
+    ]
+  },
   "Minigrafico": {
     "interface": "MinigraficoProps",
     "arquivo": "src/components/Grafico/Minigrafico.tsx",
@@ -6063,6 +6980,50 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ModeloTrilha": {
+    "interface": "ModeloTrilha",
+    "arquivo": "src/components/Trilha/Trilha.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "separador",
+        "tipo": "SeparadorTrilha",
+        "obrigatorio": false,
+        "descricao": "Padrão: `chevron` (›)."
+      },
+      {
+        "nome": "icones",
+        "tipo": "'inicio' | 'todos' | 'nenhum'",
+        "obrigatorio": false,
+        "descricao": "Ícones: só no Início (padrão), em todos os passos que têm, ou nenhum."
+      },
+      {
+        "nome": "aparencia",
+        "tipo": "'simples' | 'fundo'",
+        "obrigatorio": false,
+        "descricao": "`simples` (padrão) · `fundo` = faixa com fundo suave."
+      }
+    ]
+  },
+  "Municipio": {
+    "interface": "Municipio",
+    "arquivo": "src/components/CampoBusca/CampoCidade.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
@@ -6122,6 +7083,346 @@
       {
         "nome": "className",
         "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "Notificacao": {
+    "interface": "Notificacao",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "tempo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "naoLida",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "NumeroSite": {
+    "interface": "NumeroSite",
+    "arquivo": "src/components/Site/FaixaNumeros.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "O número já formatado (ex.: \"1.200\", \"4,9/5\")."
+      },
+      {
+        "nome": "sufixo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Em laranja, logo depois (ex.: \"+\", \"%\", \"h\")."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "Opcao": {
+    "interface": "Opcao",
+    "arquivo": "src/utils/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "V",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "desabilitada",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "OpcaoAlternancia": {
+    "interface": "OpcaoAlternancia",
+    "arquivo": "src/components/GrupoBotoes/GrupoBotoes.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "V",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "dica",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Obrigatória quando a opção é só ícone."
+      },
+      {
+        "nome": "desabilitada",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "OpcaoFiltroPilulas": {
+    "interface": "OpcaoFiltroPilulas",
+    "arquivo": "src/components/Site/FiltroPilulas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "V",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "OpcoesBuscaAssincrona": {
+    "interface": "OpcoesBuscaAssincrona",
+    "arquivo": "src/utils/useBuscaAssincrona.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "buscar",
+        "tipo": "(termo: string) => Promise<T[]>",
+        "obrigatorio": true,
+        "descricao": "A busca é do módulo: termo → registros."
+      },
+      {
+        "nome": "ativo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Só busca enquanto `true` (ex.: painel aberto). Ao ligar, busca na hora, sem espera."
+      },
+      {
+        "nome": "minimo",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Mínimo de caracteres; abaixo dele limpa sem chamar a API."
+      },
+      {
+        "nome": "atraso",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "OpcoesConfirmacao": {
+    "interface": "OpcoesConfirmacao",
+    "arquivo": "src/components/Confirmacao/Confirmacao.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "mensagem",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "severidade",
+        "tipo": "Exclude<SeveridadeBotao, 'secundario'>",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "rotuloAceitar",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "rotuloRecusar",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "iconeAceitar",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "somenteOk",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Só o botão de OK (aviso)."
+      }
+    ]
+  },
+  "OpcoesToast": {
+    "interface": "OpcoesToast",
+    "arquivo": "src/components/Toast/Toast.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "severidade",
+        "tipo": "SevToast",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "detalhe",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "duracao",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "ms até sumir sozinho. 0 = só fecha no ×."
+      },
+      {
+        "nome": "posicao",
+        "tipo": "'topo-esquerda' | 'topo-centro' | 'topo-direita' | 'meio-esquerda' | 'meio-centro' | 'meio-direita' | 'base-esquerda' | 'base-centro' | 'base-direita'",
+        "obrigatorio": false,
+        "descricao": "Canto/lado da tela. Padrão: `topo-direita`."
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'secundario' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'escuro'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "aparencia",
+        "tipo": "'suave' | 'padrao' | 'solido' | 'translucido'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp | false",
+        "obrigatorio": false,
+        "descricao": "Ícone no lugar do da severidade; `false` tira."
+      }
+    ]
+  },
+  "Ordenacao": {
+    "interface": "Ordenacao",
+    "arquivo": "src/components/Tabela/Tabela.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "campo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "direcao",
+        "tipo": "'asc' | 'desc'",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "PadroesBotao": {
+    "interface": "PadroesBotao",
+    "arquivo": "src/components/Botao/Botao.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "severidade",
+        "tipo": "'pri' | 'secundario' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'escuro'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "aparencia",
+        "tipo": "'solido' | 'contorno' | 'texto' | 'suave' | 'gradiente' | 'fantasma'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "formato",
+        "tipo": "'pilula' | 'retangulo'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "tamanho",
+        "tipo": "'pequeno' | 'medio' | 'grande'",
         "obrigatorio": false,
         "descricao": ""
       }
@@ -6314,6 +7615,25 @@
       }
     ]
   },
+  "PicklistValor": {
+    "interface": "PicklistValor",
+    "arquivo": "src/utils/picklist.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "fonte",
+        "tipo": "T[]",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "alvo",
+        "tipo": "T[]",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "Placa": {
     "interface": "PlacaProps",
     "arquivo": "src/components/Placa/Placa.tsx",
@@ -6336,6 +7656,86 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "PoliticaSenha": {
+    "interface": "PoliticaSenha",
+    "arquivo": "src/utils/senha.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "minimo",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "exigirMinuscula",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "exigirMaiuscula",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "exigirDigito",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "exigirSimbolo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "Preferencias": {
+    "interface": "Preferencias",
+    "arquivo": "src/components/Preferencias/Preferencias.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "tema",
+        "tipo": "'claro' | 'escuro' | 'sistema'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "escuro",
+        "tipo": "boolean",
+        "obrigatorio": true,
+        "descricao": "O tema que está na tela: com `sistema`, o do sistema operacional agora."
+      },
+      {
+        "nome": "densidade",
+        "tipo": "'compacta' | 'confortavel' | 'espacosa'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "definirTema",
+        "tipo": "(t: Tema) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "alternarTema",
+        "tipo": "() => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "definirDensidade",
+        "tipo": "(d: Densidade) => void",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
@@ -6454,6 +7854,98 @@
       }
     ]
   },
+  "PropsGatilhoMenu": {
+    "interface": "PropsGatilhoMenu",
+    "arquivo": "src/components/MenuSuspenso/MenuSuspenso.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "ref",
+        "tipo": "RefObject<HTMLButtonElement | null>",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aria-haspopup",
+        "tipo": "'menu' | 'dialog'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aria-expanded",
+        "tipo": "boolean",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aria-controls",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "disabled",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "onClick",
+        "tipo": "() => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "onKeyDown",
+        "tipo": "(e: KeyboardEvent<HTMLButtonElement>) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "PropsLink": {
+    "interface": "PropsLink",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "href",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "children",
+        "tipo": "ReactNode",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "onClick",
+        "tipo": "(e: MouseEvent<HTMLAnchorElement>) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aria-current",
+        "tipo": "'page'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "aria-disabled",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "ProvedorPreferencias": {
     "interface": "ProvedorPreferenciasProps",
     "arquivo": "src/components/Preferencias/Preferencias.tsx",
@@ -6555,6 +8047,31 @@
       }
     ]
   },
+  "ReferenciaGrafico": {
+    "interface": "ReferenciaGrafico",
+    "arquivo": "src/components/Grafico/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "eixo",
+        "tipo": "'esquerdo' | 'direito'",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "Referencias": {
     "interface": "ReferenciasProps",
     "arquivo": "src/components/Referencias/Referencias.tsx",
@@ -6598,6 +8115,43 @@
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "RegressaoLinear": {
+    "interface": "RegressaoLinear",
+    "arquivo": "src/components/Grafico/escalas.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "inclinacao",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "intercepto",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "r",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": "Correlação de Pearson."
+      },
+      {
+        "nome": "r2",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "n",
+        "tipo": "number",
+        "obrigatorio": true,
         "descricao": ""
       }
     ]
@@ -6653,6 +8207,25 @@
       }
     ]
   },
+  "SecaoNav": {
+    "interface": "SecaoNav",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Rótulo do grupo (linha em caixa alta)."
+      },
+      {
+        "nome": "itens",
+        "tipo": "ItemNav[]",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "SecaoSite": {
     "interface": "SecaoSiteProps",
     "arquivo": "src/components/Site/SecaoSite.tsx",
@@ -6699,6 +8272,68 @@
       }
     ]
   },
+  "SegmentoProgresso": {
+    "interface": "SegmentoProgresso",
+    "arquivo": "src/components/Progresso/Progresso.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'secundario' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'escuro'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Nome do segmento (leitor de tela e texto `dentro`)."
+      }
+    ]
+  },
+  "SerieGrafico": {
+    "interface": "SerieGrafico",
+    "arquivo": "src/components/Grafico/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "chave",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Campo de cada item de `dados`."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Legenda e caixa de detalhes."
+      },
+      {
+        "nome": "cor",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Padrão: `--graf-1`, `--graf-2`… na ordem das séries."
+      },
+      {
+        "nome": "tracejada",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Ex.: linha de tendência."
+      },
+      {
+        "nome": "eixo",
+        "tipo": "'esquerdo' | 'direito'",
+        "obrigatorio": false,
+        "descricao": "Só no `GraficoCombinado`. Padrão: barras no esquerdo, linhas no direito."
+      }
+    ]
+  },
   "Skeleton": {
     "interface": "SkeletonProps",
     "arquivo": "src/components/Skeleton/Skeleton.tsx",
@@ -6730,6 +8365,43 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "SlideCarrossel": {
+    "interface": "SlideCarrossel",
+    "arquivo": "src/components/Carrossel/Carrossel.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "imagem",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "alt",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "descricao",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "intervalo",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Tempo deste slide, em ms (sobrepõe o `intervalo` do carrossel)."
       }
     ]
   },
@@ -7230,6 +8902,56 @@
         "obrigatorio": false,
         "descricao": "`simples` (padrão) · `fundo` = faixa com fundo suave.",
         "de": "ModeloTrilha"
+      }
+    ]
+  },
+  "Uf": {
+    "interface": "Uf",
+    "arquivo": "src/utils/constantes.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "uf",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "UsuarioEstrutura": {
+    "interface": "UsuarioEstrutura",
+    "arquivo": "src/components/Estrutura/Estrutura.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "cargo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "foto",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "iniciais",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
       }
     ]
   },

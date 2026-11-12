@@ -29,7 +29,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # o teste usa a demo (vite dev) direto de src/, sem o build da biblioteca
       - run: npm ci --ignore-scripts
@@ -55,7 +55,7 @@ jobs:
           git diff --cached --quiet || git commit -m "test: atualiza a referência visual"
           git push
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: ${{ failure() }}
         with:
           name: relatorio-visual

@@ -14,7 +14,7 @@ export default function Exemplo() {
         icone="search"
         valor={busca}
         aoMudar={setBusca}
-        sufixo={<Botao icone="x" aparencia="texto" tamanho="pequeno" dica="Limpar" onClick={() => setBusca('')} />}
+        sufixo={<Botao icone="x" aparencia="texto" tamanho="pequeno" aria-label="Limpar" dica="Limpar" onClick={() => setBusca('')} />}
       />
     </div>
   );

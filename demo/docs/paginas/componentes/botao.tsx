@@ -1,8 +1,8 @@
-import { C } from '../Codigo';
-import { Exemplo } from '../Exemplo';
-import { PaginaComponente } from '../PaginaDoc';
+import { C } from '../../Codigo';
+import { Exemplo } from '../../Exemplo';
+import { PaginaComponente } from '../../PaginaDoc';
 
-export function DocBotao() {
+export default function Pagina() {
   return (
     <PaginaComponente
       titulo="Botão"
@@ -16,7 +16,8 @@ export function DocBotao() {
             Use uma única ação <C>pri</C> sólida por área da tela; as demais em <C>contorno</C>, <C>suave</C> ou <C>texto</C>.
           </li>
           <li>
-            Botão só com ícone precisa de <C>dica</C> (vira o nome acessível e o balão no hover).
+            Botão só com ícone precisa de <C>aria-label</C> (o nome que o leitor de tela anuncia) e de <C>dica</C> (o balão para quem
+            enxerga).
           </li>
           <li>
             O padrão é <C>type="button"</C>: dentro de um formulário, passe <C>type="submit"</C> no botão que envia.

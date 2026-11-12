@@ -1,4 +1,4 @@
-import { Tabela } from '../../src';
+import { Alerta, Tabela } from '../../src';
 import { C } from './Codigo';
 import PROPS from './props.gerado.json';
 
@@ -31,7 +31,13 @@ function nativo(externo: string) {
  */
 export function TabelaProps({ componente, padroes = {} }: { componente: string; padroes?: Record<string, string> }) {
   const entrada = TODAS[componente];
-  if (!entrada) throw new Error(`Sem props geradas para ${componente}: rode npm run docs:props`);
+  if (!entrada) return <Alerta severidade="err" mensagem={`Sem props geradas para ${componente}: rode npm run docs:props.`} />;
+  if (!entrada.props.length)
+    return (
+      <p className="doc-props-nota">
+        <C>{componente}</C> não tem props próprias além de <C>children</C>.
+      </p>
+    );
   const registros = entrada.props.map((p) => ({ ...p, id: p.nome, padrao: p.padrao ?? padroes[p.nome] }));
 
   return (
