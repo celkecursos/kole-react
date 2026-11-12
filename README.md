@@ -626,7 +626,7 @@ A demo usa o mesmo CSS do pacote (na camada `kole`, com o tema `sistema`), e o
 ### Documentação
 
 A demo tem a seção **Documentação** (`/#/docs/...`): Instalação, Tema e tokens,
-Tailwind, Changelog e 60 páginas de componente, com exemplos ao vivo, o código
+Tailwind, Carregamento, Changelog e 60 páginas de componente, com exemplos ao vivo, o código
 de cada exemplo e a tabela de props. Fica em `demo/docs/`:
 
 - `nav.ts`: o catálogo (categoria → componente). O menu, o índice

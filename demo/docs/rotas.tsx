@@ -1,5 +1,6 @@
 import './docs.css';
 import type { ComponentType, ReactNode } from 'react';
+import { DocCarregamento } from './paginas/Carregamento';
 import { DocChangelog } from './paginas/Changelog';
 import { DocIndice } from './paginas/Indice';
 import { DocInstalacao } from './paginas/Instalacao';
@@ -13,6 +14,7 @@ const GUIAS: Record<string, ComponentType> = {
   '/docs/instalacao': DocInstalacao,
   '/docs/tema': DocTema,
   '/docs/tailwind': DocTailwind,
+  '/docs/carregamento': DocCarregamento,
   '/docs/changelog': DocChangelog,
   '/docs/componentes': DocIndice,
 };
