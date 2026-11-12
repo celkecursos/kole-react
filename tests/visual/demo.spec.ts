@@ -17,6 +17,7 @@ for (const rota of ROTAS) {
     await page.waitForLoadState('networkidle');
     await page.evaluate(() => document.fonts.ready);
     const nome = rota === '/' ? 'painel' : rota.slice(1).replace(/\//g, '-');
-    await expect(page).toHaveScreenshot(`${nome}.png`, { fullPage: true });
+    // [data-visual-ignorar] = trecho que muda de propósito entre os projetos (ex.: o tema marcado)
+    await expect(page).toHaveScreenshot(`${nome}.png`, { fullPage: true, mask: [page.locator('[data-visual-ignorar]')] });
   });
 }

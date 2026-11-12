@@ -42,6 +42,7 @@ import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaErro } from './paginas/Erro';
 import { PaginaSite } from './paginas/site/Site';
 import { NAV } from './nav';
+import { paginaDocs } from './docs/rotas';
 
 function rotaDoHash() {
   return window.location.hash.replace(/^#/, '') || '/';
@@ -79,7 +80,8 @@ function App() {
   };
 
   let pagina;
-  if (rota === '/') pagina = <PaginaPainel navegar={navegar} />;
+  if (rota === '/docs' || rota.startsWith('/docs/')) pagina = paginaDocs(rota) ?? <PaginaPainel navegar={navegar} />;
+  else if (rota === '/') pagina = <PaginaPainel navegar={navegar} />;
   else if (rota === '/pedidos') pagina = <PaginaListagem navegar={navegar} />;
   else if (rota === '/pedidos/novo' || rota.startsWith('/pedidos/novo/')) pagina = <PaginaCadastro rota={rota} navegar={navegar} />;
   else if (rota === '/campos') pagina = <PaginaCampos />;

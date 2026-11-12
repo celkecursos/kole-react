@@ -1,10 +1,12 @@
 import type { SecaoNav } from '../src';
+import { NAV_DOCS } from './docs/nav';
 
 /** Menu da demo. Também é a lista de páginas do teste visual (tests/visual/demo.spec.ts). */
 export const NAV: SecaoNav[] = [
   {
     itens: [{ rotulo: 'Painel', icone: 'house', rota: '/' }],
   },
+  NAV_DOCS,
   {
     rotulo: 'Pages',
     itens: [
