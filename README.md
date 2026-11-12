@@ -573,6 +573,23 @@ npm run build        # dist/index.js + tipos (.d.ts) + dist/estilos.css + dist/t
 A demo usa o mesmo CSS do pacote (na camada `kole`, com o tema `sistema`), e o
 `demo/demo.css` fica fora da camada, como o CSS de um app.
 
+### Documentação
+
+A demo tem a seção **Documentação** (`/#/docs/...`): Instalação, Tema e tokens e
+uma página por componente, com exemplos ao vivo, o código de cada exemplo e a
+tabela de props. Fica em `demo/docs/`:
+
+- `exemplos/<componente>/<Nome>.tsx`: cada arquivo é ao mesmo tempo o exemplo
+  que roda e o código que a página mostra (os imports de `src` aparecem como
+  `@celke/kole-react`). Na página: `<Exemplo id="botao/Cores" titulo="Cores" />`.
+- `paginas/<Componente>.tsx`: a página, montada com `PaginaComponente`.
+- `nav.ts` (menu) e `rotas.tsx` (rota → página): componente novo entra nos dois.
+- `props.gerado.json`: as props de todos os componentes, lidas dos tipos
+  TypeScript (nome, tipo, obrigatória, padrão e o JSDoc como descrição). É
+  gerado por `npm run docs:props`, que já roda no `dev` e no `build:demo`;
+  `npm run docs:conferir` falha se o arquivo estiver desatualizado. A descrição
+  da prop é o comentário `/** … */` dela no componente.
+
 ### Teste visual
 
 Captura cada página do menu da demo (`demo/nav.ts`) nos temas claro e escuro e

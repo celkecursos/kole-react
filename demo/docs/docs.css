@@ -1,0 +1,212 @@
+/* Documentação (/docs): só a demo usa; fica fora da camada kole, como o CSS de um app. */
+.doc {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: 60rem;
+}
+.doc-secao {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  scroll-margin-top: 5rem;
+}
+.doc-secao-titulo {
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: var(--hairline) solid var(--border);
+  font-size: var(--fs-titulo-secao);
+  font-weight: 800;
+  color: var(--ink);
+}
+.doc-p {
+  margin: 0;
+  font-size: var(--fs-corpo);
+  line-height: 1.6;
+  color: var(--t2);
+}
+.doc-lista {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: var(--fs-corpo);
+  line-height: 1.6;
+  color: var(--t2);
+}
+
+/* código inline */
+.doc-c {
+  font-family: var(--lp-font-mono);
+  font-size: 0.92em;
+  padding: 0.0625rem 0.3125rem;
+  border-radius: var(--r-field);
+  background: var(--surf-3);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* bloco de código */
+.doc-codigo {
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surf-2);
+  overflow: hidden;
+}
+.doc-codigo-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.125rem 0.25rem 0.125rem 0.875rem;
+  border-bottom: var(--hairline) solid var(--border);
+}
+.doc-codigo-ling {
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--t4);
+}
+.doc-codigo pre {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-family: var(--lp-font-mono);
+  font-size: var(--fs-caption);
+  line-height: 1.65;
+  color: var(--ink);
+  tab-size: 2;
+}
+
+/* exemplo: preview + código */
+.doc-exemplo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  scroll-margin-top: 5rem;
+}
+.doc-exemplo + .doc-exemplo {
+  margin-top: 0.75rem;
+}
+.doc-exemplo-titulo {
+  margin: 0;
+  font-size: var(--fs-corpo);
+  font-weight: 700;
+  color: var(--ink);
+}
+.doc-exemplo-desc {
+  font-size: var(--fs-corpo-2);
+  line-height: 1.6;
+  color: var(--t3);
+}
+.doc-exemplo-caixa {
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  overflow: hidden;
+}
+.doc-exemplo-preview {
+  padding: 1.5rem 1.25rem;
+}
+.doc-exemplo-rodape {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.125rem 0.375rem;
+  border-top: var(--hairline) solid var(--border);
+  background: var(--surf-2);
+}
+.doc-exemplo-caixa .doc-codigo {
+  border: 0;
+  border-top: var(--hairline) solid var(--border);
+  border-radius: 0;
+}
+
+/* tabela de props */
+.doc-props {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.doc-props-nome {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.125rem;
+  font-weight: 600;
+}
+.doc-props-obrig {
+  color: var(--err-fg);
+  font-weight: 700;
+}
+.doc-props-de,
+.doc-props-vazio {
+  color: var(--t4);
+}
+.doc-props-nota {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--t3);
+}
+
+/* tokens */
+.doc-tokens {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.doc-tokens + .doc-tokens {
+  margin-top: 0.5rem;
+}
+.doc-tokens-grupo {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--t4);
+}
+.doc-tokens-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.625rem;
+}
+.doc-token {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  font-size: var(--fs-corpo-2);
+}
+.doc-token-amostra,
+.doc-token-medida {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-field);
+  border: var(--hairline) solid var(--border-2);
+}
+.doc-token-medida {
+  display: grid;
+  place-items: center;
+  background: var(--pri-bg);
+  border-color: var(--pri-bd);
+  color: var(--pri-ink);
+  font-weight: 700;
+  overflow: hidden;
+}
+.doc-token-barra {
+  width: 0.5rem;
+  max-height: 2.25rem;
+  border-radius: var(--hairline);
+  background: var(--pri);
+}
+.doc-token-uso {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: var(--fs-caption);
+  color: var(--t3);
+}

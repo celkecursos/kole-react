@@ -4,6 +4,9 @@
 
 Novidades:
 
+- Demo: seção Documentação com Instalação, Tema e tokens e as páginas de
+  `Alerta`, `Badge`, `Botao`, `CampoTexto` e `Dialogo` (exemplos ao vivo, código
+  e tabela de props gerada dos tipos por `npm run docs:props`).
 - Componentes de site público: `EstruturaSite` (barra de aviso, cabeçalho fixo
   com marca, menu horizontal, botão de tema e ações; no celular, menu em painel),
   `RodapeSite` (colunas, newsletter e redes), `SecaoSite`, `DestaqueSite` (faixa
