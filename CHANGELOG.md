@@ -1,14 +1,22 @@
 # Changelog
 
+## Não publicado
+
+Novidades:
+
+- Demo: seção Documentação com Instalação, Tema e tokens, Tailwind,
+  Carregamento (qual loading usar em cada situação), Changelog e 60 páginas de
+  componente em seis categorias (exemplos ao vivo, código e tabela de props
+  gerada dos tipos por `npm run docs:props`).
+- Demo: o rodapé da barra lateral mostra a versão do pacote (lida do
+  `package.json`), no lugar do `v0.1.0` fixo.
+- CI: actions atualizadas para versões em Node 24 (`checkout@v6`,
+  `upload-artifact@v6`, `setup-node@v6`); a publicação passa a usar o Node 26 (LTS).
+
 ## 0.5.0
 
 Novidades:
 
-- Demo: seção Documentação com Instalação, Tema e tokens, Tailwind, Changelog
-  e 60 páginas de componente em seis categorias (exemplos ao vivo, código e
-  tabela de props gerada dos tipos por `npm run docs:props`).
-- CI: actions atualizadas para versões em Node 24 (`checkout@v6`,
-  `upload-artifact@v6`, `setup-node@v6`); a publicação passa a usar o Node 26 (LTS).
 - Componentes de site público: `EstruturaSite` (barra de aviso, cabeçalho fixo
   com marca, menu horizontal, botão de tema e ações; no celular, menu em painel),
   `RodapeSite` (colunas, newsletter e redes), `SecaoSite`, `DestaqueSite` (faixa
