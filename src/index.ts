@@ -314,7 +314,11 @@ export type {
 // Conversa
 export { Conversa, type ConversaProps } from './components/Conversa/Conversa';
 export { Mensagem, type MensagemProps, type AutorMensagem, type EstadoMensagem } from './components/Mensagem/Mensagem';
-export { CampoMensagem, type CampoMensagemProps } from './components/CampoMensagem/CampoMensagem';
+export { CampoMensagem, type CampoMensagemProps, type AnexoMensagem } from './components/CampoMensagem/CampoMensagem';
+export { ListaConversas, type ListaConversasProps, type ItemConversa } from './components/ListaConversas/ListaConversas';
+export { InicioConversa, type InicioConversaProps, type SugestaoConversa } from './components/InicioConversa/InicioConversa';
+export { BlocoCodigo, type BlocoCodigoProps } from './components/BlocoCodigo/BlocoCodigo';
+export { ChatFlutuante, type ChatFlutuanteProps } from './components/ChatFlutuante/ChatFlutuante';
 export { Referencias, type ReferenciasProps, type ItemReferencia } from './components/Referencias/Referencias';
 
 // Arquivos

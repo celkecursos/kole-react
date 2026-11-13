@@ -415,6 +415,49 @@
       }
     ]
   },
+  "AnexoMensagem": {
+    "interface": "AnexoMensagem",
+    "arquivo": "src/components/CampoMensagem/CampoMensagem.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "tamanho",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Em bytes."
+      },
+      {
+        "nome": "tipo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Tipo MIME (define o ícone)."
+      },
+      {
+        "nome": "progresso",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Envio em andamento, de 0 a 100: a barra aparece e o Enviar espera."
+      },
+      {
+        "nome": "erro",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "O envio falhou: o chip fica vermelho com este texto."
+      }
+    ]
+  },
   "ApiToast": {
     "interface": "ApiToast",
     "arquivo": "src/components/Toast/Toast.tsx",
@@ -785,6 +828,44 @@
         "obrigatorio": false,
         "padrao": "'inicio'",
         "descricao": "`inicio` (padrão) · `entre` = espalha os grupos de ponta a ponta."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "BlocoCodigo": {
+    "interface": "BlocoCodigoProps",
+    "arquivo": "src/components/BlocoCodigo/BlocoCodigo.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "codigo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "linguagem",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Nome no topo (ex.: `sql`, `tsx`). Vai também em `data-linguagem` e na classe `language-*`, para um realce do app."
+      },
+      {
+        "nome": "copiavel",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "true",
+        "descricao": "Botão de copiar. Padrão: `true`."
+      },
+      {
+        "nome": "quebrarLinhas",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Quebra as linhas longas em vez de rolar para o lado."
       },
       {
         "nome": "className",
@@ -1836,7 +1917,7 @@
         "nome": "aoEnviar",
         "tipo": "(texto: string) => void",
         "obrigatorio": true,
-        "descricao": "Recebe o texto sem espaços nas pontas; nunca é chamado com texto vazio."
+        "descricao": "Recebe o texto sem espaços nas pontas; só vem vazio quando há anexos."
       },
       {
         "nome": "gerando",
@@ -1889,6 +1970,25 @@
         "tipo": "ReactNode",
         "obrigatorio": false,
         "descricao": "Botões próprios do app à esquerda do Enviar (anexar, escolher documentos…)."
+      },
+      {
+        "nome": "anexos",
+        "tipo": "AnexoMensagem[]",
+        "obrigatorio": false,
+        "padrao": "[]",
+        "descricao": "Chips dos arquivos anexados, acima do texto. Com anexos, dá para enviar sem texto."
+      },
+      {
+        "nome": "aoRemoverAnexo",
+        "tipo": "(id: AnexoMensagem['id']) => void",
+        "obrigatorio": false,
+        "descricao": "Mostra o \"×\" em cada chip."
+      },
+      {
+        "nome": "aoAdicionarArquivos",
+        "tipo": "(arquivos: File[]) => void",
+        "obrigatorio": false,
+        "descricao": "Arquivos soltos sobre o campo ou colados nele (Ctrl+V de uma imagem): o app valida e envia."
       },
       {
         "nome": "rotulo",
@@ -3473,6 +3573,95 @@
         "nome": "valor",
         "tipo": "ValorGrafico",
         "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "ChatFlutuante": {
+    "interface": "ChatFlutuanteProps",
+    "arquivo": "src/components/ChatFlutuante/ChatFlutuante.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "children",
+        "tipo": "ReactNode",
+        "obrigatorio": true,
+        "descricao": "Normalmente uma `Conversa` (com o `CampoMensagem` no `campo`). Ocupa a altura do painel."
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Fale com a gente'",
+        "descricao": "Título do painel. Padrão: \"Fale com a gente\"."
+      },
+      {
+        "nome": "subtitulo",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Abaixo do título (ex.: \"Respondemos em poucos minutos\")."
+      },
+      {
+        "nome": "avatar",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Foto (URL) ou nó (ícone, `Avatar`) ao lado do título. Padrão: o ícone do botão."
+      },
+      {
+        "nome": "rotuloBotao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Texto do botão. No celular, só o ícone aparece. Padrão: o `titulo`."
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "padrao": "'message-circle'",
+        "descricao": ""
+      },
+      {
+        "nome": "naoLidas",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Bolinha com a contagem sobre o botão (mensagens não lidas)."
+      },
+      {
+        "nome": "aberto",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Controlado: o app abre e fecha."
+      },
+      {
+        "nome": "aoMudarAberto",
+        "tipo": "(aberto: boolean) => void",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "abertoInicial",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": ""
+      },
+      {
+        "nome": "lado",
+        "tipo": "'direita' | 'esquerda'",
+        "obrigatorio": false,
+        "padrao": "'direita'",
+        "descricao": "Canto da tela. Padrão: `direita`."
+      },
+      {
+        "nome": "acoes",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Ações no topo do painel, antes do fechar (ex.: \"Nova conversa\")."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
         "descricao": ""
       }
     ]
@@ -6248,6 +6437,63 @@
       }
     ]
   },
+  "InicioConversa": {
+    "interface": "InicioConversaProps",
+    "arquivo": "src/components/InicioConversa/InicioConversa.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "titulo",
+        "tipo": "ReactNode",
+        "obrigatorio": true,
+        "descricao": "Saudação (ex.: \"Boa tarde, Ana. Como posso ajudar?\")."
+      },
+      {
+        "nome": "descricao",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": "Ícone ou imagem acima da saudação."
+      },
+      {
+        "nome": "sugestoes",
+        "tipo": "SugestaoConversa[]",
+        "obrigatorio": false,
+        "padrao": "[]",
+        "descricao": ""
+      },
+      {
+        "nome": "aoEscolher",
+        "tipo": "(sugestao: SugestaoConversa) => void",
+        "obrigatorio": false,
+        "descricao": "A pessoa escolheu uma sugestão: o app envia ou coloca o texto no campo."
+      },
+      {
+        "nome": "aparencia",
+        "tipo": "'cartoes' | 'pilulas'",
+        "obrigatorio": false,
+        "padrao": "'cartoes'",
+        "descricao": "`cartoes` (padrão): grade de cartões · `pilulas`: botões em linha, para painéis estreitos (ex.: `ChatFlutuante`)."
+      },
+      {
+        "nome": "children",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Abaixo das sugestões (ex.: um aviso sobre o uso dos dados)."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "IntervaloHorario": {
     "interface": "IntervaloHorario",
     "arquivo": "src/components/Calendario/Calendario.tsx",
@@ -6345,6 +6591,37 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": "Página fora da navegação SPA (ex.: tela Blade num app Inertia): abre com recarga completa, sem `aoNavegar`."
+      }
+    ]
+  },
+  "ItemConversa": {
+    "interface": "ItemConversa",
+    "arquivo": "src/components/ListaConversas/ListaConversas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string | number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "data",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": "Última atividade: define o grupo (Hoje, Ontem, Últimos 7 dias…)."
+      },
+      {
+        "nome": "fixada",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Fica no grupo \"Fixadas\", no topo."
       }
     ]
   },
@@ -7076,6 +7353,107 @@
         "tipo": "Omit<PaginacaoProps, 'embutida' | 'className'>",
         "obrigatorio": false,
         "descricao": ""
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ListaConversas": {
+    "interface": "ListaConversasProps",
+    "arquivo": "src/components/ListaConversas/ListaConversas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "itens",
+        "tipo": "ItemConversa[]",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "ativa",
+        "tipo": "ItemConversa['id'] | null",
+        "obrigatorio": false,
+        "descricao": "Id da conversa aberta."
+      },
+      {
+        "nome": "aoEscolher",
+        "tipo": "(id: ItemConversa['id']) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aoNova",
+        "tipo": "() => void",
+        "obrigatorio": false,
+        "descricao": "Mostra o botão \"Nova conversa\"."
+      },
+      {
+        "nome": "aoRenomear",
+        "tipo": "(id: ItemConversa['id'], titulo: string) => void",
+        "obrigatorio": false,
+        "descricao": "Liga o \"Renomear\" no menu do item (edição no próprio item: Enter salva, Esc cancela)."
+      },
+      {
+        "nome": "aoExcluir",
+        "tipo": "(id: ItemConversa['id']) => void",
+        "obrigatorio": false,
+        "descricao": "Liga o \"Excluir\" no menu do item. A confirmação, se houver, é do app."
+      },
+      {
+        "nome": "aoFixar",
+        "tipo": "(id: ItemConversa['id'], fixada: boolean) => void",
+        "obrigatorio": false,
+        "descricao": "Liga o \"Fixar\"/\"Desafixar\" no menu do item."
+      },
+      {
+        "nome": "busca",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "true",
+        "descricao": "Campo de busca pelo título (sem acento e sem diferença de maiúsculas). Padrão: `true`."
+      },
+      {
+        "nome": "carregando",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "textoVazio",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Nenhuma conversa ainda.'",
+        "descricao": "Sem conversas."
+      },
+      {
+        "nome": "extra",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Acima da lista, abaixo da busca (ex.: filtros)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Conversas'",
+        "descricao": ""
+      },
+      {
+        "nome": "rotuloNova",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Nova conversa'",
+        "descricao": ""
+      },
+      {
+        "nome": "hoje",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "\"Hoje\" dos grupos (para testes). Padrão: a data atual."
       },
       {
         "nome": "className",
@@ -9659,6 +10037,43 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "SugestaoConversa": {
+    "interface": "SugestaoConversa",
+    "arquivo": "src/components/InicioConversa/InicioConversa.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Texto do cartão (e, sem `texto`, o que vai para o campo)."
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Linha miúda abaixo do título."
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "texto",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "O que mandar ao escolher, se for diferente do título."
       }
     ]
   },

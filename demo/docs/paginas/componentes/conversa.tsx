@@ -8,9 +8,10 @@ export default function Pagina() {
       titulo="Conversa"
       icone="message-square"
       componente="Conversa"
-      outros={['Mensagem', 'CampoMensagem']}
+      outros={['Mensagem', 'CampoMensagem', 'ListaConversas', 'InicioConversa', 'BlocoCodigo', 'ChatFlutuante']}
+      tipos={['AnexoMensagem', 'ItemConversa', 'SugestaoConversa']}
       importar={['Referencias']}
-      resumo="Chat completo: a área que rola e acompanha a última mensagem, os balões de cada autor com os estados de envio, e o campo com Enter para enviar."
+      resumo="Chat completo: a área que rola e acompanha a última mensagem, os balões de cada autor com os estados de envio, e o campo com Enter para enviar. Para assistentes de IA: histórico, tela inicial com sugestões, anexos, código com copiar e o chat flutuante do site."
       notas={
         <ul className="doc-lista">
           <li>
@@ -27,6 +28,27 @@ export default function Pagina() {
           <li>
             As fontes de uma resposta vão no <C>rodape</C> da mensagem, com <C>Referencias</C>.
           </li>
+          <li>
+            <C>ListaConversas</C> agrupa o histórico por data (Fixadas, Hoje, Ontem, Últimos 7 dias, Últimos 30 dias e os meses), com busca
+            sem acento, renomear no próprio item, fixar e excluir. O histórico é salvo pelo app.
+          </li>
+          <li>
+            <C>InicioConversa</C> vai no <C>vazio</C> da <C>Conversa</C>: saudação e sugestões em cartões, ou em pílulas
+            (<C>aparencia="pilulas"</C>) num painel estreito.
+          </li>
+          <li>
+            Anexos no <C>CampoMensagem</C>: <C>anexos</C> em chips (com <C>progresso</C> e <C>erro</C>), <C>aoRemoverAnexo</C> e{' '}
+            <C>aoAdicionarArquivos</C>, chamado ao arrastar para o campo ou colar. Enquanto um anexo sobe, o Enviar espera. O "+" e o
+            seletor de modo vão em <C>acoesExtras</C>.
+          </li>
+          <li>
+            O Markdown da resposta é renderizado pelo app; a <C>Mensagem</C> estiliza parágrafos, listas, tabelas (que rolam dentro da
+            bolha) e citações, e o <C>BlocoCodigo</C> entra no lugar do <C>code</C> com o botão de copiar.
+          </li>
+          <li>
+            <C>ChatFlutuante</C> é o atendimento do site: botão fixo no canto, painel com a conversa, Esc fecha e devolve o foco; no
+            celular, ocupa a tela.
+          </li>
         </ul>
       }
     >
@@ -34,6 +56,11 @@ export default function Pagina() {
         Escreva e aperte Enter. A resposta é simulada.
       </Exemplo>
       <Exemplo id="conversa/Estados" titulo="Estados da mensagem" />
+      <Exemplo id="conversa/Historico" titulo="Histórico de conversas" />
+      <Exemplo id="conversa/Inicio" titulo="Tela inicial com sugestões" />
+      <Exemplo id="conversa/Anexos" titulo="Anexos e menu +" />
+      <Exemplo id="conversa/Codigo" titulo="Resposta com tabela e código" />
+      <Exemplo id="conversa/Flutuante" titulo="Chat flutuante do site" />
     </PaginaComponente>
   );
 }

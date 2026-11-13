@@ -1,0 +1,137 @@
+/* ocupa a altura do pai: o topo fica parado e só a lista rola */
+.lp-lconv {
+  display: flex;
+  flex-direction: column;
+  gap: var(--d-row);
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  font-family: var(--font-ui);
+}
+.lp-lconv-topo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--d-row);
+  flex: none;
+}
+.lp-lconv-nova {
+  width: 100%;
+  justify-content: flex-start;
+}
+.lp-lconv-rolagem {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  margin-inline: -0.25rem;
+  padding-inline: 0.25rem;
+}
+.lp-lconv-carregando {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.lp-lconv-vazio {
+  margin: 0;
+  padding: 1rem 0.5rem;
+  font-size: var(--fs-corpo-2);
+  color: var(--t4);
+  text-align: center;
+}
+.lp-lconv-grupo + .lp-lconv-grupo {
+  margin-top: var(--d-row);
+}
+.lp-lconv-grupo-titulo {
+  margin: 0;
+  padding: 0.5rem 0.625rem 0.25rem;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--t4);
+}
+.lp-lconv-itens {
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-lconv-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: var(--r-btn);
+}
+.lp-lconv-item:hover {
+  background: var(--surf-2);
+}
+.lp-lconv-item.is-ativo {
+  background: var(--pri-bg);
+}
+.lp-lconv-abrir {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.625rem;
+  border: 0;
+  border-radius: var(--r-btn);
+  background: none;
+  color: var(--t2);
+  font: inherit;
+  font-size: var(--fs-corpo-2);
+  text-align: left;
+  cursor: pointer;
+}
+.lp-lconv-item.is-ativo .lp-lconv-abrir {
+  color: var(--pri-ink);
+  font-weight: 600;
+}
+.lp-lconv-abrir:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-lconv-titulo {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lp-lconv-pino {
+  flex: none;
+  font-size: 0.8125rem;
+  color: var(--t4);
+}
+/* o "…" aparece ao passar o mouse, no item aberto e ao focar; no toque, sempre */
+.lp-lconv-menu {
+  flex: none;
+  margin-inline-end: 0.125rem;
+  opacity: 0;
+}
+.lp-lconv-item:hover .lp-lconv-menu,
+.lp-lconv-item.is-ativo .lp-lconv-menu,
+.lp-lconv-menu:focus-within,
+.lp-lconv-menu:has([aria-expanded='true']) {
+  opacity: 1;
+}
+@media (hover: none) {
+  .lp-lconv-menu {
+    opacity: 1;
+  }
+}
+.lp-lconv-renomear {
+  flex: 1;
+  min-width: 0;
+  margin: 0.1875rem;
+  padding: 0.3125rem 0.4375rem;
+  border: var(--hairline) solid var(--pri);
+  border-radius: var(--r-field);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-corpo-2);
+  outline: none;
+  box-shadow: 0 0 0 0.1875rem var(--pri-bg);
+}
