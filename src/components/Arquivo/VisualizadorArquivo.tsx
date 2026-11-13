@@ -5,6 +5,8 @@ import { cx } from '../../utils/cx';
 import { Botao } from '../Botao/Botao';
 import { Vazio } from '../Vazio/Vazio';
 import './Arquivo.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface VisualizadorArquivoProps {
   arquivo: Anexo | null;
@@ -30,6 +32,7 @@ export function VisualizadorArquivo({ arquivo, aoFalhar, className }: Visualizad
 }
 
 function Conteudo({ arquivo, aoFalhar }: Omit<VisualizadorArquivoProps, 'className'>) {
+  const t = useTextos();
   const [falhou, setFalhou] = useState(false);
   const url = arquivo?.url?.trim();
   const tipo = arquivo ? tipoDeArquivo(arquivo.tipo, arquivo.nome) : 'outro';
@@ -44,7 +47,7 @@ function Conteudo({ arquivo, aoFalhar }: Omit<VisualizadorArquivoProps, 'classNa
       <div className="lp-visu-indisponivel">
         <Vazio
           icone={arquivo ? iconeArquivo(arquivo.tipo, arquivo.nome) : 'file'}
-          titulo={url ? 'Pré-visualização indisponível' : 'Arquivo indisponível'}
+          titulo={url ? t.anexo.previaIndisponivel : t.anexo.arquivoIndisponivel}
           descricao={detalhe || undefined}
         >
           {url && (
@@ -59,7 +62,7 @@ function Conteudo({ arquivo, aoFalhar }: Omit<VisualizadorArquivoProps, 'classNa
   }
 
   if (tipo === 'imagem') return <Imagem url={url} nome={arquivo.nome} aoFalhar={falhar} />;
-  if (tipo === 'pdf') return <iframe className="lp-visu-pdf" src={url} title={arquivo.nome || 'Documento PDF'} />;
+  if (tipo === 'pdf') return <iframe className="lp-visu-pdf" src={url} title={arquivo.nome || t.anexo.pdf} />;
   if (tipo === 'video')
     return (
       <video className="lp-visu-video" src={url} controls preload="metadata" onError={falhar}>
@@ -76,6 +79,7 @@ function Conteudo({ arquivo, aoFalhar }: Omit<VisualizadorArquivoProps, 'classNa
 }
 
 function Imagem({ url, nome, aoFalhar }: { url: string; nome: string; aoFalhar: () => void }) {
+  const t = useTextos();
   const [nivel, setNivel] = useState(0);
   const [giro, setGiro] = useState(0);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -133,7 +137,7 @@ function Imagem({ url, nome, aoFalhar }: { url: string; nome: string; aoFalhar: 
         className={cx('lp-visu-palco', zoom > 1 && 'is-ampliado')}
         tabIndex={0}
         role="img"
-        aria-label={nome ? `Imagem ${nome}` : 'Imagem'}
+        aria-label={nome ? interpolar(t.anexo.imagemDe, { nome }) : t.anexo.imagem}
         onKeyDown={aoTeclar}
         onDoubleClick={() => (nivel === 0 ? setNivel(NIVEIS.indexOf(2)) : ajustar())}
         onPointerDown={aoPressionar}
@@ -149,8 +153,8 @@ function Imagem({ url, nome, aoFalhar }: { url: string; nome: string; aoFalhar: 
           style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom}) rotate(${giro}deg)` }}
         />
       </div>
-      <div className="lp-visu-barra" role="toolbar" aria-label="Controles da imagem">
-        <Botao icone="zoom-out" severidade="secundario" aparencia="texto" dica="Reduzir" aria-label="Reduzir" disabled={nivel === 0} onClick={() => mudarNivel(nivel - 1)} />
+      <div className="lp-visu-barra" role="toolbar" aria-label={t.anexo.controlesImagem}>
+        <Botao icone="zoom-out" severidade="secundario" aparencia="texto" dica={t.anexo.reduzir} aria-label={t.anexo.reduzir} disabled={nivel === 0} onClick={() => mudarNivel(nivel - 1)} />
         <span className="lp-visu-zoom" aria-live="polite">
           {Math.round(zoom * 100)}%
         </span>
@@ -158,12 +162,12 @@ function Imagem({ url, nome, aoFalhar }: { url: string; nome: string; aoFalhar: 
           icone="zoom-in"
           severidade="secundario"
           aparencia="texto"
-          dica="Ampliar" aria-label="Ampliar"
+          dica={t.anexo.ampliar} aria-label={t.anexo.ampliar}
           disabled={nivel === NIVEIS.length - 1}
           onClick={() => mudarNivel(nivel + 1)}
         />
-        <Botao icone="maximize" severidade="secundario" aparencia="texto" dica="Ajustar à tela" aria-label="Ajustar à tela" onClick={ajustar} />
-        <Botao icone="refresh-cw" severidade="secundario" aparencia="texto" dica="Girar 90 graus" aria-label="Girar 90 graus" onClick={girar} />
+        <Botao icone="maximize" severidade="secundario" aparencia="texto" dica={t.anexo.ajustar} aria-label={t.anexo.ajustar} onClick={ajustar} />
+        <Botao icone="refresh-cw" severidade="secundario" aparencia="texto" dica={t.anexo.girar} aria-label={t.anexo.girar} onClick={girar} />
       </div>
     </div>
   );

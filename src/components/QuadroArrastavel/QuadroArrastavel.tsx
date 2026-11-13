@@ -12,6 +12,8 @@ import { portal } from '../../utils/portal';
 import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import './QuadroArrastavel.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface ColunaArrastavel<T> {
   id: string;
@@ -189,6 +191,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
   rotulo,
   className,
 }: QuadroArrastavelProps<T, C>) {
+  const tq = useTextos().quadro;
   const [arraste, setArraste] = useState<Arraste | null>(null);
   // pego pelo teclado
   const [pego, setPego] = useState<{ tipo: 'item' | 'coluna'; id: string } | null>(null);
@@ -206,7 +209,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
   colsRef.current = cols;
 
   const eVisivel = (it: T) => !visivel || visivel(it);
-  const nomeColuna = (c: number) => colsRef.current[c]?.titulo ?? `coluna ${c + 1}`;
+  const nomeColuna = (c: number) => colsRef.current[c]?.titulo ?? interpolar(tq.colunaN, { n: c + 1 });
   const item = (id: string) => colsRef.current.flatMap((c) => c.itens).find((x) => x.id === id);
   const posicaoDe = (cs: C[], p: Posicao): PosicaoQuadro => ({ coluna: cs[p.coluna].id, indice: p.indice });
 
@@ -345,7 +348,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
       const a = origem.current;
       if (gravar && a?.tipo === 'item') {
         const p = localizar(colsRef.current, a.id);
-        if (p) setAnuncio(`${nomeItem(item(a.id)!)} solto em ${nomeColuna(p.coluna)}, posição ${p.indice + 1}.`);
+        if (p) setAnuncio(interpolar(tq.solto, { nome: nomeItem(item(a.id)!), coluna: nomeColuna(p.coluna), n: p.indice + 1 }));
       }
       terminarRef.current(gravar);
       setArraste(null);
@@ -407,15 +410,15 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
       if (pego?.id === id) {
         if (tipo === 'item') {
           const p = localizar(cs, id)!;
-          setAnuncio(`${nome} solto em ${nomeColuna(p.coluna)}, posição ${p.indice + 1}.`);
-        } else setAnuncio(`Coluna ${nome} solta na posição ${cs.findIndex((c) => c.id === id) + 1}.`);
+          setAnuncio(interpolar(tq.solto, { nome, coluna: nomeColuna(p.coluna), n: p.indice + 1 }));
+        } else setAnuncio(interpolar(tq.colunaSolta, { nome, n: cs.findIndex((c) => c.id === id) + 1 }));
         terminar(true);
         setPego(null);
       } else if (!pego) {
         comecar(tipo, id);
         setPego({ tipo, id });
         setAnuncio(
-          `${tipo === 'coluna' ? 'Coluna ' : ''}${nome} pego. Use as setas para mover, Espaço para soltar, Esc para cancelar.`,
+          interpolar(tipo === 'coluna' ? tq.colunaPega : tq.pego, { nome }),
         );
       }
       return;
@@ -425,7 +428,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
       e.preventDefault();
       terminar(false);
       setPego(null);
-      setAnuncio(`Movimento cancelado. ${nome} voltou ao lugar.`);
+      setAnuncio(interpolar(tq.cancelado, { nome }));
       return;
     }
     if (!e.key.startsWith('Arrow')) return;
@@ -436,7 +439,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
       const para = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? de - 1 : de + 1;
       if (para < 0 || para >= cs.length) return;
       atualizar(moverColuna(cs, de, para));
-      setAnuncio(`Coluna ${nome} na posição ${para + 1} de ${cs.length}.`);
+      setAnuncio(interpolar(tq.colunaPosicao, { nome, n: para + 1, total: cs.length }));
       return;
     }
 
@@ -467,7 +470,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
       }
     }
     if (!para) {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') setAnuncio(`${nome} não pode ir para outra coluna nessa direção.`);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') setAnuncio(interpolar(tq.semDestino, { nome }));
       return;
     }
     const novas = mover(cs, de, para);
@@ -475,7 +478,7 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
     const final = localizar(novas, id)!;
     const total = novas[final.coluna].itens.filter(eVisivel).length;
     const posVisivel = novas[final.coluna].itens.slice(0, final.indice).filter(eVisivel).length + 1;
-    setAnuncio(`${nome} em ${nomeColuna(final.coluna)}, posição ${posVisivel} de ${total}.`);
+    setAnuncio(interpolar(tq.posicao, { nome, coluna: nomeColuna(final.coluna), n: posVisivel, total }));
   };
 
   const aoSairDaAlca = (tipo: 'item' | 'coluna', id: string) => {
@@ -495,9 +498,9 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
     <button
       type="button"
       className={cx('lp-quadro-alca', pego?.id === it.id && 'is-pego')}
-      aria-label={`Mover ${nomeItem(it)}`}
+      aria-label={interpolar(tq.mover, { nome: nomeItem(it) })}
       aria-pressed={pego?.id === it.id}
-      title="Arrastar"
+      title={tq.arrastar}
       onPointerDown={(e) => aoPressionar(e, 'item', it.id)}
       onKeyDown={(e) => aoTeclar(e, 'item', it.id)}
       onBlur={() => aoSairDaAlca('item', it.id)}
@@ -511,9 +514,9 @@ export function QuadroArrastavel<T extends { id: string }, C extends ColunaArras
       <button
         type="button"
         className={cx('lp-quadro-alca lp-quadro-alca--coluna', pego?.id === c.id && 'is-pego')}
-        aria-label={`Mover coluna ${c.titulo ?? i + 1}`}
+        aria-label={interpolar(tq.moverColuna, { nome: c.titulo ?? i + 1 })}
         aria-pressed={pego?.id === c.id}
-        title="Arrastar coluna"
+        title={tq.arrastarColuna}
         onPointerDown={(e) => aoPressionar(e, 'coluna', c.id)}
         onKeyDown={(e) => aoTeclar(e, 'coluna', c.id)}
         onBlur={() => aoSairDaAlca('coluna', c.id)}

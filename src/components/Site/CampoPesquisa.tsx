@@ -2,6 +2,7 @@ import { useId, type FormEvent } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import './CampoPesquisa.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface CampoPesquisaProps {
   valor: string;
@@ -18,7 +19,10 @@ export interface CampoPesquisaProps {
 }
 
 /** Busca em pílula com botão (`role="search"`), como nas faixas e listagens do site. */
-export function CampoPesquisa({ valor, aoMudar, aoPesquisar, placeholder = 'Pesquisar', rotulo, rotuloBotao = 'Buscar', aparencia = 'padrao', className }: CampoPesquisaProps) {
+export function CampoPesquisa({ valor, aoMudar, aoPesquisar, placeholder: placeholderProp, rotulo, rotuloBotao: rotuloBotaoProp, aparencia = 'padrao', className }: CampoPesquisaProps) {
+  const t = useTextos();
+  const placeholder = placeholderProp ?? t.site.pesquisar;
+  const rotuloBotao = rotuloBotaoProp ?? t.comum.buscar;
   const id = useId();
   const enviar = (e: FormEvent) => {
     e.preventDefault();

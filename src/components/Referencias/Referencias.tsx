@@ -3,6 +3,8 @@ import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import { Recolhivel } from '../Recolhivel/Recolhivel';
 import './Referencias.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { pluralizar } from '../../i18n/idiomas';
 
 export interface ItemReferencia {
   id: string;
@@ -26,8 +28,6 @@ export interface ReferenciasProps {
   rotuloMostrarMenos?: string;
   className?: string;
 }
-
-const rotuloPadrao = (n: number) => (n === 1 ? '1 fonte' : `${n} fontes`);
 
 function Trecho({ children, mais, menos }: { children: ReactNode; mais: string; menos: string }) {
   const el = useRef<HTMLDivElement>(null);
@@ -63,11 +63,16 @@ function Trecho({ children, mais, menos }: { children: ReactNode; mais: string; 
 export function Referencias({
   itens,
   abertoInicial = false,
-  rotulo = rotuloPadrao,
-  rotuloMostrarMais = 'Mostrar trecho completo',
-  rotuloMostrarMenos = 'Mostrar menos',
+  rotulo: rotuloProp,
+  rotuloMostrarMais: rotuloMostrarMaisProp,
+  rotuloMostrarMenos: rotuloMostrarMenosProp,
   className,
 }: ReferenciasProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  const rotulo = rotuloProp ?? ((n: number) => pluralizar(idioma, n, t.referencias.quantas));
+  const rotuloMostrarMais = rotuloMostrarMaisProp ?? t.referencias.mostrarTrecho;
+  const rotuloMostrarMenos = rotuloMostrarMenosProp ?? t.referencias.mostrarMenos;
   const id = useId();
   const [aberto, setAberto] = useState(abertoInicial);
   if (!itens.length) return null;

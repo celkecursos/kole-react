@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { Botao } from '../Botao/Botao';
 import { Vazio } from '../Vazio/Vazio';
 import './Conversa.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface ConversaProps {
   /** As mensagens (`Mensagem`), da mais antiga para a mais nova. */
@@ -32,10 +33,13 @@ export function Conversa({
   vazio,
   campo,
   larguraMaxima,
-  rotulo = 'Conversa',
-  rotuloIrParaFim = 'Ir para o fim',
+  rotulo: rotuloProp,
+  rotuloIrParaFim: rotuloIrParaFimProp,
   className,
 }: ConversaProps) {
+  const t = useTextos();
+  const rotulo = rotuloProp ?? t.conversa.rotulo;
+  const rotuloIrParaFim = rotuloIrParaFimProp ?? t.conversa.irFim;
   const rolagem = useRef<HTMLDivElement>(null);
   const lista = useRef<HTMLDivElement>(null);
   // ref para a lógica (o ResizeObserver não vê estado novo); estado para o botão
@@ -93,7 +97,7 @@ export function Conversa({
           <div ref={lista} className="lp-conversa-lista" role="log" aria-live="polite">
             {semMensagens ? (
               <div className="lp-conversa-vazio">
-                {vazio ?? <Vazio titulo="Nenhuma mensagem ainda" descricao="Envie uma mensagem para começar a conversa." icone="message-square" />}
+                {vazio ?? <Vazio titulo={t.conversa.vazioTitulo} descricao={t.conversa.vazioDescricao} icone="message-square" />}
               </div>
             ) : (
               children

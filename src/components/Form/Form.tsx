@@ -7,6 +7,8 @@ import { Trilha, type ItemTrilha } from '../Trilha/Trilha';
 import { RevelarCamposCtx } from '../Campo/Campo';
 import { Dialogo, type TamanhoDialogo } from '../Dialogo/Dialogo';
 import './Form.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { pluralizar } from '../../i18n/idiomas';
 
 interface CtxForm {
   arranjo: 'pagina' | 'modal';
@@ -95,16 +97,20 @@ export function Form({
   salvando = false,
   pendencias,
   menu,
-  menuTitulo = 'Formulários',
+  menuTitulo: menuTituloProp,
   menuAtivo,
   aoEscolherMenu,
   acoes,
   acoesPadrao = true,
   posicaoAcoes = 'secao',
-  rotuloSalvar = 'Salvar',
+  rotuloSalvar: rotuloSalvarProp,
   children,
   className,
 }: FormProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  const menuTitulo = menuTituloProp ?? t.form.formularios;
+  const rotuloSalvar = rotuloSalvarProp ?? t.comum.salvar;
   const formId = `lp-form-${useId().replace(/:/g, '')}`;
   const titulo = tituloProp ?? (entidade ? tituloDeEntidade(entidade, modo) : '');
   const leitura = modo === 'leitura';
@@ -125,14 +131,14 @@ export function Form({
       {pendencias !== undefined && (
         <span className={cx('lp-form-pend', pendencias ? 'is-warn' : 'is-ok')} role="status">
           <Icone icone={pendencias ? 'circle-alert' : 'circle-check'} />
-          {pendencias ? `${pendencias} campo(s) a corrigir` : 'Pronto para salvar'}
+          {pendencias ? pluralizar(idioma, pendencias, t.form.pendencias) : t.form.pronto}
         </span>
       )}
       <span className="lp-form-rodape-esp" />
       {acoes}
       {acoesPadrao && (
         <>
-          <Botao rotulo={leitura ? 'Fechar' : 'Cancelar'} severidade="secundario" disabled={salvando} onClick={aoCancelar} />
+          <Botao rotulo={leitura ? t.comum.fechar : t.comum.cancelar} severidade="secundario" disabled={salvando} onClick={aoCancelar} />
           {!leitura && <Botao type="submit" form={formId} rotulo={rotuloSalvar} icone="save" carregando={salvando} />}
         </>
       )}
@@ -184,7 +190,7 @@ export function Form({
       <div className={cx('lp-form-pagina', className)}>
         <header className="lp-form-cab">
           {aoCancelar && (
-            <button type="button" className="lp-voltar" aria-label="Voltar" title="Voltar" onClick={aoCancelar}>
+            <button type="button" className="lp-voltar" aria-label={t.comum.voltar} title={t.comum.voltar} onClick={aoCancelar}>
               <Icone icone="arrow-left" />
             </button>
           )}

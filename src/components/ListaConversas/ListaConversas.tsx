@@ -7,6 +7,9 @@ import { CampoTexto } from '../CampoTexto/CampoTexto';
 import { MenuSuspenso } from '../MenuSuspenso/MenuSuspenso';
 import { Skeleton } from '../Skeleton/Skeleton';
 import './ListaConversas.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import type { Textos } from '../../i18n/pt-BR';
+import { formatoData, type Idioma, interpolar } from '../../i18n/idiomas';
 
 export interface ItemConversa {
   id: string | number;
@@ -44,17 +47,16 @@ export interface ListaConversasProps {
   className?: string;
 }
 
-const MES = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
 const meiaNoite = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
 /** Grupo de uma data: Hoje, Ontem, Últimos 7 dias, Últimos 30 dias ou o mês ("Setembro de 2026"). */
-function grupoDe(data: Date, hoje: Date): string {
+function grupoDe(data: Date, hoje: Date, t: Textos, idioma: Idioma): string {
   const dias = Math.round((meiaNoite(hoje) - meiaNoite(data)) / 86400000);
-  if (dias <= 0) return 'Hoje';
-  if (dias === 1) return 'Ontem';
-  if (dias < 7) return 'Últimos 7 dias';
-  if (dias < 30) return 'Últimos 30 dias';
-  const m = MES.format(data);
+  if (dias <= 0) return t.comum.hoje;
+  if (dias === 1) return t.comum.ontem;
+  if (dias < 7) return t.conversa.ultimos7;
+  if (dias < 30) return t.conversa.ultimos30;
+  const m = formatoData(idioma, { month: 'long', year: 'numeric' }).format(data);
   return m.charAt(0).toUpperCase() + m.slice(1);
 }
 
@@ -72,13 +74,19 @@ export function ListaConversas({
   aoFixar,
   busca = true,
   carregando,
-  textoVazio = 'Nenhuma conversa ainda.',
+  textoVazio: textoVazioProp,
   extra,
-  rotulo = 'Conversas',
-  rotuloNova = 'Nova conversa',
+  rotulo: rotuloProp,
+  rotuloNova: rotuloNovaProp,
   hoje: hojeProp,
   className,
 }: ListaConversasProps) {
+  const tx = useTextos();
+  const idioma = useIdioma();
+  const FIXADAS = tx.conversa.fixadas;
+  const textoVazio = textoVazioProp ?? tx.conversa.vazia;
+  const rotulo = rotuloProp ?? tx.conversa.lista;
+  const rotuloNova = rotuloNovaProp ?? tx.conversa.nova;
   const [termo, setTermo] = useState('');
   const [editando, setEditando] = useState<ItemConversa['id'] | null>(null);
   const hoje = hojeProp ?? new Date();
@@ -89,20 +97,20 @@ export function ListaConversas({
     const filtrados = itens.filter((i) => !t || normalizar(i.titulo).includes(t)).sort((a, b) => b.data.getTime() - a.data.getTime());
     const mapa = new Map<string, ItemConversa[]>();
     for (const i of filtrados) {
-      const g = i.fixada ? 'Fixadas' : grupoDe(i.data, new Date(chaveHoje));
+      const g = i.fixada ? FIXADAS : grupoDe(i.data, new Date(chaveHoje), tx, idioma);
       if (!mapa.has(g)) mapa.set(g, []);
       mapa.get(g)!.push(i);
     }
     // "Fixadas" sempre no topo; os outros já vêm na ordem das datas
-    return [...mapa.entries()].sort(([a], [b]) => Number(b === 'Fixadas') - Number(a === 'Fixadas'));
-  }, [itens, termo, chaveHoje]);
+    return [...mapa.entries()].sort(([a], [b]) => Number(b === FIXADAS) - Number(a === FIXADAS));
+  }, [itens, termo, chaveHoje, tx, idioma, FIXADAS]);
 
   return (
     <nav className={cx('lp-lconv', className)} aria-label={rotulo}>
       {(aoNova || busca) && (
         <div className="lp-lconv-topo">
           {aoNova && <Botao className="lp-lconv-nova" rotulo={rotuloNova} icone="square-pen" severidade="secundario" aparencia="contorno" onClick={aoNova} />}
-          {busca && <CampoTexto className="lp-lconv-busca" icone="search" type="search" placeholder="Buscar conversas" aria-label="Buscar conversas" valor={termo} aoMudar={setTermo} />}
+          {busca && <CampoTexto className="lp-lconv-busca" icone="search" type="search" placeholder={tx.conversa.buscar} aria-label={tx.conversa.buscar} valor={termo} aoMudar={setTermo} />}
         </div>
       )}
       {extra}
@@ -114,7 +122,7 @@ export function ListaConversas({
             ))}
           </div>
         ) : grupos.length === 0 ? (
-          <p className="lp-lconv-vazio">{termo.trim() ? `Nada encontrado para "${termo.trim()}".` : textoVazio}</p>
+          <p className="lp-lconv-vazio">{termo.trim() ? interpolar(tx.conversa.nadaEncontrado, { termo: termo.trim() }) : textoVazio}</p>
         ) : (
           grupos.map(([grupo, lista]) => (
             <section key={grupo} className="lp-lconv-grupo" aria-label={grupo}>
@@ -158,6 +166,7 @@ interface ItemProps {
 }
 
 function Item({ item, ativo, editando, aoEscolher, aoComecarRenomear, aoRenomear, aoExcluir, aoFixar }: ItemProps) {
+  const tx = useTextos();
   const [rascunho, setRascunho] = useState(item.titulo);
   const campo = useRef<HTMLInputElement>(null);
   const botao = useRef<HTMLButtonElement>(null);
@@ -190,9 +199,9 @@ function Item({ item, ativo, editando, aoEscolher, aoComecarRenomear, aoRenomear
   };
 
   const acoes = [
-    aoComecarRenomear && { id: 'renomear', rotulo: 'Renomear', icone: 'pencil' },
-    aoFixar && { id: 'fixar', rotulo: item.fixada ? 'Desafixar' : 'Fixar', icone: 'pin' },
-    aoExcluir && { id: 'excluir', rotulo: 'Excluir', icone: 'trash-2', destrutivo: true },
+    aoComecarRenomear && { id: 'renomear', rotulo: tx.comum.renomear, icone: 'pencil' },
+    aoFixar && { id: 'fixar', rotulo: item.fixada ? tx.conversa.desafixar : tx.conversa.fixar, icone: 'pin' },
+    aoExcluir && { id: 'excluir', rotulo: tx.comum.excluir, icone: 'trash-2', destrutivo: true },
   ].filter((a): a is NonNullable<typeof a> => !!a);
 
   return (
@@ -202,7 +211,7 @@ function Item({ item, ativo, editando, aoEscolher, aoComecarRenomear, aoRenomear
           ref={campo}
           className="lp-lconv-renomear"
           value={rascunho}
-          aria-label={`Novo nome para "${item.titulo}"`}
+          aria-label={interpolar(tx.conversa.novoNome, { nome: item.titulo })}
           onChange={(e) => setRascunho(e.target.value)}
           onKeyDown={teclar}
           onBlur={() => terminar(true)}
@@ -217,8 +226,8 @@ function Item({ item, ativo, editando, aoEscolher, aoComecarRenomear, aoRenomear
         <MenuSuspenso
           className="lp-lconv-menu"
           icone="ellipsis"
-          aria-label={`Opções de "${item.titulo}"`}
-          dica="Opções"
+          aria-label={interpolar(tx.comum.opcoesDe, { nome: item.titulo })}
+          dica={tx.comum.opcoes}
           severidade="secundario"
           aparencia="texto"
           tamanho="pequeno"

@@ -7,6 +7,8 @@ import { usePreferenciasOpcional } from '../Preferencias/Preferencias';
 import { ProvedorTrilha } from '../Trilha/Trilha';
 import { ProvedorLinkSite, useLinkSite } from './linkSite';
 import './EstruturaSite.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface ItemSite {
   rotulo: string;
@@ -89,6 +91,7 @@ interface MolduraProps extends Omit<EstruturaSiteProps, 'aoNavegar' | 'renderLin
 }
 
 function Moldura({ marca, nav, rotaAtual, acoes, alternarTema, aviso, avisoLateral, rodape, menuAberto, setMenuAberto, children, className }: MolduraProps) {
+  const t = useTextos();
   const link = useLinkSite();
   const prefs = usePreferenciasOpcional();
   const [logoOk, setLogoOk] = useState(true);
@@ -103,8 +106,8 @@ function Moldura({ marca, nav, rotaAtual, acoes, alternarTema, aviso, avisoLater
         type="button"
         className="lp-site-tema"
         onClick={prefs.alternarTema}
-        aria-label={prefs.escuro ? 'Usar o tema claro' : 'Usar o tema escuro'}
-        title={prefs.escuro ? 'Tema claro' : 'Tema escuro'}
+        aria-label={prefs.escuro ? t.comum.usarTemaClaro : t.comum.usarTemaEscuro}
+        title={prefs.escuro ? t.comum.temaClaro : t.comum.temaEscuro}
       >
         <Icone icone={prefs.escuro ? 'sun' : 'moon'} />
       </button>
@@ -114,7 +117,7 @@ function Moldura({ marca, nav, rotaAtual, acoes, alternarTema, aviso, avisoLater
     <ProvedorTrilha value={{ itens: [], link: (rota, conteudo, classe) => link(rota, conteudo, classe) }}>
       <div className={cx('lp-site', className)}>
         <a className="lp-site-pular" href={`#${ID_CONTEUDO}`}>
-          Pular para o conteúdo
+          {t.estrutura.pularConteudo}
         </a>
         {aviso && (
           <div className="lp-site-aviso">
@@ -145,15 +148,15 @@ function Moldura({ marca, nav, rotaAtual, acoes, alternarTema, aviso, avisoLater
                 </span>
               </>,
               'lp-site-marca',
-              { rotulo: `${marca.nome}: página inicial` },
+              { rotulo: interpolar(t.site.paginaInicial, { nome: marca.nome }) },
             )}
-            <nav className="lp-site-nav" aria-label="Menu principal">
+            <nav className="lp-site-nav" aria-label={t.comum.menuPrincipal}>
               <ul>{itensMenu('lp-site-nav-item')}</ul>
             </nav>
             <div className="lp-site-acoes">
               {botaoTema}
               {acoes && <div className="lp-site-acoes-extra">{acoes}</div>}
-              <button type="button" className="lp-site-menu" aria-label="Abrir o menu" aria-expanded={menuAberto} onClick={() => setMenuAberto(true)}>
+              <button type="button" className="lp-site-menu" aria-label={t.site.abrirMenu} aria-expanded={menuAberto} onClick={() => setMenuAberto(true)}>
                 <Icone icone="menu" />
               </button>
             </div>
@@ -161,7 +164,7 @@ function Moldura({ marca, nav, rotaAtual, acoes, alternarTema, aviso, avisoLater
         </header>
 
         <Dialogo aberto={menuAberto} aoFechar={() => setMenuAberto(false)} titulo={marca.nome} aparencia="lateral" tamanho="pequeno">
-          <nav aria-label="Menu principal">
+          <nav aria-label={t.comum.menuPrincipal}>
             <ul className="lp-site-gaveta">{itensMenu('lp-site-gaveta-item')}</ul>
           </nav>
           {acoes && <div className="lp-site-gaveta-acoes">{acoes}</div>}
@@ -202,6 +205,7 @@ export interface RodapeSiteProps {
 
 /** Rodapé marinho do site: marca, colunas de links e a linha de direitos. */
 export function RodapeSite({ nome, descricao, colunas = [], extra, copyright, redes = [], className }: RodapeSiteProps) {
+  const t = useTextos();
   const link = useLinkSite();
   return (
     <footer className={cx('lp-site-rodape', className)}>
@@ -229,7 +233,7 @@ export function RodapeSite({ nome, descricao, colunas = [], extra, copyright, re
         <div className="lp-site-rodape-base">
           <span>{copyright}</span>
           {redes.length > 0 && (
-            <ul className="lp-site-rodape-redes" aria-label="Redes sociais">
+            <ul className="lp-site-rodape-redes" aria-label={t.site.redesSociais}>
               {redes.map((r) => (
                 <li key={r.rotulo}>{link(r.rota, r.rotulo, 'lp-site-rodape-link')}</li>
               ))}

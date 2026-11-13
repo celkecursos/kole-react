@@ -1,7 +1,10 @@
 /**
  * Validadores de dados brasileiros: predicados `is*` + o despachante `validar()`.
  * Lógica pura, sem React. A máscara de cada tipo mora em `tiposCampo.ts`.
+ * As regras são as brasileiras em qualquer idioma; só a mensagem é traduzida.
  */
+import type { Idioma } from '../i18n/idiomas';
+import { textosDe } from '../i18n/textos';
 
 export const TIPOS_DE_CAMPO = [
   'cpf',
@@ -148,53 +151,55 @@ export function isDataHora(v: string): boolean {
  * Telefone, opcionalmente restrito a um formato. Vazio é válido
  * (obrigatoriedade é assunto do campo, não do validador).
  */
-export function validarTelefone(v: string, tipo?: 'fixo' | 'celular'): string {
+export function validarTelefone(v: string, tipo?: 'fixo' | 'celular', idioma: Idioma = 'pt-BR'): string {
   const n = digitos(v).length;
   if (!n) return '';
-  if (tipo === 'fixo') return n === 10 ? '' : 'Deve ser um telefone fixo com DDD';
-  if (tipo === 'celular') return n === 11 ? '' : 'Deve ser um celular com DDD';
-  return n === 10 || n === 11 ? '' : 'Telefone incompleto';
+  const t = textosDe(idioma).validacao;
+  if (tipo === 'fixo') return n === 10 ? '' : t.telefoneFixo;
+  if (tipo === 'celular') return n === 11 ? '' : t.telefoneCelular;
+  return n === 10 || n === 11 ? '' : t.telefoneIncompleto;
 }
 
 /**
  * Mensagem de validação do tipo, ou `''` quando vazio ou válido.
  * Separa "incompleto" (ainda digitando) de "inválido" (errado).
  */
-export function validar(tipo: TipoDeCampo, valor: string): string {
+export function validar(tipo: TipoDeCampo, valor: string, idioma: Idioma = 'pt-BR'): string {
   const v = (valor ?? '').trim();
   if (!v) return '';
   const n = digitos(v).length;
+  const t = textosDe(idioma).validacao;
   switch (tipo) {
     case 'cpf':
-      return n < 11 ? 'CPF incompleto' : isCpf(v) ? '' : 'CPF inválido';
+      return n < 11 ? t.cpfIncompleto : isCpf(v) ? '' : t.cpfInvalido;
     case 'cnpj':
-      return n < 14 ? 'CNPJ incompleto' : isCnpj(v) ? '' : 'CNPJ inválido';
+      return n < 14 ? t.cnpjIncompleto : isCnpj(v) ? '' : t.cnpjInvalido;
     case 'cpfCnpj':
-      if (n < 11) return 'CPF/CNPJ incompleto';
-      if (n === 11) return isCpf(v) ? '' : 'CPF inválido';
-      if (n < 14) return 'CNPJ incompleto';
-      return isCnpj(v) ? '' : 'CNPJ inválido';
+      if (n < 11) return t.cpfCnpjIncompleto;
+      if (n === 11) return isCpf(v) ? '' : t.cpfInvalido;
+      if (n < 14) return t.cnpjIncompleto;
+      return isCnpj(v) ? '' : t.cnpjInvalido;
     case 'email':
-      return isEmail(v) ? '' : 'E-mail inválido';
+      return isEmail(v) ? '' : t.emailInvalido;
     case 'cep':
-      return isCep(v) ? '' : 'CEP incompleto';
+      return isCep(v) ? '' : t.cepIncompleto;
     case 'telefone':
-      return validarTelefone(v);
+      return validarTelefone(v, undefined, idioma);
     case 'placa':
-      return isPlaca(v) ? '' : 'Placa inválida';
+      return isPlaca(v) ? '' : t.placaInvalida;
     case 'renavam':
-      return isRenavam(v) ? '' : 'RENAVAM deve ter de 9 a 11 dígitos';
+      return isRenavam(v) ? '' : t.renavam;
     case 'chassi':
-      return v.replace(/\s/g, '').length < 17 ? 'Chassi incompleto' : isChassi(v) ? '' : 'Chassi inválido';
+      return v.replace(/\s/g, '').length < 17 ? t.chassiIncompleto : isChassi(v) ? '' : t.chassiInvalido;
     case 'cnh':
-      return n < 11 ? 'CNH incompleta' : isCnh(v) ? '' : 'CNH inválida';
+      return n < 11 ? t.cnhIncompleta : isCnh(v) ? '' : t.cnhInvalida;
     case 'imei':
-      return n < 15 ? 'IMEI incompleto' : isImei(v) ? '' : 'IMEI inválido';
+      return n < 15 ? t.imeiIncompleto : isImei(v) ? '' : t.imeiInvalido;
     case 'hora':
-      return isHora(v) ? '' : 'Hora inválida';
+      return isHora(v) ? '' : t.horaInvalida;
     case 'data':
-      return isData(v) ? '' : 'Data inválida';
+      return isData(v) ? '' : t.dataInvalida;
     case 'dataHora':
-      return isDataHora(v) ? '' : 'Data e hora inválidas';
+      return isDataHora(v) ? '' : t.dataHoraInvalida;
   }
 }

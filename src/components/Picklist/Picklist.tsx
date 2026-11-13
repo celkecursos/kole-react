@@ -10,8 +10,10 @@ import {
   type PicklistValor,
 } from '../../utils/picklist';
 import { Botao } from '../Botao/Botao';
-import { Campo, MSG_OBRIGATORIO, RevelarCamposCtx, useCampoIds, type CampoBaseProps } from '../Campo/Campo';
+import { Campo, RevelarCamposCtx, useCampoIds, type CampoBaseProps } from '../Campo/Campo';
 import './Picklist.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface PicklistProps<T> extends Omit<CampoBaseProps, 'variante'> {
   valor?: PicklistValor<T>;
@@ -50,8 +52,8 @@ export function Picklist<T>({
   id: idExterno,
   valor: valorBruto,
   aoMudar,
-  rotuloFonte = 'Disponíveis',
-  rotuloAlvo = 'Selecionados',
+  rotuloFonte: rotuloFonteProp,
+  rotuloAlvo: rotuloAlvoProp,
   paraRotulo = (i) => (typeof i === 'string' ? i : String(i)),
   renderItem,
   filtro = false,
@@ -60,6 +62,9 @@ export function Picklist<T>({
   alturaLista = '15rem',
   disabled = false,
 }: PicklistProps<T>) {
+  const t = useTextos();
+  const rotuloFonte = rotuloFonteProp ?? t.picklist.disponiveis;
+  const rotuloAlvo = rotuloAlvoProp ?? t.picklist.selecionados;
   const { id, msgId } = useCampoIds(idExterno);
   const valor = normalizarPicklistValor(valorBruto);
   const [sel, setSel] = useState<{ fonte: Set<T>; alvo: Set<T> }>({ fonte: new Set(), alvo: new Set() });
@@ -86,7 +91,7 @@ export function Picklist<T>({
     const v = de === 'fonte' ? moverParaAlvo(valor, itens) : moverParaFonte(valor, itens);
     setSel({ fonte: new Set(), alvo: new Set() });
     const destino = de === 'fonte' ? rotuloAlvo : rotuloFonte;
-    mudar(v, itens.length === 1 ? `${paraRotulo(itens[0])} movido para ${destino}` : `${itens.length} itens movidos para ${destino}`);
+    mudar(v, itens.length === 1 ? interpolar(t.picklist.movido, { nome: paraRotulo(itens[0]), destino }) : interpolar(t.picklist.movidos, { n: itens.length, destino }));
   };
 
   const marcar = (lado: Lado, item: T, aditivo: boolean) => {
@@ -103,7 +108,7 @@ export function Picklist<T>({
     const i = lista.indexOf(item);
     const j = i + passo;
     if (i < 0 || j < 0 || j >= lista.length) return;
-    mudar({ ...valor, [lado]: reordenarLista(lista, i, j) }, `${paraRotulo(item)} na posição ${j + 1}`);
+    mudar({ ...valor, [lado]: reordenarLista(lista, i, j) }, interpolar(t.picklist.posicao, { nome: paraRotulo(item), n: j + 1 }));
   };
 
   const aoTeclar = (lado: Lado) => (e: KeyboardEvent<HTMLUListElement>) => {
@@ -161,10 +166,10 @@ export function Picklist<T>({
     }
     if (!reordenar || antesDe === undefined || antesDe === a.item) return;
     const lista = valor[lado];
-    mudar({ ...valor, [lado]: reordenarLista(lista, lista.indexOf(a.item), lista.indexOf(antesDe)) }, `${paraRotulo(a.item)} reordenado`);
+    mudar({ ...valor, [lado]: reordenarLista(lista, lista.indexOf(a.item), lista.indexOf(antesDe)) }, interpolar(t.picklist.reordenado, { nome: paraRotulo(a.item) }));
   };
 
-  const erroFinal = erro || (obrigatorio && !valor.alvo.length && (mexido || tentativas > 0) ? MSG_OBRIGATORIO : undefined);
+  const erroFinal = erro || (obrigatorio && !valor.alvo.length && (mexido || tentativas > 0) ? t.comum.campoObrigatorio : undefined);
 
   const coluna = (lado: Lado, titulo: string) => {
     const lista = visiveis[lado];
@@ -181,8 +186,8 @@ export function Picklist<T>({
             <Icone icone="search" />
             <input
               className="lp-input lp-input--bare"
-              placeholder="Buscar"
-              aria-label={`Buscar em ${titulo}`}
+              placeholder={t.comum.buscar}
+              aria-label={interpolar(t.picklist.buscarEm, { nome: titulo })}
               disabled={disabled}
               value={termo[lado]}
               onChange={(e) => {
@@ -229,7 +234,7 @@ export function Picklist<T>({
               <span className="lp-pick-rot">{renderItem ? renderItem(item) : paraRotulo(item)}</span>
             </li>
           ))}
-          {!lista.length && <li className="lp-pick-vazio">{termo[lado] ? 'Nada encontrado' : 'Nenhum item'}</li>}
+          {!lista.length && <li className="lp-pick-vazio">{termo[lado] ? t.picklist.nadaEncontrado : t.picklist.nenhumItem}</li>}
         </ul>
       </div>
     );
@@ -243,10 +248,10 @@ export function Picklist<T>({
       <div className={cx('lp-pick', disabled && 'is-disabled', erroFinal && 'is-invalid')} aria-describedby={erroFinal || aviso || dica ? msgId : undefined}>
         {coluna('fonte', rotuloFonte)}
         <div className="lp-pick-acoes">
-          <Botao icone="chevron-right" severidade="secundario" aparencia="contorno" dica="Mover selecionados" aria-label="Mover selecionados" disabled={disabled || !marcadosFonte.length} onClick={() => transferir('fonte', marcadosFonte)} />
-          <Botao icone="chevrons-right" severidade="secundario" aparencia="contorno" dica="Mover todos" aria-label="Mover todos" disabled={disabled || !visiveis.fonte.length} onClick={() => transferir('fonte', visiveis.fonte)} />
-          <Botao icone="chevron-left" severidade="secundario" aparencia="contorno" dica="Devolver selecionados" aria-label="Devolver selecionados" disabled={disabled || !marcadosAlvo.length} onClick={() => transferir('alvo', marcadosAlvo)} />
-          <Botao icone="chevrons-left" severidade="secundario" aparencia="contorno" dica="Devolver todos" aria-label="Devolver todos" disabled={disabled || !visiveis.alvo.length} onClick={() => transferir('alvo', visiveis.alvo)} />
+          <Botao icone="chevron-right" severidade="secundario" aparencia="contorno" dica={t.picklist.moverSelecionados} aria-label={t.picklist.moverSelecionados} disabled={disabled || !marcadosFonte.length} onClick={() => transferir('fonte', marcadosFonte)} />
+          <Botao icone="chevrons-right" severidade="secundario" aparencia="contorno" dica={t.picklist.moverTodos} aria-label={t.picklist.moverTodos} disabled={disabled || !visiveis.fonte.length} onClick={() => transferir('fonte', visiveis.fonte)} />
+          <Botao icone="chevron-left" severidade="secundario" aparencia="contorno" dica={t.picklist.devolverSelecionados} aria-label={t.picklist.devolverSelecionados} disabled={disabled || !marcadosAlvo.length} onClick={() => transferir('alvo', marcadosAlvo)} />
+          <Botao icone="chevrons-left" severidade="secundario" aparencia="contorno" dica={t.picklist.devolverTodos} aria-label={t.picklist.devolverTodos} disabled={disabled || !visiveis.alvo.length} onClick={() => transferir('alvo', visiveis.alvo)} />
         </div>
         {coluna('alvo', rotuloAlvo)}
         <span className="lp-sr" aria-live="polite">

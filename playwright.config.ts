@@ -34,11 +34,13 @@ export default defineConfig({
     timezoneId: 'America/Sao_Paulo',
   },
   projects: [
-    { name: 'claro', use: { colorScheme: 'light' } },
-    { name: 'escuro', use: { colorScheme: 'dark' } },
+    { name: 'claro', use: { colorScheme: 'light' }, testMatch: 'demo.spec.ts' },
+    { name: 'escuro', use: { colorScheme: 'dark' }, testMatch: 'demo.spec.ts' },
     // tema "sistema" com o sistema no escuro: tem que sair igual ao escuro (compara com a mesma referência;
     // fica fora do visual:referencia, que só grava claro e escuro)
-    { name: 'sistema', use: { colorScheme: 'dark' }, snapshotPathTemplate: '{testDir}/__referencia__/{platform}/escuro/{arg}{ext}' },
+    { name: 'sistema', use: { colorScheme: 'dark' }, testMatch: 'demo.spec.ts', snapshotPathTemplate: '{testDir}/__referencia__/{platform}/escuro/{arg}{ext}' },
+    // textos da biblioteca em inglês: só as telas com texto da lib (idioma.spec.ts)
+    { name: 'en', use: { colorScheme: 'light' }, testMatch: 'idioma.spec.ts' },
   ],
   webServer: externo
     ? undefined

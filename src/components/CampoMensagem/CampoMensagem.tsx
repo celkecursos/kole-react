@@ -5,6 +5,8 @@ import { Icone } from '../../utils/Icone';
 import { Botao } from '../Botao/Botao';
 import { useCampoIds } from '../Campo/Campo';
 import './CampoMensagem.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 /** Arquivo anexado à mensagem, mostrado em chip acima do texto. */
 export interface AnexoMensagem {
@@ -67,7 +69,7 @@ export const CampoMensagem = forwardRef<HTMLTextAreaElement, CampoMensagemProps>
     gerando = false,
     aoParar,
     desabilitado = false,
-    placeholder = 'Escreva uma mensagem',
+    placeholder: placeholderProp,
     maxCaracteres,
     linhasMaximas = 6,
     autoFocus,
@@ -75,15 +77,20 @@ export const CampoMensagem = forwardRef<HTMLTextAreaElement, CampoMensagemProps>
     anexos = [],
     aoRemoverAnexo,
     aoAdicionarArquivos,
-    rotulo = 'Mensagem',
-    rotuloEnviar = 'Enviar mensagem',
-    rotuloParar = 'Parar',
+    rotulo: rotuloProp,
+    rotuloEnviar: rotuloEnviarProp,
+    rotuloParar: rotuloPararProp,
     id: idExterno,
     className,
   },
   ref,
 ) {
   const { id } = useCampoIds(idExterno);
+  const t = useTextos();
+  const placeholder = placeholderProp ?? t.mensagem.placeholder;
+  const rotulo = rotuloProp ?? t.mensagem.rotulo;
+  const rotuloEnviar = rotuloEnviarProp ?? t.mensagem.enviar;
+  const rotuloParar = rotuloPararProp ?? t.mensagem.parar;
   const campo = useRef<HTMLTextAreaElement>(null);
   useImperativeHandle(ref, () => campo.current as HTMLTextAreaElement);
 
@@ -176,7 +183,7 @@ export const CampoMensagem = forwardRef<HTMLTextAreaElement, CampoMensagemProps>
         {rotulo}
       </label>
       {anexos.length > 0 && (
-        <ul className="lp-campo-mensagem-anexos" aria-label="Anexos" onClick={(e) => e.stopPropagation()}>
+        <ul className="lp-campo-mensagem-anexos" aria-label={t.mensagem.anexos} onClick={(e) => e.stopPropagation()}>
           {anexos.map((a) => {
             const carregando = a.progresso != null && a.progresso < 100 && !a.erro;
             return (
@@ -185,16 +192,16 @@ export const CampoMensagem = forwardRef<HTMLTextAreaElement, CampoMensagemProps>
                 <span className="lp-campo-mensagem-anexo-tx">
                   <span className="lp-campo-mensagem-anexo-nome">{a.nome}</span>
                   <span className="lp-campo-mensagem-anexo-det">
-                    {a.erro ?? (carregando ? `Enviando… ${Math.round(a.progresso!)}%` : a.tamanho != null ? formatBytes(a.tamanho) : '')}
+                    {a.erro ?? (carregando ? interpolar(t.mensagem.enviandoProgresso, { n: Math.round(a.progresso!) }) : a.tamanho != null ? formatBytes(a.tamanho) : '')}
                   </span>
                 </span>
                 {carregando && (
-                  <span className="lp-campo-mensagem-anexo-barra" role="progressbar" aria-label={`Enviando ${a.nome}`} aria-valuenow={Math.round(a.progresso!)} aria-valuemin={0} aria-valuemax={100}>
+                  <span className="lp-campo-mensagem-anexo-barra" role="progressbar" aria-label={interpolar(t.mensagem.enviandoNome, { nome: a.nome })} aria-valuenow={Math.round(a.progresso!)} aria-valuemin={0} aria-valuemax={100}>
                     <span style={{ width: `${a.progresso}%` }} />
                   </span>
                 )}
                 {aoRemoverAnexo && (
-                  <button type="button" className="lp-campo-mensagem-anexo-remover" aria-label={`Remover ${a.nome}`} title="Remover" onClick={() => aoRemoverAnexo(a.id)}>
+                  <button type="button" className="lp-campo-mensagem-anexo-remover" aria-label={interpolar(t.mensagem.removerNome, { nome: a.nome })} title={t.comum.remover} onClick={() => aoRemoverAnexo(a.id)}>
                     <Icone icone="x" />
                   </button>
                 )}

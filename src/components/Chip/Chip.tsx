@@ -1,6 +1,8 @@
 import { Icone } from '../../utils/Icone';
 import { cx } from '../../utils/cx';
 import './Chip.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface ChipProps {
   rotulo: string;
@@ -14,6 +16,7 @@ export interface ChipProps {
 }
 
 export function Chip({ rotulo, campo, aoRemover, focavel = true, className }: ChipProps) {
+  const t = useTextos();
   return (
     <span className={cx('lp-chip', className)}>
       {campo && <span className="lp-chip-campo">{campo}:</span>}
@@ -23,7 +26,7 @@ export function Chip({ rotulo, campo, aoRemover, focavel = true, className }: Ch
           type="button"
           className="lp-chip-remover"
           tabIndex={focavel ? undefined : -1}
-          aria-label={`Remover ${campo ? `${campo}: ` : ''}${rotulo}`}
+          aria-label={interpolar(t.filtros.removerChip, { nome: `${campo ? `${campo}: ` : ''}${rotulo}` })}
           onClick={aoRemover}
         >
           <Icone icone="x" />

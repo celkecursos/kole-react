@@ -2,9 +2,11 @@ import { useState, type MouseEvent } from 'react';
 import { cx } from '../../utils/cx';
 import type { Coluna } from '../Tabela/Tabela';
 import { lerNumero } from './escalas';
-import { Amostra, MolduraGrafico, corDaSerie, usePontoAtivo, useSeriesOcultas } from './MolduraGrafico';
+import { Amostra, MolduraGrafico, corDaSerie, usePontoAtivo, useSeriesOcultas, useTextosGrafico } from './MolduraGrafico';
 import type { DadoGrafico, GraficoBaseProps } from './tipos';
 import './GraficoRosca.css';
+import { useIdioma } from '../../i18n/contexto';
+import { formatoNumero, interpolar } from '../../i18n/idiomas';
 
 export interface GraficoRoscaProps extends GraficoBaseProps {
   /** Cada item é uma fatia. Valores zero, negativos ou sem dado ficam de fora. */
@@ -41,13 +43,11 @@ interface Fatia {
   indice: number;
 }
 
-const NUM = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
-const PCT = new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const TAU = Math.PI * 2;
 /** Abaixo desta largura, a legenda desce para baixo do anel. */
 const LARGURA_LADO = 460;
 
-function fatiasDe({ dados, chaveRotulo, chaveValor, chaveCor, maxFatias, rotuloOutros = 'Outros' }: GraficoRoscaProps): Fatia[] {
+function fatiasDe({ dados, chaveRotulo, chaveValor, chaveCor, maxFatias, rotuloOutros }: GraficoRoscaProps & { rotuloOutros: string }): Fatia[] {
   const todas: Fatia[] = [];
   dados.forEach((d, indice) => {
     const v = lerNumero(d[chaveValor]);
@@ -83,16 +83,19 @@ function arco(cx: number, cy: number, r0: number, r1: number, a0: number, a1: nu
 
 /** Participação de cada parte num todo (despesas por categoria, carteira, canais de venda). */
 export function GraficoRosca(props: GraficoRoscaProps) {
-  const { formatar = (v: number) => NUM.format(v), chaveRotulo, chaveValor } = props;
+  const tg = useTextosGrafico();
+  const idioma = useIdioma();
+  const pct = (v: number) => formatoNumero(idioma, { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
+  const { formatar = (v: number) => formatoNumero(idioma, { maximumFractionDigits: 2 }).format(v), chaveRotulo, chaveValor } = props;
   const [ocultas, alternar] = useSeriesOcultas();
-  const fatias = fatiasDe(props);
+  const fatias = fatiasDe({ ...props, rotuloOutros: props.rotuloOutros ?? tg.outros });
   const total = fatias.reduce((s, f) => s + f.valor, 0);
 
   const tabela = () => {
     const colunas: Coluna<DadoGrafico>[] = [
-      { campo: 'rotulo', rotulo: chaveRotulo === 'rotulo' ? 'Item' : chaveRotulo[0].toUpperCase() + chaveRotulo.slice(1) },
-      { campo: 'valor', rotulo: chaveValor === 'valor' ? 'Valor' : chaveValor[0].toUpperCase() + chaveValor.slice(1), alinhamento: 'direita', formato: (v) => formatar(v as number) },
-      { campo: 'parte', rotulo: 'Participação', alinhamento: 'direita', formato: (v) => PCT.format(v as number) },
+      { campo: 'rotulo', rotulo: chaveRotulo === 'rotulo' ? tg.item : chaveRotulo[0].toUpperCase() + chaveRotulo.slice(1) },
+      { campo: 'valor', rotulo: chaveValor === 'valor' ? tg.valor : chaveValor[0].toUpperCase() + chaveValor.slice(1), alinhamento: 'direita', formato: (v) => formatar(v as number) },
+      { campo: 'parte', rotulo: tg.participacao, alinhamento: 'direita', formato: (v) => pct(v as number) },
     ];
     return { colunas, registros: fatias.map((f) => ({ rotulo: f.rotulo, valor: f.valor, parte: f.valor / total })) };
   };
@@ -127,6 +130,8 @@ function Anel({
   ocultas: ReadonlySet<string>;
   alternar: (chave: string) => void;
 }) {
+  const tg = useTextosGrafico();
+  const idioma = useIdioma();
   const visiveis = fatias.filter((f) => !ocultas.has(f.chave));
   const { ativo, setAtivo, aoTeclar } = usePontoAtivo(visiveis.length);
   const [focado, setFocado] = useState(false);
@@ -159,9 +164,9 @@ function Anel({
   };
 
   const f = ativo === null ? null : arcos[ativo];
-  const parte = (v: number) => PCT.format(total ? v / total : 0);
+  const parte = (v: number) => formatoNumero(idioma, { style: 'percent', minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(total ? v / total : 0);
   const textoAtivo = f ? `${f.rotulo}: ${formatar(f.valor)}, ${parte(f.valor)}` : '';
-  const resumo = [titulo, descricao, `Total ${formatar(total)}`, ...arcos.map((a) => `${a.rotulo} ${parte(a.valor)}`)].filter(Boolean).join('. ');
+  const resumo = [titulo, descricao, interpolar(tg.totalDe, { valor: formatar(total) }), ...arcos.map((a) => `${a.rotulo} ${parte(a.valor)}`)].filter(Boolean).join('. ');
 
   return (
     <div className={cx('lp-rosca', aoLado ? 'lp-rosca--lado' : 'lp-rosca--abaixo')}>
@@ -209,13 +214,13 @@ function Anel({
           </g>
         </svg>
         <div className="lp-rosca-centro" aria-hidden="true" style={{ width: r0 * 1.6 }}>
-          <span className="lp-rosca-centro-rotulo">{f ? f.rotulo : centro?.rotulo ?? 'Total'}</span>
+          <span className="lp-rosca-centro-rotulo">{f ? f.rotulo : centro?.rotulo ?? tg.total}</span>
           <span className="lp-rosca-centro-valor">{f ? formatar(f.valor) : centro?.valor ?? formatar(total)}</span>
           {f && <span className="lp-rosca-centro-parte">{parte(f.valor)}</span>}
         </div>
       </div>
       {legenda && (
-        <ul className="lp-rosca-legenda" aria-label={`Fatias de ${titulo}`}>
+        <ul className="lp-rosca-legenda" aria-label={interpolar(tg.fatias, { titulo })}>
           {fatias.map((fatia) => {
             const oculta = ocultas.has(fatia.chave);
             const i = arcos.findIndex((a) => a.chave === fatia.chave);
@@ -225,7 +230,7 @@ function Anel({
                   type="button"
                   className={cx('lp-rosca-leg-item', oculta && 'is-oculta', i >= 0 && i === ativo && 'is-ativa')}
                   aria-pressed={!oculta}
-                  title={oculta ? 'Mostrar a fatia' : 'Esconder a fatia'}
+                  title={oculta ? tg.mostrarFatia : tg.esconderFatia}
                   onClick={() => alternar(fatia.chave)}
                   onPointerEnter={() => i >= 0 && setAtivo(i)}
                   onPointerLeave={() => !focado && setAtivo(null)}

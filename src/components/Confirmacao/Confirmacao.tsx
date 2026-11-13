@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useId, useMemo, useRef, useStat
 import { Botao, type SeveridadeBotao } from '../Botao/Botao';
 import { Sobreposicao } from '../Dialogo/Sobreposicao';
 import './Confirmacao.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface OpcoesConfirmacao {
   titulo: string;
@@ -41,6 +42,7 @@ const ICONE_PADRAO: Record<string, string> = {
 
 /** Fornece `useConfirmacao()` para a árvore. Já incluso no `ProvedorUi`. */
 export function ProvedorConfirmacao({ children }: { children: ReactNode }) {
+  const t = useTextos();
   const [atual, setAtual] = useState<OpcoesConfirmacao | null>(null);
   const resolver = useRef<((v: boolean) => void) | null>(null);
   const tituloId = useId();
@@ -59,20 +61,20 @@ export function ProvedorConfirmacao({ children }: { children: ReactNode }) {
       Object.assign((o: OpcoesConfirmacao) => confirmar(o), {
         remover: (o: OpcoesRemocao = {}) =>
           confirmar({
-            titulo: 'Remover registro?',
-            mensagem: 'Esta ação não pode ser desfeita.',
-            rotuloAceitar: 'Remover',
+            titulo: t.confirmacao.removerTitulo,
+            mensagem: t.confirmacao.removerMensagem,
+            rotuloAceitar: t.comum.remover,
             ...o,
             severidade: 'err',
             icone: 'trash-2',
             iconeAceitar: 'trash-2',
           }),
         avisar: (o: OpcoesAviso) =>
-          confirmar({ rotuloAceitar: 'Entendi', icone: o.severidade && o.severidade !== 'pri' ? undefined : 'info', ...o, somenteOk: true }).then(
+          confirmar({ rotuloAceitar: t.confirmacao.entendi, icone: o.severidade && o.severidade !== 'pri' ? undefined : 'info', ...o, somenteOk: true }).then(
             () => undefined,
           ),
       }),
-    [confirmar],
+    [confirmar, t],
   );
 
   const responder = (v: boolean) => {
@@ -109,11 +111,11 @@ export function ProvedorConfirmacao({ children }: { children: ReactNode }) {
           )}
           <div className="lp-conf-rodape">
             {!atual.somenteOk && (
-              <Botao rotulo={atual.rotuloRecusar ?? 'Cancelar'} aparencia="texto" severidade="secundario" onClick={() => responder(false)} />
+              <Botao rotulo={atual.rotuloRecusar ?? t.comum.cancelar} aparencia="texto" severidade="secundario" onClick={() => responder(false)} />
             )}
             <Botao
               data-aceitar=""
-              rotulo={atual.rotuloAceitar ?? (atual.somenteOk ? 'OK' : 'Confirmar')}
+              rotulo={atual.rotuloAceitar ?? (atual.somenteOk ? t.comum.ok : t.comum.confirmar)}
               icone={atual.iconeAceitar}
               severidade={sev}
               onClick={() => responder(true)}

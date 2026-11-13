@@ -4,6 +4,8 @@ import { normalizar } from '../../utils/texto';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import { useCliqueFora } from '../../utils/useCliqueFora';
 import './Busca.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { pluralizar } from '../../i18n/idiomas';
 
 export interface ItemBusca {
   rotulo: string;
@@ -36,7 +38,7 @@ const MAX_MENU = 8;
 
 /** Busca global da topbar: filtra o menu e hospeda resultados do app. */
 export function Busca({
-  placeholder = 'Buscar…',
+  placeholder: placeholderProp,
   ocupado,
   itensMenu,
   aoNavegar,
@@ -46,6 +48,9 @@ export function Busca({
   children,
   className,
 }: BuscaProps) {
+  const txt = useTextos();
+  const idioma = useIdioma();
+  const placeholder = placeholderProp ?? txt.busca.placeholder;
   const raiz = useRef<HTMLDivElement>(null);
   const campo = useRef<HTMLInputElement>(null);
   const [termo, setTermo] = useState('');
@@ -146,7 +151,7 @@ export function Busca({
         )}
       </div>
       <span className="lp-sr" role="status" aria-live="polite">
-        {t && temMenu ? `${casam.length} item(ns) de menu encontrado(s)` : ''}
+        {t && temMenu ? pluralizar(idioma, casam.length, txt.busca.encontrados) : ''}
       </span>
 
       {mostrarPainel && (
@@ -156,7 +161,7 @@ export function Busca({
               {t ? (
                 menu.length ? (
                   <>
-                    <div className="lp-pb-ttl">Menu</div>
+                    <div className="lp-pb-ttl">{txt.busca.menu}</div>
                     {menu.map((r) => (
                       <a key={r.rota} className="lp-pb-item" href={r.rota} onClick={(e) => navegar(r.rota, e, r.recarregar)}>
                         <Icone icone={r.icone ?? 'chevron-right'} />
@@ -164,10 +169,10 @@ export function Busca({
                         {r.trilha && <span className="lp-pb-trilha">{r.trilha}</span>}
                       </a>
                     ))}
-                    {excedente > 0 && <p className="lp-pb-hint">…e mais {excedente} itens no menu</p>}
+                    {excedente > 0 && <p className="lp-pb-hint">{pluralizar(idioma, excedente, txt.busca.excedente)}</p>}
                   </>
                 ) : (
-                  <p className="lp-pb-hint">Nenhum item de menu encontrado.</p>
+                  <p className="lp-pb-hint">{txt.busca.nada}</p>
                 )
               ) : (
                 <p className="lp-pb-hint">

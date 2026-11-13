@@ -8,6 +8,7 @@ import { useCliqueFora } from '../../utils/useCliqueFora';
 import { usePosicaoFlutuante } from '../../utils/usePosicaoFlutuante';
 import { Campo, descricaoDe, useCampoIds, type CampoBaseProps } from '../Campo/Campo';
 import './CampoSelect.css';
+import { useTextos } from '../../i18n/contexto';
 
 interface BaseSelectProps<V> extends CampoBaseProps {
   opcoes: Opcao<V>[];
@@ -48,7 +49,7 @@ function SelectInterno<V>({
   className,
   id: idExterno,
   opcoes,
-  placeholder = 'Selecione',
+  placeholder: placeholderProp,
   comBusca = false,
   botaoLimpar = false,
   disabled = false,
@@ -57,6 +58,8 @@ function SelectInterno<V>({
   alternar,
   limpar,
 }: InternoProps<V>) {
+  const t = useTextos();
+  const placeholder = placeholderProp ?? t.comum.selecione;
   const { id, msgId } = useCampoIds(idExterno);
   const listaId = `${id}-lista`;
   const inline = variante === 'inline';
@@ -238,7 +241,7 @@ function SelectInterno<V>({
           </div>
         )}
         {botaoLimpar && selecionados.length > 0 && !disabled && (
-          <button type="button" className="lp-ctl-suffix" aria-label="Limpar seleção" onClick={limpar}>
+          <button type="button" className="lp-ctl-suffix" aria-label={t.comum.limparSelecao} onClick={limpar}>
             <Icone icone="x" />
           </button>
         )}
@@ -297,7 +300,7 @@ function SelectInterno<V>({
             </ul>
             {!visiveis.length && (
               <div className="lp-sel-nada" role="status">
-                Nenhum resultado encontrado
+                {t.busca.nenhumResultado}
               </div>
             )}
           </div>,

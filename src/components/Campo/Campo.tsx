@@ -2,6 +2,8 @@ import { Icone } from '../../utils/Icone';
 import { createContext, useContext, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import './Campo.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 /** Props comuns a todo campo de formulário. */
 export interface CampoBaseProps {
@@ -31,6 +33,7 @@ export interface CampoProps extends CampoBaseProps {
  */
 export const RevelarCamposCtx = createContext(0);
 
+/** O texto padrão em pt-BR (os campos usam o do idioma ativo). */
 export const MSG_OBRIGATORIO = 'Campo obrigatório';
 
 interface OpcoesValidacao {
@@ -51,6 +54,7 @@ interface OpcoesValidacao {
  *   NÃO é reformatado nem recusado: vira aviso âmbar não bloqueante.
  */
 export function useValidacaoCampo({ valor, validar, obrigatorio, erro, aviso }: OpcoesValidacao) {
+  const t = useTextos();
   const tentativas = useContext(RevelarCamposCtx);
   const [mexido, setMexido] = useState(false);
   const [revelado, setRevelado] = useState(false);
@@ -62,9 +66,9 @@ export function useValidacaoCampo({ valor, validar, obrigatorio, erro, aviso }: 
   let erroFinal = erro;
   let avisoFinal = aviso;
   if (!erroFinal) {
-    if (vazio && obrigatorio && visivel) erroFinal = MSG_OBRIGATORIO;
+    if (vazio && obrigatorio && visivel) erroFinal = t.comum.campoObrigatorio;
     else if (formato && mexido && visivel) erroFinal = formato;
-    else if (formato && !mexido && !avisoFinal) avisoFinal = `${formato}. O valor será mantido como está.`;
+    else if (formato && !mexido && !avisoFinal) avisoFinal = interpolar(t.validacao.mantido, { mensagem: formato });
   }
 
   return {

@@ -120,6 +120,7 @@ export const CATEGORIAS: { rotulo: string; icone: string; itens: ComponenteDoc[]
       { slug: 'tela-erro', rotulo: 'Tela de erro', desc: '401, 404, 500' },
       { slug: 'conversa', rotulo: 'Conversa', desc: 'Chat: mensagens e campo' },
       { slug: 'site', rotulo: 'Site público', desc: 'Moldura e seções de site' },
+      { slug: 'idioma', rotulo: 'Idioma', desc: 'pt-BR, inglês e espanhol; seletor na topbar' },
     ],
   },
 ];

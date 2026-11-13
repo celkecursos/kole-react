@@ -1,7 +1,10 @@
 /**
- * Dinheiro e porcentagem em pt-BR. Os formatadores ficam em cache por
+ * Dinheiro e porcentagem. Os formatadores ficam em cache por idioma e
  * combinação de opções: criar um `Intl.NumberFormat` a cada célula pesa.
+ * O idioma muda só a formatação (`R$ 1.234,50` · `R$1,234.50`); a moeda vem
+ * de `moeda` (BRL por padrão).
  */
+import { formatoNumero, type Idioma } from '../i18n/idiomas';
 
 export interface OpcoesMoeda {
   /** Código ISO 4217. Padrão `BRL`. */
@@ -14,16 +17,8 @@ export interface OpcoesMoeda {
   centavos?: boolean;
   /** Sem o símbolo: `1.234,56`. */
   semSimbolo?: boolean;
-}
-
-const cache = new Map<string, Intl.NumberFormat>();
-function formatador(chave: string, criar: () => Intl.NumberFormat) {
-  let f = cache.get(chave);
-  if (!f) {
-    f = criar();
-    cache.set(chave, f);
-  }
-  return f;
+  /** Idioma da formatação. Padrão `pt-BR`. */
+  idioma?: Idioma;
 }
 
 /** O sinal de menos tipográfico (U+2212): mais legível que o hífen em colunas de valores. */
@@ -34,14 +29,12 @@ export const MENOS = '−';
  * O espaço depois de `R$` é inseparável (não quebra a linha no meio do valor).
  */
 export function formatarMoeda(valor: number, opcoes: OpcoesMoeda = {}): string {
-  const { moeda = 'BRL', sinal, compacto, centavos = true, semSimbolo } = opcoes;
+  const { moeda = 'BRL', sinal, compacto, centavos = true, semSimbolo, idioma = 'pt-BR' } = opcoes;
   const casas = compacto ? undefined : centavos ? 2 : 0;
-  const f = formatador(`m|${moeda}|${compacto}|${casas}|${semSimbolo}`, () =>
-    new Intl.NumberFormat('pt-BR', {
-      ...(semSimbolo ? {} : { style: 'currency', currency: moeda }),
-      ...(compacto ? { notation: 'compact', maximumFractionDigits: 1 } : { minimumFractionDigits: casas, maximumFractionDigits: casas }),
-    }),
-  );
+  const f = formatoNumero(idioma, {
+    ...(semSimbolo ? {} : { style: 'currency', currency: moeda }),
+    ...(compacto ? { notation: 'compact', maximumFractionDigits: 1 } : { minimumFractionDigits: casas, maximumFractionDigits: casas }),
+  });
   const v = Object.is(valor, -0) ? 0 : valor;
   const texto = f.format(Math.abs(v));
   // `−0,00` não existe: o que arredonda para zero sai sem sinal
@@ -58,12 +51,14 @@ export interface OpcoesPercentual {
   sinal?: boolean;
   /** `valor` já está em fração (`0.125` = 12,5%). Padrão: em pontos (`12.5`). */
   fracao?: boolean;
+  /** Idioma da formatação. Padrão `pt-BR`. */
+  idioma?: Idioma;
 }
 
 /** `12.5` → `12,5%` · `-3` → `−3,0%` · com `fracao`: `0.125` → `12,5%`. */
 export function formatarPercentual(valor: number, opcoes: OpcoesPercentual = {}): string {
-  const { casas = 1, sinal, fracao } = opcoes;
-  const f = formatador(`p|${casas}`, () => new Intl.NumberFormat('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas }));
+  const { casas = 1, sinal, fracao, idioma = 'pt-BR' } = opcoes;
+  const f = formatoNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas });
   const pontos = fracao ? valor * 100 : valor;
   const texto = `${f.format(Math.abs(pontos))}%`;
   const zero = Number(f.format(Math.abs(pontos)).replace(/[^\d]/g, '')) === 0;

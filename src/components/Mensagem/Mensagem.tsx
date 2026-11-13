@@ -6,6 +6,8 @@ import { Avatar } from '../Avatar/Avatar';
 import { Botao } from '../Botao/Botao';
 import { useToastOpcional } from '../Toast/Toast';
 import './Mensagem.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { formatoData, type Idioma } from '../../i18n/idiomas';
 
 /** `usuario` = à direita, em destaque · `assistente` = à esquerda, neutra · `sistema` = aviso centralizado. */
 export type AutorMensagem = 'usuario' | 'assistente' | 'sistema';
@@ -46,8 +48,10 @@ export interface MensagemProps {
   className?: string;
 }
 
-function formatarHora(d: Date) {
-  return d.toDateString() === new Date().toDateString() ? formatHoraBr(d) : formatDataHoraBr(d);
+function formatarHora(d: Date, idioma: Idioma) {
+  // pt-BR: 14:05 ou 13/11/2026 14:05, como sempre; outros idiomas pelo Intl
+  if (idioma === 'pt-BR') return d.toDateString() === new Date().toDateString() ? formatHoraBr(d) : formatDataHoraBr(d);
+  return formatoData(idioma, d.toDateString() === new Date().toDateString() ? { timeStyle: 'short' } : { dateStyle: 'short', timeStyle: 'short' }).format(d);
 }
 
 /** Uma mensagem da `Conversa`: bolha com autor, hora, estado e ações. */
@@ -64,12 +68,18 @@ export function Mensagem({
   textoCopia,
   acoes,
   rodape,
-  rotuloTentarNovamente = 'Tentar novamente',
-  rotuloCopiar = 'Copiar mensagem',
-  rotuloGerando = 'Gerando resposta',
-  rotuloEnviando = 'Enviando',
+  rotuloTentarNovamente: rotuloTentarNovamenteProp,
+  rotuloCopiar: rotuloCopiarProp,
+  rotuloGerando: rotuloGerandoProp,
+  rotuloEnviando: rotuloEnviandoProp,
   className,
 }: MensagemProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  const rotuloTentarNovamente = rotuloTentarNovamenteProp ?? t.mensagem.tentarNovamente;
+  const rotuloCopiar = rotuloCopiarProp ?? t.mensagem.copiar;
+  const rotuloGerando = rotuloGerandoProp ?? t.mensagem.gerando;
+  const rotuloEnviando = rotuloEnviandoProp ?? t.mensagem.enviando;
   const toast = useToastOpcional();
   const conteudo = useRef<HTMLDivElement>(null);
   const timer = useRef<number | undefined>(undefined);
@@ -85,12 +95,12 @@ export function Mensagem({
     const valor = textoCopia ?? (texto ? children : (conteudo.current?.innerText ?? ''));
     try {
       await navigator.clipboard.writeText(valor);
-      toast?.ok('Mensagem copiada');
+      toast?.ok(t.mensagem.copiada);
       setCopiado(true);
       window.clearTimeout(timer.current);
       timer.current = window.setTimeout(() => setCopiado(false), 2000);
     } catch {
-      toast?.err('Não foi possível copiar', 'O navegador bloqueou o acesso à área de transferência.');
+      toast?.err(t.comum.naoFoiPossivelCopiar, t.comum.copiaBloqueada);
     }
   };
 
@@ -126,7 +136,7 @@ export function Mensagem({
         {(nome || hora) && (
           <div className="lp-mensagem-meta">
             {nome && <span className="lp-mensagem-nome">{nome}</span>}
-            {hora && <time dateTime={dataHora}>{hora instanceof Date ? formatarHora(hora) : hora}</time>}
+            {hora && <time dateTime={dataHora}>{hora instanceof Date ? formatarHora(hora, idioma) : hora}</time>}
           </div>
         )}
         {/* erro antes de qualquer conteúdo: só a faixa de erro, sem bolha vazia */}
@@ -152,7 +162,7 @@ export function Mensagem({
         {comErro && (
           <div className="lp-mensagem-erro" role="alert">
             <Icone icone="circle-alert" className="lp-mensagem-erro-ic" />
-            <span className="lp-mensagem-erro-txt">{erro ?? 'Não foi possível concluir esta mensagem.'}</span>
+            <span className="lp-mensagem-erro-txt">{erro ?? t.mensagem.erro}</span>
             {aoTentarNovamente && (
               <Botao rotulo={rotuloTentarNovamente} icone="refresh-cw" severidade="err" aparencia="texto" tamanho="pequeno" onClick={aoTentarNovamente} />
             )}

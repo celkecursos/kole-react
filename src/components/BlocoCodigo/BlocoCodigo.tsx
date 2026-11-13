@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { Botao } from '../Botao/Botao';
 import { useToastOpcional } from '../Toast/Toast';
 import './BlocoCodigo.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface BlocoCodigoProps {
   codigo: string;
@@ -20,6 +21,7 @@ export interface BlocoCodigoProps {
  * aplicar o dele). Serve de componente `code`/`pre` para um renderizador de Markdown.
  */
 export function BlocoCodigo({ codigo, linguagem, copiavel = true, quebrarLinhas, className }: BlocoCodigoProps) {
+  const t = useTextos();
   const toast = useToastOpcional();
   const [copiado, setCopiado] = useState(false);
   const timer = useRef<number | undefined>(undefined);
@@ -32,7 +34,7 @@ export function BlocoCodigo({ codigo, linguagem, copiavel = true, quebrarLinhas,
       window.clearTimeout(timer.current);
       timer.current = window.setTimeout(() => setCopiado(false), 2000);
     } catch {
-      toast?.err('Não foi possível copiar', 'O navegador bloqueou o acesso à área de transferência.');
+      toast?.err(t.comum.naoFoiPossivelCopiar, t.comum.copiaBloqueada);
     }
   };
 
@@ -43,12 +45,12 @@ export function BlocoCodigo({ codigo, linguagem, copiavel = true, quebrarLinhas,
           <span className="lp-bloco-codigo-ling">{linguagem}</span>
           {copiavel && (
             <Botao
-              rotulo={copiado ? 'Copiado' : 'Copiar'}
+              rotulo={copiado ? t.comum.copiado : t.comum.copiar}
               icone={copiado ? 'check' : 'copy'}
               severidade="secundario"
               aparencia="texto"
               tamanho="pequeno"
-              aria-label={copiado ? 'Código copiado' : 'Copiar código'}
+              aria-label={copiado ? t.codigo.copiado : t.codigo.copiar}
               onClick={copiar}
             />
           )}
@@ -58,7 +60,7 @@ export function BlocoCodigo({ codigo, linguagem, copiavel = true, quebrarLinhas,
         <code className={linguagem ? `language-${linguagem}` : undefined}>{codigo}</code>
       </pre>
       <span className="lp-sr" aria-live="polite">
-        {copiado ? 'Código copiado' : ''}
+        {copiado ? t.codigo.copiado : ''}
       </span>
     </div>
   );

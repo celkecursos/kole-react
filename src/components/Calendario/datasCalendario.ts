@@ -1,10 +1,39 @@
 /* Contas de data usadas pelo Calendario e pelo MiniCalendario (sempre no fuso local). */
 
-export const NOMES_DIA = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
-export const CURTOS_DIA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
-export const MES = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' });
-export const DIA_LONGO = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-export const HORA = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' });
+import { diasDaSemana, formatoData, type Idioma } from '../../i18n/idiomas';
+import type { Textos } from '../../i18n/pt-BR';
+import { textosDe } from '../../i18n/textos';
+
+// Formatadores e textos do idioma da renderização: o Calendario e o
+// MiniCalendario chamam `usarIdiomaCalendario` antes de desenhar (há um idioma
+// por app). Em pt-BR, os nomes curtos dos dias ficam como sempre (dom, seg…).
+const NOMES_PT = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+const CURTOS_PT = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+
+export let NOMES_DIA = NOMES_PT;
+export let CURTOS_DIA = CURTOS_PT;
+export let MES = formatoData('pt-BR', { month: 'long', year: 'numeric' });
+export let DIA_LONGO = formatoData('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+export let HORA = formatoData('pt-BR', { hour: '2-digit', minute: '2-digit' });
+export let SEMANA_TITULO = formatoData('pt-BR', { day: 'numeric', month: 'short' });
+export let DIA_TITULO = formatoData('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+export let TXT: Textos['calendario'] = textosDe('pt-BR').calendario;
+let atual: Idioma = 'pt-BR';
+
+/** Interno: troca formatadores e textos para o idioma ativo. */
+export function usarIdiomaCalendario(idioma: Idioma): void {
+  TXT = textosDe(idioma).calendario;
+  if (idioma === atual) return;
+  atual = idioma;
+  const pt = idioma === 'pt-BR';
+  NOMES_DIA = pt ? NOMES_PT : diasDaSemana(idioma, 'long');
+  CURTOS_DIA = pt ? CURTOS_PT : diasDaSemana(idioma, 'short').map((d) => d.replace('.', ''));
+  MES = formatoData(idioma, { month: 'long', year: 'numeric' });
+  DIA_LONGO = formatoData(idioma, { weekday: 'long', day: 'numeric', month: 'long' });
+  HORA = formatoData(idioma, { hour: '2-digit', minute: '2-digit' });
+  SEMANA_TITULO = formatoData(idioma, { day: 'numeric', month: 'short' });
+  DIA_TITULO = formatoData(idioma, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
 
 export const meiaNoite = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 export const somaDias = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);

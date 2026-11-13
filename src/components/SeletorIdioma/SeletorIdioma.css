@@ -1,0 +1,34 @@
+.lp-bandeira {
+  flex: none;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 0.15em;
+  /* contorno fino: a bandeira não some no fundo branco nem no escuro */
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.lp-idioma-gatilho:not(.lp-tb-icon) {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.625rem;
+  border-radius: var(--r-field);
+  border: var(--hairline, 1px) solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-corpo-2);
+  cursor: pointer;
+}
+.lp-idioma-gatilho:not(.lp-tb-icon):hover,
+.lp-idioma-gatilho.is-aberto {
+  background: var(--surf-2);
+}
+.lp-idioma-gatilho:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+.lp-idioma-seta {
+  color: var(--t3);
+  font-size: 0.875rem;
+}

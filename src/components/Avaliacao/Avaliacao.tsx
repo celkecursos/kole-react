@@ -2,6 +2,8 @@ import { useId, useState, type CSSProperties, type MouseEvent } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import './Avaliacao.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { formatoNumero, interpolar } from '../../i18n/idiomas';
 
 export interface AvaliacaoProps {
   /** Nota atual (0 = sem nota). */
@@ -32,7 +34,6 @@ export interface AvaliacaoProps {
   className?: string;
 }
 
-const fmt = (v: number) => v.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
 
 /** Avaliação por estrelas (ou corações): editável, com meias estrelas, ou só leitura. */
 export function Avaliacao({
@@ -47,9 +48,13 @@ export function Avaliacao({
   mensagens,
   aoPassar,
   limpavel = false,
-  textoOcupado = 'Salvando...',
+  textoOcupado: textoOcupadoProp,
   className,
 }: AvaliacaoProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  const textoOcupado = textoOcupadoProp ?? t.avaliacao.salvando;
+  const fmt = (v: number) => formatoNumero(idioma, { maximumFractionDigits: 1 }).format(v);
   const nome = useId();
   const [sob, setSob] = useState<number | null>(null);
   const [ocupado, setOcupado] = useState(false);
@@ -105,7 +110,7 @@ export function Avaliacao({
 
   if (somenteLeitura)
     return (
-      <span className={classes} role="img" aria-label={`${rotulo}: ${fmt(valor)} de ${max}`}>
+      <span className={classes} role="img" aria-label={`${rotulo}: ${interpolar(t.avaliacao.de, { valor: fmt(valor), max })}`}>
         <span className="lp-aval-estrelas">{estrelas}</span>
       </span>
     );
@@ -130,7 +135,7 @@ export function Avaliacao({
                 onChange={() => escolher(v)}
                 onFocus={() => setSob(null)}
               />
-              {fmt(v)} de {max}
+              {interpolar(t.avaliacao.de, { valor: fmt(v), max })}
             </label>
           ))}
         </span>

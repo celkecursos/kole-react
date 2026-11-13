@@ -9,6 +9,8 @@ import { Skeleton } from '../Skeleton/Skeleton';
 import { Status } from '../Status/Status';
 import { Vazio } from '../Vazio/Vazio';
 import './ListaTarefas.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface TarefaLista {
   id: string;
@@ -72,13 +74,16 @@ export function ListaTarefas<T extends TarefaLista>({
   filtro,
   extra,
   carregando = false,
-  vazioTitulo = 'Nenhuma tarefa encontrada',
+  vazioTitulo: vazioTituloProp,
   vazioDescricao,
   vazioAcoes,
   agora,
-  rotulo = 'Tarefas',
+  rotulo: rotuloProp,
   className,
 }: ListaTarefasProps<T>) {
+  const tx = useTextos();
+  const vazioTitulo = vazioTituloProp ?? tx.listaTarefas.vazioTitulo;
+  const rotulo = rotuloProp ?? tx.listaTarefas.rotulo;
   if (carregando)
     return (
       <div className={cx('lp-tarefas', className)} aria-busy="true" aria-label={rotulo}>
@@ -103,7 +108,7 @@ export function ListaTarefas<T extends TarefaLista>({
 
   const linha = (t: T, alca: ReactNode) => {
     const feita = t.concluida ?? t.situacao === 'concluida';
-    const situacao = t.situacao && t.situacao !== 'aberta' && t.situacao !== 'concluida' ? SITUACOES_TAREFA[t.situacao] : null;
+    const situacao = t.situacao && t.situacao !== 'aberta' && t.situacao !== 'concluida' ? { ...SITUACOES_TAREFA[t.situacao], rotulo: tx.kanban[t.situacao] } : null;
     return (
       <div className={cx('lp-tarefa', feita && 'is-concluida', selecionada === t.id && 'is-selecionada', aoAbrir && 'lp-tarefa--clicavel')}>
         {aoReordenar && alca}
@@ -113,8 +118,8 @@ export function ListaTarefas<T extends TarefaLista>({
             role="checkbox"
             aria-checked={feita}
             className="lp-tarefa-check"
-            aria-label={`Concluída: ${t.titulo}`}
-            title={feita ? 'Reabrir' : 'Concluir'}
+            aria-label={interpolar(tx.listaTarefas.concluida, { nome: t.titulo })}
+            title={feita ? tx.listaTarefas.reabrir : tx.listaTarefas.concluir}
             onClick={() => aoConcluir(t, !feita)}
           >
             <Icone icone={feita ? 'circle-check' : 'circle'} />
@@ -134,13 +139,13 @@ export function ListaTarefas<T extends TarefaLista>({
             <span className="lp-tarefa-sob">
               {situacao && <Status rotulo={situacao.rotulo} severidade={situacao.severidade} icone={situacao.icone} />}
               {!!t.subtarefas?.total && (
-                <span className="lp-tarefa-sub" title={`${t.subtarefas.feitas} de ${t.subtarefas.total} subtarefas feitas`}>
+                <span className="lp-tarefa-sub" title={interpolar(tx.kanban.subtarefasFeitas, { feitas: t.subtarefas.feitas, total: t.subtarefas.total })}>
                   <Icone icone="list-checks" />
                   <span aria-hidden="true">
                     {t.subtarefas.feitas}/{t.subtarefas.total}
                   </span>
                   <span className="lp-sr">
-                    {t.subtarefas.feitas} de {t.subtarefas.total} subtarefas feitas
+                    {interpolar(tx.kanban.subtarefasFeitas, { feitas: t.subtarefas.feitas, total: t.subtarefas.total })}
                   </span>
                 </span>
               )}

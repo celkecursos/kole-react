@@ -1,4 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { ContextoIdioma } from '../../i18n/contexto';
+import { registrarTextos, textosDe, type TextosParciais } from '../../i18n/textos';
+import type { Idioma } from '../../i18n/idiomas';
 import { ProvedorConfirmacao } from '../Confirmacao/Confirmacao';
 import { ProvedorToast } from '../Toast/Toast';
 
@@ -28,16 +31,20 @@ export interface Preferencias {
   /** O tema que está na tela: com `sistema`, o do sistema operacional agora. */
   escuro: boolean;
   densidade: Densidade;
+  /** Idioma dos textos da biblioteca (padrão `pt-BR`). */
+  idioma: Idioma;
   definirTema: (t: Tema) => void;
   alternarTema: () => void;
   definirDensidade: (d: Densidade) => void;
+  /** Troca o idioma: todos os componentes mudam na hora, e a escolha fica lembrada. */
+  definirIdioma: (i: Idioma) => void;
 }
 
 const Ctx = createContext<Preferencias | null>(null);
 
 const CHAVE = 'lp-preferencias';
 
-function ler(): Partial<{ tema: Tema; densidade: Densidade }> {
+function ler(): Partial<{ tema: Tema; densidade: Densidade; idioma: Idioma }> {
   try {
     return JSON.parse(localStorage.getItem(CHAVE) ?? '{}');
   } catch {
@@ -81,11 +88,17 @@ function useSistemaEscuro(ativo: boolean): boolean {
  * SSR: `<script dangerouslySetInnerHTML={{ __html: scriptTemaInicial() }} />`.
  * Vite/HTML estático: o README traz o script pronto para colar no index.html.
  */
-export function scriptTemaInicial({ temaInicial, densidadeInicial = 'confortavel' }: { temaInicial?: Tema; densidadeInicial?: Densidade } = {}): string {
+export function scriptTemaInicial({
+  temaInicial,
+  densidadeInicial = 'confortavel',
+  idiomaInicial,
+}: { temaInicial?: Tema; densidadeInicial?: Densidade; idiomaInicial?: Idioma } = {}): string {
   return (
     `(function(){var p={};try{p=JSON.parse(localStorage.getItem(${JSON.stringify(CHAVE)})||"{}")||{}}catch(e){}` +
     `var t=p.tema||${JSON.stringify(temaInicial ?? TEMA_PADRAO)};` +
     `var h=document.documentElement;h.setAttribute("data-theme",${JSON.stringify(ATRIBUTO_TEMA)}[t]||"light");` +
+    // o lang só muda quando há idioma salvo ou `idiomaInicial`: sem isso, fica o do HTML
+    `var l=p.idioma||${JSON.stringify(idiomaInicial ?? '')};if(l)h.lang=l;` +
     `var d=${JSON.stringify(CLASSE_DENSIDADE)}[p.densidade||${JSON.stringify(densidadeInicial)}];if(d)h.classList.add(d)})();`
   );
 }
@@ -95,6 +108,22 @@ export interface ProvedorPreferenciasProps {
   /** Tema enquanto a pessoa não escolhe outro. Padrão: `sistema`. */
   temaInicial?: Tema;
   densidadeInicial?: Densidade;
+  /**
+   * Idioma enquanto a pessoa não escolhe outro (ex.: o `users.locale` do
+   * servidor). Padrão: `pt-BR`. O navegador não é consultado.
+   */
+  idiomaInicial?: Idioma;
+  /**
+   * Chamado ao montar e a cada troca de idioma: o lugar de sincronizar o i18n
+   * do sistema (ex.: `i18n.changeLanguage`) e de gravar a escolha no servidor.
+   */
+  aoMudarIdioma?: (idioma: Idioma) => void;
+  /**
+   * Textos por idioma, por cima dos da biblioteca: troca um texto
+   * (`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`) ou acrescenta um idioma
+   * (`{ fr: { … } }`; o que faltar sai em pt-BR).
+   */
+  textos?: Partial<Record<Idioma, TextosParciais>>;
 }
 
 /**
@@ -102,9 +131,19 @@ export interface ProvedorPreferenciasProps {
  * `data-theme` (`light`/`dark`/`system`) no <html> e a classe de densidade no
  * <body>. Para não piscar ao abrir, use também o `scriptTemaInicial` no <head>.
  */
-export function ProvedorPreferencias({ children, temaInicial, densidadeInicial = 'confortavel' }: ProvedorPreferenciasProps) {
+export function ProvedorPreferencias({ children, temaInicial, densidadeInicial = 'confortavel', idiomaInicial, aoMudarIdioma, textos }: ProvedorPreferenciasProps) {
   const [tema, setTema] = useState<Tema>(() => ler().tema ?? temaInicial ?? TEMA_PADRAO);
   const [densidade, setDensidade] = useState<Densidade>(() => ler().densidade ?? densidadeInicial);
+  // `escolhido`: o idioma veio de uma escolha (salva ou agora). Só ele é gravado,
+  // para o `idiomaInicial` do servidor continuar valendo enquanto a pessoa não troca.
+  const [{ idioma, escolhido }, setIdioma] = useState<{ idioma: Idioma; escolhido: boolean }>(() => {
+    const salvo = ler().idioma;
+    return { idioma: salvo ?? idiomaInicial ?? 'pt-BR', escolhido: !!salvo };
+  });
+  const explicito = escolhido || !!idiomaInicial;
+  const definirIdioma = useCallback((i: Idioma) => setIdioma({ idioma: i, escolhido: true }), []);
+  const avisar = useRef(aoMudarIdioma);
+  avisar.current = aoMudarIdioma;
   const escuroDoSistema = useSistemaEscuro(tema === 'sistema');
   const escuro = tema === 'escuro' || (tema === 'sistema' && escuroDoSistema);
 
@@ -120,11 +159,23 @@ export function ProvedorPreferencias({ children, temaInicial, densidadeInicial =
 
   useEffect(() => {
     try {
-      localStorage.setItem(CHAVE, JSON.stringify({ tema, densidade }));
+      localStorage.setItem(CHAVE, JSON.stringify(escolhido ? { tema, densidade, idioma } : { tema, densidade }));
     } catch {
       /* navegação privada: segue sem lembrar */
     }
-  }, [tema, densidade]);
+  }, [tema, densidade, idioma, escolhido]);
+
+  // sem idioma salvo nem `idiomaInicial`, o `lang` do HTML do sistema fica como está
+  useEffect(() => {
+    if (explicito) document.documentElement.lang = idioma;
+  }, [idioma, explicito]);
+
+  useEffect(() => {
+    avisar.current?.(idioma);
+  }, [idioma]);
+
+  registrarTextos(textos);
+  const valorIdioma = useMemo(() => ({ idioma, textos: textosDe(idioma) }), [idioma, textos]);
 
   // alterna o que está na tela: no `sistema`, sai dele para o oposto do atual
   const alternarTema = useCallback(() => setTema(escuro ? 'claro' : 'escuro'), [escuro]);
@@ -134,14 +185,20 @@ export function ProvedorPreferencias({ children, temaInicial, densidadeInicial =
       tema,
       escuro,
       densidade,
+      idioma,
       definirTema: setTema,
       alternarTema,
       definirDensidade: setDensidade,
+      definirIdioma,
     }),
-    [tema, escuro, densidade, alternarTema],
+    [tema, escuro, densidade, idioma, alternarTema, definirIdioma],
   );
 
-  return <Ctx.Provider value={valor}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={valor}>
+      <ContextoIdioma.Provider value={valorIdioma}>{children}</ContextoIdioma.Provider>
+    </Ctx.Provider>
+  );
 }
 
 export function usePreferencias(): Preferencias {

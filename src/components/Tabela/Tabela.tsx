@@ -9,6 +9,8 @@ import { Skeleton } from '../Skeleton/Skeleton';
 import { Status } from '../Status/Status';
 import { Vazio } from '../Vazio/Vazio';
 import './Tabela.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface Coluna<T> {
   /** Chave do campo no registro (aceita caminho com ponto: `endereco.cidade`). */
@@ -87,12 +89,12 @@ export function Tabela<T>({
   chave = (l, i) => ((l as { id?: Key }).id ?? i) as Key,
   acoes,
   aparencia = 'listrada',
-  rotulo = 'Tabela de dados',
+  rotulo: rotuloProp,
   carregando,
   atualizando,
   erro,
   aoRecarregar,
-  vazioTitulo = 'Nenhum registro encontrado',
+  vazioTitulo: vazioTituloProp,
   vazioDescricao,
   vazioIcone = 'inbox',
   vazioAcoes,
@@ -105,6 +107,9 @@ export function Tabela<T>({
   paginacao,
   className,
 }: TabelaProps<T>) {
+  const t = useTextos();
+  const rotulo = rotuloProp ?? t.tabela.rotulo;
+  const vazioTitulo = vazioTituloProp ?? t.estados.vazioTitulo;
   const chaves = registros.map(chave);
   const sel = new Set(selecionados);
   const todos = chaves.length > 0 && chaves.every((k) => sel.has(k));
@@ -135,7 +140,7 @@ export function Tabela<T>({
   let corpo: ReactNode;
   if (carregando) {
     corpo = (
-      <div className="lp-tbl-carregando" role="status" aria-busy="true" aria-label="Carregando registros">
+      <div className="lp-tbl-carregando" role="status" aria-busy="true" aria-label={t.estados.carregandoRegistros}>
         <div className="lp-tbl-carregando-cab" />
         {Array.from({ length: Math.min(paginacao?.tamanho ?? 5, 8) }, (_, i) => (
           <div className="lp-tbl-carregando-lin" key={i}>
@@ -149,10 +154,10 @@ export function Tabela<T>({
       <div className="lp-tbl-vazio">
         <Vazio
           icone="triangle-alert"
-          titulo="Não foi possível carregar"
-          descricao={typeof erro === 'string' ? erro : 'Verifique a conexão e tente de novo.'}
+          titulo={t.estados.erroTitulo}
+          descricao={typeof erro === 'string' ? erro : t.estados.erroDescricao}
         >
-          {aoRecarregar && <Botao rotulo="Tentar de novo" icone="refresh-cw" severidade="secundario" onClick={aoRecarregar} />}
+          {aoRecarregar && <Botao rotulo={t.comum.tentarDeNovo} icone="refresh-cw" severidade="secundario" onClick={aoRecarregar} />}
         </Vazio>
       </div>
     );
@@ -173,9 +178,9 @@ export function Tabela<T>({
               {selecao && (
                 <th className="lp-tbl-col-sel" scope="col">
                   {selecao === 'multipla' ? (
-                    <CaixaSelecao marcado={todos} indeterminado={alguns} rotulo="Selecionar todos os visíveis" aoMudar={alternarTodos} />
+                    <CaixaSelecao marcado={todos} indeterminado={alguns} rotulo={t.tabela.selecionarTodos} aoMudar={alternarTodos} />
                   ) : (
-                    <span className="lp-sr">Seleção</span>
+                    <span className="lp-sr">{t.tabela.selecao}</span>
                   )}
                 </th>
               )}
@@ -201,7 +206,7 @@ export function Tabela<T>({
               ))}
               {acoes && (
                 <th className="lp-tbl-col-acoes" scope="col">
-                  Ações
+                  {t.tabela.acoes}
                 </th>
               )}
             </tr>
@@ -218,7 +223,7 @@ export function Tabela<T>({
                 >
                   {selecao && (
                     <td className="lp-tbl-col-sel">
-                      <CaixaSelecao marcado={marcado} rotulo={`Selecionar linha ${i + 1}`} aoMudar={() => alternar(k)} />
+                      <CaixaSelecao marcado={marcado} rotulo={interpolar(t.tabela.selecionarLinha, { n: i + 1 })} aoMudar={() => alternar(k)} />
                     </td>
                   )}
                   {colunas.map((c) => {

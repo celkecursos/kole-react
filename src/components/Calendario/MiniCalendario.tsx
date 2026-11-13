@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { cx } from '../../utils/cx';
 import { Botao } from '../Botao/Botao';
-import { DIA_LONGO, MES, NOMES_DIA, chave, diaPelaTecla, gradeDoMes, meiaNoite, mesmoDia, primeiraMaiuscula } from './datasCalendario';
+import { DIA_LONGO, MES, NOMES_DIA, TXT, usarIdiomaCalendario, chave, diaPelaTecla, gradeDoMes, meiaNoite, mesmoDia, primeiraMaiuscula } from './datasCalendario';
 import './MiniCalendario.css';
+import { useIdioma } from '../../i18n/contexto';
+import { diasDaSemana } from '../../i18n/idiomas';
 
-const LETRA_DIA = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+const LETRA_PT = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
 export interface MiniCalendarioProps {
   /** Dia escolhido (destacado). */
@@ -38,9 +40,14 @@ export function MiniCalendario({
   inicioSemana = 0,
   aoMudarMes,
   hoje: hojeProp,
-  rotulo = 'Escolher dia',
+  rotulo: rotuloProp,
   className,
 }: MiniCalendarioProps) {
+  const idioma = useIdioma();
+  usarIdiomaCalendario(idioma);
+  const rotulo = rotuloProp ?? TXT.escolherDia;
+  // pt-BR: D S T Q Q S S, como sempre; outros idiomas: a inicial do Intl
+  const letras = idioma === 'pt-BR' ? LETRA_PT : diasDaSemana(idioma, 'narrow');
   const hoje = meiaNoite(hojeProp ?? new Date());
   const inicial = meiaNoite(valor ?? hoje);
   const [mes, setMes] = useState(() => new Date(inicial.getFullYear(), inicial.getMonth(), 1));
@@ -113,14 +120,14 @@ export function MiniCalendario({
         <span className="lp-minical-titulo" aria-live="polite">
           {titulo}
         </span>
-        <Botao icone="chevron-left" aria-label="Mês anterior" dica="Mês anterior" severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(-1)} />
-        <Botao icone="chevron-right" aria-label="Próximo mês" dica="Próximo mês" severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(1)} />
+        <Botao icone="chevron-left" aria-label={TXT.anterior.mes} dica={TXT.anterior.mes} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(-1)} />
+        <Botao icone="chevron-right" aria-label={TXT.proximo.mes} dica={TXT.proximo.mes} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(1)} />
       </div>
       <div ref={grade} className="lp-minical-grade" role="grid" aria-label={titulo}>
         <div className="lp-minical-linha" role="row">
           {cabecalhos.map((d) => (
             <span key={d} className="lp-minical-cab" role="columnheader" aria-label={NOMES_DIA[d]}>
-              {LETRA_DIA[d]}
+              {letras[d]}
             </span>
           ))}
         </div>
@@ -138,7 +145,7 @@ export function MiniCalendario({
                   tabIndex={mesmoDia(dia, focoNoMes) ? 0 : -1}
                   aria-selected={escolhido}
                   aria-current={mesmoDia(dia, hoje) ? 'date' : undefined}
-                  aria-label={`${DIA_LONGO.format(dia)}${temEvento ? ', com eventos' : ''}`}
+                  aria-label={`${DIA_LONGO.format(dia)}${temEvento ? TXT.comEventos : ''}`}
                   className={cx(
                     'lp-minical-dia',
                     dia.getMonth() !== mes.getMonth() && 'is-fora',

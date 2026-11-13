@@ -5,6 +5,8 @@ import { cx } from '../../utils/cx';
 import { Avatar } from '../Avatar/Avatar';
 import { DialogoArquivo } from './DialogoArquivo';
 import './Arquivo.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export type EntradaFoto = string | Anexo | readonly (string | Anexo)[] | null | undefined;
 
@@ -55,6 +57,7 @@ export function Foto({
   sobreposto,
   className,
 }: FotoProps) {
+  const t = useTextos();
   const lista = normalizarFotos(fotos);
   const [indiceInterno, setIndiceInterno] = useState(0);
   const [aberto, setAberto] = useState(false);
@@ -80,12 +83,12 @@ export function Foto({
     <div className={cx('lp-foto', `lp-foto--${tamanho}`, className)} style={estilo}>
       {/* fundo: a menor versão disponível, já que vai desfocada */}
       <div className="lp-foto-fundo" style={{ backgroundImage: `url("${exibida}")` }} aria-hidden="true" />
-      <img className="lp-foto-img" src={exibida} alt={nome ? `Fotografia de ${nome}` : 'Fotografia'} />
+      <img className="lp-foto-img" src={exibida} alt={nome ? interpolar(t.anexo.fotoDe, { nome }) : t.anexo.foto} />
       {ampliavel && (
         <button
           type="button"
           className="lp-foto-ampliar"
-          aria-label={`Ampliar fotografia${nome ? ` de ${nome}` : ''}`}
+          aria-label={nome ? interpolar(t.anexo.ampliarFotoDe, { nome }) : t.anexo.ampliarFoto}
           onClick={() => {
             aoAmpliar?.(indice);
             setAberto(true);
@@ -101,7 +104,7 @@ export function Foto({
         <DialogoArquivo
           aberto={aberto}
           aoFechar={() => setAberto(false)}
-          arquivos={lista.map((a, i) => ({ ...a, nome: a.nome || `Fotografia ${lista.length > 1 ? i + 1 : ''}`.trim() }))}
+          arquivos={lista.map((a, i) => ({ ...a, nome: a.nome || (lista.length > 1 ? interpolar(t.anexo.fotoN, { n: i + 1 }) : t.anexo.foto) }))}
           indice={indice}
           aoMudarIndice={mudar}
         />

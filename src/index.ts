@@ -15,6 +15,29 @@ export * from './utils/datas';
 export * from './utils/tempo';
 export * from './utils/dinheiro';
 export * from './utils/periodo';
+
+// Idioma
+export {
+  IDIOMAS_PADRAO,
+  diasDaSemana,
+  formatoData,
+  formatoLista,
+  formatoNumero,
+  interpolar,
+  localeDe,
+  mesesDoAno,
+  pluralizar,
+  type Idioma,
+  type IdiomaPadrao,
+  type Plural,
+} from './i18n/idiomas';
+export { textosPtBR, type Textos } from './i18n/pt-BR';
+export { textosEn } from './i18n/en';
+export { textosEs } from './i18n/es';
+export { DICIONARIOS, textosDe, type TextosParciais } from './i18n/textos';
+export { useIdioma, useTextos } from './i18n/contexto';
+export { SeletorIdioma, type SeletorIdiomaProps } from './components/SeletorIdioma/SeletorIdioma';
+export { Bandeira } from './components/SeletorIdioma/Bandeira';
 export * from './utils/entidade';
 export * from './utils/anexos';
 export * from './utils/jwt';

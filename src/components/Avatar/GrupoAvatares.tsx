@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { listaPorExtenso } from '../../utils/texto';
 import { Avatar } from './Avatar';
 import './Avatar.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
 
 export interface PessoaAvatar {
   nome: string;
@@ -21,11 +22,14 @@ export interface GrupoAvataresProps {
 }
 
 /** Avatares sobrepostos com "+N" no fim (responsáveis, membros, participantes). */
-export function GrupoAvatares({ pessoas, max = 3, tamanho = '1.75rem', rotulo = 'Responsáveis', className }: GrupoAvataresProps) {
+export function GrupoAvatares({ pessoas, max = 3, tamanho = '1.75rem', rotulo: rotuloProp, className }: GrupoAvataresProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  const rotulo = rotuloProp ?? t.avatares.rotulo;
   if (!pessoas.length) return null;
   const visiveis = pessoas.slice(0, max);
   const resto = pessoas.slice(max);
-  const nomes = listaPorExtenso(pessoas.map((p) => p.nome));
+  const nomes = listaPorExtenso(pessoas.map((p) => p.nome), idioma);
   return (
     <span
       className={cx('lp-av-grupo', className)}

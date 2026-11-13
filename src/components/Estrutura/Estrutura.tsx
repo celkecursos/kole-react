@@ -14,11 +14,14 @@ import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import { useCliqueFora } from '../../utils/useCliqueFora';
 import { Avatar } from '../Avatar/Avatar';
+import { SeletorIdioma } from '../SeletorIdioma/SeletorIdioma';
 import { Busca, type ItemBusca } from '../Busca/Busca';
 import { Dica } from '../Dica/Dica';
 import { ProvedorTrilha, caminhoNoMenu, type ItemTrilha, type ModeloTrilha } from '../Trilha/Trilha';
 import { usePreferenciasOpcional, type Densidade } from '../Preferencias/Preferencias';
 import './Estrutura.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { type Idioma, interpolar, pluralizar } from '../../i18n/idiomas';
 
 export interface ItemNav {
   rotulo: string;
@@ -133,13 +136,18 @@ export interface EstruturaProps {
    * Empresa, ou a filial), à esquerda da topbar. Fica visível também no celular.
    */
   contexto?: ReactNode;
+  /**
+   * Idiomas do seletor na topbar, ao lado do tema (ex.: `['pt-BR', 'en', 'es']`).
+   * Sem a prop, o seletor não aparece. A troca vai para o `ProvedorPreferencias`.
+   */
+  idiomas?: Idioma[];
   children?: ReactNode;
 }
 
-const DENSIDADES: Array<{ valor: Densidade; rotulo: string; icone: string }> = [
-  { valor: 'compacta', rotulo: 'Compacta', icone: 'minus' },
-  { valor: 'confortavel', rotulo: 'Confortável', icone: 'equal' },
-  { valor: 'espacosa', rotulo: 'Espaçosa', icone: 'menu' },
+const DENSIDADES: Array<{ valor: Densidade; icone: string }> = [
+  { valor: 'compacta', icone: 'minus' },
+  { valor: 'confortavel', icone: 'equal' },
+  { valor: 'espacosa', icone: 'menu' },
 ];
 
 type Menu = 'densidade' | 'dev' | 'sino' | 'usuario' | 'compacto' | null;
@@ -228,12 +236,16 @@ export function Estrutura({
   modeloTrilha,
   submenu = 'abaixo',
   busca,
-  placeholderBusca = 'Buscar no sistema…',
+  placeholderBusca: placeholderBuscaProp,
   aoBuscar,
   complementosTopbar,
   contexto,
+  idiomas,
   children,
 }: EstruturaProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  const placeholderBusca = placeholderBuscaProp ?? t.estrutura.buscarNoSistema;
   const prefs = usePreferenciasOpcional();
   const idConteudo = `lp-conteudo-${useId().replace(/:/g, '')}`;
   const estreito = useMedia('(max-width: 64rem)');
@@ -389,7 +401,7 @@ export function Estrutura({
 
   // trilha da página atual: Início › seção › grupo(s) › item do menu
   const trilha = useMemo(() => {
-    const inicio: ItemTrilha = { rotulo: 'Início', rota: marca.href ?? '/', icone: 'house' };
+    const inicio: ItemTrilha = { rotulo: t.estrutura.inicio, rota: marca.href ?? '/', icone: 'house' };
     const caminho = caminhoNoMenu(nav, ativo);
     const fim = caminho[caminho.length - 1];
     return {
@@ -399,7 +411,7 @@ export function Estrutura({
     };
     // `link` lê aoNavegar/renderLink do render atual
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nav, ativo, marca.href, aoNavegar, renderLink, modeloTrilha, rotasRecarregar]);
+  }, [nav, ativo, marca.href, aoNavegar, renderLink, modeloTrilha, rotasRecarregar, t]);
 
   /** Filhos de um grupo aberto para baixo (qualquer profundidade). */
   const renderFilhos = (itens: ItemNav[], chavePai: string): ReactNode =>
@@ -487,7 +499,7 @@ export function Estrutura({
           onClick={() => prefs.definirDensidade(d.valor)}
         >
           <Icone icone={d.icone} />
-          <span>{d.rotulo}</span>
+          <span>{t.estrutura[d.valor]}</span>
           {prefs.densidade === d.valor && <Icone icone="check" className="lp-tb-menu-check" />}
         </button>
       ))}
@@ -512,7 +524,7 @@ export function Estrutura({
             conteudoRef.current?.focus();
           }}
         >
-          Pular para o conteúdo
+          {t.estrutura.pularConteudo}
         </a>
         {estreito && expandida && <div className="lp-sidebar-backdrop" aria-hidden="true" onClick={() => setExpandida(false)} />}
 
@@ -520,7 +532,7 @@ export function Estrutura({
         <aside className="lp-sidebar" ref={sidebarRef}>
           {ambiente?.rotulo && (
             <div className="lp-amb" data-sev={ambiente.severidade ?? 'warn'} title={ambiente.rotulo}>
-              <span className="lp-sr">Ambiente:</span>
+              <span className="lp-sr">{t.estrutura.ambienteSr}</span>
               <span className="lp-amb-completo">{ambiente.rotulo}</span>
               <span className="lp-amb-sigla" aria-hidden="true">
                 {ambiente.sigla ?? ambiente.rotulo.slice(0, 3)}
@@ -549,12 +561,12 @@ export function Estrutura({
               <b>{marca.nome}</b>
               {marca.subtitulo && <span>{marca.subtitulo}</span>}
             </span>
-            <Dica texto={expandida ? 'Recolher menu' : 'Expandir menu'}>
+            <Dica texto={expandida ? t.estrutura.recolherMenu : t.estrutura.expandirMenu}>
               <button
                 type="button"
                 className="lp-ham"
                 onClick={alternarSidebar}
-                aria-label={expandida ? 'Recolher menu' : 'Expandir menu'}
+                aria-label={expandida ? t.estrutura.recolherMenu : t.estrutura.expandirMenu}
                 aria-expanded={expandida}
               >
                 <Icone icone="chevrons-left" />
@@ -564,7 +576,7 @@ export function Estrutura({
 
           <div className="lp-sidebar-divline" />
 
-          <nav className="lp-sidebar-nav" aria-label="Menu principal" onScroll={!expandida && aside ? fecharAside : undefined}>
+          <nav className="lp-sidebar-nav" aria-label={t.comum.menuPrincipal} onScroll={!expandida && aside ? fecharAside : undefined}>
             {nav.map((sec, si) => (
               <Fragment key={si}>
                 {sec.rotulo && (
@@ -649,7 +661,7 @@ export function Estrutura({
               {rodapeSidebar && <div className="lp-sidebar-rodape">{rodapeSidebar}</div>}
               {versao && (
                 <span className="lp-versao">
-                  <span className="lp-sr">Versão do sistema:</span>
+                  <span className="lp-sr">{t.estrutura.versaoSr}</span>
                   {versao}
                 </span>
               )}
@@ -663,7 +675,7 @@ export function Estrutura({
             className={cx('lp-sidebar-aside', !expandida && 'lp-aside--flutuante')}
             ref={asideRef}
             role="region"
-            aria-label={`Submenu ${itemAside.rotulo}`}
+            aria-label={interpolar(t.estrutura.submenu, { nome: itemAside.rotulo })}
             style={!expandida ? ({ '--aside-topo': `${Math.max(8, Math.min(asideTopo, window.innerHeight - 320))}px` } as CSSProperties) : undefined}
           >
             <div className="lp-aside-head">
@@ -671,7 +683,7 @@ export function Estrutura({
                 <Icone icone={itemAside.icone ?? 'folder'} />
               </span>
               <span className="lp-aside-ttl">{itemAside.rotulo}</span>
-              <button type="button" className="lp-aside-x" aria-label="Fechar submenu" title="Fechar" onClick={() => setAside(null)}>
+              <button type="button" className="lp-aside-x" aria-label={t.estrutura.fecharSubmenu} title={t.comum.fechar} onClick={() => setAside(null)}>
                 <Icone icone="x" />
               </button>
             </div>
@@ -746,7 +758,7 @@ export function Estrutura({
         <div className="lp-main">
           <header className="lp-topbar">
             {movel && (
-              <button type="button" className="lp-tb-icon" onClick={alternarSidebar} aria-label="Abrir menu" aria-expanded={expandida}>
+              <button type="button" className="lp-tb-icon" onClick={alternarSidebar} aria-label={t.estrutura.abrirMenu} aria-expanded={expandida}>
                 <Icone icone="menu" />
               </button>
             )}
@@ -767,20 +779,20 @@ export function Estrutura({
                   {complementosTopbar}
                   {prefs && (
                     <div className="lp-tb-menu-wrap">
-                      <Dica texto={`Densidade: ${densidadeAtual.rotulo}`}>
+                      <Dica texto={interpolar(t.estrutura.densidadeAtual, { nome: t.estrutura[densidadeAtual.valor] })}>
                         <button
                           type="button"
                           className={cx('lp-tb-icon', menu === 'densidade' && 'lp-menu-open')}
                           aria-expanded={menu === 'densidade'}
-                          aria-label={`Densidade: ${densidadeAtual.rotulo}`}
+                          aria-label={interpolar(t.estrutura.densidadeAtual, { nome: t.estrutura[densidadeAtual.valor] })}
                           onClick={() => alternarMenu('densidade')}
                         >
                           <Icone icone={densidadeAtual.icone} />
                         </button>
                       </Dica>
                       {menu === 'densidade' && (
-                        <div className="lp-tb-menu" role="group" aria-label="Densidade">
-                          <div className="lp-tb-menu-ttl">Densidade</div>
+                        <div className="lp-tb-menu" role="group" aria-label={t.estrutura.densidade}>
+                          <div className="lp-tb-menu-ttl">{t.estrutura.densidade}</div>
                           {menuDensidade}
                         </div>
                       )}
@@ -789,19 +801,19 @@ export function Estrutura({
 
                   {temDev && (
                     <div className="lp-tb-menu-wrap">
-                      <Dica texto="Desenvolvimento">
+                      <Dica texto={t.estrutura.desenvolvimento}>
                         <button
                           type="button"
                           className={cx('lp-tb-icon', menu === 'dev' && 'lp-menu-open')}
                           aria-expanded={menu === 'dev'}
-                          aria-label="Desenvolvimento"
+                          aria-label={t.estrutura.desenvolvimento}
                           onClick={() => alternarMenu('dev')}
                         >
                           <Icone icone="code" />
                         </button>
                       </Dica>
                       {menu === 'dev' && (
-                        <div className="lp-tb-menu" role="group" aria-label="Desenvolvimento">
+                        <div className="lp-tb-menu" role="group" aria-label={t.estrutura.desenvolvimento}>
                           <ItensMenu itens={menuDesenvolvimento} aoEscolher={escolher(aoEscolherMenuDesenvolvimento)} />
                         </div>
                       )}
@@ -809,11 +821,11 @@ export function Estrutura({
                   )}
 
                   {prefs && (
-                    <Dica texto={prefs.escuro ? 'Tema claro' : 'Tema escuro'}>
+                    <Dica texto={prefs.escuro ? t.comum.temaClaro : t.comum.temaEscuro}>
                       <button
                         type="button"
                         className="lp-tb-icon"
-                        aria-label={prefs.escuro ? 'Tema claro' : 'Tema escuro'}
+                        aria-label={prefs.escuro ? t.comum.temaClaro : t.comum.temaEscuro}
                         onClick={prefs.alternarTema}
                       >
                         <Icone icone={prefs.escuro ? 'sun' : 'moon'} />
@@ -823,14 +835,17 @@ export function Estrutura({
                 </>
               )}
 
+              {/* idioma: só com a prop `idiomas`; aparece também no celular */}
+              {idiomas && idiomas.length > 1 && <SeletorIdioma idiomas={idiomas} aparencia="icone" />}
+
               {notificacoes && (
                 <div className="lp-tb-menu-wrap">
-                  <Dica texto="Notificações">
+                  <Dica texto={t.estrutura.notificacoes}>
                     <button
                       type="button"
                       className={cx('lp-tb-icon lp-tb-bell', menu === 'sino' && 'lp-menu-open')}
                       aria-expanded={menu === 'sino'}
-                      aria-label={naoLidas ? `Notificações: ${naoLidas} não lida(s)` : 'Notificações'}
+                      aria-label={naoLidas ? pluralizar(idioma, naoLidas, t.estrutura.naoLidas) : t.estrutura.notificacoes}
                       onClick={() => alternarMenu('sino')}
                     >
                       <Icone icone="bell" />
@@ -838,10 +853,10 @@ export function Estrutura({
                     </button>
                   </Dica>
                   {menu === 'sino' && (
-                    <div className="lp-tb-menu lp-tb-menu-notif" role="group" aria-label="Notificações">
+                    <div className="lp-tb-menu lp-tb-menu-notif" role="group" aria-label={t.estrutura.notificacoes}>
                       <div className="lp-tb-menu-ttl">
-                        <span>Notificações</span>
-                        {naoLidas > 0 && <span className="lp-notif-count">{naoLidas} não lida(s)</span>}
+                        <span>{t.estrutura.notificacoes}</span>
+                        {naoLidas > 0 && <span className="lp-notif-count">{interpolar(t.estrutura.naoLidasCurto, { n: naoLidas })}</span>}
                       </div>
                       {notificacoes.length ? (
                         notificacoes.map((n) => (
@@ -865,7 +880,7 @@ export function Estrutura({
                       ) : (
                         <p className="lp-notif-empty">
                           <Icone icone="circle-check" />
-                          Tudo em dia — sem notificações.
+                          {t.estrutura.semNotificacoesTudo}
                         </p>
                       )}
                     </div>
@@ -882,7 +897,7 @@ export function Estrutura({
                         type="button"
                         className={cx('lp-profile', !menuUsuario.length && 'lp-no-menu')}
                         aria-expanded={menuUsuario.length ? menu === 'usuario' : undefined}
-                        aria-label={`Usuário: ${usuario.nome}`}
+                        aria-label={interpolar(t.estrutura.usuario, { nome: usuario.nome })}
                         onClick={() => menuUsuario.length && alternarMenu('usuario')}
                       >
                         {avatar}
@@ -895,7 +910,7 @@ export function Estrutura({
                         )}
                       </button>
                       {menu === 'usuario' && (
-                        <div className="lp-tb-menu lp-tb-menu-user" role="group" aria-label="Menu do usuário">
+                        <div className="lp-tb-menu lp-tb-menu-user" role="group" aria-label={t.estrutura.menuUsuario}>
                           {cabecalhoUsuario}
                           <ItensMenu itens={menuUsuario} aoEscolher={escolher(aoEscolherMenuUsuario)} />
                         </div>
@@ -908,13 +923,13 @@ export function Estrutura({
                       type="button"
                       className="lp-profile"
                       aria-expanded={menu === 'compacto'}
-                      aria-label={`Conta e preferências: ${usuario.nome}`}
+                      aria-label={interpolar(t.estrutura.contaDe, { nome: usuario.nome })}
                       onClick={() => alternarMenu('compacto')}
                     >
                       {avatar}
                     </button>
                     {menu === 'compacto' && (
-                      <div className="lp-tb-menu lp-tb-menu-compact" role="group" aria-label="Conta e preferências">
+                      <div className="lp-tb-menu lp-tb-menu-compact" role="group" aria-label={t.estrutura.contaPreferencias}>
                         {cabecalhoUsuario}
                         {aoBuscar && (
                           <div className="lp-cm-search" role="search">
@@ -923,7 +938,7 @@ export function Estrutura({
                               type="search"
                               className="lp-cm-search-input"
                               placeholder={placeholderBusca}
-                              aria-label="Busca global"
+                              aria-label={t.estrutura.buscaGlobal}
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                   aoBuscar(e.currentTarget.value.trim());
@@ -935,22 +950,22 @@ export function Estrutura({
                         )}
                         {prefs && (
                           <>
-                            <div className="lp-tb-menu-ttl">Aparência</div>
+                            <div className="lp-tb-menu-ttl">{t.estrutura.aparencia}</div>
                             <button type="button" className="lp-tb-menu-item" onClick={prefs.alternarTema}>
                               <Icone icone={prefs.escuro ? 'sun' : 'moon'} />
-                              <span>{prefs.escuro ? 'Tema claro' : 'Tema escuro'}</span>
+                              <span>{prefs.escuro ? t.comum.temaClaro : t.comum.temaEscuro}</span>
                             </button>
                           </>
                         )}
                         {temDev && (
                           <>
-                            <div className="lp-tb-menu-ttl">Desenvolvimento</div>
+                            <div className="lp-tb-menu-ttl">{t.estrutura.desenvolvimento}</div>
                             <ItensMenu itens={menuDesenvolvimento} aoEscolher={escolher(aoEscolherMenuDesenvolvimento)} />
                           </>
                         )}
                         {prefs && (
                           <>
-                            <div className="lp-tb-menu-ttl">Densidade</div>
+                            <div className="lp-tb-menu-ttl">{t.estrutura.densidade}</div>
                             {menuDensidade}
                           </>
                         )}

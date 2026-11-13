@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import './Citacao.css';
+import { useTextos } from '../../i18n/contexto';
 
 export type CorCitacao = 'pri' | 'secundario' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'escuro';
 
@@ -23,6 +24,7 @@ export interface CitacaoProps {
 
 /** Citação (blockquote) com autor e fonte. */
 export function Citacao({ children, autor, fonte, cor = 'pri', aparencia = 'simples', alinhamento = 'inicio', icone = 'info', className }: CitacaoProps) {
+  const t = useTextos();
   return (
     <figure
       className={cx(
@@ -38,7 +40,7 @@ export function Citacao({ children, autor, fonte, cor = 'pri', aparencia = 'simp
       {(autor || fonte) && (
         <figcaption className="lp-citacao-autor">
           — {autor}
-          {fonte && <> {autor && 'em '}<cite>{fonte}</cite></>}
+          {fonte && <> {autor && `${t.citacao.em} `}<cite>{fonte}</cite></>}
         </figcaption>
       )}
     </figure>

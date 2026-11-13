@@ -14,6 +14,8 @@ import { Vazio } from '../Vazio/Vazio';
 import type { CorKanban } from './tipos';
 import './Pecas.css';
 import './Kanban.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar, pluralizar } from '../../i18n/idiomas';
 
 export interface ColunaKanban<T> extends ColunaArrastavel<T> {
   titulo: string;
@@ -85,6 +87,7 @@ function NovoTexto({
   manterAberto?: boolean;
   inicial?: string;
 }) {
+  const t = useTextos();
   const [texto, setTexto] = useState(inicial);
   const ref = useRef<HTMLTextAreaElement & HTMLInputElement>(null);
   useEffect(() => {
@@ -122,7 +125,7 @@ function NovoTexto({
       {multilinha ? <textarea rows={2} {...props} /> : <input type="text" {...props} />}
       <div className="lp-kb-novo-acoes">
         <Botao type="submit" rotulo={confirmar} tamanho="pequeno" disabled={!texto.trim()} />
-        <Botao rotulo="Cancelar" aparencia="texto" severidade="secundario" tamanho="pequeno" onClick={aoCancelar} />
+        <Botao rotulo={t.comum.cancelar} aparencia="texto" severidade="secundario" tamanho="pequeno" onClick={aoCancelar} />
       </div>
     </form>
   );
@@ -152,11 +155,16 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
   aoEscolherAcaoColuna,
   larguraColuna = '18rem',
   altura,
-  vazioTitulo = 'Nenhuma coluna ainda',
-  vazioDescricao = 'Adicione a primeira coluna para começar a organizar os cartões deste quadro.',
-  rotulo = 'Quadro',
+  vazioTitulo: vazioTituloProp,
+  vazioDescricao: vazioDescricaoProp,
+  rotulo: rotuloProp,
   className,
 }: KanbanProps<T, C>) {
+  const tx = useTextos();
+  const idioma = useIdioma();
+  const vazioTitulo = vazioTituloProp ?? tx.kanban.vazioTitulo;
+  const vazioDescricao = vazioDescricaoProp ?? tx.kanban.vazioDescricao;
+  const rotulo = rotuloProp ?? tx.kanban.quadro;
   // a coluna com o campo "novo cartão" aberto, a que está sendo renomeada e o campo de nova coluna
   const [novoCartao, setNovoCartao] = useState<string | null>(null);
   const [renomeando, setRenomeando] = useState<string | null>(null);
@@ -176,8 +184,8 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
 
   const menuDe = (c: C): ItemMenuSuspenso[] => {
     const itens: ItemMenuSuspenso[] = [];
-    if (aoRenomearColuna) itens.push({ id: 'renomear', rotulo: 'Renomear', icone: 'pencil' });
-    if (aoRecolherColuna) itens.push({ id: 'recolher', rotulo: 'Recolher', icone: 'chevrons-left' });
+    if (aoRenomearColuna) itens.push({ id: 'renomear', rotulo: tx.comum.renomear, icone: 'pencil' });
+    if (aoRecolherColuna) itens.push({ id: 'recolher', rotulo: tx.comum.recolher, icone: 'chevrons-left' });
     const extras = acoesColuna?.(c) ?? [];
     if (extras.length) {
       if (itens.length) itens.push({ tipo: 'divisor' });
@@ -185,7 +193,7 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
     }
     if (aoExcluirColuna) {
       if (itens.length) itens.push({ tipo: 'divisor' });
-      itens.push({ id: 'excluir', rotulo: 'Excluir coluna', icone: 'trash-2', destrutivo: true });
+      itens.push({ id: 'excluir', rotulo: tx.kanban.excluirColuna, icone: 'trash-2', destrutivo: true });
     }
     return itens;
   };
@@ -202,10 +210,10 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
     const visiveis = filtro ? c.itens.filter(filtro).length : total;
     const filtrado = visiveis !== total;
     const estado = c.limite === undefined ? undefined : total > c.limite ? 'acima' : total === c.limite ? 'cheia' : undefined;
-    const texto = filtrado ? `${visiveis} de ${total}` : c.limite !== undefined ? `${total}/${c.limite}` : String(total);
+    const texto = filtrado ? interpolar(tx.anexo.contador, { n: visiveis, total }) : c.limite !== undefined ? `${total}/${c.limite}` : String(total);
     const descricao = filtrado
-      ? `${visiveis} de ${total} cartões visíveis`
-      : `${total} ${total === 1 ? 'cartão' : 'cartões'}${c.limite !== undefined ? `, limite de ${c.limite}` : ''}`;
+      ? interpolar(tx.kanban.visiveis, { visiveis, total })
+      : `${pluralizar(idioma, total, tx.kanban.cartoes)}${c.limite !== undefined ? `, ${interpolar(tx.kanban.limite, { n: c.limite })}` : ''}`;
     return (
       <span className="lp-kb-contagem" data-estado={estado} title={descricao}>
         <span aria-hidden="true">{texto}</span>
@@ -221,8 +229,8 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
           <button
             type="button"
             className="lp-kb-expandir"
-            aria-label={`Expandir a coluna ${c.titulo}`}
-            title="Expandir"
+            aria-label={interpolar(tx.kanban.expandirColuna, { nome: c.titulo })}
+            title={tx.comum.expandir}
             onClick={() => {
               aoRecolherColuna?.(c.id, false);
               focar(`[data-quadro-coluna="${CSS.escape(c.id)}"] .lp-kb-menu button`);
@@ -244,9 +252,9 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
         {renomeando === c.id ? (
           <div className="lp-kb-renomear">
             <NovoTexto
-              rotulo={`Novo nome da coluna ${c.titulo}`}
-              placeholder="Nome da coluna"
-              confirmar="Salvar"
+              rotulo={interpolar(tx.kanban.novoNomeColuna, { nome: c.titulo })}
+              placeholder={tx.kanban.nomeColuna}
+              confirmar={tx.comum.salvar}
               inicial={c.titulo}
               aoConfirmar={(t) => {
                 if (t !== c.titulo) aoRenomearColuna?.(c.id, t);
@@ -267,8 +275,8 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
               <MenuSuspenso
                 className="lp-kb-menu"
                 icone="ellipsis"
-                aria-label={`Ações da coluna ${c.titulo}`}
-                dica="Ações da coluna"
+                aria-label={interpolar(tx.kanban.acoesColuna, { nome: c.titulo })}
+                dica={tx.kanban.acoesColunaCurto}
                 semSeta
                 aparencia="texto"
                 severidade="secundario"
@@ -288,9 +296,9 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
     ? (c: C) =>
         novoCartao === c.id ? (
           <NovoTexto
-            rotulo={`Título do novo cartão em ${c.titulo}`}
-            placeholder="Título do cartão"
-            confirmar="Adicionar"
+            rotulo={interpolar(tx.kanban.tituloNovoCartao, { nome: c.titulo })}
+            placeholder={tx.kanban.tituloCartao}
+            confirmar={tx.comum.adicionar}
             multilinha
             manterAberto
             aoConfirmar={(t) => aoAdicionarCartao(c.id, t)}
@@ -305,20 +313,20 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
             className="lp-kb-adicionar"
             onClick={() => setNovoCartao(c.id)}
             disabled={cheia(c)}
-            title={cheia(c) ? `A coluna está no limite de ${c.limite} cartões` : undefined}
+            title={cheia(c) ? interpolar(tx.kanban.noLimite, { n: c.limite ?? 0 }) : undefined}
           >
             <Icone icone="plus" />
-            Adicionar cartão
-            <span className="lp-sr"> em {c.titulo}</span>
+            {tx.kanban.adicionarCartao}
+            <span className="lp-sr">{interpolar(tx.kanban.emColuna, { nome: c.titulo })}</span>
           </button>
         )
     : undefined;
 
   const formNovaColuna = (
     <NovoTexto
-      rotulo="Nome da nova coluna"
-      placeholder="Nome da coluna"
-      confirmar="Adicionar"
+      rotulo={tx.kanban.nomeNovaColuna}
+      placeholder={tx.kanban.nomeColuna}
+      confirmar={tx.comum.adicionar}
       manterAberto
       aoConfirmar={(t) => aoAdicionarColuna?.(t)}
       aoCancelar={() => {
@@ -335,7 +343,7 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
       ) : (
         <button type="button" className="lp-kb-nova-coluna" onClick={() => setNovaColuna(true)}>
           <Icone icone="plus" />
-          Adicionar coluna
+          {tx.kanban.adicionarColuna}
         </button>
       )}
     </div>
@@ -351,7 +359,7 @@ export function Kanban<T extends { id: string }, C extends ColunaKanban<T> = Col
             (novaColuna ? (
               <div className="lp-kb-fim">{formNovaColuna}</div>
             ) : (
-              <Botao rotulo="Adicionar coluna" icone="plus" className="lp-kb-nova-coluna" onClick={() => setNovaColuna(true)} />
+              <Botao rotulo={tx.kanban.adicionarColuna} icone="plus" className="lp-kb-nova-coluna" onClick={() => setNovaColuna(true)} />
             ))}
         </Vazio>
       </div>

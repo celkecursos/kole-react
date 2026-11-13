@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type Poin
 import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import './Carrossel.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface SlideCarrossel {
   imagem: string;
@@ -51,6 +53,7 @@ export function Carrossel({
   proporcao = '16 / 10',
   className,
 }: CarrosselProps) {
+  const t = useTextos();
   const n = slides.length;
   const [atual, setAtual] = useState(0);
   const [pausadoUsuario, setPausadoUsuario] = useState(() => prefereMenosMovimento());
@@ -115,7 +118,7 @@ export function Carrossel({
               className={cx('lp-carrossel-slide', i === atual && 'is-atual')}
               role="group"
               aria-roledescription="slide"
-              aria-label={`${i + 1} de ${n}`}
+              aria-label={interpolar(t.carrossel.posicao, { n: i + 1, total: n })}
               inert={i !== atual}
             >
               <img src={s.imagem} alt={s.alt} draggable={false} />
@@ -132,10 +135,10 @@ export function Carrossel({
 
       {controles && n > 1 && (
         <>
-          <button type="button" className="lp-carrossel-seta lp-carrossel-seta--ant" aria-label="Slide anterior" onClick={anterior}>
+          <button type="button" className="lp-carrossel-seta lp-carrossel-seta--ant" aria-label={t.carrossel.anterior} onClick={anterior}>
             <Icone icone="chevron-left" />
           </button>
-          <button type="button" className="lp-carrossel-seta lp-carrossel-seta--prox" aria-label="Próximo slide" onClick={proximo}>
+          <button type="button" className="lp-carrossel-seta lp-carrossel-seta--prox" aria-label={t.carrossel.proximo} onClick={proximo}>
             <Icone icone="chevron-right" />
           </button>
         </>
@@ -147,7 +150,7 @@ export function Carrossel({
               key={i}
               type="button"
               className={cx('lp-carrossel-ind', i === atual && 'is-atual')}
-              aria-label={`Ir para o slide ${i + 1}`}
+              aria-label={interpolar(t.carrossel.irPara, { n: i + 1 })}
               aria-current={i === atual ? 'true' : undefined}
               onClick={() => ir(i)}
             />
@@ -158,7 +161,7 @@ export function Carrossel({
         <button
           type="button"
           className="lp-carrossel-pausa"
-          aria-label={pausadoUsuario ? 'Retomar a troca automática' : 'Pausar a troca automática'}
+          aria-label={pausadoUsuario ? t.carrossel.retomar : t.carrossel.pausar}
           onClick={() => setPausadoUsuario((p) => !p)}
         >
           <Icone icone={pausadoUsuario ? 'play' : 'pause'} />

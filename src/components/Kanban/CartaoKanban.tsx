@@ -7,6 +7,8 @@ import { Etiqueta, SeloPrazo, SeloPrioridade } from './Pecas';
 import type { ContagemSubtarefas, CorKanban, EtiquetaKanban, Prioridade } from './tipos';
 import './Pecas.css';
 import './CartaoKanban.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar, pluralizar } from '../../i18n/idiomas';
 
 export interface CartaoKanbanProps {
   titulo: string;
@@ -60,6 +62,8 @@ export function CartaoKanban({
   agora,
   className,
 }: CartaoKanbanProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
   const temFerramentas = !!(alca || acoes);
   const temRodape = !!(prioridade || vencimento || anexos || comentarios || responsaveis?.length);
   return (
@@ -90,14 +94,14 @@ export function CartaoKanban({
         {descricao && <p className="lp-cartao-desc">{descricao}</p>}
         {extra && <div className="lp-cartao-extra">{extra}</div>}
         {subtarefas && subtarefas.total > 0 && (
-          <div className="lp-cartao-sub" title={`${subtarefas.feitas} de ${subtarefas.total} subtarefas feitas`}>
+          <div className="lp-cartao-sub" title={interpolar(t.kanban.subtarefasFeitas, { feitas: subtarefas.feitas, total: subtarefas.total })}>
             <span className="lp-cartao-sub-num">
               <Icone icone="list-checks" />
               <span aria-hidden="true">
                 {subtarefas.feitas}/{subtarefas.total}
               </span>
               <span className="lp-sr">
-                {subtarefas.feitas} de {subtarefas.total} subtarefas feitas
+                {interpolar(t.kanban.subtarefasFeitas, { feitas: subtarefas.feitas, total: subtarefas.total })}
               </span>
             </span>
             <Progresso
@@ -105,7 +109,7 @@ export function CartaoKanban({
               max={subtarefas.total}
               altura="xs"
               cor={subtarefas.feitas >= subtarefas.total ? 'ok' : 'pri'}
-              rotulo="Subtarefas"
+              rotulo={t.kanban.subtarefas}
             />
           </div>
         )}
@@ -114,17 +118,17 @@ export function CartaoKanban({
             {prioridade && <SeloPrioridade prioridade={prioridade} />}
             {vencimento && <SeloPrazo vencimento={vencimento} concluido={concluido} agora={agora} />}
             {!!anexos && (
-              <span className="lp-cartao-cont" title={`${anexos} ${anexos === 1 ? 'anexo' : 'anexos'}`}>
+              <span className="lp-cartao-cont" title={pluralizar(idioma, anexos, t.kanban.anexos)}>
                 <Icone icone="paperclip" />
                 <span aria-hidden="true">{anexos}</span>
-                <span className="lp-sr">{anexos === 1 ? '1 anexo' : `${anexos} anexos`}</span>
+                <span className="lp-sr">{pluralizar(idioma, anexos, t.kanban.anexos)}</span>
               </span>
             )}
             {!!comentarios && (
-              <span className="lp-cartao-cont" title={`${comentarios} ${comentarios === 1 ? 'comentário' : 'comentários'}`}>
+              <span className="lp-cartao-cont" title={pluralizar(idioma, comentarios, t.kanban.comentarios)}>
                 <Icone icone="message-square" />
                 <span aria-hidden="true">{comentarios}</span>
-                <span className="lp-sr">{comentarios === 1 ? '1 comentário' : `${comentarios} comentários`}</span>
+                <span className="lp-sr">{pluralizar(idioma, comentarios, t.kanban.comentarios)}</span>
               </span>
             )}
             {responsaveis && responsaveis.length > 0 && <GrupoAvatares pessoas={responsaveis} className="lp-cartao-pessoas" tamanho="1.5rem" />}

@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import type { Severidade } from '../../utils/tipos';
 import './Alerta.css';
+import { useTextos } from '../../i18n/contexto';
 
 /** Cores do alerta: as severidades + `pri` (azul de ação) e `destaque` (laranja da marca). */
 export type CorAlerta = Severidade | 'pri' | 'destaque';
@@ -69,6 +70,7 @@ export function Alerta({
   botaoFechar = 'simples',
   className,
 }: AlertaProps) {
+  const t = useTextos();
   const [fechado, setFechado] = useState(false);
   if (fechado) return null;
 
@@ -83,7 +85,7 @@ export function Alerta({
     if (dispensavel) setFechado(true);
   };
   const botaoX = comFechar && (
-    <button type="button" className={cx('lp-alerta-fechar', botaoFechar === 'circulo' && 'lp-alerta-fechar--circulo')} aria-label="Fechar alerta" onClick={fechar}>
+    <button type="button" className={cx('lp-alerta-fechar', botaoFechar === 'circulo' && 'lp-alerta-fechar--circulo')} aria-label={t.alerta.fechar} onClick={fechar}>
       <Icone icone="x" />
     </button>
   );

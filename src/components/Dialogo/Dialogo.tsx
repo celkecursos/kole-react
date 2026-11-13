@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import { Sobreposicao } from './Sobreposicao';
 import './Dialogo.css';
+import { useTextos } from '../../i18n/contexto';
 
 export type TamanhoDialogo = 'pequeno' | 'medio' | 'grande' | 'extragrande' | 'full';
 
@@ -71,6 +72,7 @@ export function Dialogo({
   children,
   className,
 }: DialogoProps) {
+  const t = useTextos();
   const tituloId = useId();
   if (!aberto) return null;
   const lateral = aparencia === 'lateral';
@@ -108,7 +110,7 @@ export function Dialogo({
           </span>
           {subtitulo && <span className="lp-dlg-sub">{subtitulo}</span>}
         </div>
-        <button type="button" className="lp-dlg-fechar" aria-label="Fechar" title="Fechar" onClick={aoFechar}>
+        <button type="button" className="lp-dlg-fechar" aria-label={t.comum.fechar} title={t.comum.fechar} onClick={aoFechar}>
           <Icone icone="x" />
         </button>
       </div>

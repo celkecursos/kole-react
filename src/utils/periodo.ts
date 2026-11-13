@@ -2,6 +2,8 @@
  * Períodos de relatório (mês, trimestre, ano ou intervalo livre) com datas
  * `AAAA-MM-DD` no fuso local — as mesmas do `CampoData` e do `paraData`.
  */
+import { formatoData, interpolar, type Idioma } from '../i18n/idiomas';
+import { textosDe } from '../i18n/textos';
 import { paraData } from './tempo';
 
 export type TipoPeriodo = 'mes' | 'trimestre' | 'ano' | 'personalizado';
@@ -54,27 +56,29 @@ export function noPeriodo(data: Date | string, p: Periodo): boolean {
   return iso >= p.de && iso <= p.ate;
 }
 
-const MES = new Intl.DateTimeFormat('pt-BR', { month: 'long' });
-const DIA_MES = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short' });
-
 /**
  * "novembro de 2026" · "3º trimestre de 2026" · "2026" · "5 de nov. a 14 de nov. de 2026".
  * `curto` tira o ano do mês e do trimestre quando é o ano de `agora`.
+ * `idioma` (padrão `pt-BR`): "November 2026", "Q3 2026", "Nov 5 – Nov 14, 2026".
  */
-export function rotuloPeriodo(p: Periodo, opcoes: { curto?: boolean; agora?: Date } = {}): string {
+export function rotuloPeriodo(p: Periodo, opcoes: { curto?: boolean; agora?: Date; idioma?: Idioma } = {}): string {
+  const idioma = opcoes.idioma ?? 'pt-BR';
+  const t = textosDe(idioma).periodo;
+  const mes = (d: Date) => formatoData(idioma, { month: 'long' }).format(d);
+  const diaMes = (d: Date) => formatoData(idioma, { day: 'numeric', month: 'short' }).format(d);
   const de = paraData(p.de);
   const ate = paraData(p.ate);
   const ano = de.getFullYear();
   const mesmoAno = !!opcoes.curto && ano === (opcoes.agora ?? new Date()).getFullYear();
   if (p.tipo === 'ano') return String(ano);
-  if (p.tipo === 'mes') return mesmoAno ? MES.format(de) : `${MES.format(de)} de ${ano}`;
+  if (p.tipo === 'mes') return mesmoAno ? mes(de) : interpolar(t.mesAno, { mes: mes(de), ano });
   if (p.tipo === 'trimestre') {
-    const t = `${Math.floor(de.getMonth() / 3) + 1}º trimestre`;
-    return mesmoAno ? t : `${t} de ${ano}`;
+    const n = Math.floor(de.getMonth() / 3) + 1;
+    return interpolar(mesmoAno ? t.trimestreN : t.trimestreAno, { n, ano });
   }
-  if (p.de === p.ate) return `${DIA_MES.format(de)} de ${ano}`;
-  const fim = `${DIA_MES.format(ate)} de ${ate.getFullYear()}`;
-  return ano === ate.getFullYear() ? `${DIA_MES.format(de)} a ${fim}` : `${DIA_MES.format(de)} de ${ano} a ${fim}`;
+  const comAno = (d: Date) => interpolar(t.diaAno, { dia: diaMes(d), ano: d.getFullYear() });
+  if (p.de === p.ate) return comAno(de);
+  return interpolar(t.intervalo, { de: ano === ate.getFullYear() ? diaMes(de) : comAno(de), ate: comAno(ate) });
 }
 
 /** Cada mês do período, como o primeiro dia (`AAAA-MM-01`): o eixo X de um gráfico mensal. */
