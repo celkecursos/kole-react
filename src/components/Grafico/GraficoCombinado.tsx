@@ -21,10 +21,12 @@ export interface GraficoCombinadoProps extends GraficoBaseProps {
  * série ("Ticket médio (R$, eixo direito)"): sem isso, o gráfico de dois eixos engana.
  */
 export function GraficoCombinado({ barras = [], linhas = [], eixoYDireito, ...props }: GraficoCombinadoProps) {
+  // sem série no eixo direito (ex.: a linha marcada com `eixo: 'esquerdo'`), ele não aparece
+  const usaDireito = barras.some((s) => s.eixo === 'direito') || linhas.some((s) => s.eixo !== 'esquerdo');
   return (
     <Cartesiano
       {...props}
-      eixoYDireito={eixoYDireito ?? {}}
+      eixoYDireito={usaDireito ? (eixoYDireito ?? {}) : undefined}
       series={[...barras.map((s) => ({ ...s, tipo: 'barra' as const })), ...linhas.map((s) => ({ ...s, tipo: 'linha' as const }))]}
     />
   );

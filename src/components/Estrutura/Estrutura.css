@@ -764,6 +764,13 @@
   color: var(--t4);
 }
 
+.lp-tb-contexto {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
 .lp-tb-right {
   display: flex;
   align-items: center;

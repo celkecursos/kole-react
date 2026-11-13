@@ -1,5 +1,6 @@
 import type { SecaoNav } from '../src';
 import { NAV_DOCS } from './docs/nav';
+import { ROTAS as FIN } from './paginas/solucoes/financas/rotas';
 
 /** Menu da demo. Também é a lista de páginas do teste visual (tests/visual/demo.spec.ts). */
 export const NAV: SecaoNav[] = [
@@ -89,6 +90,25 @@ export const NAV: SecaoNav[] = [
         ],
       },
       { rotulo: 'Tarefas', icone: 'list-todo', rota: '/apps/tarefas' },
+    ],
+  },
+  {
+    rotulo: 'Soluções',
+    itens: [
+      {
+        rotulo: 'Finanças',
+        icone: 'wallet',
+        filhos: [
+          { rotulo: 'Visão geral', rota: FIN.visaoGeral },
+          { rotulo: 'Lançamentos', rota: FIN.lancamentos },
+          { rotulo: 'Contas e cartões', rota: FIN.contas },
+          { rotulo: 'A pagar e receber', rota: FIN.pagarReceber },
+          { rotulo: 'Orçamento', rota: FIN.orcamento },
+          { rotulo: 'Metas', rota: FIN.metas },
+          { rotulo: 'Fluxo de caixa', rota: FIN.fluxoCaixa },
+          { rotulo: 'Relatórios e DRE', rota: FIN.relatorios },
+        ],
+      },
     ],
   },
   {

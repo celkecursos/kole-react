@@ -148,7 +148,8 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Site público | `EstruturaSite`, `RodapeSite`, `SecaoSite`, `DestaqueSite`, `CabecalhoSecao`, `CampoPesquisa`, `CardConteudo`, `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`, `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`, `SumarioPagina`, `Newsletter` |
 | Calendário | `Calendario` (visões mês, semana, dia e lista, com arrastar), `MiniCalendario`, `repetirEvento` |
 | Kanban e tarefas | `Kanban`, `CartaoKanban`, `ListaTarefas`, `QuadroArrastavel`, `SeloPrioridade`, `SeloPrazo`, `Etiqueta`, `tempoRelativo`, `situacaoPrazo` |
-| Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
+| Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `GraficoRosca`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
+| Finanças | `Valor`, `ProvedorValores`, `BotaoOcultarValores`, `NavegadorPeriodo`, `SeletorContexto`, `formatarMoeda`, `formatarPercentual`, `dividirEmParcelas`, `periodoDe`, `noPeriodo` |
 
 ### Conversa (chat)
 
@@ -585,6 +586,32 @@ Os dois são montados sobre o `QuadroArrastavel`, que também serve sozinho:
 `colunasArrastaveis` e rolagem automática perto das bordas. A demo traz as telas
 completas em Aplicativos › Kanban (listagem de quadros, quadro com filtros e
 detalhe do cartão) e Aplicativos › Tarefas.
+
+### Finanças
+
+`Valor` mostra dinheiro com o sentido certo: guarde o valor sempre positivo e
+diga o `tipo` (`receita` em verde com `+`, `despesa` em vermelho com `−`,
+`neutro` para transferência). Dentro de um `ProvedorValores`, o
+`BotaoOcultarValores` esconde todos de uma vez, como nos apps de banco.
+
+```tsx
+import { BotaoOcultarValores, NavegadorPeriodo, ProvedorValores, Valor, periodoDe } from '@celke/kole-react';
+
+const [periodo, setPeriodo] = useState(() => periodoDe('mes')); // { tipo, de: 'AAAA-MM-DD', ate }
+
+<ProvedorValores chave="financas-ocultos">
+  <NavegadorPeriodo valor={periodo} aoMudar={setPeriodo} /> {/* ‹ Novembro de 2026 › */}
+  <BotaoOcultarValores />
+  <Valor valor={2200} tipo="despesa" forte /> {/* −R$ 2.200,00 */}
+</ProvedorValores>
+```
+
+`GraficoRosca` faz o "despesas por categoria" (com `maxFatias` e `aoEscolher`
+para abrir os lançamentos da fatia) e o `SeletorContexto`, na prop `contexto`
+da `Estrutura`, troca o sistema inteiro entre pessoal e empresa (ou filiais).
+`formatarMoeda`, `dividirEmParcelas` e `somarMoeda` cuidam do sinal de menos,
+dos centavos das parcelas e do erro de ponto flutuante. A demo traz a solução
+completa em Soluções › Finanças.
 
 ### Gráficos
 

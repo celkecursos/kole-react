@@ -43,6 +43,7 @@ import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaCalendario } from './paginas/avancado/CalendarioDemo';
 import { PaginaKanban } from './paginas/apps/Kanban';
 import { PaginaTarefas } from './paginas/apps/Tarefas';
+import { PaginaFinancas, SeletorEspaco, ehFinancas } from './paginas/solucoes/financas/Financas';
 import { PaginaErro } from './paginas/Erro';
 import { PaginaSite } from './paginas/site/Site';
 import { version } from '../package.json';
@@ -121,6 +122,7 @@ function App() {
   else if (rota === '/avancado/calendario') pagina = <PaginaCalendario />;
   else if (rota === '/apps/kanban' || rota.startsWith('/apps/kanban/')) pagina = <PaginaKanban rota={rota} navegar={navegar} />;
   else if (rota === '/apps/tarefas') pagina = <PaginaTarefas />;
+  else if (ehFinancas(rota)) pagina = <PaginaFinancas rota={rota} navegar={navegar} />;
   else if (rota === '/ui/trilha') pagina = <PaginaTrilhas modeloAtual={modeloTrilha} aoMudarModelo={mudarModeloTrilha} navegar={navegar} />;
   else if (rota === '/perfil' || rota.startsWith('/perfil/'))
     pagina = <PaginaPerfil rota={rota} navegar={navegar} perfil={perfil} aoSalvar={setPerfil} />;
@@ -142,6 +144,8 @@ function App() {
       marca={{ nome: 'Gestor', subtitulo: 'Gestão comercial' }}
       nav={NAV}
       rotaAtual={rota}
+      // nas finanças, o topo troca entre o pessoal e a empresa
+      contexto={ehFinancas(rota) ? <SeletorEspaco /> : undefined}
       aoNavegar={navegar}
       modeloTrilha={MODELOS_TRILHA.find((m) => m.id === modeloTrilha)?.modelo}
       usuario={{ nome: perfil.nome, cargo: perfil.cargo, foto: perfil.foto }}

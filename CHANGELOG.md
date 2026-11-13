@@ -4,6 +4,31 @@
 
 Novidades:
 
+- Finanças: `Valor` (dinheiro com sinal e cor de entrada e saída, tamanhos,
+  riscado, compacto), `ProvedorValores` e `BotaoOcultarValores` (o "ocultar
+  valores", lembrado no navegador com `chave`) e `useValoresOcultos`.
+- `formatarMoeda` (sinal de menos tipográfico, `sinal`, `compacto`, `moeda`,
+  sem `−0,00`), `formatarPercentual`, `variacaoPercentual`,
+  `dividirEmParcelas` (centavos exatos) e `somarMoeda` (soma em centavos).
+- `GraficoRosca`: participação de cada parte, com a fatia ativa no meio do anel,
+  legenda com valor e porcentagem (esconde fatias), `maxFatias` ("Outros"),
+  `aoEscolher` no clique ou Enter, teclado, "Ver dados" e entrada animada.
+- `NavegadorPeriodo`: "‹ Novembro de 2026 ›" com atalhos (este mês, mês
+  passado, trimestre, ano) e intervalo livre; utilitários `periodoDe`,
+  `moverPeriodo`, `noPeriodo`, `rotuloPeriodo`, `mesesDoPeriodo` e `dataIso`.
+- `SeletorContexto`: troca pessoal × empresa, filial ou escola; nova prop
+  `contexto` na `Estrutura`, à esquerda do topo e visível também no celular.
+- Ícones `arrow-left-right`, `banknote`, `calendar-range`, `chart-pie`,
+  `landmark`, `piggy-bank`, `receipt`, `repeat`, `target`, `trending-down` e
+  `trending-up`.
+- Demo: seção Soluções › Finanças, para finanças pessoais e da empresa (o
+  seletor do topo troca entre as duas): visão geral, lançamentos (filtros,
+  seleção em massa, parcelado e repetição mensal), contas e cartões (fatura e
+  limite), contas a pagar e receber, orçamento por categoria, metas, fluxo de
+  caixa projetado e relatórios (DRE na empresa, com exportação CSV).
+  Documentação: páginas Valor e dinheiro, Navegador de período e Seletor de
+  contexto; rosca na página de Gráficos.
+
 - `Kanban`: quadro com colunas (cor, contagem, `limite` de cartões, menu de
   renomear, recolher e excluir, `acoesColuna`), cartões que se arrastam entre
   colunas, "Adicionar cartão" na coluna, "Adicionar coluna", colunas
@@ -83,6 +108,9 @@ Novidades:
 
 Correções:
 
+- `GraficoCombinado`: o eixo direito só aparece quando alguma série está nele
+  (antes, uma linha com `eixo: 'esquerdo'` deixava um eixo direito vazio de 0 a 1
+  e "(eixo esquerdo)" em todas as legendas).
 - `CabecalhoPagina`: sem espaço, as ações descem para a linha de baixo, em vez
   de espremer o título (o título fica com pelo menos 12rem).
 - `QuadroArrastavel`: `aoMudar` passa a ser chamado uma vez, ao soltar (antes, a

@@ -75,6 +75,10 @@ export default function Pagina() {
       notas={
         <ul className="doc-lista">
           <li>
+            <C>contexto</C> recebe um seletor (em geral o <C>SeletorContexto</C>: pessoal × empresa, filial) à esquerda do topo, visível
+            também no celular. <C>complementosTopbar</C> some no celular.
+          </li>
+          <li>
             A <C>Estrutura</C> não troca de página sozinha: ela mostra <C>rotaAtual</C> e avisa por <C>aoNavegar</C>. Isso permite
             usar qualquer roteador.
           </li>

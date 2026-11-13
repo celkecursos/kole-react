@@ -1,0 +1,35 @@
+.lp-valor {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lp-valor--pequeno {
+  font-size: var(--fs-caption);
+}
+.lp-valor--grande {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lp-valor--destaque {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.lp-valor--forte {
+  font-weight: 600;
+}
+.lp-valor--entrada {
+  color: var(--ok-fg);
+}
+.lp-valor--saida {
+  color: var(--err-fg);
+}
+.lp-valor--riscado {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.lp-valor.is-oculto {
+  color: var(--t3);
+  letter-spacing: 0.08em;
+}

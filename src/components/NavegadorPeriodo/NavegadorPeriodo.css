@@ -1,0 +1,71 @@
+.lp-periodo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+}
+.lp-periodo-menu {
+  min-width: 0;
+}
+.lp-periodo-menu > .lp-btn {
+  /* o rótulo não pula de largura entre "maio" e "novembro" */
+  min-width: 11.5rem;
+  max-width: 100%;
+  justify-content: center;
+}
+.lp-periodo-painel {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.375rem;
+  width: min(19rem, calc(100vw - 2rem));
+}
+.lp-periodo-atalhos {
+  display: grid;
+  gap: 0.125rem;
+}
+.lp-periodo-atalho {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.625rem;
+  border-radius: var(--r-field);
+  font-size: var(--fs-corpo-2);
+  color: var(--ink);
+  cursor: pointer;
+}
+.lp-periodo-atalho span {
+  color: var(--t3);
+  font-size: var(--fs-caption);
+}
+.lp-periodo-atalho:hover {
+  background: var(--surf-2);
+}
+.lp-periodo-atalho:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-periodo-atalho.is-atual {
+  background: var(--pri-bg);
+  color: var(--pri-ink);
+  font-weight: 600;
+}
+.lp-periodo-livre {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 0.625rem 0.25rem;
+  border-top: 1px solid var(--border);
+}
+.lp-periodo-livre > strong {
+  font-size: var(--fs-caption);
+  color: var(--t2);
+}
+.lp-periodo-datas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.lp-periodo-livre > .lp-btn {
+  justify-self: end;
+}

@@ -1,0 +1,127 @@
+.lp-rosca {
+  display: flex;
+  gap: 1.25rem 1.75rem;
+  align-items: center;
+}
+.lp-rosca--abaixo {
+  flex-direction: column;
+  align-items: stretch;
+}
+.lp-rosca--abaixo .lp-rosca-plot {
+  align-self: center;
+}
+.lp-rosca-plot {
+  flex: none;
+}
+.lp-rosca-plot.is-clicavel {
+  cursor: pointer;
+}
+.lp-rosca-fatia {
+  /* a borda na cor do fundo separa as fatias */
+  stroke: var(--surface);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition: opacity 0.15s;
+}
+.lp-rosca-fatia.is-apagada {
+  opacity: 0.45;
+}
+.lp-rosca-centro {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+  gap: 0.1rem;
+}
+.lp-rosca-centro-rotulo {
+  font-size: var(--fs-caption);
+  color: var(--t3);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lp-rosca-centro-valor {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lp-rosca-centro-parte {
+  font-size: var(--fs-caption);
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-rosca-legenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 0.125rem;
+}
+.lp-rosca-leg-item {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto 3.4rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--r-field);
+  font-size: var(--fs-corpo-2);
+  color: var(--t2);
+  cursor: pointer;
+}
+.lp-rosca-leg-item:hover,
+.lp-rosca-leg-item.is-ativa {
+  background: var(--surf-2);
+}
+.lp-rosca-leg-item:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-rosca-leg-item.is-oculta {
+  opacity: 0.5;
+}
+.lp-rosca-leg-item.is-oculta .lp-rosca-leg-rotulo {
+  text-decoration: line-through;
+}
+.lp-rosca-leg-rotulo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.lp-rosca-leg-valor,
+.lp-rosca-leg-parte {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.lp-rosca-leg-parte {
+  color: var(--t3);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lp-graf--animado .lp-rosca-fatias {
+    animation: lp-rosca-entra 0.7s cubic-bezier(0.25, 0.7, 0.3, 1) both;
+  }
+  .lp-graf--animado .lp-rosca-centro {
+    animation: lp-graf-surge 0.3s ease-out 0.45s both;
+  }
+}
+@keyframes lp-rosca-entra {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.7);
+  }
+}

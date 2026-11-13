@@ -1,0 +1,73 @@
+.lp-ctx {
+  min-width: 0;
+}
+.lp-ctx-gatilho {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 16rem;
+  min-width: 0;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  border-radius: var(--r-field);
+  border: var(--hairline, 1px) solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  line-height: 1.15;
+}
+.lp-ctx-gatilho:hover,
+.lp-ctx-gatilho.is-aberto {
+  background: var(--surf-2);
+}
+.lp-ctx-gatilho:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.125rem;
+}
+.lp-ctx-quadro {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: calc(var(--r-field) * 0.75);
+  background: var(--pri);
+  color: var(--ink-on-solid, #fff);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.lp-ctx-quadro .lp-ic {
+  font-size: 0.95rem;
+}
+.lp-ctx-textos {
+  display: grid;
+  min-width: 0;
+}
+.lp-ctx-nome {
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lp-ctx-desc {
+  font-size: var(--fs-micro);
+  color: var(--t3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lp-ctx-seta {
+  flex: none;
+  color: var(--t3);
+  font-size: 0.875rem;
+}
+.lp-ctx--compacto .lp-ctx-textos {
+  display: none;
+}
+@media (max-width: 40rem) {
+  .lp-ctx .lp-ctx-textos {
+    display: none;
+  }
+}
