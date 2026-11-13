@@ -1,0 +1,291 @@
+/* Telas de aplicativo da demo: quadros Kanban e Tarefas. */
+
+.demo-apps-barra {
+  max-width: 22rem;
+}
+.demo-apps-secao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.demo-apps-secao-titulo {
+  margin: 0;
+  font-size: var(--fs-titulo-secao);
+  font-weight: 700;
+  color: var(--ink);
+}
+.demo-apps-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.demo-apps-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.demo-apps-filtros > * {
+  flex: 1 1 12rem;
+  min-width: 10rem;
+  max-width: 20rem;
+}
+.demo-apps-filtros > .lp-btn {
+  flex: none;
+  min-width: 0;
+}
+.demo-apps-filtros > .lp-pilulas {
+  flex: 1 1 100%;
+}
+.demo-apps-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--d-gap);
+  min-width: 0;
+}
+.demo-apps-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}
+.demo-apps-linha > .lp-campo {
+  flex: 1 1 12rem;
+}
+.demo-apps-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.demo-apps-grupo > legend {
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.demo-apps-grupo > legend small {
+  margin-left: 0.25rem;
+  font-weight: 500;
+  color: var(--t4);
+}
+.demo-apps-nada {
+  margin: 0;
+  color: var(--t4);
+  font-size: var(--fs-corpo-2);
+}
+/* "Excluir" à esquerda do rodapé do diálogo */
+.demo-apps-rodape-esq {
+  margin-right: auto;
+}
+
+/* ---- favorito: a estrela preenchida ---- */
+.demo-favorito.is-favorito .lp-ic {
+  fill: currentColor;
+}
+
+/* ---- listagem de quadros ---- */
+.demo-quadro {
+  border-top: 0.1875rem solid var(--kb-cor);
+}
+.demo-quadro-numeros {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  color: var(--t3);
+}
+.demo-quadro-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+.demo-quadro-rodape small {
+  color: var(--t4);
+}
+
+/* ---- cartão do funil de vendas ---- */
+.demo-negocio {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 0.5rem;
+  align-items: center;
+}
+.demo-negocio strong {
+  color: var(--ink);
+}
+.demo-negocio .lp-prog,
+.demo-negocio small {
+  grid-column: 1 / -1;
+}
+.demo-negocio small {
+  color: var(--t4);
+}
+
+/* ---- detalhe do cartão ---- */
+.demo-cartao-detalhe {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 48rem) {
+  .demo-cartao-detalhe {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .demo-cartao-lado {
+    order: -1;
+  }
+}
+.demo-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.demo-comentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.demo-comentarios li {
+  display: flex;
+  gap: 0.625rem;
+}
+.demo-comentarios strong {
+  color: var(--ink);
+  font-size: var(--fs-corpo-2);
+}
+.demo-comentarios small {
+  color: var(--t4);
+}
+.demo-comentarios p {
+  margin: 0.125rem 0 0;
+  font-size: var(--fs-corpo-2);
+  color: var(--t2);
+}
+
+/* ---- tarefas: barra lateral + lista ---- */
+.demo-tarefas {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 56rem) {
+  .demo-tarefas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.demo-tarefas-lado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surf-raised);
+}
+.demo-tarefas-lado ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.demo-tarefas-lado-titulo {
+  margin: 0.875rem 0.5rem 0.25rem;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--t4);
+}
+.demo-tarefas-visao {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 0;
+  border-radius: var(--r-field);
+  background: transparent;
+  color: var(--t2);
+  font: inherit;
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.demo-tarefas-visao:hover {
+  background: var(--surf-2);
+}
+.demo-tarefas-visao.is-ativo {
+  background: var(--pri-bg);
+  color: var(--pri);
+}
+.demo-tarefas-visao:focus-visible,
+.demo-tarefas-etiqueta:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.demo-tarefas-visao-rotulo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.demo-tarefas-ic {
+  font-size: 1rem;
+}
+.demo-tarefas-ponto {
+  width: 0.625rem;
+  height: 0.625rem;
+  margin: 0 0.1875rem;
+  border-radius: 0.1875rem;
+  background: var(--kb-cor);
+}
+.demo-tarefas-etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0 0.375rem;
+}
+.demo-tarefas-etiqueta {
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: none;
+  cursor: pointer;
+}
+.demo-tarefas-etiqueta.is-ativo .lp-etiqueta {
+  box-shadow: 0 0 0 0.125rem var(--pri);
+}
+.demo-tarefas-nova {
+  display: flex;
+  gap: 0.5rem;
+}
+.demo-tarefas-nova > .lp-campo {
+  flex: 1 1 auto;
+}
+.demo-tarefa-situacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: var(--hairline) solid var(--border);
+}
+.demo-tarefa-campos {
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}

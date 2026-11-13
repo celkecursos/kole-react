@@ -142,11 +142,12 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Campos prontos | `CampoCpf`, `CampoCnpj`, `CampoCpfCnpj`, `CampoCep`, `CampoTelefone`, `CampoPlaca`, `CampoRenavam`, `CampoChassi`, `CampoCnh`, `CampoImei`, `CampoEmail`, `CampoData`, `CampoHora`, `CampoDataHora`, `CampoMoeda`, `CampoInteiro`, `CampoUf`, `CampoUfMultiplo`, `CampoTipoPessoa` |
 | Busca remota | `CampoBusca`, `CampoCidade`, `useBuscaAssincrona` |
 | Arquivos | `CampoAnexo`, `VisualizadorArquivo`, `DialogoArquivo`, `Foto` |
-| Dados | `Tabela`, `ListaCards`, `Paginacao`, `Indicador`/`Indicadores`, `Detalhes`, `Status`, `Chip`, `Avatar`, `Placa` |
+| Dados | `Tabela`, `ListaCards`, `Paginacao`, `Indicador`/`Indicadores`, `Detalhes`, `Status`, `Chip`, `Avatar`, `GrupoAvatares`, `Placa` |
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
 | Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
 | Site público | `EstruturaSite`, `RodapeSite`, `SecaoSite`, `DestaqueSite`, `CabecalhoSecao`, `CampoPesquisa`, `CardConteudo`, `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`, `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`, `SumarioPagina`, `Newsletter` |
 | Calendário | `Calendario` (visões mês, semana, dia e lista, com arrastar), `MiniCalendario`, `repetirEvento` |
+| Kanban e tarefas | `Kanban`, `CartaoKanban`, `ListaTarefas`, `QuadroArrastavel`, `SeloPrioridade`, `SeloPrazo`, `Etiqueta`, `tempoRelativo`, `situacaoPrazo` |
 | Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
 
 ### Conversa (chat)
@@ -462,6 +463,58 @@ evento e destaca a semana visível. Ligue o dia escolhido à prop `data` do
 ```
 No celular, a semana mostra os eventos como faixas de cor; use dia ou lista para
 ler os títulos.
+
+### Kanban e tarefas
+
+`Kanban` é o quadro pronto: colunas com cor, contagem, `limite` de cartões e
+menu (renomear, recolher, excluir), cartões que se arrastam entre colunas (mouse,
+toque e teclado), "Adicionar cartão", "Adicionar coluna", rolagem horizontal e
+tela vazia. Cada ação aparece quando o callback dela é passado. Durante o
+arraste o quadro mostra uma prévia; ao soltar, `aoMudar` recebe as colunas e
+`aoSoltar` o movimento, que é o que o servidor precisa para gravar.
+
+```tsx
+import { CartaoKanban, Kanban, type ColunaKanban } from '@celke/kole-react';
+
+const [colunas, setColunas] = useState<ColunaKanban<Cartao>[]>(inicial);
+
+<Kanban
+  colunas={colunas}
+  aoMudar={setColunas}
+  aoSoltar={({ item, de, para }) => api.moverCartao(item.id, para.coluna, para.indice)}
+  aoSoltarColuna={({ colunas }) => api.ordenarColunas(colunas.map((c) => c.id))} // liga o arraste das colunas
+  filtro={busca ? (c) => c.titulo.includes(busca) : undefined} // esconde sem tirar do lugar
+  nomeItem={(c) => c.titulo}
+  renderCartao={(c, alca) => (
+    <CartaoKanban
+      titulo={c.titulo}
+      etiquetas={c.etiquetas}
+      prioridade={c.prioridade} // 'baixa' | 'media' | 'alta' | 'critica'
+      vencimento={c.vencimento} // 'AAAA-MM-DD': atrasado, hoje, em breve
+      subtarefas={{ feitas: 2, total: 5 }}
+      responsaveis={c.pessoas}
+      alca={alca}
+      aoAbrir={() => abrirDetalhe(c)}
+    />
+  )}
+  aoAdicionarCartao={(colunaId, titulo) => criarCartao(colunaId, titulo)}
+  aoAdicionarColuna={(titulo) => criarColuna(titulo)}
+  aoRenomearColuna={renomear}
+  aoRecolherColuna={recolher}
+  aoExcluirColuna={async (id) => (await confirmar.remover()) && excluir(id)}
+/>
+```
+
+`ListaTarefas` mostra tarefas em linhas: marcar como feita (`aoConcluir`),
+situação, prioridade, prazo, etiquetas e responsáveis; `aoReordenar` liga o
+arraste e recebe a lista na ordem nova; `filtro` faz as visões (hoje,
+atrasadas, uma lista) sem perder a ordem das escondidas.
+
+Os dois são montados sobre o `QuadroArrastavel`, que também serve sozinho:
+`layout="faixa"`, `podeSoltar` (regra de destino), `visivel`,
+`colunasArrastaveis` e rolagem automática perto das bordas. A demo traz as telas
+completas em Aplicativos › Kanban (listagem de quadros, quadro com filtros e
+detalhe do cartão) e Aplicativos › Tarefas.
 
 ### Gráficos
 

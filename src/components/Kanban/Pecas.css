@@ -1,0 +1,47 @@
+/* ---- cor de coluna, etiqueta e cartão: --kb-cor pelo token ---- */
+.lp-kb-cor--pri { --kb-cor: var(--pri); }
+.lp-kb-cor--ok { --kb-cor: var(--ok-solid); }
+.lp-kb-cor--warn { --kb-cor: var(--warn-solid); }
+.lp-kb-cor--err { --kb-cor: var(--err-solid); }
+.lp-kb-cor--info { --kb-cor: var(--info-solid); }
+.lp-kb-cor--destaque { --kb-cor: var(--destaque-ink); }
+.lp-kb-cor--neutro { --kb-cor: var(--t4); }
+.lp-kb-cor--graf-1 { --kb-cor: var(--graf-1); }
+.lp-kb-cor--graf-2 { --kb-cor: var(--graf-2); }
+.lp-kb-cor--graf-3 { --kb-cor: var(--graf-3); }
+.lp-kb-cor--graf-4 { --kb-cor: var(--graf-4); }
+.lp-kb-cor--graf-5 { --kb-cor: var(--graf-5); }
+.lp-kb-cor--graf-6 { --kb-cor: var(--graf-6); }
+
+/* ---- Etiqueta: texto escuro (contraste) sobre o tom claro da cor, com o ponto na cor cheia ---- */
+.lp-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: 100%;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--kb-cor, var(--t4)) 14%, var(--surface));
+  color: var(--t2);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-etiqueta-ponto {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--kb-cor, var(--t4));
+}
+
+/* ---- SeloPrioridade compacto: só a bandeira ---- */
+.lp-prioridade-ic {
+  display: inline-flex;
+  align-items: center;
+  color: var(--cor-fg);
+  font-size: 1rem;
+}

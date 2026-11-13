@@ -7,11 +7,13 @@
 }
 .lp-cab-topo {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
 }
+/* o título fica com pelo menos 12rem: sem espaço, as ações descem para a linha de baixo */
 .lp-cab-titulos {
-  flex: 1;
+  flex: 1 1 12rem;
   min-width: 0;
 }
 .lp-cab-tile {

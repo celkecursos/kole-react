@@ -76,6 +76,21 @@ export const NAV: SecaoNav[] = [
     ],
   },
   {
+    rotulo: 'Aplicativos',
+    itens: [
+      {
+        rotulo: 'Kanban',
+        icone: 'square-kanban',
+        filhos: [
+          { rotulo: 'Quadros', rota: '/apps/kanban' },
+          { rotulo: 'Quadro: Lançamento do site', rota: '/apps/kanban/lancamento-site' },
+          { rotulo: 'Quadro: Funil de vendas', rota: '/apps/kanban/vendas' },
+        ],
+      },
+      { rotulo: 'Tarefas', icone: 'list-todo', rota: '/apps/tarefas' },
+    ],
+  },
+  {
     rotulo: 'Site',
     itens: [
       { rotulo: 'Home do site', icone: 'app-window', rota: '/site' },

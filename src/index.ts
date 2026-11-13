@@ -12,6 +12,7 @@ export * from './utils/tiposCampo';
 export * from './utils/constantes';
 export * from './utils/texto';
 export * from './utils/datas';
+export * from './utils/tempo';
 export * from './utils/entidade';
 export * from './utils/anexos';
 export * from './utils/jwt';
@@ -91,7 +92,35 @@ export {
   QuadroArrastavel,
   type QuadroArrastavelProps,
   type ColunaArrastavel,
+  type PosicaoQuadro,
+  type SoltarItem,
+  type SoltarColuna,
 } from './components/QuadroArrastavel/QuadroArrastavel';
+export { Kanban, type KanbanProps, type ColunaKanban } from './components/Kanban/Kanban';
+export { CartaoKanban, type CartaoKanbanProps } from './components/Kanban/CartaoKanban';
+export {
+  SeloPrioridade,
+  SeloPrazo,
+  Etiqueta,
+  type SeloPrioridadeProps,
+  type SeloPrazoProps,
+  type EtiquetaProps,
+} from './components/Kanban/Pecas';
+export {
+  PRIORIDADES,
+  SITUACOES_TAREFA,
+  type CorKanban,
+  type Prioridade,
+  type EtiquetaKanban,
+  type SituacaoTarefa,
+  type ContagemSubtarefas,
+} from './components/Kanban/tipos';
+export {
+  ListaTarefas,
+  type ListaTarefasProps,
+  type TarefaLista,
+  type ReordenarTarefa,
+} from './components/ListaTarefas/ListaTarefas';
 export {
   Acordeao,
   ItemAcordeao,
@@ -200,6 +229,7 @@ export { Status, type StatusProps } from './components/Status/Status';
 export { Chip, type ChipProps } from './components/Chip/Chip';
 export { Badge, ComBadge, type BadgeProps, type ComBadgeProps, type CorBadge } from './components/Badge/Badge';
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar';
+export { GrupoAvatares, type GrupoAvataresProps, type PessoaAvatar } from './components/Avatar/GrupoAvatares';
 export { Placa, type PlacaProps } from './components/Placa/Placa';
 export { Citacao, type CitacaoProps, type CorCitacao } from './components/Citacao/Citacao';
 export {

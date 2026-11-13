@@ -40,6 +40,8 @@ import { PaginaWidgets } from './paginas/avancado/Widgets';
 import { PaginaConversas } from './paginas/avancado/Conversas';
 import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaCalendario } from './paginas/avancado/CalendarioDemo';
+import { PaginaKanban } from './paginas/apps/Kanban';
+import { PaginaTarefas } from './paginas/apps/Tarefas';
 import { PaginaErro } from './paginas/Erro';
 import { PaginaSite } from './paginas/site/Site';
 import { version } from '../package.json';
@@ -115,6 +117,8 @@ function App() {
   else if (rota === '/avancado/conversas') pagina = <PaginaConversas />;
   else if (rota === '/avancado/graficos') pagina = <PaginaGraficos />;
   else if (rota === '/avancado/calendario') pagina = <PaginaCalendario />;
+  else if (rota === '/apps/kanban' || rota.startsWith('/apps/kanban/')) pagina = <PaginaKanban rota={rota} navegar={navegar} />;
+  else if (rota === '/apps/tarefas') pagina = <PaginaTarefas />;
   else if (rota === '/ui/trilha') pagina = <PaginaTrilhas modeloAtual={modeloTrilha} aoMudarModelo={mudarModeloTrilha} navegar={navegar} />;
   else if (rota === '/perfil' || rota.startsWith('/perfil/'))
     pagina = <PaginaPerfil rota={rota} navegar={navegar} perfil={perfil} aoSalvar={setPerfil} />;
