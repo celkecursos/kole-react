@@ -4,6 +4,20 @@
 
 Novidades:
 
+- Assistente de IA: `ListaConversas` (histórico agrupado por data, com busca,
+  renomear, fixar e excluir), `InicioConversa` (saudação e sugestões, em cartões
+  ou pílulas), `BlocoCodigo` (código com a linguagem e o botão de copiar) e
+  `ChatFlutuante` (atendimento de site: botão fixo no canto e painel com a
+  conversa; tela cheia no celular).
+- `CampoMensagem`: `anexos` em chips (com progresso e erro), `aoRemoverAnexo` e
+  `aoAdicionarArquivos` (arrastar para o campo ou colar). Com anexos, envia sem
+  texto; enquanto um anexo sobe, o Enviar espera.
+- `Mensagem`: estilos para o Markdown renderizado pelo app (títulos, listas,
+  tabelas que rolam dentro da bolha, citações e código em linha).
+- Ícones: `thumbs-up`, `thumbs-down`, `square-pen`, `globe`, `wrench`,
+  `sparkles`, `bot`, `message-circle`, `panel-left`, `file-search` e `pin`.
+- Demo: página modelo Assistente (Advanced UI) e o chat de atendimento nas
+  páginas modelo do site.
 - `Calendario`: visões mês, semana, dia e lista; eventos com cor pelos tokens,
   "+N mais" por dia, faixa de horários com eventos lado a lado quando se
   sobrepõem e linha do "agora"; `aoMudarPeriodo`, `aoClicarDia`,

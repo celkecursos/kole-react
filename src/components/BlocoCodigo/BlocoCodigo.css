@@ -1,0 +1,52 @@
+.lp-bloco-codigo {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0.75rem 0;
+  overflow: hidden;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-field);
+  background: var(--surf-2);
+  font-family: var(--font-ui);
+}
+.lp-bloco-codigo-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 2rem;
+  padding: 0.125rem 0.25rem 0.125rem 0.75rem;
+  border-bottom: var(--hairline) solid var(--border);
+  background: var(--surf-3);
+}
+.lp-bloco-codigo-ling {
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--t3);
+}
+.lp-bloco-codigo-pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow-x: auto;
+  font-family: var(--lp-font-mono);
+  font-size: var(--fs-corpo-2);
+  line-height: 1.6;
+  color: var(--ink);
+  tab-size: 2;
+  background: none;
+  white-space: pre;
+}
+.lp-bloco-codigo-pre:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-bloco-codigo.is-quebrando .lp-bloco-codigo-pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.lp-bloco-codigo code {
+  font: inherit;
+  background: none;
+  padding: 0;
+}

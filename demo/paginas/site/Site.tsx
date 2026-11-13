@@ -36,6 +36,7 @@ import {
   Trilha,
   Vazio,
 } from '../../../src';
+import { AtendimentoSite } from './AtendimentoSite';
 
 /*
  * Páginas modelo de site institucional genérico (EstruturaSite), com os textos
@@ -171,6 +172,7 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
       }
     >
       {paginas[rota] ?? <Home navegar={navegar} faixa="escuro" />}
+      <AtendimentoSite navegar={navegar} />
     </EstruturaSite>
   );
 }
