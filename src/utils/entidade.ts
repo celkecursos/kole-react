@@ -1,3 +1,6 @@
+import type { Idioma } from '../i18n/idiomas';
+import { textosDe } from '../i18n/textos';
+
 /**
  * Vocabulário de entidade e títulos de tela: verbo no infinitivo + substantivo
  * (`Cadastrar veículo`), sem artigo — nunca precisa saber o gênero.
@@ -16,13 +19,11 @@ export interface Entidade {
   readonly leitura?: string;
 }
 
-const VERBOS: Record<Modo, string> = { novo: 'Cadastrar', editar: 'Editar', leitura: 'Visualizar' };
-
-/** Título da tela: a frase declarada do modo ou `Verbo nome`. */
-export function tituloDeEntidade(entidade: string | Entidade, modo: Modo): string {
+/** Título da tela: a frase declarada do modo ou `Verbo nome` (o verbo no `idioma`, padrão `pt-BR`). */
+export function tituloDeEntidade(entidade: string | Entidade, modo: Modo, idioma: Idioma = 'pt-BR'): string {
   const e: Entidade = typeof entidade === 'string' ? { nome: entidade } : entidade;
   const declarada = e[modo]?.trim();
-  return declarada || `${VERBOS[modo]} ${e.nome}`.trim();
+  return declarada || `${textosDe(idioma).entidade[modo]} ${e.nome}`.trim();
 }
 
 /** Troca `\ / : * ? " < > |` por `-` e junta espaços — nome seguro para "Salvar como PDF". */

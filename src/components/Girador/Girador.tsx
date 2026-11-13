@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { cx } from '../../utils/cx';
 import './Girador.css';
+import { useTextos } from '../../i18n/contexto';
 
 /** `atual` = cor do texto em volta (para usar dentro de botões). */
 export type CorGirador = 'pri' | 'secundario' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'escuro' | 'atual';
@@ -20,7 +21,9 @@ export interface GiradorProps {
 const ESCALA: Record<string, string> = { pequeno: '1rem', medio: '1.75rem', grande: '2.75rem' };
 
 /** Indicador de atividade em linha (spinner). Para espera de seção inteira, use `Carregando`. */
-export function Girador({ tipo = 'anel', cor = 'pri', tamanho = 'medio', rotulo = 'Carregando...', mostrarRotulo = false, className }: GiradorProps) {
+export function Girador({ tipo = 'anel', cor = 'pri', tamanho = 'medio', rotulo: rotuloProp, mostrarRotulo = false, className }: GiradorProps) {
+  const t = useTextos();
+  const rotulo = rotuloProp ?? t.comum.carregandoReticencias;
   return (
     <span
       role="status"

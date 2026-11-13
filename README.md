@@ -34,6 +34,26 @@ createRoot(document.getElementById('root')!).render(
 `ProvedorUi` liga tema/densidade (lembrados no navegador), toasts (`useToast`) e
 confirmação (`useConfirmacao`).
 
+### Idioma
+
+Os textos da própria biblioteca saem em português do Brasil (padrão), inglês ou
+espanhol. Ligue o seletor na topbar com `idiomas` e sincronize o i18n do seu
+sistema em `aoMudarIdioma` (chamado ao montar e a cada troca). A biblioteca não
+traduz os textos do sistema: ela só informa o idioma escolhido.
+
+```tsx
+<ProvedorUi idiomaInicial={usuario.locale} aoMudarIdioma={(idioma) => i18n.changeLanguage(idioma)}>
+  <Estrutura idiomas={['pt-BR', 'en', 'es']} {...props}>…</Estrutura>
+</ProvedorUi>
+```
+
+Prioridade dos textos: prop passada > dicionário do idioma > pt-BR. Para trocar
+um texto ou acrescentar um idioma, passe `textos` ao provedor
+(`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`). Regras brasileiras (máscaras e
+validação de CPF, CNPJ, CEP e telefone) e a moeda não mudam com o idioma; só a
+formatação e as mensagens. A demo traz a página Idioma com os exemplos de
+react-i18next e Laravel.
+
 ### Tema sem piscar ao abrir
 
 O `ProvedorUi` só aplica o tema depois que o React monta, e quem salvou o tema
@@ -43,7 +63,7 @@ escuro vê a página clara piscar por um instante. Para evitar, aplique o tema n
 ```html
 <!-- index.html -->
 <head>
-  <script>(function(){var p={};try{p=JSON.parse(localStorage.getItem("lp-preferencias")||"{}")||{}}catch(e){}var t=p.tema||"sistema";var h=document.documentElement;h.setAttribute("data-theme",{"claro":"light","escuro":"dark","sistema":"system"}[t]||"light");var d={"compacta":"density-compact","confortavel":"density-comfortable","espacosa":"density-cozy"}[p.densidade||"confortavel"];if(d)h.classList.add(d)})();</script>
+  <script>(function(){var p={};try{p=JSON.parse(localStorage.getItem("lp-preferencias")||"{}")||{}}catch(e){}var t=p.tema||"sistema";var h=document.documentElement;h.setAttribute("data-theme",{"claro":"light","escuro":"dark","sistema":"system"}[t]||"light");var l=p.idioma||"";if(l)h.lang=l;var d={"compacta":"density-compact","confortavel":"density-comfortable","espacosa":"density-cozy"}[p.densidade||"confortavel"];if(d)h.classList.add(d)})();</script>
 </head>
 ```
 
@@ -149,6 +169,7 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Calendário | `Calendario` (visões mês, semana, dia e lista, com arrastar), `MiniCalendario`, `repetirEvento` |
 | Kanban e tarefas | `Kanban`, `CartaoKanban`, `ListaTarefas`, `QuadroArrastavel`, `SeloPrioridade`, `SeloPrazo`, `Etiqueta`, `tempoRelativo`, `situacaoPrazo` |
 | Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `GraficoRosca`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
+| Idioma | `SeletorIdioma`, `Bandeira`, `useTextos`, `useIdioma`, `textosPtBR`, `textosEn`, `textosEs`, `interpolar`, `pluralizar` (e `idiomas` na `Estrutura`) |
 | Finanças | `Valor`, `ProvedorValores`, `BotaoOcultarValores`, `NavegadorPeriodo`, `SeletorContexto`, `formatarMoeda`, `formatarPercentual`, `dividirEmParcelas`, `periodoDe`, `noPeriodo` |
 
 ### Conversa (chat)

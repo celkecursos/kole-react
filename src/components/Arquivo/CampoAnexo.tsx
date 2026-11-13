@@ -7,6 +7,8 @@ import { AcaoLinha } from '../AcaoLinha/AcaoLinha';
 import { Campo, RevelarCamposCtx, useCampoIds, type CampoBaseProps } from '../Campo/Campo';
 import { DialogoArquivo } from './DialogoArquivo';
 import './Arquivo.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar, pluralizar } from '../../i18n/idiomas';
 
 export interface CampoAnexoProps extends Omit<CampoBaseProps, 'variante' | 'obrigatorio'> {
   /** Lista serializável de anexos (sem o `File`). */
@@ -51,6 +53,8 @@ export const CampoAnexo = forwardRef<CampoAnexoRef, CampoAnexoProps>(function Ca
   minimo = 0,
   disabled = false,
 }, ref) {
+  const t = useTextos();
+  const idioma = useIdioma();
   const { id, msgId } = useCampoIds(idExterno);
   const input = useRef<HTMLInputElement>(null);
   const arquivos = useRef(new Map<string, File>());
@@ -85,7 +89,7 @@ export const CampoAnexo = forwardRef<CampoAnexoRef, CampoAnexoProps>(function Ca
       }
       aceitos.push({ nome: f.name, tamanho: f.size, tipo: f.type, url });
     }
-    setRecusados(grandes.length ? `${listaPorExtenso(grandes)} excede${grandes.length > 1 ? 'm' : ''} ${formatBytes(maxTamanho)}.` : '');
+    setRecusados(grandes.length ? pluralizar(idioma, grandes.length, t.anexo.excede, { nomes: listaPorExtenso(grandes, idioma), tamanho: formatBytes(maxTamanho) }) : '');
     if (!aceitos.length) return;
     if (!multiple) aoMudar?.(aceitos.slice(0, 1));
     else {
@@ -109,7 +113,7 @@ export const CampoAnexo = forwardRef<CampoAnexoRef, CampoAnexoProps>(function Ca
   const erroFinal =
     erro ||
     recusados ||
-    (faltam ? (minimo === 1 ? 'Anexe pelo menos um arquivo' : `Anexe pelo menos ${minimo} arquivos`) : undefined);
+    (faltam ? pluralizar(idioma, minimo, t.anexo.minimo) : undefined);
 
   return (
     <Campo
@@ -134,9 +138,9 @@ export const CampoAnexo = forwardRef<CampoAnexoRef, CampoAnexoProps>(function Ca
       >
         <Icone icone="cloud-upload" />
         <span>
-          <strong>Clique para escolher</strong> ou arraste {multiple ? 'os arquivos' : 'o arquivo'} até aqui
+          <strong>{t.anexo.escolher}</strong> {multiple ? t.anexo.arrasteVarios : t.anexo.arrasteUm}
         </span>
-        {maxTamanho > 0 && <small>Até {formatBytes(maxTamanho)} por arquivo</small>}
+        {maxTamanho > 0 && <small>{interpolar(t.anexo.ateTamanho, { tamanho: formatBytes(maxTamanho) })}</small>}
         <input
           ref={input}
           id={id}
@@ -159,7 +163,7 @@ export const CampoAnexo = forwardRef<CampoAnexoRef, CampoAnexoProps>(function Ca
         <ul className="lp-anexo-lista">
           {valor.map((a, i) => (
             <li key={chaveDe(a)} className="lp-anexo-item">
-              <button type="button" className="lp-anexo-abrir" onClick={() => setVisualizando(i)} title={`Visualizar ${a.nome}`}>
+              <button type="button" className="lp-anexo-abrir" onClick={() => setVisualizando(i)} title={interpolar(t.anexo.visualizar, { nome: a.nome })}>
                 <span className="lp-anexo-thumb">
                   {tipoDeArquivo(a.tipo, a.nome) === 'imagem' && a.url ? (
                     <img src={a.miniatura ?? a.url} alt="" />
@@ -172,7 +176,7 @@ export const CampoAnexo = forwardRef<CampoAnexoRef, CampoAnexoProps>(function Ca
                   <span className="lp-anexo-tam">{formatBytes(a.tamanho)}</span>
                 </span>
               </button>
-              {!disabled && <AcaoLinha icone="x" rotulo={`Remover ${a.nome}`} severidade="err" onClick={() => remover(a)} />}
+              {!disabled && <AcaoLinha icone="x" rotulo={interpolar(t.anexo.removerNome, { nome: a.nome })} severidade="err" onClick={() => remover(a)} />}
             </li>
           ))}
         </ul>

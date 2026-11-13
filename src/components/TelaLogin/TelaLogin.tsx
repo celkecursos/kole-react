@@ -12,6 +12,8 @@ import type { Marca } from '../Estrutura/Estrutura';
 import { usePreferenciasOpcional } from '../Preferencias/Preferencias';
 import { Status } from '../Status/Status';
 import './TelaLogin.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface CredenciaisLogin {
   usuario: string;
@@ -75,17 +77,21 @@ export function TelaLogin({
   apresentacao,
   ambiente,
   identificador = 'cpf',
-  titulo = 'Acesse sua conta',
-  descricao = 'Entre com suas credenciais institucionais.',
+  titulo: tituloProp,
+  descricao: descricaoProp,
   aoEntrar,
   aoConfirmarCodigo,
   confiarDispositivo = true,
-  instrucaoCodigo = 'Digite o código de 6 dígitos gerado no aplicativo de autenticação.',
+  instrucaoCodigo: instrucaoCodigoProp,
   linkSenha,
   acoes,
   rodape,
   className,
 }: TelaLoginProps) {
+  const t = useTextos();
+  const titulo = tituloProp ?? t.login.titulo;
+  const descricao = descricaoProp ?? t.login.subtitulo;
+  const instrucaoCodigo = instrucaoCodigoProp ?? t.login.codigoInstrucao;
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [entrando, setEntrando] = useState(false);
@@ -115,7 +121,7 @@ export function TelaLogin({
         setPedindoCodigo(true);
       } else if (r && typeof r === 'object') setErro(r.erro);
     } catch {
-      setErro('Não foi possível entrar agora. Tente de novo em instantes.');
+      setErro(t.login.erroEntrar);
     } finally {
       setEntrando(false);
     }
@@ -124,7 +130,7 @@ export function TelaLogin({
   const confirmar = async (e?: FormEvent) => {
     e?.preventDefault();
     if (codigo.length !== TAMANHO_CODIGO) {
-      setErroCodigo(`Informe os ${TAMANHO_CODIGO} dígitos`);
+      setErroCodigo(interpolar(t.login.informeDigitos, { n: TAMANHO_CODIGO }));
       return;
     }
     setConfirmando(true);
@@ -133,13 +139,13 @@ export function TelaLogin({
       if (r && typeof r === 'object') setErroCodigo(r.erro);
       else setPedindoCodigo(false);
     } catch {
-      setErroCodigo('Não foi possível validar o código. Tente de novo.');
+      setErroCodigo(t.login.erroCodigo);
     } finally {
       setConfirmando(false);
     }
   };
 
-  const obrig = (v: string) => (tentou && !v.trim() ? 'Campo obrigatório' : undefined);
+  const obrig = (v: string) => (tentou && !v.trim() ? t.comum.campoObrigatorio : undefined);
   const propsUsuario = { valor: usuario, aoMudar: setUsuario, obrigatorio: true, erro: obrig(usuario), autoFocus: true };
 
   return (
@@ -167,8 +173,8 @@ export function TelaLogin({
           {ambiente?.rotulo && ambiente.rotulo !== '#' && <Status rotulo={ambiente.rotulo} severidade={ambiente.severidade ?? 'err'} />}
         </div>
         {prefs && (
-          <Dica texto={prefs.escuro ? 'Tema claro' : 'Tema escuro'}>
-            <button type="button" className="lp-login-tema" aria-label={prefs.escuro ? 'Tema claro' : 'Tema escuro'} onClick={prefs.alternarTema}>
+          <Dica texto={prefs.escuro ? t.comum.temaClaro : t.comum.temaEscuro}>
+            <button type="button" className="lp-login-tema" aria-label={prefs.escuro ? t.comum.temaClaro : t.comum.temaEscuro} onClick={prefs.alternarTema}>
               <Icone icone={prefs.escuro ? 'sun' : 'moon'} />
             </button>
           </Dica>
@@ -177,7 +183,7 @@ export function TelaLogin({
 
       <main className="lp-login-main">
         {comConteudo && apresentacao && (
-          <section className="lp-login-apres" aria-label="Sobre o sistema">
+          <section className="lp-login-apres" aria-label={t.login.sobre}>
             {apresentacao.chamada && <p className="lp-login-chamada">{apresentacao.chamada}</p>}
             <h2 className="lp-login-apres-titulo">{apresentacao.titulo}</h2>
             {apresentacao.descricao && <p className="lp-login-apres-desc">{apresentacao.descricao}</p>}
@@ -210,17 +216,17 @@ export function TelaLogin({
 
           <form className="lp-login-form" onSubmit={entrar} noValidate>
             {identificador === 'cpf' ? (
-              <CampoCpf rotulo="CPF" autoComplete="username" {...propsUsuario} />
+              <CampoCpf rotulo={t.login.cpf} autoComplete="username" {...propsUsuario} />
             ) : identificador === 'email' ? (
-              <CampoEmail rotulo="E-mail" autoComplete="username" placeholder="voce@empresa.com.br" {...propsUsuario} />
+              <CampoEmail rotulo={t.login.email} autoComplete="username" placeholder={t.login.emailPlaceholder} {...propsUsuario} />
             ) : (
-              <CampoTexto rotulo="Usuário" autoComplete="username" icone="user" {...propsUsuario} />
+              <CampoTexto rotulo={t.login.usuario} autoComplete="username" icone="user" {...propsUsuario} />
             )}
             <div className="lp-login-senha">
-              <CampoSenha rotulo="Senha" placeholder="••••••••" valor={senha} aoMudar={setSenha} obrigatorio erro={obrig(senha)} />
+              <CampoSenha rotulo={t.login.senha} placeholder="••••••••" valor={senha} aoMudar={setSenha} obrigatorio erro={obrig(senha)} />
               {linkSenha && <div className="lp-login-link-senha">{linkSenha}</div>}
             </div>
-            <Botao type="submit" rotulo={entrando ? 'Entrando…' : 'Entrar'} icone="log-in" bloco carregando={entrando} />
+            <Botao type="submit" rotulo={entrando ? t.login.entrando : t.login.entrar} icone="log-in" bloco carregando={entrando} />
           </form>
 
           {acoes && <div className="lp-login-acoes">{acoes}</div>}
@@ -231,22 +237,22 @@ export function TelaLogin({
       <Dialogo
         aberto={pedindoCodigo}
         aoFechar={() => setPedindoCodigo(false)}
-        titulo="Verificação em duas etapas"
-        subtitulo="Precisamos confirmar que é você"
+        titulo={t.login.doisFatoresTitulo}
+        subtitulo={t.login.doisFatoresSubtitulo}
         icone="lock"
         tamanho="pequeno"
         dispensavel={!confirmando}
         rodape={
           <>
-            <Botao rotulo="Cancelar" severidade="secundario" disabled={confirmando} onClick={() => setPedindoCodigo(false)} />
-            <Botao rotulo="Confirmar" icone="check" carregando={confirmando} onClick={() => confirmar()} />
+            <Botao rotulo={t.comum.cancelar} severidade="secundario" disabled={confirmando} onClick={() => setPedindoCodigo(false)} />
+            <Botao rotulo={t.comum.confirmar} icone="check" carregando={confirmando} onClick={() => confirmar()} />
           </>
         }
       >
         <form className="lp-login-otp" onSubmit={confirmar} noValidate>
           <p className="lp-login-desc">{instrucaoCodigo}</p>
           <CampoTexto
-            rotulo="Código"
+            rotulo={t.login.codigo}
             className="lp-login-otp-campo"
             mascara="000000"
             inputMode="numeric"
@@ -261,8 +267,8 @@ export function TelaLogin({
           />
           {confiarDispositivo && (
             <CampoMarcacao
-              rotulo="Confiar neste dispositivo"
-              dica="O código não será pedido de novo neste computador."
+              rotulo={t.login.confiar}
+              dica={t.login.confiarDica}
               valor={confiar}
               aoMudar={setConfiar}
             />

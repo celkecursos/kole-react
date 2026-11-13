@@ -25,6 +25,7 @@ import {
   useSeriesOcultas,
   type ItemLegenda,
   type LinhaDetalhe,
+  useTextosGrafico,
 } from './MolduraGrafico';
 import type {
   DadoGrafico,
@@ -36,6 +37,8 @@ import type {
   SerieGrafico,
   ValorGrafico,
 } from './tipos';
+import { useIdioma } from '../../i18n/contexto';
+import { formatoNumero, interpolar } from '../../i18n/idiomas';
 
 export interface SerieCartesiana extends SerieGrafico {
   tipo: 'linha' | 'barra';
@@ -58,8 +61,6 @@ export interface CartesianoProps extends GraficoBaseProps {
 
 type Lado = 'esquerdo' | 'direito';
 
-const ROTULO_X_PADRAO: Record<EixoXGrafico['tipo'], string> = { categoria: 'Categoria', data: 'Data', numero: 'Valor' };
-const NUM = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
 
 /** "Vendas (mil R$)" · "Vendas" · "mil R$". */
 function tituloDoEixo(eixo?: EixoGrafico): string {
@@ -133,6 +134,7 @@ function ancoraNaBorda(x: number, texto: string, largura: number): 'start' | 'mi
  */
 export function Cartesiano(props: CartesianoProps) {
   const { dados, eixoX, eixoY, eixoYDireito, series } = props;
+  const tg = useTextosGrafico();
   const [ocultas, alternar] = useSeriesOcultas();
   const temDireito = !!eixoYDireito;
   const ladoDe = (s: SerieCartesiana): Lado => (!temDireito ? 'esquerdo' : (s.eixo ?? (s.tipo === 'barra' ? 'esquerdo' : 'direito')));
@@ -145,7 +147,7 @@ export function Cartesiano(props: CartesianoProps) {
   const itensLegenda: ItemLegenda[] = series.map((s, i) => {
     const lado = ladoDe(s);
     const unidade = eixoDe(lado)?.unidade;
-    const sufixo = temDireito ? ` (${unidade ? `${unidade}, ` : ''}eixo ${lado})` : '';
+    const sufixo = temDireito ? ` (${unidade ? `${unidade}, ` : ''}${interpolar(tg.eixo, { lado: lado === 'direito' ? tg.eixoDireito : tg.eixoEsquerdo })})` : '';
     return {
       chave: s.chave,
       rotulo: s.rotulo + sufixo,
@@ -158,7 +160,7 @@ export function Cartesiano(props: CartesianoProps) {
 
   const tabela = () => {
     const colunas: Coluna<DadoGrafico>[] = [
-      { campo: '__x', rotulo: eixoX.rotulo ?? ROTULO_X_PADRAO[eixoX.tipo] },
+      { campo: '__x', rotulo: eixoX.rotulo ?? (eixoX.tipo === 'categoria' ? tg.categoria : eixoX.tipo === 'data' ? tg.data : tg.valor) },
       ...series.map((s) => {
         const eixo = eixoDe(ladoDe(s));
         return {
@@ -214,6 +216,7 @@ function Plano({
   ladoDe,
   completos,
 }: PlanoProps) {
+  const idioma = useIdioma();
   const n = dados.length;
   const { ativo, setAtivo, aoTeclar } = usePontoAtivo(n);
   const [focado, setFocado] = useState(false);
@@ -325,7 +328,7 @@ function Plano({
       for (const i of rotulosACadaN(banda.passo, curtos)) marcasX.push({ x: banda.centro(i), texto: curtos[i] });
     } else if (eixoX.tipo === 'numero' && escX && !eixoX.formatar) {
       const passos = dominioRedondo(escX.de, escX.ate, Math.max(2, Math.floor((x1 - x0) / 80))).passos.filter((p) => p >= escX.de && p <= escX.ate);
-      for (const p of passos) marcasX.push({ x: escX(p), texto: NUM.format(p) });
+      for (const p of passos) marcasX.push({ x: escX(p), texto: formatoNumero(idioma, { maximumFractionDigits: 2 }).format(p) });
     } else {
       const pos = dados.map((_, i) => posX(i) ?? -Infinity);
       for (const i of rotulosQueCabem(pos, curtos)) marcasX.push({ x: pos[i], texto: curtos[i] });

@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import type { Textos } from '../../i18n/pt-BR';
 import { cx } from '../../utils/cx';
 import { moverPeriodo, periodoDe, rotuloPeriodo, type Periodo, type TipoPeriodo } from '../../utils/periodo';
 import { Botao, type BotaoProps } from '../Botao/Botao';
 import { CampoData } from '../CampoTexto/CampoTexto';
 import { MenuSuspenso } from '../MenuSuspenso/MenuSuspenso';
 import './NavegadorPeriodo.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface AtalhoPeriodo {
   rotulo: string;
@@ -27,8 +30,7 @@ export interface NavegadorPeriodoProps {
   className?: string;
 }
 
-const NOME: Record<TipoPeriodo, string> = { mes: 'mês', trimestre: 'trimestre', ano: 'ano', personalizado: 'período' };
-
+/** Atalhos padrão com os rótulos em pt-BR (sem `atalhos`, o componente usa os do idioma ativo). */
 export const ATALHOS_PERIODO: AtalhoPeriodo[] = [
   { rotulo: 'Este mês', periodo: (a) => periodoDe('mes', a) },
   { rotulo: 'Mês passado', periodo: (a) => moverPeriodo(periodoDe('mes', a), -1) },
@@ -37,18 +39,27 @@ export const ATALHOS_PERIODO: AtalhoPeriodo[] = [
   { rotulo: 'Ano passado', periodo: (a) => moverPeriodo(periodoDe('ano', a), -1) },
 ];
 
+function atalhosDoIdioma(t: Textos['periodo']): AtalhoPeriodo[] {
+  const r = [t.esteMes, t.mesPassado, t.esteTrimestre, t.esteAno, t.anoPassado];
+  return ATALHOS_PERIODO.map((a, i) => ({ ...a, rotulo: r[i] }));
+}
+
 const igual = (a: Periodo, b: Periodo) => a.tipo === b.tipo && a.de === b.de && a.ate === b.ate;
 
 /**
  * "‹ novembro de 2026 ›": anda de mês em mês (ou trimestre, ano, intervalo)
  * pelas setas, e o rótulo abre os atalhos e o intervalo livre.
  */
-export function NavegadorPeriodo({ valor, aoMudar, atalhos = ATALHOS_PERIODO, personalizado = true, agora, rotulo = 'Período', tamanho, className }: NavegadorPeriodoProps) {
+export function NavegadorPeriodo({ valor, aoMudar, atalhos: atalhosProp, personalizado = true, agora, rotulo: rotuloProp, tamanho, className }: NavegadorPeriodoProps) {
+  const tp = useTextos().periodo;
+  const idioma = useIdioma();
+  const rotulo = rotuloProp ?? tp.rotulo;
+  const atalhos = atalhosProp ?? atalhosDoIdioma(tp);
   const hoje = agora ?? new Date();
-  const nome = NOME[valor.tipo];
+  const tipo: TipoPeriodo = valor.tipo;
   const anterior = moverPeriodo(valor, -1);
   const proximo = moverPeriodo(valor, 1);
-  const t = rotuloPeriodo(valor);
+  const t = rotuloPeriodo(valor, { idioma });
   const texto = t[0].toUpperCase() + t.slice(1);
 
   return (
@@ -58,8 +69,8 @@ export function NavegadorPeriodo({ valor, aoMudar, atalhos = ATALHOS_PERIODO, pe
         aparencia="contorno"
         severidade="secundario"
         tamanho={tamanho}
-        aria-label={`${nome[0].toUpperCase()}${nome.slice(1)} anterior: ${rotuloPeriodo(anterior)}`}
-        dica={`${nome[0].toUpperCase()}${nome.slice(1)} anterior`}
+        aria-label={`${tp.anterior[tipo]}: ${rotuloPeriodo(anterior, { idioma })}`}
+        dica={tp.anterior[tipo]}
         onClick={() => aoMudar(anterior)}
       />
       <MenuSuspenso
@@ -72,7 +83,7 @@ export function NavegadorPeriodo({ valor, aoMudar, atalhos = ATALHOS_PERIODO, pe
         alinhamento="centro"
         fechamento="fora"
         className="lp-periodo-menu"
-        aria-label={`${rotulo}: ${texto}. Escolher outro período`}
+        aria-label={interpolar(tp.escolher, { rotulo, periodo: texto })}
       >
         {(fechar) => (
           <PainelPeriodo
@@ -92,8 +103,8 @@ export function NavegadorPeriodo({ valor, aoMudar, atalhos = ATALHOS_PERIODO, pe
         aparencia="contorno"
         severidade="secundario"
         tamanho={tamanho}
-        aria-label={`Próximo ${nome}: ${rotuloPeriodo(proximo)}`}
-        dica={`Próximo ${nome}`}
+        aria-label={`${tp.proximo[tipo]}: ${rotuloPeriodo(proximo, { idioma })}`}
+        dica={tp.proximo[tipo]}
         onClick={() => aoMudar(proximo)}
       />
     </div>
@@ -113,6 +124,8 @@ function PainelPeriodo({
   agora: Date;
   aoEscolher: (p: Periodo) => void;
 }) {
+  const tx = useTextos();
+  const idioma = useIdioma();
   const [de, setDe] = useState(valor.de);
   const [ate, setAte] = useState(valor.ate);
   const invertido = !!de && !!ate && de > ate;
@@ -127,7 +140,7 @@ function PainelPeriodo({
           return (
             <button key={a.rotulo} type="button" className={cx('lp-periodo-atalho', atual && 'is-atual')} aria-current={atual || undefined} onClick={() => aoEscolher(p)}>
               {a.rotulo}
-              <span>{rotuloPeriodo(p, { curto: true, agora })}</span>
+              <span>{rotuloPeriodo(p, { curto: true, agora, idioma })}</span>
             </button>
           );
         })}
@@ -140,12 +153,12 @@ function PainelPeriodo({
             if (valido) aoEscolher({ tipo: 'personalizado', de, ate });
           }}
         >
-          <strong>Personalizado</strong>
+          <strong>{tx.periodo.livre}</strong>
           <div className="lp-periodo-datas">
-            <CampoData rotulo="De" valor={de} aoMudar={setDe} max={ate || undefined} />
-            <CampoData rotulo="Até" valor={ate} aoMudar={setAte} min={de || undefined} erro={invertido ? 'Antes do início' : undefined} />
+            <CampoData rotulo={tx.periodo.de} valor={de} aoMudar={setDe} max={ate || undefined} />
+            <CampoData rotulo={tx.periodo.ate} valor={ate} aoMudar={setAte} min={de || undefined} erro={invertido ? tx.periodo.antesDoInicio : undefined} />
           </div>
-          <Botao type="submit" rotulo="Aplicar" tamanho="pequeno" disabled={!valido} />
+          <Botao type="submit" rotulo={tx.comum.aplicar} tamanho="pequeno" disabled={!valido} />
         </form>
       )}
     </div>

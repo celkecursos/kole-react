@@ -1,6 +1,8 @@
 import { Icone } from '../../utils/Icone';
 import { cx } from '../../utils/cx';
 import './Paginacao.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface PaginacaoProps {
   total: number;
@@ -34,6 +36,9 @@ export function Paginacao({
   embutida,
   className,
 }: PaginacaoProps) {
+  const t = useTextos();
+  // "Exibindo " e " de 33" em volta da faixa em negrito
+  const exibindo = interpolar(t.paginacao.exibindo, { total }).split('{faixa}');
   const totalPaginas = Math.max(1, Math.ceil(total / tamanho));
   const atual = Math.min(Math.max(1, pagina), totalPaginas);
   const ini = total ? (atual - 1) * tamanho + 1 : 0;
@@ -41,14 +46,16 @@ export function Paginacao({
   const ir = (p: number) => p >= 1 && p <= totalPaginas && p !== atual && aoMudarPagina(p);
 
   return (
-    <nav className={cx('lp-pag', embutida && 'lp-pag--embutida', className)} aria-label="Paginação">
+    <nav className={cx('lp-pag', embutida && 'lp-pag--embutida', className)} aria-label={t.paginacao.rotulo}>
       <span className="lp-pag-exibindo">
-        Exibindo <strong>{total ? `${ini}–${fim}` : '0'}</strong> de {total}
+        {exibindo[0]}
+        <strong>{total ? `${ini}–${fim}` : '0'}</strong>
+        {exibindo[1]}
       </span>
       <div className="lp-pag-dir">
         {aoMudarTamanho && tamanhoOpcoes.length > 0 && (
           <label className="lp-pag-por">
-            Por página:
+            {t.paginacao.porPagina}
             <select className="lp-pag-sel" value={tamanho} onChange={(e) => aoMudarTamanho(Number(e.target.value))}>
               {tamanhoOpcoes.map((n) => (
                 <option key={n} value={n}>
@@ -59,7 +66,7 @@ export function Paginacao({
           </label>
         )}
         <div className="lp-pag-paginas">
-          <button type="button" className="lp-pag-bt" aria-label="Página anterior" disabled={atual === 1} onClick={() => ir(atual - 1)}>
+          <button type="button" className="lp-pag-bt" aria-label={t.paginacao.anterior} disabled={atual === 1} onClick={() => ir(atual - 1)}>
             <Icone icone="chevron-left" />
           </button>
           {listaPaginas(atual, totalPaginas).map((p, i) =>
@@ -82,7 +89,7 @@ export function Paginacao({
           <button
             type="button"
             className="lp-pag-bt"
-            aria-label="Próxima página"
+            aria-label={t.paginacao.proxima}
             disabled={atual === totalPaginas}
             onClick={() => ir(atual + 1)}
           >

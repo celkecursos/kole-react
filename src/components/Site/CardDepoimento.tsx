@@ -1,6 +1,8 @@
 import { cx } from '../../utils/cx';
 import { Avatar } from '../Avatar/Avatar';
 import './CardDepoimento.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface CardDepoimentoProps {
   /** O depoimento, sem aspas (o cartão põe). */
@@ -17,11 +19,12 @@ export interface CardDepoimentoProps {
 
 /** Depoimento de cliente: estrelas, citação e quem disse. */
 export function CardDepoimento({ texto, nome, cargo, foto, nota = 5, className }: CardDepoimentoProps) {
+  const t = useTextos();
   const estrelas = Math.max(0, Math.min(5, Math.round(nota)));
   return (
     <figure className={cx('lp-depo', className)}>
       {estrelas > 0 && (
-        <div className="lp-depo-nota" role="img" aria-label={`Nota ${estrelas} de 5`}>
+        <div className="lp-depo-nota" role="img" aria-label={interpolar(t.site.nota, { n: estrelas })}>
           {'★'.repeat(estrelas)}
           <span className="lp-depo-nota-vazia">{'★'.repeat(5 - estrelas)}</span>
         </div>

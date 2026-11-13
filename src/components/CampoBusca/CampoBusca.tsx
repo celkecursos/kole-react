@@ -5,9 +5,10 @@ import { cx } from '../../utils/cx';
 import { useBuscaAssincrona, BUSCA_ATRASO_MS } from '../../utils/useBuscaAssincrona';
 import { useCliqueFora } from '../../utils/useCliqueFora';
 import { usePosicaoFlutuante } from '../../utils/usePosicaoFlutuante';
-import { Campo, descricaoDe, MSG_OBRIGATORIO, RevelarCamposCtx, useCampoIds, type CampoBaseProps } from '../Campo/Campo';
+import { Campo, descricaoDe, RevelarCamposCtx, useCampoIds, type CampoBaseProps } from '../Campo/Campo';
 import '../CampoSelect/CampoSelect.css';
 import './CampoBusca.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface CampoBuscaProps<T> extends CampoBaseProps {
   /** A busca do módulo: termo → registros. */
@@ -52,10 +53,13 @@ export function CampoBusca<T>({
   aoMudar,
   minimo = 1,
   atraso = BUSCA_ATRASO_MS,
-  placeholder = 'Buscar…',
+  placeholder: placeholderProp,
   disabled = false,
-  vazioTexto = 'Nenhum resultado encontrado',
+  vazioTexto: vazioTextoProp,
 }: CampoBuscaProps<T>) {
+  const t = useTextos();
+  const placeholder = placeholderProp ?? t.comum.buscarReticencias;
+  const vazioTexto = vazioTextoProp ?? t.busca.nenhumResultado;
   const { id, msgId } = useCampoIds(idExterno);
   const listaId = `${id}-lista`;
   const inline = variante === 'inline';
@@ -108,7 +112,7 @@ export function CampoBusca<T>({
     }
   };
 
-  const erroFinal = erro || (obrigatorio && !valor && (revelado || tentativas > 0) ? MSG_OBRIGATORIO : undefined);
+  const erroFinal = erro || (obrigatorio && !valor && (revelado || tentativas > 0) ? t.comum.campoObrigatorio : undefined);
 
   return (
     <Campo
@@ -152,11 +156,11 @@ export function CampoBusca<T>({
         {carregando && editando && (
           <span role="status" className="lp-busca-campo-carregando">
             <Icone icone="loader-circle" girar />
-            <span className="lp-sr">Buscando</span>
+            <span className="lp-sr">{t.comum.buscando}</span>
           </span>
         )}
         {valor && !disabled && !editando && (
-          <button type="button" className="lp-ctl-suffix" aria-label="Limpar seleção" onClick={() => aoMudar?.(null)}>
+          <button type="button" className="lp-ctl-suffix" aria-label={t.comum.limparSelecao} onClick={() => aoMudar?.(null)}>
             <Icone icone="x" />
           </button>
         )}
@@ -190,7 +194,7 @@ export function CampoBusca<T>({
             </ul>
             {!resultados.length && (
               <div className="lp-sel-nada" role="status">
-                {carregando ? 'Buscando…' : vazioTexto}
+                {carregando ? t.comum.buscandoReticencias : vazioTexto}
               </div>
             )}
           </div>,

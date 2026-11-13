@@ -5,6 +5,7 @@ import { Paginacao, type PaginacaoProps } from '../Paginacao/Paginacao';
 import { Skeleton } from '../Skeleton/Skeleton';
 import { Vazio } from '../Vazio/Vazio';
 import './ListaCards.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface ListaCardsProps<T> {
   itens: T[];
@@ -43,19 +44,21 @@ export function ListaCards<T>({
   atualizando,
   erro,
   aoRecarregar,
-  vazioTitulo = 'Nenhum registro encontrado',
+  vazioTitulo: vazioTituloProp,
   vazioDescricao,
   vazioIcone = 'inbox',
   vazioAcoes,
   paginacao,
   className,
 }: ListaCardsProps<T>) {
+  const t = useTextos();
+  const vazioTitulo = vazioTituloProp ?? t.estados.vazioTitulo;
   const estilo = { '--lp-cards-min': larguraMin } as CSSProperties;
 
   let corpo: ReactNode;
   if (carregando) {
     corpo = (
-      <div className="lp-cards" style={estilo} role="status" aria-busy="true" aria-label="Carregando registros">
+      <div className="lp-cards" style={estilo} role="status" aria-busy="true" aria-label={t.estados.carregandoRegistros}>
         {Array.from({ length: Math.min(paginacao?.tamanho ?? 6, 12) }, (_, i) => (
           <Skeleton key={i} altura={alturaCard} />
         ))}
@@ -63,8 +66,8 @@ export function ListaCards<T>({
     );
   } else if (erro) {
     corpo = (
-      <Vazio icone="triangle-alert" titulo="Não foi possível carregar" descricao={typeof erro === 'string' ? erro : 'Verifique a conexão e tente de novo.'}>
-        {aoRecarregar && <Botao rotulo="Tentar de novo" icone="refresh-cw" severidade="secundario" onClick={aoRecarregar} />}
+      <Vazio icone="triangle-alert" titulo={t.estados.erroTitulo} descricao={typeof erro === 'string' ? erro : t.estados.erroDescricao}>
+        {aoRecarregar && <Botao rotulo={t.comum.tentarDeNovo} icone="refresh-cw" severidade="secundario" onClick={aoRecarregar} />}
       </Vazio>
     );
   } else if (!itens.length) {

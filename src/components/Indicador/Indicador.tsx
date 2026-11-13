@@ -4,6 +4,8 @@ import { Icone, type IconeProp } from '../../utils/Icone';
 import { Minigrafico } from '../Grafico/Minigrafico';
 import { Skeleton } from '../Skeleton/Skeleton';
 import './Indicador.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { formatoNumero } from '../../i18n/idiomas';
 
 export interface IndicadorProps {
   rotulo: string;
@@ -30,12 +32,12 @@ export interface IndicadorProps {
   className?: string;
 }
 
-const NUM = new Intl.NumberFormat('pt-BR');
-const PCT = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /** Card de KPI para dashboards. */
 export function Indicador({ rotulo, valor, icone, cor, href, aoClicar, carregando, variacao, variacaoBoa = 'alta', tendencia, animacao, descricao, children, className }: IndicadorProps) {
-  const texto = typeof valor === 'number' ? NUM.format(valor) : valor;
+  const t = useTextos();
+  const idioma = useIdioma();
+  const texto = typeof valor === 'number' ? formatoNumero(idioma).format(valor) : valor;
   const subiu = (variacao ?? 0) >= 0;
   const boa = subiu === (variacaoBoa === 'alta');
   const estilo = cor ? ({ '--ind-cor': cor } as CSSProperties) : undefined;
@@ -64,7 +66,7 @@ export function Indicador({ rotulo, valor, icone, cor, href, aoClicar, carregand
           <span className="lp-ind-valor">{texto}</span>
           <span className={cx('lp-ind-var', boa ? 'is-boa' : 'is-ruim')}>
             <Icone icone={subiu ? 'arrow-up' : 'arrow-down'} />
-            {PCT.format(Math.abs(variacao))}%<span className="lp-sr">{subiu ? ' de alta' : ' de queda'}</span>
+            {formatoNumero(idioma, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(variacao))}%<span className="lp-sr">{subiu ? t.grafico.alta : t.grafico.queda}</span>
           </span>
         </div>
       )}

@@ -9,9 +9,13 @@ import { Vazio } from '../Vazio/Vazio';
 import {
   CURTOS_DIA,
   DIA_LONGO,
+  DIA_TITULO,
   HORA,
   MES,
   NOMES_DIA,
+  SEMANA_TITULO,
+  TXT,
+  usarIdiomaCalendario,
   chave,
   deChave,
   diaPelaTecla,
@@ -25,6 +29,8 @@ import {
   somaDiasHora,
 } from './datasCalendario';
 import './Calendario.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar, pluralizar } from '../../i18n/idiomas';
 
 /** `pri`, `ok`, `warn`, `err`, `info`, `destaque` ou uma série dos gráficos (`graf-1` a `graf-6`). */
 export type CorEvento = 'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6';
@@ -150,13 +156,10 @@ function porDia(eventos: EventoCalendario[]): Map<string, EventoCalendario[]> {
 }
 
 function textoHora(e: EventoCalendario) {
-  if (e.diaInteiro) return 'dia inteiro';
+  if (e.diaInteiro) return TXT.diaInteiro;
   return e.fim ? `${HORA.format(e.inicio)}–${HORA.format(e.fim)}` : HORA.format(e.inicio);
 }
 
-const SEMANA_TITULO = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short' });
-const DIA_TITULO = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-const ROTULO_VISAO: Record<VisaoCalendario, string> = { mes: 'Mês', semana: 'Semana', dia: 'Dia', lista: 'Lista' };
 const MIN_DIA = 24 * 60;
 
 const PASSO_MIN = 15;
@@ -238,8 +241,8 @@ export function Calendario({
   aoClicarDia,
   aoClicarEvento,
   carregando,
-  textoVazio = 'Nenhum evento neste mês.',
-  rotulo = 'Calendário',
+  textoVazio: textoVazioProp,
+  rotulo: rotuloProp,
   hoje: hojeProp,
   horaInicio = 7,
   horaFim = 21,
@@ -251,6 +254,11 @@ export function Calendario({
   data,
   className,
 }: CalendarioProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
+  usarIdiomaCalendario(idioma);
+  const textoVazio = textoVazioProp ?? TXT.vazioMes;
+  const rotulo = rotuloProp ?? TXT.rotulo;
   const [agoraRelogio, setAgoraRelogio] = useState(() => new Date());
   useEffect(() => {
     if (agoraProp) return;
@@ -307,8 +315,7 @@ export function Calendario({
     setRef(novo);
     setFoco(novo);
   };
-  const unidade = visao === 'semana' ? 'semana' : visao === 'dia' ? 'dia' : 'mês';
-  const genero = visao === 'semana' ? 'a' : 'o';
+  const unidade = visao === 'semana' ? 'semana' : visao === 'dia' ? 'dia' : 'mes';
   const irHoje = () => {
     setRef(hoje);
     setFoco(hoje);
@@ -351,7 +358,7 @@ export function Calendario({
 
   const descrever = (ev: EventoCalendario, m: MudancaEvento) =>
     m.tipo === 'esticar' && m.fim
-      ? `${ev.titulo}: agora termina às ${HORA.format(m.fim)}.`
+      ? interpolar(TXT.agoraTermina, { titulo: ev.titulo, hora: HORA.format(m.fim) })
       : `${ev.titulo}: ${DIA_LONGO.format(m.inicio)}${ev.diaInteiro ? '' : `, ${HORA.format(m.inicio)}`}.`;
 
   const confirmar = useCallback((ev: EventoCalendario, m: MudancaEvento) => {
@@ -500,7 +507,7 @@ export function Calendario({
   };
 
   const evRascunho = useMemo<EventoCalendario | null>(
-    () => (rascunho ? { id: '__rascunho', titulo: rascunho.titulo?.trim() || '(sem título)', inicio: rascunho.inicio, fim: rascunho.fim, cor: rascunho.cor, diaInteiro: rascunho.diaInteiro } : null),
+    () => (rascunho ? { id: '__rascunho', titulo: rascunho.titulo?.trim() || TXT.semTitulo, inicio: rascunho.inicio, fim: rascunho.fim, cor: rascunho.cor, diaInteiro: rascunho.diaInteiro } : null),
     [rascunho],
   );
   const diasRascunho = useMemo(() => (evRascunho ? new Set(porDia([evRascunho]).keys()) : null), [evRascunho]);
@@ -524,8 +531,8 @@ export function Calendario({
       const ini = periodo.inicio;
       const fim = somaDias(ini, 6);
       // mesmo mês: "8 – 14 de novembro de 2026"; senão "29 de nov – 5 de dez de 2026"
-      if (ini.getMonth() === fim.getMonth()) return `${ini.getDate()} – ${fim.getDate()} de ${MES.format(fim)}`;
-      return `${SEMANA_TITULO.format(ini).replace('.', '')} – ${SEMANA_TITULO.format(fim).replace('.', '')} de ${fim.getFullYear()}`;
+      if (ini.getMonth() === fim.getMonth()) return interpolar(TXT.semanaMesmoMes, { ini: ini.getDate(), fim: fim.getDate(), mes: MES.format(fim) });
+      return interpolar(TXT.semanaMeses, { ini: SEMANA_TITULO.format(ini).replace('.', ''), fim: SEMANA_TITULO.format(fim).replace('.', ''), ano: fim.getFullYear() });
     }
     return primeiraMaiuscula(MES.format(ref));
   })();
@@ -553,7 +560,7 @@ export function Calendario({
         onPointerDown={movel ? (e) => iniciarArrasto(e, ev, 'dia', dia) : undefined}
         onKeyDown={(e) => (movel ? teclarEvento(e, ev, naGradeHoras) : e.stopPropagation())}
         aria-keyshortcuts={movel ? ATALHOS_MES : undefined}
-        title={`${ev.titulo} · ${textoHora(ev)}${ev.repete ? ' · repete' : ''}`}
+        title={`${ev.titulo} · ${textoHora(ev)}${ev.repete ? TXT.repeteTitulo : ''}`}
       >
         {!ev.diaInteiro && <span className="lp-cal-evento-hora">{HORA.format(ev.inicio)}</span>}
         <span className="lp-cal-evento-tx">{ev.titulo}</span>
@@ -575,17 +582,17 @@ export function Calendario({
     <section ref={raiz} className={cx('lp-cal', arrasto && 'is-arrastando', className)} aria-label={rotulo}>
       <div className="lp-cal-barra">
         <div className="lp-cal-nav">
-          <Botao rotulo="Hoje" severidade="secundario" aparencia="contorno" tamanho="pequeno" onClick={irHoje} />
-          <Botao icone="chevron-left" aria-label={`${primeiraMaiuscula(unidade)} anterior`} dica={`${primeiraMaiuscula(unidade)} anterior`} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(-1)} />
-          <Botao icone="chevron-right" aria-label={`Próxim${genero} ${unidade}`} dica={`Próxim${genero} ${unidade}`} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(1)} />
+          <Botao rotulo={t.comum.hoje} severidade="secundario" aparencia="contorno" tamanho="pequeno" onClick={irHoje} />
+          <Botao icone="chevron-left" aria-label={TXT.anterior[unidade]} dica={TXT.anterior[unidade]} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(-1)} />
+          <Botao icone="chevron-right" aria-label={TXT.proximo[unidade]} dica={TXT.proximo[unidade]} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => irMes(1)} />
           <h2 className="lp-cal-titulo" aria-live="polite">
             {titulo}
           </h2>
         </div>
         {visoes.length > 1 && (
-          <Abas variante="segmentado" ativa={visao} aoMudar={(v) => setVisao(v as VisaoCalendario)} rotulo="Visão do calendário">
+          <Abas variante="segmentado" ativa={visao} aoMudar={(v) => setVisao(v as VisaoCalendario)} rotulo={TXT.visao}>
             {visoes.map((v) => (
-              <Aba key={v} valor={v} rotulo={ROTULO_VISAO[v]} />
+              <Aba key={v} valor={v} rotulo={TXT[v]} />
             ))}
           </Abas>
         )}
@@ -641,7 +648,7 @@ export function Calendario({
                     tabIndex={mesmoDia(dia, foco) ? 0 : -1}
                     aria-selected={mesmoDia(dia, foco)}
                     aria-current={eHoje ? 'date' : undefined}
-                    aria-label={`${DIA_LONGO.format(dia)}${lista.length ? `, ${lista.length} evento${lista.length > 1 ? 's' : ''}` : ''}`}
+                    aria-label={`${DIA_LONGO.format(dia)}${lista.length ? `, ${pluralizar(idioma, lista.length, TXT.eventos)}` : ''}`}
                     className={cx('lp-cal-dia', fora && 'is-fora', eHoje && 'is-hoje', aoClicarDia && 'is-clicavel', diasAlvo?.has(chave(dia)) && 'is-alvo')}
                     onClick={() => {
                       setFoco(dia);
@@ -665,7 +672,7 @@ export function Calendario({
                           }}
                           onKeyDown={(e) => e.stopPropagation()}
                         >
-                          +{resto} mais
+                          {interpolar(TXT.mais, { n: resto })}
                         </button>
                       )}
                     </div>
@@ -681,7 +688,7 @@ export function Calendario({
             <li key={chave(dia)} className={cx('lp-cal-lista-dia', mesmoDia(dia, hoje) && 'is-hoje')}>
               <h3 className="lp-cal-lista-data">
                 <span>{primeiraMaiuscula(DIA_LONGO.format(dia))}</span>
-                {mesmoDia(dia, hoje) && <span className="lp-cal-lista-hoje">hoje</span>}
+                {mesmoDia(dia, hoje) && <span className="lp-cal-lista-hoje">{TXT.hoje}</span>}
               </h3>
               <ul className="lp-cal-lista-eventos">
                 {mapa.get(chave(dia))!.map((ev) => (
@@ -719,9 +726,9 @@ export function Calendario({
 /** Ícone de evento que se repete (com texto para leitor de tela). */
 function SeRepete() {
   return (
-    <span className="lp-cal-repete" title="Repete">
+    <span className="lp-cal-repete" title={TXT.repete}>
       <Icone icone="refresh-cw" />
-      <span className="lp-sr">, repete</span>
+      <span className="lp-sr">{TXT.repeteSr}</span>
     </span>
   );
 }
@@ -771,6 +778,7 @@ function GradeHorarios({
   iniciarArrasto,
   teclarEvento,
 }: GradeHorariosProps) {
+  const idiomaG = useIdioma();
   // cursor do teclado: um horário de 30 minutos (dia da coluna + faixa)
   const nFaixas = (horaFim - horaInicio) * 2;
   const indiceHoje = dias.findIndex((d) => mesmoDia(d, hoje));
@@ -829,8 +837,8 @@ function GradeHorarios({
   const cursorTexto = (() => {
     const dt = dataDoCursor();
     const n = eventosNoCursor();
-    const ate = cursor.n > 1 ? ` até ${HORA.format(dataDoCursor(cursor.n))}` : '';
-    return `${DIA_LONGO.format(dt)}, ${HORA.format(dt)}${ate}${n.length ? `, ${n.map((it) => it.ev.titulo).join(', ')}` : ', livre'}`;
+    const ate = cursor.n > 1 ? interpolar(TXT.ate, { hora: HORA.format(dataDoCursor(cursor.n)) }) : '';
+    return `${DIA_LONGO.format(dt)}, ${HORA.format(dt)}${ate}${n.length ? `, ${n.map((it) => it.ev.titulo).join(', ')}` : TXT.livre}`;
   })();
   const horas = Array.from({ length: horaFim - horaInicio }, (_, i) => horaInicio + i);
   const minIni = horaInicio * 60;
@@ -923,7 +931,7 @@ function GradeHorarios({
       </div>
       {temDiaInteiro && (
         <div className="lp-cal-horas-linha lp-cal-horas-inteiro" role="row">
-          <div className="lp-cal-horas-canto lp-cal-horas-rot">dia inteiro</div>
+          <div className="lp-cal-horas-canto lp-cal-horas-rot">{TXT.diaInteiro}</div>
           {dias.map((d, i) => (
             <div key={chave(d)} role="gridcell" data-dia={chave(d)} className={cx('lp-cal-horas-inteiro-cel', alvoInteiro?.has(chave(d)) && 'is-alvo')}>
               {diaInteiro[i].map((ev) => chip(ev, false, d, true))}
@@ -933,7 +941,9 @@ function GradeHorarios({
         </div>
       )}
       <span id={idAjuda} className="lp-sr">
-        Setas para cima e para baixo mudam o horário; para os lados, o dia.{aoSelecionarHorario ? ' Shift com setas para cima e para baixo muda o tamanho do intervalo.' : ''} Enter escolhe o horário.
+        {TXT.ajudaHorario}
+        {aoSelecionarHorario ? TXT.ajudaTamanho : ''}
+        {TXT.ajudaEnter}
       </span>
       <div className="lp-cal-horas-linha lp-cal-horas-corpo" role="row">
         <div className="lp-cal-horas-escala" aria-hidden="true">
@@ -951,7 +961,7 @@ function GradeHorarios({
               key={chave(d)}
               role="gridcell"
               data-col={chave(d)}
-              aria-label={`${DIA_LONGO.format(d)}${itens.length ? `, ${itens.length} evento${itens.length > 1 ? 's' : ''}` : ''}`}
+              aria-label={`${DIA_LONGO.format(d)}${itens.length ? `, ${pluralizar(idiomaG, itens.length, TXT.eventos)}` : ''}`}
               className={cx('lp-cal-horas-col', mesmoDia(d, hoje) && 'is-hoje', (aoClicarHorario || aoSelecionarHorario) && 'is-clicavel')}
               onClick={(e) => clicarHorario(e, d)}
               onPointerDown={(e) => comecarSelecao(e, d)}
@@ -1049,7 +1059,7 @@ function GradeHorarios({
                 />
               )}
               {eHoje && agoraMin >= minIni && agoraMin <= minFim && (
-                <div className="lp-cal-agora" style={{ top: pct(agoraMin) }} role="img" aria-label={`Agora, ${HORA.format(agora)}`} />
+                <div className="lp-cal-agora" style={{ top: pct(agoraMin) }} role="img" aria-label={interpolar(TXT.agora, { hora: HORA.format(agora) })} />
               )}
             </div>
           );

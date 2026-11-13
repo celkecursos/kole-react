@@ -2,7 +2,41 @@
 
 ## Não publicado
 
+Versão alvo: 0.6.0.
+
 Novidades:
+
+- Multi-idioma: os textos da própria biblioteca (rótulos padrão, listas vazias,
+  `aria-label`s, validações, anúncios de arraste, datas e números) em
+  português do Brasil, inglês ou espanhol. O padrão continua `pt-BR` e nada
+  muda sem ação do sistema: o idioma do navegador não é consultado.
+- `ProvedorPreferencias` (e `ProvedorUi`): `idioma` e `definirIdioma` no
+  contexto; props `idiomaInicial`, `aoMudarIdioma` (ao montar e a cada troca,
+  para sincronizar o i18n do sistema) e `textos` (troca textos ou acrescenta um
+  idioma). A escolha fica em `lp-preferencias`, junto com tema e densidade, e
+  atualiza o `<html lang>`.
+- `scriptTemaInicial({ idiomaInicial })` também define o `lang` antes da
+  primeira pintura (só com idioma salvo ou `idiomaInicial`).
+- `Estrutura`: prop `idiomas` liga o seletor de idioma na topbar, ao lado do
+  tema (sem a prop, nada aparece). `SeletorIdioma` avulso (aparência `icone` ou
+  `botao`, para a tela de login) e `Bandeira` (Brasil, EUA e Espanha em SVG
+  próprio).
+- Dicionários exportados (`textosPtBR`, `textosEn`, `textosEs`, tipo `Textos`,
+  organizados por componente), `useTextos`, `useIdioma`, `textosDe`,
+  `interpolar`, `pluralizar` (`Intl.PluralRules`) e formatadores com cache por
+  idioma (`formatoNumero`, `formatoData`, `formatoLista`, `diasDaSemana`,
+  `mesesDoAno`).
+- Utilitários com idioma opcional (padrão `pt-BR`, assinatura antiga mantida):
+  `formatarNumero`, `formatarMoeda`, `formatarPercentual`, `rotuloPeriodo`,
+  `dataCurta`, `tempoRelativo`, `situacaoPrazo`, `validar`, `validarTelefone`,
+  `validarSenha`, `saudacaoPorHora`, `listaPorExtenso` e `tituloDeEntidade`.
+  Regras brasileiras (máscaras, CPF, CNPJ, CEP, telefone, UFs, valores por
+  extenso) não mudam; a moeda continua vindo de `moeda`.
+- Demo: seletor de idioma na topbar e página Idioma na documentação (como ligar,
+  o que muda, sincronização com react-i18next e com Laravel `users.locale`).
+- Teste visual: projeto `en` com as telas de texto da biblioteca (tabela vazia,
+  paginação, calendário e o seletor aberto); nas referências antigas, o seletor
+  fica escondido.
 
 - Finanças: `Valor` (dinheiro com sinal e cor de entrada e saída, tamanhos,
   riscado, compacto), `ProvedorValores` e `BotaoOcultarValores` (o "ocultar

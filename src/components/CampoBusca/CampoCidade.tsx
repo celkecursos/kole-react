@@ -3,6 +3,7 @@ import { normalizar } from '../../utils/texto';
 import type { CampoBaseProps } from '../Campo/Campo';
 import { CampoTexto } from '../CampoTexto/CampoTexto';
 import { CampoBusca } from './CampoBusca';
+import { useTextos } from '../../i18n/contexto';
 
 export interface Municipio {
   id: string | number;
@@ -29,7 +30,9 @@ export interface CampoCidadeProps extends CampoBaseProps {
  * Município filtrado pela UF, com a cascata UF → cidade embutida: quando a
  * UF muda, a cidade da UF anterior é limpa pelo próprio campo.
  */
-export function CampoCidade({ uf, buscarPorUf, valor = null, aoMudar, placeholder = 'Município', disabled, ...p }: CampoCidadeProps) {
+export function CampoCidade({ uf, buscarPorUf, valor = null, aoMudar, placeholder: placeholderProp, disabled, ...p }: CampoCidadeProps) {
+  const t = useTextos();
+  const placeholder = placeholderProp ?? t.cidade.rotulo;
   const [lista, setLista] = useState<Municipio[]>([]);
   const ufAnterior = useRef(uf);
 
@@ -74,7 +77,7 @@ export function CampoCidade({ uf, buscarPorUf, valor = null, aoMudar, placeholde
     <CampoBusca<Municipio>
       {...p}
       disabled={disabled || !uf}
-      placeholder={uf ? placeholder : 'Escolha a UF primeiro'}
+      placeholder={uf ? placeholder : t.cidade.escolhaUf}
       minimo={1}
       atraso={0}
       buscar={async (termo) => {

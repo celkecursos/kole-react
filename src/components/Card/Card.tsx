@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import type { Severidade } from '../../utils/tipos';
 import './Card.css';
+import { useTextos } from '../../i18n/contexto';
 
 /** Mesmas cores do `Alerta`/`Badge`. */
 export type CorCard = Severidade | 'pri' | 'destaque';
@@ -72,6 +73,7 @@ export function Card({
   className,
   ...resto
 }: CardProps) {
+  const t = useTextos();
   const [recolhido, setRecolhido] = useState(recolhidoInicial);
   const [fechado, setFechado] = useState(false);
   const [cheio, setCheio] = useState(false);
@@ -112,12 +114,12 @@ export function Card({
         <div className="lp-card-ferramentas" onClick={(e) => e.stopPropagation()}>
           {ferramentas}
           {recolhivel && (
-            <button type="button" className="lp-card-ferr" aria-expanded={!recolhido} aria-controls={corpoId} aria-label={recolhido ? 'Expandir' : 'Recolher'} title={recolhido ? 'Expandir' : 'Recolher'} onClick={() => setRecolhido((x) => !x)}>
+            <button type="button" className="lp-card-ferr" aria-expanded={!recolhido} aria-controls={corpoId} aria-label={recolhido ? t.comum.expandir : t.comum.recolher} title={recolhido ? t.comum.expandir : t.comum.recolher} onClick={() => setRecolhido((x) => !x)}>
               <Icone icone={recolhido ? 'chevron-down' : 'chevron-up'} />
             </button>
           )}
           {telaCheia && (
-            <button type="button" className="lp-card-ferr" aria-pressed={cheio} aria-label={cheio ? 'Sair da tela cheia' : 'Tela cheia'} title={cheio ? 'Sair da tela cheia' : 'Tela cheia'} onClick={() => setCheio((x) => !x)}>
+            <button type="button" className="lp-card-ferr" aria-pressed={cheio} aria-label={cheio ? t.card.sairTelaCheia : t.card.telaCheia} title={cheio ? t.card.sairTelaCheia : t.card.telaCheia} onClick={() => setCheio((x) => !x)}>
               <Icone icone={cheio ? 'minimize' : 'maximize'} />
             </button>
           )}
@@ -125,8 +127,8 @@ export function Card({
             <button
               type="button"
               className="lp-card-ferr"
-              aria-label="Fechar"
-              title="Fechar"
+              aria-label={t.comum.fechar}
+              title={t.comum.fechar}
               onClick={() => {
                 aoFechar?.();
                 setFechado(true);
@@ -180,7 +182,7 @@ export function Card({
       {horizontal || fundo ? <div className="lp-card-conteudo">{conteudo}</div> : conteudo}
       {midia && (posicaoMidia === 'base' || posicaoMidia === 'direita') && <div className="lp-card-midia">{midia}</div>}
       {detalhes && (
-        <div className="lp-card-detalhes" tabIndex={0} role="group" aria-label="Detalhes">
+        <div className="lp-card-detalhes" tabIndex={0} role="group" aria-label={t.comum.detalhes}>
           {detalhes}
         </div>
       )}

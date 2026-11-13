@@ -3,6 +3,7 @@ import { cx } from '../../utils/cx';
 import { formatarMoeda, type OpcoesMoeda } from '../../utils/dinheiro';
 import { Botao, type BotaoProps } from '../Botao/Botao';
 import './Valor.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
 
 interface ContextoValores {
   ocultos: boolean;
@@ -57,7 +58,8 @@ export type BotaoOcultarValoresProps = Omit<BotaoProps, 'onClick' | 'icone' | 'p
 /** Olho que esconde e mostra os valores do `ProvedorValores`. */
 export function BotaoOcultarValores({ rotulo, aparencia = 'texto', severidade = 'secundario', ...resto }: BotaoOcultarValoresProps) {
   const { ocultos, alternar } = useValoresOcultos();
-  const texto = ocultos ? 'Mostrar valores' : 'Ocultar valores';
+  const t = useTextos();
+  const texto = ocultos ? t.valor.mostrar : t.valor.ocultar;
   return (
     <Botao
       {...resto}
@@ -105,11 +107,13 @@ export function Valor({ valor, colorir, tipo, oculto, tamanho = 'normal', forte,
   const escondido = oculto ?? ctx.ocultos;
   // com tipo, o número vale em módulo e o sinal vem do tipo
   const numero = tipo === 'despesa' ? -Math.abs(valor) : tipo === 'receita' ? Math.abs(valor) : valor;
-  const texto = formatarMoeda(numero, { ...opcoes, sinal: sinal ?? (tipo === 'receita' || undefined) });
+  const idioma = useIdioma();
+  const t = useTextos();
+  const texto = formatarMoeda(numero, { idioma, ...opcoes, sinal: sinal ?? (tipo === 'receita' || undefined) });
   // com `tipo`, colore por padrão (desligue com colorir={false})
   const comCor = tipo !== 'neutro' && (colorir ?? !!tipo);
   const sentido = !comCor ? null : numero > 0 ? 'entrada' : numero < 0 ? 'saida' : null;
-  const cheio = opcoes.compacto ? formatarMoeda(numero, { ...opcoes, compacto: false }) : undefined;
+  const cheio = opcoes.compacto ? formatarMoeda(numero, { idioma, ...opcoes, compacto: false }) : undefined;
   return (
     <span
       className={cx('lp-valor', `lp-valor--${tamanho}`, sentido && `lp-valor--${sentido}`, forte && 'lp-valor--forte', riscado && 'lp-valor--riscado', escondido && 'is-oculto', className)}
@@ -118,7 +122,7 @@ export function Valor({ valor, colorir, tipo, oculto, tamanho = 'normal', forte,
       {escondido ? (
         <>
           <span aria-hidden="true">{opcoes.semSimbolo ? '' : 'R$ '}••••</span>
-          <span className="lp-sr">valor oculto</span>
+          <span className="lp-sr">{t.valor.oculto}</span>
         </>
       ) : (
         texto

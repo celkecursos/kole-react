@@ -4,6 +4,7 @@ import { portal } from '../../utils/portal';
 import { cx } from '../../utils/cx';
 import type { Severidade } from '../../utils/tipos';
 import './Toast.css';
+import { useTextos } from '../../i18n/contexto';
 
 type SevToast = Exclude<Severidade, 'neutral'>;
 
@@ -67,10 +68,11 @@ export function Toast({
   className,
   ...resto
 }: ToastProps) {
+  const t = useTextos();
   const tom = cor ?? severidade ?? 'pri';
   const ic = icone === false ? null : (icone ?? (severidade ? ICONE[severidade] : null));
   const fechar = aoFechar && (
-    <button type="button" className="lp-toast-fechar" aria-label="Fechar aviso" onClick={aoFechar}>
+    <button type="button" className="lp-toast-fechar" aria-label={t.toast.fechar} onClick={aoFechar}>
       <Icone icone="x" />
     </button>
   );

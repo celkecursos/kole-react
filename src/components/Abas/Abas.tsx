@@ -3,6 +3,8 @@ import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import { MenuSuspenso } from '../MenuSuspenso/MenuSuspenso';
 import './Abas.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { pluralizar } from '../../i18n/idiomas';
 
 export interface AbaProps {
   valor: string;
@@ -83,6 +85,8 @@ export function Abas({
   children,
   className,
 }: AbasProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
   const base = useId().replace(/:/g, '');
   const barra = useRef<HTMLDivElement>(null);
   const abas = Children.toArray(children).filter(
@@ -138,7 +142,7 @@ export function Abas({
       {!!p.pendentes && (
         <span className="lp-abas-pend">
           {p.pendentes}
-          <span className="lp-sr"> pendência(s) nesta aba</span>
+          <span className="lp-sr"> {pluralizar(idioma, p.pendentes, t.abas.pendencias)}</span>
         </span>
       )}
     </>
@@ -229,7 +233,7 @@ export function Abas({
         <div className="lp-abas-banda">
           <header className="lp-abas-cab">
             {aoVoltar && (
-              <button type="button" className="lp-voltar" aria-label="Voltar" title="Voltar" onClick={aoVoltar}>
+              <button type="button" className="lp-voltar" aria-label={t.comum.voltar} title={t.comum.voltar} onClick={aoVoltar}>
                 <Icone icone="arrow-left" />
               </button>
             )}

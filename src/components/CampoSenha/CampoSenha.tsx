@@ -4,6 +4,8 @@ import { cx } from '../../utils/cx';
 import { forcaSenha, POLITICA_PADRAO, validarSenha, type PoliticaSenha } from '../../utils/senha';
 import { CampoTexto, type CampoTextoProps } from '../CampoTexto/CampoTexto';
 import './CampoSenha.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface CampoSenhaProps extends Omit<CampoTextoProps, 'type' | 'mascara' | 'maiuscula' | 'prefixo' | 'sufixo'> {
   /** Botão de olho para mostrar/ocultar (padrão: sim). */
@@ -18,7 +20,6 @@ export interface CampoSenhaProps extends Omit<CampoTextoProps, 'type' | 'mascara
   autoComplete?: string;
 }
 
-const ROTULO_NIVEL = { vazia: '', fraca: 'Fraca', media: 'Média', forte: 'Forte' } as const;
 
 /** Senha com olho, aviso de Caps Lock e medidor de força opcional. */
 export function CampoSenha({
@@ -35,6 +36,8 @@ export function CampoSenha({
   disabled,
   ...p
 }: CampoSenhaProps) {
+  const t = useTextos();
+  const idioma = useIdioma();
   const [visivel, setVisivel] = useState(false);
   const [capsLock, setCapsLock] = useState(false);
   const f = forcaSenha(valor, politica);
@@ -49,8 +52,8 @@ export function CampoSenha({
         autoComplete={autoComplete}
         valor={valor}
         disabled={disabled}
-        validar={forca ? (v) => validarSenha(v, politica) || validar?.(v) || '' : validar}
-        aviso={aviso ?? (capsLock ? 'Caps Lock está ativado' : undefined)}
+        validar={forca ? (v) => validarSenha(v, politica, idioma) || validar?.(v) || '' : validar}
+        aviso={aviso ?? (capsLock ? t.senha.capsLock : undefined)}
         onKeyDown={(e) => {
           lerCaps(e);
           onKeyDown?.(e);
@@ -64,7 +67,7 @@ export function CampoSenha({
             <button
               type="button"
               className="lp-ctl-suffix"
-              aria-label={visivel ? 'Ocultar senha' : 'Mostrar senha'}
+              aria-label={visivel ? t.senha.ocultar : t.senha.mostrar}
               aria-pressed={visivel}
               onClick={() => setVisivel((x) => !x)}
             >
@@ -80,7 +83,7 @@ export function CampoSenha({
               <span key={n} className={cx('lp-senha-barra', n <= f.score && 'is-on')} />
             ))}
           </div>
-          {f.nivel !== 'vazia' && <span className="lp-senha-nivel">Força: {ROTULO_NIVEL[f.nivel]}</span>}
+          {f.nivel !== 'vazia' && <span className="lp-senha-nivel">{interpolar(t.senha.forca, { nivel: t.senha[f.nivel] })}</span>}
         </div>
       )}
     </div>

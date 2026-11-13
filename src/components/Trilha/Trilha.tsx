@@ -2,6 +2,7 @@ import { createContext, Fragment, useContext, type ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone, type IconeProp } from '../../utils/Icone';
 import './Trilha.css';
+import { useTextos } from '../../i18n/contexto';
 
 /** Um passo da trilha. Sem `rota`, aparece como texto (grupo do menu). */
 export interface ItemTrilha {
@@ -95,6 +96,7 @@ export interface TrilhaProps extends ModeloTrilha {
  * meio com rota são links. Em tela estreita vira só "‹ nível de cima".
  */
 export function Trilha({ itens: explicitos, extras = [], mostrarUnico = false, separador, icones, aparencia, className }: TrilhaProps) {
+  const t = useTextos();
   const ctx = useContext(TrilhaCtx);
   const itens = [...(explicitos ?? ctx?.itens ?? []), ...extras];
   if (!itens.length || (itens.length < 2 && !mostrarUnico)) return null;
@@ -117,7 +119,7 @@ export function Trilha({ itens: explicitos, extras = [], mostrarUnico = false, s
     }
 
   return (
-    <nav className={cx('lp-trilha', `lp-trilha--${aparenciaFinal}`, className)} aria-label="Trilha de navegação">
+    <nav className={cx('lp-trilha', `lp-trilha--${aparenciaFinal}`, className)} aria-label={t.trilha.rotulo}>
       <ol className="lp-trilha-lista">
         {itens.map((it, i) => {
           const comIcone = !!it.icone && (modoIcones === 'todos' || (modoIcones === 'inicio' && i === 0));

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { portal } from '../../utils/portal';
 import { cx } from '../../utils/cx';
 import './Carregando.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface CarregandoProps {
   mensagem?: string;
@@ -13,7 +14,9 @@ export interface CarregandoProps {
 }
 
 /** Indicador de espera de seção/página. Para listas, prefira Skeleton. */
-export function Carregando({ mensagem = 'Carregando', logo, bloqueante = false, className }: CarregandoProps) {
+export function Carregando({ mensagem: mensagemProp, logo, bloqueante = false, className }: CarregandoProps) {
+  const t = useTextos();
+  const mensagem = mensagemProp ?? t.comum.carregando;
   const painel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

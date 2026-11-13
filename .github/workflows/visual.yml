@@ -42,7 +42,7 @@ jobs:
         if: ${{ inputs.atualizar }}
         run: |
           rm -rf tests/visual/__referencia__/linux
-          npx playwright test --update-snapshots --project=claro --project=escuro
+          npx playwright test --update-snapshots --project=claro --project=escuro --project=en
           npx playwright test
 
       - name: Commit da referência

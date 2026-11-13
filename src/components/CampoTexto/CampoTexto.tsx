@@ -6,6 +6,8 @@ import { TIPOS_CAMPO } from '../../utils/tiposCampo';
 import { validarTelefone, type TipoDeCampo } from '../../utils/validadores';
 import { Campo, descricaoDe, useCampoIds, useValidacaoCampo, type CampoBaseProps } from '../Campo/Campo';
 import './CampoTexto.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { formatoNumero } from '../../i18n/idiomas';
 
 type InputNativo = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'className'>;
 
@@ -129,17 +131,23 @@ type Preset = Omit<CampoTextoProps, 'mascara'>;
 /** Monta um campo tipado a partir do descritor `TIPOS_CAMPO` (máscara + placeholder + regra). */
 function campoTipado(tipo: TipoDeCampo, nome: string, extra: Partial<CampoTextoProps> = {}) {
   const meta = TIPOS_CAMPO[tipo];
-  const C = forwardRef<HTMLInputElement, Preset>((p, ref) => (
-    <CampoTexto
-      ref={ref}
-      mascara={meta.mascara}
-      placeholder={meta.placeholder}
-      maiuscula={meta.caixaAlta}
-      validar={meta.validar}
-      {...extra}
-      {...p}
-    />
-  ));
+  const C = forwardRef<HTMLInputElement, Preset>((p, ref) => {
+    const t = useTextos();
+    const idioma = useIdioma();
+    // só os placeholders com palavras mudam com o idioma; os de formato (000.000.000-00) ficam
+    const placeholder = tipo === 'cpfCnpj' ? t.campos.placeholderCpfCnpj : tipo === 'chassi' ? t.campos.placeholderChassi : tipo === 'email' ? t.campos.placeholderEmail : meta.placeholder;
+    return (
+      <CampoTexto
+        ref={ref}
+        mascara={meta.mascara}
+        placeholder={placeholder}
+        maiuscula={meta.caixaAlta}
+        validar={(v) => meta.validar(v, idioma)}
+        {...extra}
+        {...p}
+      />
+    );
+  });
   C.displayName = nome;
   return C;
 }
@@ -171,6 +179,7 @@ export interface CampoTelefoneProps extends Preset {
 }
 
 export const CampoTelefone = forwardRef<HTMLInputElement, CampoTelefoneProps>(({ tipo, ...p }, ref) => {
+  const idioma = useIdioma();
   const [fixo, celular] = MASCARAS.telefone;
   return (
     <CampoTexto
@@ -179,7 +188,7 @@ export const CampoTelefone = forwardRef<HTMLInputElement, CampoTelefoneProps>(({
       inputMode="tel"
       type="tel"
       placeholder={tipo === 'fixo' ? '(00) 0000-0000' : '(00) 00000-0000'}
-      validar={(v) => validarTelefone(v, tipo)}
+      validar={(v) => validarTelefone(v, tipo, idioma)}
       {...p}
     />
   );
@@ -211,20 +220,21 @@ type PresetNumerico = Omit<CampoTextoProps, 'mascara' | 'valor' | 'aoMudar'> & {
   aoMudar?: (valor: number | null) => void;
 };
 
-const BRL = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /** Valor em reais: digita-se da direita (centavos primeiro), como no caixa. */
 export const CampoMoeda = forwardRef<HTMLInputElement, PresetNumerico>(function CampoMoeda(
   { valor, aoMudar, ...p },
   ref,
 ) {
+  // o idioma muda o separador (1.234,50 · 1,234.50); a moeda continua o real
+  const f = formatoNumero(useIdioma(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return (
     <CampoTexto
       ref={ref}
       inputMode="numeric"
       prefixo="R$"
-      placeholder="0,00"
-      valor={valor === null || valor === undefined ? '' : BRL.format(valor)}
+      placeholder={f.format(0)}
+      valor={valor === null || valor === undefined ? '' : f.format(valor)}
       aoMudar={(t) => {
         const digitos = t.replace(/\D/g, '');
         aoMudar?.(digitos ? Number(digitos) / 100 : null);

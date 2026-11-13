@@ -1,22 +1,35 @@
+import { formatoData, formatoNumero, type Idioma } from '../../i18n/idiomas';
+import { textosDe } from '../../i18n/textos';
 import { formatDataBr } from '../../utils/datas';
 import { formatarNumero } from '../../utils/texto';
 import type { EixoGrafico, EixoXGrafico, ValorGrafico } from './tipos';
 
+/* ---------- idioma ---------- */
+
+// O idioma da renderização: cada gráfico registra o do contexto antes de
+// desenhar (há um idioma por app, então as funções puras daqui podem lê-lo).
+let idioma: Idioma = 'pt-BR';
+
+/** Interno: o gráfico registra o idioma ativo antes de desenhar. */
+export function usarIdiomaGrafico(i: Idioma): void {
+  idioma = i;
+}
+
 /* ---------- números ---------- */
 
-const NUM = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
+const num = (v: number) => formatoNumero(idioma, { maximumFractionDigits: 2 }).format(v);
 
 /** Valor da caixa de detalhes e da tabela: `1.234,5 mm`. */
 export function formatarValor(valor: ValorGrafico | undefined, eixo?: EixoGrafico): string {
-  if (valor === null || valor === undefined || !Number.isFinite(valor)) return 'sem dado';
-  const texto = eixo?.formatar ? eixo.formatar(valor) : NUM.format(valor);
+  if (valor === null || valor === undefined || !Number.isFinite(valor)) return textosDe(idioma).grafico.semDado;
+  const texto = eixo?.formatar ? eixo.formatar(valor) : num(valor);
   return eixo?.unidade ? `${texto} ${eixo.unidade}` : texto;
 }
 
 /** Rótulo do eixo: compacto a partir de 10 mil (`12,4 mil`). */
 export function formatarPasso(valor: number, eixo?: EixoGrafico): string {
   if (eixo?.formatar) return eixo.formatar(valor);
-  return formatarNumero(valor, { compacto: Math.abs(valor) >= 10000 });
+  return formatarNumero(valor, { compacto: Math.abs(valor) >= 10000, idioma });
 }
 
 /** Lê o campo como número; texto, `undefined` e `NaN` viram `null` (sem dado). */
@@ -152,10 +165,19 @@ const doisDigitos = (n: number) => String(n).padStart(2, '0');
 export function formatadoresDeData(datas: Date[]): { curto: (d: Date) => string; completo: (d: Date) => string } {
   const g = granularidade(datas);
   if (g === 'ano') return { curto: (d) => String(d.getFullYear()), completo: (d) => String(d.getFullYear()) };
+  // pt-BR: jan/26 e 13/11 (como sempre foi); outros idiomas: nome curto do mês e a ordem do Intl
+  const ptBR = idioma === 'pt-BR';
+  const mes = (d: Date) => (ptBR ? MESES[d.getMonth()] : formatoData(idioma, { month: 'short' }).format(d).replace('.', ''));
   if (g === 'mes') {
     return {
-      curto: (d) => `${MESES[d.getMonth()]}/${String(d.getFullYear()).slice(2)}`,
-      completo: (d) => `${MESES[d.getMonth()]}/${d.getFullYear()}`,
+      curto: (d) => `${mes(d)}/${String(d.getFullYear()).slice(2)}`,
+      completo: (d) => `${mes(d)}/${d.getFullYear()}`,
+    };
+  }
+  if (!ptBR) {
+    return {
+      curto: (d) => formatoData(idioma, { day: '2-digit', month: '2-digit' }).format(d),
+      completo: (d) => formatoData(idioma, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(d),
     };
   }
   return { curto: (d) => `${doisDigitos(d.getDate())}/${doisDigitos(d.getMonth() + 1)}`, completo: formatDataBr };
@@ -174,7 +196,7 @@ export function rotulosDoEixoX(valores: unknown[], eixoX: EixoXGrafico): { curto
     return { curtos: datas.map((d) => (d ? curto(d) : '')), completos: datas.map((d) => (d ? completo(d) : '')) };
   }
   if (eixoX.tipo === 'numero') {
-    const r = valores.map((v) => (typeof v === 'number' ? NUM.format(v) : String(v ?? '')));
+    const r = valores.map((v) => (typeof v === 'number' ? num(v) : String(v ?? '')));
     return { curtos: r, completos: r };
   }
   const r = valores.map((v) => String(v ?? ''));

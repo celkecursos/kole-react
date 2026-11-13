@@ -2,7 +2,7 @@ import { useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { cx } from '../../utils/cx';
 import type { Coluna } from '../Tabela/Tabela';
 import { formatarValor, larguraTexto } from './escalas';
-import { MolduraGrafico } from './MolduraGrafico';
+import { MolduraGrafico, useTextosGrafico } from './MolduraGrafico';
 import type { DadoGrafico, GraficoBaseProps, ValorGrafico } from './tipos';
 import './MapaCalor.css';
 
@@ -35,7 +35,8 @@ const chave = (l: string | number, c: string | number) => `${l}\u0000${c}`;
 
 /** Grade de células coloridas pela escala sequencial (`--graf-seq-1` a `--graf-seq-5`). */
 export function MapaCalor(props: MapaCalorProps) {
-  const { linhas, colunas, valores, formatar, unidade, rotuloLinhas = 'Linha' } = props;
+  const tg = useTextosGrafico();
+  const { linhas, colunas, valores, formatar, unidade, rotuloLinhas = tg.linha } = props;
   const mapa = new Map(valores.map((v) => [chave(v.linha, v.coluna), v.valor]));
   const eixo = { formatar, unidade };
 

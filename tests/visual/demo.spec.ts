@@ -11,6 +11,14 @@ for (const rota of ROTAS) {
     const tema = info.project.name;
     // a escolha salva vale nas duas versões comparadas (a referência pode ser de antes do tema "sistema")
     await page.addInitScript((t) => localStorage.setItem('lp-preferencias', JSON.stringify({ tema: t, densidade: 'confortavel' })), tema);
+    // o seletor de idioma da topbar fica fora destas referências (o projeto `en`, em idioma.spec.ts, cobre o idioma);
+    // escondido desde a primeira pintura, para a topbar medir o grupo da direita já sem ele
+    await page.addInitScript(() => {
+      const css = document.createElement('style');
+      css.textContent = '.lp-topbar .lp-idioma { display: none !important; }';
+      // "interactive" vem antes dos scripts de módulo (antes do React desenhar)
+      document.addEventListener('readystatechange', () => document.readyState === 'interactive' && document.head.append(css));
+    });
     // relógio parado: o painel e as conversas mostram horários relativos ("há 26 h")
     await page.clock.setFixedTime(new Date('2026-07-01T10:00:00-03:00'));
     await page.goto(`/#${rota}`);

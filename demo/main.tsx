@@ -144,6 +144,8 @@ function App() {
       marca={{ nome: 'Gestor', subtitulo: 'Gestão comercial' }}
       nav={NAV}
       rotaAtual={rota}
+      // seletor de idioma na topbar (os textos da biblioteca; o conteúdo da demo continua em português)
+      idiomas={['pt-BR', 'en', 'es']}
       // nas finanças, o topo troca entre o pessoal e a empresa
       contexto={ehFinancas(rota) ? <SeletorEspaco /> : undefined}
       aoNavegar={navegar}

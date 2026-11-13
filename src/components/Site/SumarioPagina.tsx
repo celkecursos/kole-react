@@ -1,6 +1,7 @@
 import { useEffect, useState, type MouseEvent } from 'react';
 import { cx } from '../../utils/cx';
 import './SumarioPagina.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface ItemSumario {
   /** `id` do título da seção na página. */
@@ -20,7 +21,9 @@ export interface SumarioPaginaProps {
  * seções, com a seção em leitura marcada. Rola até a seção sem trocar o
  * endereço, então funciona também em app com rotas no `#hash`.
  */
-export function SumarioPagina({ itens, titulo = 'Nesta página', className }: SumarioPaginaProps) {
+export function SumarioPagina({ itens, titulo: tituloProp, className }: SumarioPaginaProps) {
+  const t = useTextos();
+  const titulo = tituloProp ?? t.site.nestaPagina;
   const [atual, setAtual] = useState(itens[0]?.id);
 
   useEffect(() => {

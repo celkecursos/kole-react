@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import './BotaoFechar.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface BotaoFecharProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** `claro` = para fundos escuros. */
@@ -12,7 +13,9 @@ export interface BotaoFecharProps extends Omit<ButtonHTMLAttributes<HTMLButtonEl
 }
 
 /** O × de fechar (avisos, diálogos, painéis), com o nome acessível. */
-export function BotaoFechar({ variante = 'padrao', tamanho = 'medio', rotulo = 'Fechar', className, type = 'button', ...resto }: BotaoFecharProps) {
+export function BotaoFechar({ variante = 'padrao', tamanho = 'medio', rotulo: rotuloProp, className, type = 'button', ...resto }: BotaoFecharProps) {
+  const t = useTextos();
+  const rotulo = rotuloProp ?? t.comum.fechar;
   return (
     <button
       type={type}

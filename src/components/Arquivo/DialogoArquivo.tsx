@@ -4,6 +4,8 @@ import { Botao } from '../Botao/Botao';
 import { Dialogo } from '../Dialogo/Dialogo';
 import { VisualizadorArquivo } from './VisualizadorArquivo';
 import './Arquivo.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface DialogoArquivoProps {
   aberto: boolean;
@@ -19,6 +21,7 @@ const CONTROLES = 'video, audio, input, textarea, select, [contenteditable=""], 
 
 /** Visualizador em tela cheia que folheia uma lista de anexos (botões ou ← →). */
 export function DialogoArquivo({ aberto, aoFechar, arquivos, indice, aoMudarIndice }: DialogoArquivoProps) {
+  const t = useTextos();
   const total = arquivos.length;
   const i = Math.max(0, Math.min(indice, total - 1));
   const atual = arquivos[i] ?? null;
@@ -40,18 +43,18 @@ export function DialogoArquivo({ aberto, aoFechar, arquivos, indice, aoMudarIndi
       aoFechar={aoFechar}
       tamanho="full"
       icone="paperclip"
-      titulo={atual?.nome || 'Anexo'}
+      titulo={atual?.nome || t.anexo.anexo}
       subtitulo={atual?.tamanho ? formatBytes(atual.tamanho) : undefined}
       className="lp-dlg-arq"
       rodape={
         total > 1 ? (
           <>
             <span className="lp-dlg-arq-pos" aria-live="polite">
-              {i + 1} de {total}
+              {interpolar(t.anexo.contador, { n: i + 1, total })}
             </span>
-            <Botao rotulo="Anterior" icone="chevron-left" severidade="secundario" disabled={i === 0} onClick={() => aoMudarIndice(i - 1)} />
+            <Botao rotulo={t.comum.anterior} icone="chevron-left" severidade="secundario" disabled={i === 0} onClick={() => aoMudarIndice(i - 1)} />
             <Botao
-              rotulo="Próximo"
+              rotulo={t.comum.proximo}
               icone="chevron-right"
               posicaoIcone="direita"
               severidade="secundario"

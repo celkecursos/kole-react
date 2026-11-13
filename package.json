@@ -67,7 +67,7 @@
     "build:demo": "node scripts/gerar-props.mjs && vite build --mode demo",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "visual": "playwright test",
-    "visual:referencia": "playwright test --update-snapshots --project=claro --project=escuro",
+    "visual:referencia": "playwright test --update-snapshots --project=claro --project=escuro --project=en",
     "prepare": "npm run build",
     "docs:props": "node scripts/gerar-props.mjs",
     "docs:conferir": "node scripts/gerar-props.mjs --conferir"

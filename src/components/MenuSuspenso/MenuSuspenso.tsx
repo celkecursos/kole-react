@@ -6,6 +6,8 @@ import { useCliqueFora } from '../../utils/useCliqueFora';
 import { Botao, type BotaoProps, type PadroesBotao, type SeveridadeBotao } from '../Botao/Botao';
 import { GrupoBotoes } from '../GrupoBotoes/GrupoBotoes';
 import './MenuSuspenso.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface ItemMenuSuspenso {
   /** Devolvido em `aoEscolher` (sem id, vai o rótulo). */
@@ -159,6 +161,7 @@ export function MenuSuspenso({
   formato,
   tamanho,
 }: MenuSuspensoProps) {
+  const t = useTextos();
   const id = useId();
   const raiz = useRef<HTMLSpanElement>(null);
   const gatilho = useRef<HTMLButtonElement>(null);
@@ -287,7 +290,7 @@ export function MenuSuspenso({
         {...propsGatilho}
         className={cx('lp-menu-sus-divisor', aberto && 'is-aberto')}
         icone={SETA[direcao]}
-        aria-label={ariaLabel ?? (rotulo ? `Mais opções de ${rotulo}` : 'Mais opções')}
+        aria-label={ariaLabel ?? (rotulo ? interpolar(t.menu.maisOpcoesDe, { nome: rotulo }) : t.menu.maisOpcoes)}
       />
     );
     botao = (

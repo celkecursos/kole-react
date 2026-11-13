@@ -5,6 +5,8 @@ import { portal } from '../../utils/portal';
 import { Avatar } from '../Avatar/Avatar';
 import { Botao } from '../Botao/Botao';
 import './ChatFlutuante.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { pluralizar } from '../../i18n/idiomas';
 
 export interface ChatFlutuanteProps {
   /** Normalmente uma `Conversa` (com o `CampoMensagem` no `campo`). Ocupa a altura do painel. */
@@ -37,7 +39,7 @@ export interface ChatFlutuanteProps {
  */
 export function ChatFlutuante({
   children,
-  titulo = 'Fale com a gente',
+  titulo: tituloProp,
   subtitulo,
   avatar,
   rotuloBotao,
@@ -50,6 +52,9 @@ export function ChatFlutuante({
   acoes,
   className,
 }: ChatFlutuanteProps) {
+  const txt = useTextos();
+  const idioma = useIdioma();
+  const titulo = tituloProp ?? txt.chat.titulo;
   const [abertoInterno, setAbertoInterno] = useState(abertoInicial);
   const aberto = abertoProp ?? abertoInterno;
   const mudar = (v: boolean) => {
@@ -105,7 +110,7 @@ export function ChatFlutuante({
               {subtitulo && <span className="lp-chatf-subtitulo">{subtitulo}</span>}
             </div>
             {acoes}
-            <Botao icone="x" aria-label="Fechar o chat" dica="Fechar" severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => mudar(false)} />
+            <Botao icone="x" aria-label={txt.chat.fechar} dica={txt.comum.fechar} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={() => mudar(false)} />
           </div>
           <div className="lp-chatf-corpo">{children}</div>
         </div>
@@ -115,7 +120,7 @@ export function ChatFlutuante({
         type="button"
         className={cx('lp-chatf-botao', aberto && 'is-aberto')}
         aria-expanded={aberto}
-        aria-label={aberto ? 'Fechar o chat' : `${rotulo}${naoLidas ? `, ${naoLidas} ${naoLidas === 1 ? 'mensagem nova' : 'mensagens novas'}` : ''}`}
+        aria-label={aberto ? txt.chat.fechar : `${rotulo}${naoLidas ? `, ${pluralizar(idioma, naoLidas, txt.chat.novas)}` : ''}`}
         onClick={() => mudar(!aberto)}
       >
         <Icone icone={aberto ? 'x' : icone} className="lp-chatf-botao-icone" />

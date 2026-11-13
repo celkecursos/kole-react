@@ -63,6 +63,30 @@ function textoDaBase(t) {
   return texto.replace(/\s+/g, ' ');
 }
 
+// Textos padrão que vêm do dicionário: o pt-BR, lido do próprio fonte.
+const PT_BR = (() => {
+  const fonte = readFileSync(resolve(SRC, 'i18n/pt-BR.ts'), 'utf8');
+  const js = ts.transpileModule(fonte, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
+  const modulo = { exports: {} };
+  new Function('module', 'exports', 'require', js)(modulo, modulo.exports, () => ({}));
+  return modulo.exports.textosPtBR;
+})();
+// apelidos usados nos componentes para uma seção inteira do dicionário
+const SECAO_DO_APELIDO = { TXT: 'calendario', tg: 'grafico', tq: 'quadro', tp: 'periodo' };
+
+/**
+ * `t.tabela.rotulo`, `tx.kanban.quadro`, `TXT.vazioMes`… → `'Tabela de dados'`
+ * (o texto em pt-BR, entre aspas, como um padrão escrito no código); `null` se não for do dicionário.
+ */
+function textoDoDicionario(expr) {
+  const m = /^(\w+)((?:\.\w+)+)$/.exec(expr.trim());
+  if (!m) return null;
+  const partes = m[2].slice(1).split('.');
+  if (SECAO_DO_APELIDO[m[1]]) partes.unshift(SECAO_DO_APELIDO[m[1]]);
+  const v = partes.reduce((o, k) => (o && typeof o === 'object' ? o[k] : undefined), PT_BR);
+  return typeof v === 'string' ? `'${v}'` : null;
+}
+
 /** `{ nome: 'padrão' }` lido de `function Xxx({ nome = 'padrão' })` ou `forwardRef(function Xxx({ … }))`. */
 function padroesDoComponente(arquivo, nome) {
   const padroes = {};
@@ -71,10 +95,20 @@ function padroesDoComponente(arquivo, nome) {
     const p = fn.parameters[0]?.name;
     if (!p || !ts.isObjectBindingPattern(p)) return;
     achou = true;
+    const corpo = fn.body?.getText() ?? '';
     for (const el of p.elements) {
-      if (!el.initializer) continue;
       const chave = (el.propertyName ?? el.name).getText();
-      padroes[chave] = el.initializer.getText().replace(/\s+/g, ' ');
+      if (!el.initializer) {
+        // texto do idioma: `rotulo: rotuloProp` + `const rotulo = rotuloProp ?? t.tabela.rotulo`
+        if (!el.propertyName) continue;
+        const local = el.name.getText();
+        const m = new RegExp(`const \\w+ = ${local} \\?\\? ([\\w.]+);`).exec(corpo);
+        const texto = m && textoDoDicionario(m[1]);
+        if (texto) padroes[chave] = texto;
+        continue;
+      }
+      const inicial = el.initializer.getText().replace(/\s+/g, ' ');
+      padroes[chave] = textoDoDicionario(inicial) ?? inicial;
     }
   };
   const visitar = (no) => {

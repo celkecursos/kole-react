@@ -1,9 +1,11 @@
 import { useState, type PointerEvent, type ReactNode } from 'react';
 import type { Coluna } from '../Tabela/Tabela';
 import { dominioDoEixo, escalaLinear, formatarPasso, formatarValor, larguraTexto, lerNumero, regressaoLinear } from './escalas';
-import { CaixaDetalhes, MolduraGrafico, textoDetalhe, usePontoAtivo, useSeriesOcultas, type ItemLegenda, type LinhaDetalhe } from './MolduraGrafico';
+import { CaixaDetalhes, MolduraGrafico, textoDetalhe, usePontoAtivo, useSeriesOcultas, useTextosGrafico, type ItemLegenda, type LinhaDetalhe } from './MolduraGrafico';
 import type { DadoGrafico, EixoGrafico, GraficoBaseProps } from './tipos';
 import './GraficoDispersao.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { formatoNumero, interpolar } from '../../i18n/idiomas';
 
 export interface GraficoDispersaoProps extends GraficoBaseProps {
   /** Cada item é um ponto. */
@@ -26,7 +28,6 @@ export interface GraficoDispersaoProps extends GraficoBaseProps {
   rotuloRegressao?: string;
 }
 
-const DUAS = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /** "Vendas (mil R$)" · "Vendas" · "mil R$". */
 function tituloDoEixo(eixo?: EixoGrafico): string {
@@ -46,7 +47,9 @@ interface Ponto {
 /** Cruzamento de duas medidas, um ponto por item, com reta de regressão opcional. */
 export function GraficoDispersao(props: GraficoDispersaoProps) {
   const { dados, chaveX, chaveY, chaveRotulo, chaveDestaque, regressao, eixoX, eixoY } = props;
-  const { rotuloPontos = 'Pontos', rotuloDestaque = 'Destaque', rotuloRegressao = 'Tendência linear' } = props;
+  const tg = useTextosGrafico();
+  const txt = useTextos();
+  const { rotuloPontos = tg.pontos, rotuloDestaque = tg.destaque, rotuloRegressao = tg.tendencia } = props;
   const [ocultas, alternar] = useSeriesOcultas();
 
   const itens: ItemLegenda[] = [
@@ -57,10 +60,10 @@ export function GraficoDispersao(props: GraficoDispersaoProps) {
 
   const tabela = () => {
     const colunas: Coluna<DadoGrafico>[] = [
-      ...(chaveRotulo ? [{ campo: chaveRotulo, rotulo: 'Ponto' }] : []),
+      ...(chaveRotulo ? [{ campo: chaveRotulo, rotulo: tg.ponto }] : []),
       { campo: chaveX, rotulo: tituloDoEixo(eixoX) || chaveX, alinhamento: 'direita', formato: (v) => formatarValor(lerNumero(v), { ...eixoX, unidade: undefined }) },
       { campo: chaveY, rotulo: tituloDoEixo(eixoY) || chaveY, alinhamento: 'direita', formato: (v) => formatarValor(lerNumero(v), { ...eixoY, unidade: undefined }) },
-      ...(chaveDestaque ? [{ campo: chaveDestaque, rotulo: rotuloDestaque, formato: (v: unknown) => (v ? 'Sim' : 'Não') }] : []),
+      ...(chaveDestaque ? [{ campo: chaveDestaque, rotulo: rotuloDestaque, formato: (v: unknown) => (v ? txt.comum.sim : txt.comum.nao) }] : []),
     ];
     return { colunas, registros: dados };
   };
@@ -88,12 +91,14 @@ function PlanoDispersao({
   largura,
   ocultas,
 }: GraficoDispersaoProps & { largura: number; ocultas: ReadonlySet<string> }) {
+  const idioma = useIdioma();
+  const tgp = useTextosGrafico();
   const todos: Ponto[] = [];
   dados.forEach((d, indice) => {
     const x = lerNumero(d[chaveX]);
     const y = lerNumero(d[chaveY]);
     if (x === null || y === null) return;
-    todos.push({ indice, x, y, destaque: !!(chaveDestaque && d[chaveDestaque]), rotulo: chaveRotulo ? String(d[chaveRotulo] ?? '') : `Ponto ${indice + 1}` });
+    todos.push({ indice, x, y, destaque: !!(chaveDestaque && d[chaveDestaque]), rotulo: chaveRotulo ? String(d[chaveRotulo] ?? '') : interpolar(tgp.pontoN, { n: indice + 1 }) });
   });
   // o teclado anda da esquerda para a direita
   todos.sort((a, b) => a.x - b.x || a.y - b.y);
@@ -162,7 +167,8 @@ function PlanoDispersao({
     }
     if (xb > xa) segmento = [escX(xa), escY(yDe(xa)), escX(xb), escY(yDe(xb))];
   }
-  const estat = reta ? `r = ${DUAS.format(reta.r)} · r² = ${DUAS.format(reta.r2)} · n = ${reta.n}` : '';
+  const duas = (v: number) => formatoNumero(idioma, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+  const estat = reta ? `r = ${duas(reta.r)} · r² = ${duas(reta.r2)} · n = ${reta.n}` : '';
   const p = ativo === null ? null : visiveis[ativo];
 
   return (

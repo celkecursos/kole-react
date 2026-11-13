@@ -4772,6 +4772,12 @@
         "descricao": "Seletor do contexto do sistema (ex.: `SeletorContexto` com Pessoal × Empresa, ou a filial), à esquerda da topbar. Fica visível também no celular."
       },
       {
+        "nome": "idiomas",
+        "tipo": "Idioma[]",
+        "obrigatorio": false,
+        "descricao": "Idiomas do seletor na topbar, ao lado do tema (ex.: `['pt-BR', 'en', 'es']`). Sem a prop, o seletor não aparece. A troca vai para o `ProvedorPreferencias`."
+      },
+      {
         "nome": "children",
         "tipo": "ReactNode",
         "obrigatorio": false,
@@ -8222,9 +8228,9 @@
       },
       {
         "nome": "validar",
-        "tipo": "(valor: string) => string",
+        "tipo": "(valor: string, idioma?: Idioma) => string",
         "obrigatorio": true,
-        "descricao": ""
+        "descricao": "Mensagem do erro (vazia se válido), no `idioma` (padrão `pt-BR`)."
       },
       {
         "nome": "caixaAlta",
@@ -8413,7 +8419,6 @@
         "nome": "atalhos",
         "tipo": "AtalhoPeriodo[]",
         "obrigatorio": false,
-        "padrao": "ATALHOS_PERIODO",
         "descricao": "Atalhos do painel. Padrão: este mês, mês passado, este trimestre, este ano e ano passado."
       },
       {
@@ -8816,6 +8821,12 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": "Sem o símbolo: `1.234,56`."
+      },
+      {
+        "nome": "idioma",
+        "tipo": "Idioma",
+        "obrigatorio": false,
+        "descricao": "Idioma da formatação. Padrão `pt-BR`."
       }
     ]
   },
@@ -8841,6 +8852,12 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": "`valor` já está em fração (`0.125` = 12,5%). Padrão: em pontos (`12.5`)."
+      },
+      {
+        "nome": "idioma",
+        "tipo": "Idioma",
+        "obrigatorio": false,
+        "descricao": "Idioma da formatação. Padrão `pt-BR`."
       }
     ]
   },
@@ -9250,6 +9267,49 @@
       }
     ]
   },
+  "Plural": {
+    "interface": "Plural",
+    "arquivo": "src/i18n/idiomas.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "zero",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "one",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "two",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "few",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "many",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "other",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "PoliticaSenha": {
     "interface": "PoliticaSenha",
     "arquivo": "src/utils/senha.ts",
@@ -9361,6 +9421,12 @@
         "descricao": ""
       },
       {
+        "nome": "idioma",
+        "tipo": "Idioma",
+        "obrigatorio": true,
+        "descricao": "Idioma dos textos da biblioteca (padrão `pt-BR`)."
+      },
+      {
         "nome": "definirTema",
         "tipo": "(t: Tema) => void",
         "obrigatorio": true,
@@ -9377,6 +9443,12 @@
         "tipo": "(d: Densidade) => void",
         "obrigatorio": true,
         "descricao": ""
+      },
+      {
+        "nome": "definirIdioma",
+        "tipo": "(i: Idioma) => void",
+        "obrigatorio": true,
+        "descricao": "Troca o idioma: todos os componentes mudam na hora, e a escolha fica lembrada."
       }
     ]
   },
@@ -9609,6 +9681,24 @@
         "obrigatorio": false,
         "padrao": "'confortavel'",
         "descricao": ""
+      },
+      {
+        "nome": "idiomaInicial",
+        "tipo": "Idioma",
+        "obrigatorio": false,
+        "descricao": "Idioma enquanto a pessoa não escolhe outro (ex.: o `users.locale` do servidor). Padrão: `pt-BR`. O navegador não é consultado."
+      },
+      {
+        "nome": "aoMudarIdioma",
+        "tipo": "(idioma: Idioma) => void",
+        "obrigatorio": false,
+        "descricao": "Chamado ao montar e a cada troca de idioma: o lugar de sincronizar o i18n do sistema (ex.: `i18n.changeLanguage`) e de gravar a escolha no servidor."
+      },
+      {
+        "nome": "textos",
+        "tipo": "Partial<Record<Idioma, TextosParciais>>",
+        "obrigatorio": false,
+        "descricao": "Textos por idioma, por cima dos da biblioteca: troca um texto (`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`) ou acrescenta um idioma (`{ fr: { … } }`; o que faltar sai em pt-BR)."
       }
     ]
   },
@@ -9871,7 +9961,6 @@
         "nome": "rotulo",
         "tipo": "(quantidade: number) => ReactNode",
         "obrigatorio": false,
-        "padrao": "rotuloPadrao",
         "descricao": "Texto do botão que abre a lista. Padrão: \"3 fontes\"."
       },
       {
@@ -10189,6 +10278,52 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": "Só o quadrado, sem o nome (topo estreito). Padrão: some sozinho abaixo de 40rem."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "SeletorIdioma": {
+    "interface": "SeletorIdiomaProps",
+    "arquivo": "src/components/SeletorIdioma/SeletorIdioma.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "idiomas",
+        "tipo": "readonly Idioma[]",
+        "obrigatorio": false,
+        "padrao": "IDIOMAS_PADRAO",
+        "descricao": "Idiomas oferecidos, na ordem do menu. Padrão: pt-BR, inglês e espanhol."
+      },
+      {
+        "nome": "valor",
+        "tipo": "Idioma",
+        "obrigatorio": false,
+        "descricao": "Idioma atual. Padrão: o do `ProvedorPreferencias`."
+      },
+      {
+        "nome": "aoMudar",
+        "tipo": "(idioma: Idioma) => void",
+        "obrigatorio": false,
+        "descricao": "Padrão: troca o idioma do `ProvedorPreferencias` (que avisa o sistema em `aoMudarIdioma`)."
+      },
+      {
+        "nome": "aparencia",
+        "tipo": "'icone' | 'botao'",
+        "obrigatorio": false,
+        "padrao": "'botao'",
+        "descricao": "`icone` = só a bandeira, num botão redondo (topo da `Estrutura`) · `botao` = bandeira e nome do idioma (tela de login, preferências)."
+      },
+      {
+        "nome": "alinhamento",
+        "tipo": "'inicio' | 'centro' | 'fim'",
+        "obrigatorio": false,
+        "padrao": "'fim'",
+        "descricao": ""
       },
       {
         "nome": "className",
@@ -11168,6 +11303,13 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": "Sem o símbolo: `1.234,56`.",
+        "de": "OpcoesMoeda"
+      },
+      {
+        "nome": "idioma",
+        "tipo": "Idioma",
+        "obrigatorio": false,
+        "descricao": "Idioma da formatação. Padrão `pt-BR`.",
         "de": "OpcoesMoeda"
       }
     ]

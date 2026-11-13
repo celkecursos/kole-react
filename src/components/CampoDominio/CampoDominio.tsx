@@ -28,6 +28,7 @@ export function CampoUfMultiplo({ exibicao = 'completo', comBusca = true, placeh
 export type CampoTipoPessoaProps = SemOpcoes<CampoSelectProps<'F' | 'J'>>;
 
 /** Pessoa física (`F`) ou jurídica (`J`). */
-export function CampoTipoPessoa({ placeholder = 'Selecione', ...p }: CampoTipoPessoaProps) {
+export function CampoTipoPessoa({ placeholder, ...p }: CampoTipoPessoaProps) {
+  // sem placeholder, o CampoSelect usa o "Selecione" do idioma ativo
   return <CampoSelect<'F' | 'J'> opcoes={[...TIPOS_PESSOA]} placeholder={placeholder} {...p} />;
 }

@@ -2,6 +2,7 @@ import { useId, useState, type FormEvent } from 'react';
 import { cx } from '../../utils/cx';
 import { isEmail } from '../../utils/validadores';
 import './Newsletter.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface NewsletterProps {
   /** Recebe o e-mail já conferido. Pode devolver uma Promise (o botão espera). */
@@ -21,14 +22,19 @@ export interface NewsletterProps {
 /** Inscrição por e-mail (newsletter), para fundo marinho: rodapé ou coluna lateral. */
 export function Newsletter({
   aoInscrever,
-  titulo = 'Receba novidades',
+  titulo: tituloProp,
   descricao,
-  placeholder = 'Seu e-mail',
-  rotuloBotao = 'Inscrever',
-  mensagemSucesso = 'Inscrição feita. Confira seu e-mail.',
+  placeholder: placeholderProp,
+  rotuloBotao: rotuloBotaoProp,
+  mensagemSucesso: mensagemSucessoProp,
   aparencia = 'cartao',
   className,
 }: NewsletterProps) {
+  const t = useTextos();
+  const titulo = tituloProp ?? t.site.newsletterTitulo;
+  const placeholder = placeholderProp ?? t.site.newsletterCampo;
+  const rotuloBotao = rotuloBotaoProp ?? t.site.newsletterBotao;
+  const mensagemSucesso = mensagemSucessoProp ?? t.site.newsletterOk;
   const id = useId();
   const [email, setEmail] = useState('');
   const [erro, setErro] = useState('');
@@ -39,7 +45,7 @@ export function Newsletter({
     e.preventDefault();
     const valor = email.trim();
     if (!isEmail(valor)) {
-      setErro('Informe um e-mail válido.');
+      setErro(t.site.newsletterInvalido);
       return;
     }
     setErro('');
@@ -49,7 +55,7 @@ export function Newsletter({
       setFeito(true);
       setEmail('');
     } catch {
-      setErro('Não foi possível inscrever agora. Tente de novo.');
+      setErro(t.site.newsletterErro);
     } finally {
       setEnviando(false);
     }

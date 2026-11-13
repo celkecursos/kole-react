@@ -4,8 +4,11 @@ import { Botao } from '../Botao/Botao';
 import { Skeleton } from '../Skeleton/Skeleton';
 import { Tabela, type Coluna } from '../Tabela/Tabela';
 import { Vazio } from '../Vazio/Vazio';
+import { usarIdiomaGrafico } from './escalas';
 import type { DadoGrafico, GraficoBaseProps } from './tipos';
 import './MolduraGrafico.css';
+import { useIdioma, useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export type FormaLegenda = 'linha' | 'barra' | 'ponto';
 
@@ -66,13 +69,22 @@ export function Amostra({ cor, forma, tracejada }: { cor: string; forma: FormaLe
   );
 }
 
+/**
+ * Interno: os textos dos gráficos no idioma ativo. Também registra o idioma
+ * para as funções puras de `escalas.ts` (números e datas dos eixos).
+ */
+export function useTextosGrafico() {
+  usarIdiomaGrafico(useIdioma());
+  return useTextos().grafico;
+}
+
 /** Esqueleto comum dos gráficos: título, legenda, ver dados, carregando e vazio. */
 export function MolduraGrafico({
   titulo,
   altura = 280,
   legenda = true,
   carregando,
-  textoVazio = 'Sem dados para mostrar.',
+  textoVazio: textoVazioProp,
   verDados = true,
   animacao,
   className,
@@ -83,6 +95,8 @@ export function MolduraGrafico({
   nota,
   children,
 }: MolduraGraficoProps) {
+  const tg = useTextosGrafico();
+  const textoVazio = textoVazioProp ?? tg.semDados;
   const [comoTabela, setComoTabela] = useState(false);
   const [area, largura] = useLargura<HTMLDivElement>();
   const mostrarLegenda = legenda && itensLegenda.length > 1 && !carregando && !semDados && !comoTabela;
@@ -94,7 +108,7 @@ export function MolduraGrafico({
         <figcaption className="lp-graf-titulo">{titulo}</figcaption>
         {verDados && !carregando && !semDados && (
           <Botao
-            rotulo={comoTabela ? 'Ver gráfico' : 'Ver dados'}
+            rotulo={comoTabela ? tg.verGrafico : tg.verDados}
             icone={comoTabela ? 'chart-column' : 'table'}
             aparencia="texto"
             severidade="secundario"
@@ -105,14 +119,14 @@ export function MolduraGrafico({
         )}
       </div>
       {mostrarLegenda && (
-        <div className="lp-graf-legenda" role="group" aria-label={`Séries de ${titulo}`}>
+        <div className="lp-graf-legenda" role="group" aria-label={interpolar(tg.series, { titulo })}>
           {itensLegenda.map((item) => (
             <button
               key={item.chave}
               type="button"
               className={cx('lp-graf-leg-item', !item.visivel && 'is-oculta')}
               aria-pressed={item.visivel}
-              title={item.visivel ? 'Esconder a série' : 'Mostrar a série'}
+              title={item.visivel ? tg.esconderSerie : tg.mostrarSerie}
               onClick={() => aoAlternarSerie?.(item.chave)}
             >
               <Amostra cor={item.cor} forma={item.forma} tracejada={item.tracejada} />

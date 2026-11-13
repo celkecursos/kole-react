@@ -5,6 +5,7 @@ import { Alerta } from '../Alerta/Alerta';
 import { Botao } from '../Botao/Botao';
 import { Chip } from '../Chip/Chip';
 import './Filtros.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface FiltroAplicado {
   campo: string;
@@ -38,6 +39,7 @@ export function Filtros({
   aparencia = 'barra',
   className,
 }: FiltrosProps) {
+  const t = useTextos();
   const aoSubmeter = (e: FormEvent) => {
     e.preventDefault();
     aoConsultar();
@@ -58,15 +60,15 @@ export function Filtros({
               <span className="lp-fb-consultar">
                 <Botao
                   type="submit"
-                  rotulo="Consultar"
+                  rotulo={t.filtros.consultar}
                   icone="search"
                   carregando={consultando}
-                  aria-label={alterado ? 'Consultar, filtros alterados' : 'Consultar'}
+                  aria-label={alterado ? t.filtros.consultarAlterado : t.filtros.consultar}
                 />
                 {alterado && <span className="lp-fb-ponto" aria-hidden="true" />}
               </span>
               {aoLimpar && (
-                <Botao icone="funnel-x" severidade="secundario" aria-label="Limpar filtros" dica="Limpar filtros" onClick={aoLimpar} />
+                <Botao icone="funnel-x" severidade="secundario" aria-label={t.filtros.limpar} dica={t.filtros.limpar} onClick={aoLimpar} />
               )}
             </div>
           </div>
@@ -74,11 +76,11 @@ export function Filtros({
       </form>
       {alterado && (
         <div className="lp-fb-avisos">
-          <Alerta severidade="warn" mensagem="Filtros alterados — clique em Consultar para atualizar a lista." />
+          <Alerta severidade="warn" mensagem={t.filtros.alterados} />
         </div>
       )}
       {aplicados.length > 0 && (
-        <div className="lp-fb-chips" role="list" aria-label="Filtros aplicados">
+        <div className="lp-fb-chips" role="list" aria-label={t.filtros.aplicados}>
           {aplicados.map((f) => (
             <span role="listitem" key={f.campo}>
               <Chip campo={f.campo} rotulo={f.rotulo} aoRemover={f.aoRemover} />

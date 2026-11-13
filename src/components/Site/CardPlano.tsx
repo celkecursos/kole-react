@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { cx } from '../../utils/cx';
 import { Icone } from '../../utils/Icone';
 import './CardPlano.css';
+import { useTextos } from '../../i18n/contexto';
 
 export interface CardPlanoProps {
   nome: string;
@@ -24,7 +25,9 @@ export interface CardPlanoProps {
 }
 
 /** Cartão de plano ou preço: nome, valor, lista do que inclui e o botão de contratar. */
-export function CardPlano({ nome, descricao, preco, moeda = 'R$', periodo, itens, destaque, rotuloDestaque = 'Mais escolhido', acao, className }: CardPlanoProps) {
+export function CardPlano({ nome, descricao, preco, moeda = 'R$', periodo, itens, destaque, rotuloDestaque: rotuloDestaqueProp, acao, className }: CardPlanoProps) {
+  const t = useTextos();
+  const rotuloDestaque = rotuloDestaqueProp ?? t.site.maisEscolhido;
   return (
     <article className={cx('lp-plano', destaque && 'lp-plano--destaque', className)}>
       {destaque && <span className="lp-plano-selo">{rotuloDestaque}</span>}

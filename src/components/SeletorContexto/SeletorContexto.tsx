@@ -3,6 +3,8 @@ import { Icone, type IconeProp } from '../../utils/Icone';
 import { iniciais } from '../../utils/texto';
 import { MenuSuspenso, type ItemMenuSuspenso } from '../MenuSuspenso/MenuSuspenso';
 import './SeletorContexto.css';
+import { useTextos } from '../../i18n/contexto';
+import { interpolar } from '../../i18n/idiomas';
 
 export interface OpcaoContexto {
   id: string;
@@ -51,7 +53,9 @@ function Quadro({ opcao }: { opcao: OpcaoContexto }) {
  * a filial, a escola. Fica no topo (prop `contexto` da `Estrutura`) ou onde o
  * app quiser.
  */
-export function SeletorContexto({ opcoes, valor, aoMudar, rotulo = 'Trocar de espaço', acoes, aoEscolherAcao, compacto, className }: SeletorContextoProps) {
+export function SeletorContexto({ opcoes, valor, aoMudar, rotulo: rotuloProp, acoes, aoEscolherAcao, compacto, className }: SeletorContextoProps) {
+  const t = useTextos();
+  const rotulo = rotuloProp ?? t.contexto.trocar;
   const atual = opcoes.find((o) => o.id === valor) ?? opcoes[0];
   const ids = new Set(opcoes.map((o) => o.id));
   const itens: ItemMenuSuspenso[] = [
@@ -72,7 +76,7 @@ export function SeletorContexto({ opcoes, valor, aoMudar, rotulo = 'Trocar de es
           type="button"
           {...props}
           className={cx('lp-ctx-gatilho', aberto && 'is-aberto')}
-          aria-label={`${rotulo}. Atual: ${atual.nome}${atual.descricao ? `, ${atual.descricao}` : ''}`}
+          aria-label={interpolar(t.contexto.atual, { rotulo, nome: `${atual.nome}${atual.descricao ? `, ${atual.descricao}` : ''}` })}
         >
           <Quadro opcao={atual} />
           <span className="lp-ctx-textos">
