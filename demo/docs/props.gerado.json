@@ -538,6 +538,25 @@
       }
     ]
   },
+  "AtalhoPeriodo": {
+    "interface": "AtalhoPeriodo",
+    "arquivo": "src/components/NavegadorPeriodo/NavegadorPeriodo.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "periodo",
+        "tipo": "Periodo | ((agora: Date) => Periodo)",
+        "obrigatorio": true,
+        "descricao": "O período, ou uma função de \"agora\" (ex.: o mês passado)."
+      }
+    ]
+  },
   "Avaliacao": {
     "interface": "AvaliacaoProps",
     "arquivo": "src/components/Avaliacao/Avaliacao.tsx",
@@ -4744,7 +4763,13 @@
         "nome": "complementosTopbar",
         "tipo": "ReactNode",
         "obrigatorio": false,
-        "descricao": "Controles extras à direita da topbar."
+        "descricao": "Controles extras à direita da topbar (somem no celular)."
+      },
+      {
+        "nome": "contexto",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Seletor do contexto do sistema (ex.: `SeletorContexto` com Pessoal × Empresa, ou a filial), à esquerda da topbar. Fica visível também no celular."
       },
       {
         "nome": "children",
@@ -6094,6 +6119,142 @@
         "tipo": "FaixaGrafico[]",
         "obrigatorio": false,
         "descricao": "Intervalos sombreados no eixo X (ex.: novembro e dezembro)."
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Nome acessível do gráfico (aparece acima dele).",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Resumo em texto para leitor de tela (ex.: \"Faturamento mensal de 2025, máximo em dezembro\").",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "altura",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Altura da área do gráfico em px. Padrão `280`; a largura acompanha o container.",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "legenda",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Padrão `true`. Clicar num item esconde ou mostra a série.",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "carregando",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "textoVazio",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Sem dados, mostra o `Vazio` com este texto.",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "animacao",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Anima a entrada do gráfico (linhas se desenham, barras crescem a partir do zero). Só na primeira vez que aparece, não a cada atualização dos dados, e nunca com \"reduzir movimento\" ligado no sistema. Padrão `false`.",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "verDados",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Padrão `true`. Botão que alterna entre o gráfico e uma `Tabela` com os mesmos valores.",
+        "de": "GraficoBaseProps"
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "",
+        "de": "GraficoBaseProps"
+      }
+    ]
+  },
+  "GraficoRosca": {
+    "interface": "GraficoRoscaProps",
+    "arquivo": "src/components/Grafico/GraficoRosca.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "dados",
+        "tipo": "DadoGrafico[]",
+        "obrigatorio": true,
+        "descricao": "Cada item é uma fatia. Valores zero, negativos ou sem dado ficam de fora."
+      },
+      {
+        "nome": "chaveRotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Campo com o nome da fatia (ex.: a categoria)."
+      },
+      {
+        "nome": "chaveValor",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "chaveCor",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Campo com a cor de cada fatia (padrão: `--graf-1`, `--graf-2`… na ordem)."
+      },
+      {
+        "nome": "formatar",
+        "tipo": "(valor: number) => string",
+        "obrigatorio": false,
+        "descricao": "Formata os valores (padrão: número pt-BR). Ex.: `(v) => formatarMoeda(v)`."
+      },
+      {
+        "nome": "centro",
+        "tipo": "{ rotulo?: string; valor?: string }",
+        "obrigatorio": false,
+        "descricao": "Texto do meio quando nenhuma fatia está ativa. Padrão: \"Total\" e a soma das visíveis."
+      },
+      {
+        "nome": "maxFatias",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Junta as menores numa fatia \"Outros\" a partir desta quantidade (ex.: `6` mostra as 5 maiores e \"Outros\"). Sem ela, mostra todas."
+      },
+      {
+        "nome": "rotuloOutros",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "espessura",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Espessura do anel, em fração do raio (0,1 a 0,9). Padrão `0.32`."
+      },
+      {
+        "nome": "posicaoLegenda",
+        "tipo": "'lado' | 'abaixo'",
+        "obrigatorio": false,
+        "descricao": "Legenda ao lado (`lado`, se couber) ou `abaixo`. Padrão `lado`."
+      },
+      {
+        "nome": "aoEscolher",
+        "tipo": "(item: DadoGrafico, indice: number) => void",
+        "obrigatorio": false,
+        "descricao": "Clique numa fatia (ex.: filtrar os lançamentos da categoria)."
       },
       {
         "nome": "titulo",
@@ -8231,6 +8392,64 @@
       }
     ]
   },
+  "NavegadorPeriodo": {
+    "interface": "NavegadorPeriodoProps",
+    "arquivo": "src/components/NavegadorPeriodo/NavegadorPeriodo.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "Periodo",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aoMudar",
+        "tipo": "(periodo: Periodo) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "atalhos",
+        "tipo": "AtalhoPeriodo[]",
+        "obrigatorio": false,
+        "padrao": "ATALHOS_PERIODO",
+        "descricao": "Atalhos do painel. Padrão: este mês, mês passado, este trimestre, este ano e ano passado."
+      },
+      {
+        "nome": "personalizado",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "true",
+        "descricao": "Intervalo livre (de/até) no painel. Padrão `true`."
+      },
+      {
+        "nome": "agora",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "\"Hoje\" de referência (testes, fuso do servidor)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Período'",
+        "descricao": "Nome do grupo para leitor de tela. Padrão \"Período\"."
+      },
+      {
+        "nome": "tamanho",
+        "tipo": "BotaoProps['tamanho']",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "Newsletter": {
     "interface": "NewsletterProps",
     "arquivo": "src/components/Site/Newsletter.tsx",
@@ -8421,6 +8640,43 @@
       }
     ]
   },
+  "OpcaoContexto": {
+    "interface": "OpcaoContexto",
+    "arquivo": "src/components/SeletorContexto/SeletorContexto.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Linha miúda (ex.: \"Pessoal\", o CNPJ, a cidade da filial)."
+      },
+      {
+        "nome": "icone",
+        "tipo": "IconeProp",
+        "obrigatorio": false,
+        "descricao": "Ícone no quadrado; sem ele, as iniciais do nome."
+      },
+      {
+        "nome": "cor",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Cor do quadrado: `pri`, `ok`, `warn`, `err`, `info`, `graf-1` a `graf-6` ou qualquer cor CSS."
+      }
+    ]
+  },
   "OpcaoFiltroPilulas": {
     "interface": "OpcaoFiltroPilulas",
     "arquivo": "src/components/Site/FiltroPilulas.tsx",
@@ -8523,6 +8779,68 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": "Só o botão de OK (aviso)."
+      }
+    ]
+  },
+  "OpcoesMoeda": {
+    "interface": "OpcoesMoeda",
+    "arquivo": "src/utils/dinheiro.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "moeda",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Código ISO 4217. Padrão `BRL`."
+      },
+      {
+        "nome": "sinal",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`+ R$ 10,00` nos positivos (os negativos sempre levam `−`)."
+      },
+      {
+        "nome": "compacto",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`R$ 12,4 mil` · `R$ 1,2 mi` (deixe o valor cheio no `title`)."
+      },
+      {
+        "nome": "centavos",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Padrão `true`. `false` arredonda para reais inteiros."
+      },
+      {
+        "nome": "semSimbolo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Sem o símbolo: `1.234,56`."
+      }
+    ]
+  },
+  "OpcoesPercentual": {
+    "interface": "OpcoesPercentual",
+    "arquivo": "src/utils/dinheiro.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "casas",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Casas decimais. Padrão `1`."
+      },
+      {
+        "nome": "sinal",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`+12,5%` nos positivos."
+      },
+      {
+        "nome": "fracao",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`valor` já está em fração (`0.125` = 12,5%). Padrão: em pontos (`12.5`)."
       }
     ]
   },
@@ -8684,6 +9002,31 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "Periodo": {
+    "interface": "Periodo",
+    "arquivo": "src/utils/periodo.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "tipo",
+        "tipo": "'mes' | 'trimestre' | 'ano' | 'personalizado'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "de",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Primeiro dia, `AAAA-MM-DD`."
+      },
+      {
+        "nome": "ate",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Último dia (inclusive), `AAAA-MM-DD`."
       }
     ]
   },
@@ -9269,6 +9612,32 @@
       }
     ]
   },
+  "ProvedorValores": {
+    "interface": "ProvedorValoresProps",
+    "arquivo": "src/components/Valor/Valor.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "children",
+        "tipo": "ReactNode",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "ocultosInicial",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": "Começa com os valores escondidos. Padrão `false`."
+      },
+      {
+        "nome": "chave",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Chave no `localStorage` para lembrar a escolha entre visitas. Sem ela, vale só enquanto a página estiver aberta."
+      }
+    ]
+  },
   "QuadroArrastavel": {
     "interface": "QuadroArrastavelProps",
     "arquivo": "src/components/QuadroArrastavel/QuadroArrastavel.tsx",
@@ -9770,6 +10139,62 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": "Nome do segmento (leitor de tela e texto `dentro`)."
+      }
+    ]
+  },
+  "SeletorContexto": {
+    "interface": "SeletorContextoProps",
+    "arquivo": "src/components/SeletorContexto/SeletorContexto.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "opcoes",
+        "tipo": "OpcaoContexto[]",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "valor",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "`id` da opção atual."
+      },
+      {
+        "nome": "aoMudar",
+        "tipo": "(id: string) => void",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Trocar de espaço'",
+        "descricao": "Título do menu e nome acessível. Padrão \"Trocar de espaço\"."
+      },
+      {
+        "nome": "acoes",
+        "tipo": "ItemMenuSuspenso[]",
+        "obrigatorio": false,
+        "descricao": "Itens depois das opções (ex.: \"Gerenciar espaços\"), separados por um divisor."
+      },
+      {
+        "nome": "aoEscolherAcao",
+        "tipo": "(id: string) => void",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "compacto",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Só o quadrado, sem o nome (topo estreito). Padrão: some sozinho abaixo de 40rem."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
       }
     ]
   },
@@ -10653,6 +11078,97 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "Valor": {
+    "interface": "ValorProps",
+    "arquivo": "src/components/Valor/Valor.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "colorir",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Cor pelo sinal: verde no positivo, vermelho no negativo. Padrão: `true` com `tipo`, `false` sem ele."
+      },
+      {
+        "nome": "tipo",
+        "tipo": "'receita' | 'despesa' | 'neutro'",
+        "obrigatorio": false,
+        "descricao": "Força o sentido, para valores guardados sempre positivos: `receita` = entrada (+) · `despesa` = saída (−) · `neutro` = sem cor nem `+` (transferência)."
+      },
+      {
+        "nome": "oculto",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Força oculto/visível; sem ele, segue o `ProvedorValores`."
+      },
+      {
+        "nome": "tamanho",
+        "tipo": "'pequeno' | 'normal' | 'grande' | 'destaque'",
+        "obrigatorio": false,
+        "padrao": "'normal'",
+        "descricao": ""
+      },
+      {
+        "nome": "forte",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Texto forte."
+      },
+      {
+        "nome": "riscado",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Riscado (ex.: lançamento cancelado)."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "moeda",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Código ISO 4217. Padrão `BRL`.",
+        "de": "OpcoesMoeda"
+      },
+      {
+        "nome": "sinal",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`+ R$ 10,00` nos positivos (os negativos sempre levam `−`).",
+        "de": "OpcoesMoeda"
+      },
+      {
+        "nome": "compacto",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "`R$ 12,4 mil` · `R$ 1,2 mi` (deixe o valor cheio no `title`).",
+        "de": "OpcoesMoeda"
+      },
+      {
+        "nome": "centavos",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Padrão `true`. `false` arredonda para reais inteiros.",
+        "de": "OpcoesMoeda"
+      },
+      {
+        "nome": "semSimbolo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Sem o símbolo: `1.234,56`.",
+        "de": "OpcoesMoeda"
       }
     ]
   },

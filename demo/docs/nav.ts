@@ -61,7 +61,9 @@ export const CATEGORIAS: { rotulo: string; icone: string; itens: ComponenteDoc[]
       { slug: 'lista', rotulo: 'Lista', desc: 'Itens com ícone, marcação e links' },
       { slug: 'detalhes', rotulo: 'Detalhes', desc: 'Pares rótulo e valor' },
       { slug: 'indicador', rotulo: 'Indicador', desc: 'Número de painel com variação' },
-      { slug: 'graficos', rotulo: 'Gráficos', desc: 'Linha, barras, dispersão e mapa de calor' },
+      { slug: 'graficos', rotulo: 'Gráficos', desc: 'Linha, barras, rosca, dispersão e mapa de calor' },
+      { slug: 'valor', rotulo: 'Valor e dinheiro', desc: 'Moeda com sinal, cor e ocultar valores' },
+      { slug: 'navegador-periodo', rotulo: 'Navegador de período', desc: 'Mês a mês, atalhos e intervalo' },
       { slug: 'calendario', rotulo: 'Calendário', desc: 'Agenda em mês, semana, dia e lista' },
       { slug: 'status', rotulo: 'Status', desc: 'Situação de um registro' },
       { slug: 'badge', rotulo: 'Badge', desc: 'Etiqueta e contagem' },
@@ -94,6 +96,7 @@ export const CATEGORIAS: { rotulo: string; icone: string; itens: ComponenteDoc[]
     icone: 'layout-grid',
     itens: [
       { slug: 'estrutura', rotulo: 'Estrutura', desc: 'Sidebar, topo e conteúdo do sistema' },
+      { slug: 'seletor-contexto', rotulo: 'Seletor de contexto', desc: 'Pessoal × empresa, filial, escola' },
       { slug: 'cabecalho-pagina', rotulo: 'Cabeçalho de página', desc: 'Título, trilha e ações' },
       { slug: 'trilha', rotulo: 'Trilha', desc: 'Caminho de navegação' },
       { slug: 'abas', rotulo: 'Abas', desc: 'Painéis alternados' },

@@ -13,6 +13,8 @@ export * from './utils/constantes';
 export * from './utils/texto';
 export * from './utils/datas';
 export * from './utils/tempo';
+export * from './utils/dinheiro';
+export * from './utils/periodo';
 export * from './utils/entidade';
 export * from './utils/anexos';
 export * from './utils/jwt';
@@ -229,6 +231,17 @@ export { Status, type StatusProps } from './components/Status/Status';
 export { Chip, type ChipProps } from './components/Chip/Chip';
 export { Badge, ComBadge, type BadgeProps, type ComBadgeProps, type CorBadge } from './components/Badge/Badge';
 export { Avatar, type AvatarProps } from './components/Avatar/Avatar';
+export {
+  Valor,
+  ProvedorValores,
+  BotaoOcultarValores,
+  useValoresOcultos,
+  type ValorProps,
+  type ProvedorValoresProps,
+  type BotaoOcultarValoresProps,
+} from './components/Valor/Valor';
+export { NavegadorPeriodo, ATALHOS_PERIODO, type NavegadorPeriodoProps, type AtalhoPeriodo } from './components/NavegadorPeriodo/NavegadorPeriodo';
+export { SeletorContexto, type SeletorContextoProps, type OpcaoContexto } from './components/SeletorContexto/SeletorContexto';
 export { GrupoAvatares, type GrupoAvataresProps, type PessoaAvatar } from './components/Avatar/GrupoAvatares';
 export { Placa, type PlacaProps } from './components/Placa/Placa';
 export { Citacao, type CitacaoProps, type CorCitacao } from './components/Citacao/Citacao';
@@ -297,6 +310,7 @@ export { GraficoLinha, type GraficoLinhaProps } from './components/Grafico/Grafi
 export { GraficoBarras, type GraficoBarrasProps } from './components/Grafico/GraficoBarras';
 export { GraficoCombinado, type GraficoCombinadoProps } from './components/Grafico/GraficoCombinado';
 export { GraficoDispersao, type GraficoDispersaoProps } from './components/Grafico/GraficoDispersao';
+export { GraficoRosca, type GraficoRoscaProps } from './components/Grafico/GraficoRosca';
 export { MapaCalor, type MapaCalorProps, type CelulaMapaCalor } from './components/Grafico/MapaCalor';
 export { Minigrafico, type MinigraficoProps } from './components/Grafico/Minigrafico';
 export { regressaoLinear, type RegressaoLinear } from './components/Grafico/escalas';

@@ -126,8 +126,13 @@ export interface EstruturaProps {
   busca?: ReactNode | false;
   placeholderBusca?: string;
   aoBuscar?: (termo: string) => void;
-  /** Controles extras à direita da topbar. */
+  /** Controles extras à direita da topbar (somem no celular). */
   complementosTopbar?: ReactNode;
+  /**
+   * Seletor do contexto do sistema (ex.: `SeletorContexto` com Pessoal ×
+   * Empresa, ou a filial), à esquerda da topbar. Fica visível também no celular.
+   */
+  contexto?: ReactNode;
   children?: ReactNode;
 }
 
@@ -226,6 +231,7 @@ export function Estrutura({
   placeholderBusca = 'Buscar no sistema…',
   aoBuscar,
   complementosTopbar,
+  contexto,
   children,
 }: EstruturaProps) {
   const prefs = usePreferenciasOpcional();
@@ -750,6 +756,8 @@ export function Estrutura({
                 {marca.subtitulo && <span>{marca.subtitulo}</span>}
               </span>
             )}
+
+            {contexto && <div className="lp-tb-contexto">{contexto}</div>}
 
             {!movel && buscaPadrao}
 
