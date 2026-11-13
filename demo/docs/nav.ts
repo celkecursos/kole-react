@@ -62,6 +62,7 @@ export const CATEGORIAS: { rotulo: string; icone: string; itens: ComponenteDoc[]
       { slug: 'detalhes', rotulo: 'Detalhes', desc: 'Pares rótulo e valor' },
       { slug: 'indicador', rotulo: 'Indicador', desc: 'Número de painel com variação' },
       { slug: 'graficos', rotulo: 'Gráficos', desc: 'Linha, barras, dispersão e mapa de calor' },
+      { slug: 'calendario', rotulo: 'Calendário', desc: 'Agenda em mês, semana, dia e lista' },
       { slug: 'status', rotulo: 'Status', desc: 'Situação de um registro' },
       { slug: 'badge', rotulo: 'Badge', desc: 'Etiqueta e contagem' },
       { slug: 'chip', rotulo: 'Chip', desc: 'Filtro aplicado removível' },

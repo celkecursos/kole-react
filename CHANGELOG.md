@@ -4,6 +4,28 @@
 
 Novidades:
 
+- `Calendario`: visões mês, semana, dia e lista; eventos com cor pelos tokens,
+  "+N mais" por dia, faixa de horários com eventos lado a lado quando se
+  sobrepõem e linha do "agora"; `aoMudarPeriodo`, `aoClicarDia`,
+  `aoClicarEvento` e `aoClicarHorario`; semana começando no domingo ou na
+  segunda e navegação pelo teclado em todas as visões (na semana e no dia, um
+  cursor de 30 minutos). Demo: página Calendário.
+- `Calendario.aoAlterarEvento`: arrastar o evento para outro dia ou horário (de
+  15 em 15 minutos) e esticar a duração pela borda de baixo do bloco; no toque,
+  segurar antes de arrastar; pelo teclado, Alt+setas e Alt+Shift+↑↓. Campos novos
+  em `EventoCalendario`: `fixo`, `repete` e `serie`. Prop `data` leva o
+  calendário até um dia.
+- `MiniCalendario`: mês pequeno para a coluna lateral, com dia escolhido, dias
+  marcados e faixa destacada (a semana visível).
+- `Calendario.aoSelecionarHorario`: na semana e no dia, arrastar sobre horários
+  vazios escolhe um intervalo (de 15 em 15 minutos); clique e Enter escolhem a
+  meia hora, e Shift+↑↓ no cursor aumentam o intervalo. `Calendario.rascunho`:
+  evento provisório tracejado (ex.: enquanto o formulário de novo evento está
+  aberto). Demo e documentação: cadastro e edição de evento em diálogo, com o
+  campo "Repete".
+- `repetirEvento(base, regra, periodo)`: ocorrências de uma série diária,
+  semanal, mensal ou anual no período, com `intervalo`, `ate`, `vezes` e
+  `excecoes`.
 - Demo: seção Documentação com Instalação, Tema e tokens, Tailwind,
   Carregamento (qual loading usar em cada situação), Changelog e 60 páginas de
   componente em seis categorias (exemplos ao vivo, código e tabela de props
@@ -12,6 +34,11 @@ Novidades:
   `package.json`), no lugar do `v0.1.0` fixo.
 - CI: actions atualizadas para versões em Node 24 (`checkout@v6`,
   `upload-artifact@v6`, `setup-node@v6`); a publicação passa a usar o Node 26 (LTS).
+
+Correções:
+
+- `Dialogo` (e o `Form` em modal): ao fechar, o foco volta a quem abriu também
+  quando um campo do diálogo tem `autoFocus`; antes, ficava perdido na página.
 
 ## 0.5.0
 

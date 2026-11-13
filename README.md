@@ -146,6 +146,7 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
 | Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
 | Site público | `EstruturaSite`, `RodapeSite`, `SecaoSite`, `DestaqueSite`, `CabecalhoSecao`, `CampoPesquisa`, `CardConteudo`, `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`, `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`, `SumarioPagina`, `Newsletter` |
+| Calendário | `Calendario` (visões mês, semana, dia e lista, com arrastar), `MiniCalendario`, `repetirEvento` |
 | Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
 
 ### Conversa (chat)
@@ -324,6 +325,143 @@ Tokens próprios do site: `--site-largura`, `--r-site`, `--r-site-2`,
 sobre o marinho (`--site-escuro-*`). A cor de ação é o `--pri` de sempre: para a cor
 da marca do cliente, redefina `--pri`, `--pri-ink`, `--pri-bg` e `--pri-bd` (veja
 "Tema e tokens").
+
+### Calendário
+
+`Calendario` mostra eventos na visão **mês** (grade de 6 semanas, hoje em
+destaque, até `maxPorDia` eventos por dia e "+N mais", que abre a lista do dia),
+nas visões **semana** e **dia** (faixa de horários de `horaInicio` a `horaFim`,
+eventos posicionados pela hora, os que se sobrepõem lado a lado, faixa de dia
+inteiro no topo e a linha vermelha do "agora") e na visão **lista** (eventos
+agrupados por dia, a melhor no celular). O app guarda
+e busca os eventos: o componente avisa o período visível em `aoMudarPeriodo` e os
+cliques em `aoClicarDia` (ex.: criar evento) e `aoClicarEvento`.
+
+```tsx
+import { Calendario, type EventoCalendario } from '@celke/kole-react';
+
+const eventos: EventoCalendario[] = [
+  { id: 1, titulo: 'Reunião de vendas', inicio: new Date(2026, 10, 9, 8, 30), fim: new Date(2026, 10, 9, 9, 30), cor: 'pri', categoria: 'Reunião' },
+  { id: 2, titulo: 'Promoção de Pix', inicio: new Date(2026, 10, 12), fim: new Date(2026, 10, 18), diaInteiro: true, cor: 'graf-2' },
+];
+
+<Calendario
+  eventos={eventos}
+  inicioSemana={1} // 0 = domingo (padrão), 1 = segunda
+  aoMudarPeriodo={({ inicio, fim }) => {
+    /* buscar os eventos de [inicio, fim) */
+  }}
+  aoClicarDia={(dia) => {
+    /* abrir o formulário de novo evento */
+  }}
+  aoClicarEvento={(evento) => {
+    /* abrir o evento */
+  }}
+  horaInicio={7} // semana e dia: faixa de horários (padrão 7h às 21h)
+  horaFim={21}
+  aoClicarHorario={(dataHora) => {
+    /* semana e dia: clique num horário vazio, arredondado para a meia hora */
+  }}
+/>;
+```
+
+Cores do evento pelos tokens: `pri`, `ok`, `warn`, `err`, `info`, `destaque` e
+`graf-1` a `graf-6`. Teclado na visão mês: setas andam pelos dias, Home/End vão
+ao começo e ao fim da semana, Page Up/Down trocam de mês e Enter equivale ao
+clique no dia. Na semana e no dia, um cursor de 30 minutos: ↑/↓ mudam o horário,
+←/→ o dia (passando para a semana ou o dia vizinho), Home/End vão ao primeiro e
+ao último horário e Enter chama `aoClicarHorario` (sem ele, abre o evento daquele
+horário). O leitor de tela ouve o dia, a hora e os eventos do horário. `visoes` escolhe quais visões aparecem na barra (padrão: as quatro).
+
+#### Arrastar e esticar
+
+Com `aoAlterarEvento`, o evento é arrastado para outro dia (mês e faixa de dia
+inteiro) ou horário (semana e dia, de 15 em 15 minutos), e a borda de baixo do
+bloco estica a duração. No toque, segure o evento antes de arrastar; Esc cancela.
+Pelo teclado, Alt+setas movem (←/→ um dia; ↑/↓ uma semana no mês ou 15 minutos na
+semana e no dia) e Alt+Shift+↑/↓ esticam. O calendário só avisa: o app grava e
+devolve a lista nova em `eventos`. `fixo: true` trava um evento.
+
+```tsx
+<Calendario
+  eventos={eventos}
+  aoAlterarEvento={(evento, { inicio, fim, tipo }) => {
+    // tipo: 'mover' (mesma duração) ou 'esticar' (só o fim mudou)
+    setEventos((l) => l.map((e) => (e.id === evento.id ? { ...e, inicio, fim } : e)));
+  }}
+/>
+```
+
+#### Cadastrar: intervalo e rascunho
+
+Na semana e no dia, `aoSelecionarHorario` recebe `{ inicio, fim }`: arrastar sobre
+horários vazios escolhe o intervalo (de 15 em 15 minutos) e um clique escolhe a
+meia hora. No cursor do teclado, Shift+↑/↓ aumentam o intervalo e Enter
+confirma. Com ele, o clique na faixa de horários não chama o `aoClicarHorario`.
+Abra o formulário do app e passe os dados em `rascunho`: o evento aparece
+tracejado, em qualquer visão, enquanto o formulário está aberto.
+
+```tsx
+const [novo, setNovo] = useState<{ inicio: Date; fim: Date; titulo: string } | null>(null);
+
+<Calendario
+  eventos={eventos}
+  aoSelecionarHorario={({ inicio, fim }) => setNovo({ inicio, fim, titulo: '' })}
+  rascunho={novo} // { inicio, fim?, titulo?, cor?, diaInteiro? }
+/>;
+```
+
+O formulário fica no app (cada sistema tem seus campos). A documentação da demo
+traz um pronto para copiar, com título, categoria, dia inteiro, data, horários,
+"Repete" e excluir só um dia ou a série toda.
+
+#### Eventos que se repetem
+
+A série fica no app (o evento base e a regra), e `repetirEvento` calcula as
+ocorrências do período visível. Cada ocorrência ganha `id` `"<id>@aaaa-mm-dd"`,
+`repete: true` (ícone de repetição) e `serie` com o id da base. Mensal no dia 31
+pula os meses sem esse dia.
+
+```tsx
+import { repetirEvento, type PeriodoCalendario } from '@celke/kole-react';
+
+const [periodo, setPeriodo] = useState<PeriodoCalendario | null>(null);
+const ocorrencias = periodo
+  ? repetirEvento(
+      { id: 'vendas', titulo: 'Reunião de vendas', inicio: new Date(2026, 10, 2, 9), fim: new Date(2026, 10, 2, 10) },
+      { frequencia: 'semanal', diasSemana: [1, 4], ate: new Date(2026, 11, 31), excecoes: [new Date(2026, 10, 19)] },
+      periodo,
+    )
+  : [];
+
+<Calendario eventos={[...ocorrencias, ...avulsos]} aoMudarPeriodo={setPeriodo} />;
+```
+
+Regra: `frequencia` (`diaria`, `semanal`, `mensal`, `anual`), `intervalo` (a cada
+N), `diasSemana` (semanal, `0` = domingo), `ate`, `vezes` e `excecoes` (dias que a
+série pula). Para mudar só uma ocorrência arrastada, ponha o dia dela em
+`excecoes` e crie um evento avulso com o horário novo.
+
+#### MiniCalendario
+
+Mês pequeno para a coluna lateral: escolhe o dia, mostra bolinhas nos dias com
+evento e destaca a semana visível. Ligue o dia escolhido à prop `data` do
+`Calendario`, que leva a agenda até ele.
+
+```tsx
+<MiniCalendario
+  valor={dia}
+  aoEscolher={setDia}
+  marcados={diasComEvento} // Date[]
+  destaque={periodo} // { inicio, fim } com fim exclusivo, ex.: a semana do Calendario
+  aoMudarMes={(mes) => {
+    /* buscar os marcados do mês */
+  }}
+/>
+<Calendario eventos={eventos} data={dia} aoMudarPeriodo={setPeriodo} />
+```
+No celular, a semana mostra os eventos como faixas de cor; use dia ou lista para
+ler os títulos.
 
 ### Gráficos
 

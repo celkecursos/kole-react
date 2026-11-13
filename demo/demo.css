@@ -1387,3 +1387,16 @@
     top: 5.5rem;
   }
 }
+
+/* ---- página do calendário: minicalendário ao lado da agenda ---- */
+.demo-agenda {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  gap: var(--d-gap);
+  align-items: start;
+}
+@media (max-width: 62rem) {
+  .demo-agenda {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

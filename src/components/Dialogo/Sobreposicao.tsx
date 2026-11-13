@@ -1,4 +1,4 @@
-import { useEffect, useRef, type KeyboardEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { portal } from '../../utils/portal';
 
 const FOCAVEIS =
@@ -37,6 +37,9 @@ export function Sobreposicao({
   children,
 }: SobreposicaoProps) {
   const painel = useRef<HTMLDivElement>(null);
+  // quem tinha o foco ao abrir: lido na primeira renderização, antes que o `autoFocus`
+  // de um campo do diálogo leve o foco para dentro dele
+  const [anterior] = useState(() => (typeof document === 'undefined' ? null : (document.activeElement as HTMLElement | null)));
   const dispensar = useRef({ aoDispensar, dispensavel });
   dispensar.current = { aoDispensar, dispensavel };
 
@@ -58,7 +61,6 @@ export function Sobreposicao({
   }, []);
 
   useEffect(() => {
-    const anterior = document.activeElement as HTMLElement | null;
     abertos++;
     document.body.style.overflow = 'hidden';
     const el = painel.current;

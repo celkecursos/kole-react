@@ -1,0 +1,104 @@
+.lp-minical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 17.5rem;
+  font-family: var(--font-ui);
+  color: var(--ink);
+}
+.lp-minical-topo {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+.lp-minical-titulo {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-corpo);
+  font-weight: 700;
+}
+.lp-minical-grade {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+.lp-minical-linha {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.lp-minical-cab {
+  padding: 0.25rem 0;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  text-align: center;
+  color: var(--t4);
+}
+.lp-minical-dia {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 2.125rem;
+  cursor: pointer;
+  outline: none;
+}
+.density-compact .lp-minical-dia {
+  height: 1.875rem;
+}
+.lp-minical-num {
+  display: grid;
+  place-items: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+.density-compact .lp-minical-num {
+  width: 1.625rem;
+  height: 1.625rem;
+}
+.lp-minical-dia:hover .lp-minical-num {
+  background: var(--surf-2);
+}
+.lp-minical-dia:focus-visible .lp-minical-num {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-minical-dia.is-fora .lp-minical-num {
+  color: var(--t4);
+}
+.lp-minical-dia.is-hoje .lp-minical-num {
+  color: var(--pri);
+  font-weight: 800;
+}
+/* faixa (ex.: a semana visível no calendário grande) */
+.lp-minical-dia.is-faixa {
+  background: var(--pri-bg);
+}
+.lp-minical-dia.is-faixa-ini {
+  border-radius: var(--r-pill) 0 0 var(--r-pill);
+}
+.lp-minical-dia.is-faixa-fim {
+  border-radius: 0 var(--r-pill) var(--r-pill) 0;
+}
+.lp-minical-dia.is-faixa-ini.is-faixa-fim {
+  border-radius: var(--r-pill);
+}
+.lp-minical-dia.is-escolhido .lp-minical-num {
+  background: var(--pri);
+  color: var(--on-pri);
+  font-weight: 700;
+}
+/* bolinha dos dias com evento */
+.lp-minical-dia.is-marcado::after {
+  content: '';
+  position: absolute;
+  bottom: 0.125rem;
+  left: 50%;
+  width: 0.25rem;
+  height: 0.25rem;
+  margin-left: -0.125rem;
+  border-radius: var(--r-pill);
+  background: var(--acento);
+}
