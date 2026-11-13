@@ -22,7 +22,8 @@ test('en: paginação', async ({ page }) => {
   await preparar(page, '/docs/componentes/paginacao');
   const pag = page.locator('.lp-pag').first();
   await pag.scrollIntoViewIfNeeded();
-  await expect(pag).toHaveScreenshot('paginacao.png');
+  // o <select> nativo varia 1 px entre capturas (desenho do navegador, não texto da lib)
+  await expect(pag).toHaveScreenshot('paginacao.png', { mask: [pag.locator('select')] });
 });
 
 test('en: calendário', async ({ page }) => {
