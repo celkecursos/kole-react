@@ -144,7 +144,7 @@ Inertia. Para as telas Blade com o mesmo layout, veja o pacote Composer
 | Arquivos | `CampoAnexo`, `VisualizadorArquivo`, `DialogoArquivo`, `Foto` |
 | Dados | `Tabela`, `ListaCards`, `Paginacao`, `Indicador`/`Indicadores`, `Detalhes`, `Status`, `Chip`, `Avatar`, `Placa` |
 | Feedback | `Alerta`, `Dialogo` (central ou `lateral`), `useConfirmacao` (+ `.remover()`, `.avisar()`), `useToast`, `Vazio`, `Skeleton`, `Carregando` |
-| Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias` |
+| Conversa | `Conversa`, `Mensagem`, `CampoMensagem`, `Referencias`, `ListaConversas`, `InicioConversa`, `BlocoCodigo`, `ChatFlutuante` |
 | Site público | `EstruturaSite`, `RodapeSite`, `SecaoSite`, `DestaqueSite`, `CabecalhoSecao`, `CampoPesquisa`, `CardConteudo`, `CardRecurso`, `CardDepoimento`, `CardPlano`, `FaixaNumeros`, `FaixaChamada`, `ListaNumerada`, `FiltroPilulas`, `ConteudoArtigo`, `SumarioPagina`, `Newsletter` |
 | Calendário | `Calendario` (visões mês, semana, dia e lista, com arrastar), `MiniCalendario`, `repetirEvento` |
 | Gráficos | `GraficoLinha`, `GraficoBarras`, `GraficoCombinado`, `GraficoDispersao`, `MapaCalor`, `Minigrafico` (e `tendencia` no `Indicador`), `regressaoLinear` |
@@ -219,6 +219,76 @@ export function Chat({ mensagens, gerando, enviar, parar }: ChatProps) {
     </div>
   );
 }
+```
+
+#### Assistente de IA
+
+A demo tem a página modelo **Assistente** (Advanced UI): histórico ao lado,
+tela inicial com sugestões, anexos, ferramentas, seletor de modo e respostas com
+tabela e código. As peças:
+
+- `ListaConversas`: histórico agrupado por data (Fixadas, Hoje, Ontem, Últimos 7
+  dias, Últimos 30 dias e os meses), busca sem acento, renomear no próprio item
+  (Enter salva, Esc cancela), fixar e excluir. Ocupa a altura do pai.
+- `InicioConversa`: saudação e sugestões, no `vazio` da `Conversa`. Em painel
+  estreito, `aparencia="pilulas"`.
+- `CampoMensagem` com `anexos` (chips com `progresso` e `erro`), `aoRemoverAnexo`
+  e `aoAdicionarArquivos` (arrastar para o campo ou colar). Com anexos, dá para
+  enviar sem texto; enquanto um anexo sobe, o Enviar espera.
+- `BlocoCodigo`: código com a linguagem e o botão de copiar. A `Mensagem` já
+  estiliza o Markdown renderizado pelo app (listas, tabelas, citações).
+
+```tsx
+import ReactMarkdown from 'react-markdown';
+import { BlocoCodigo, InicioConversa, ListaConversas, type AnexoMensagem } from '@celke/kole-react';
+
+<ListaConversas
+  itens={conversas} // { id, titulo, data, fixada? }
+  ativa={ativa}
+  aoEscolher={setAtiva}
+  aoNova={() => setAtiva(null)}
+  aoRenomear={(id, titulo) => api.renomear(id, titulo)}
+  aoExcluir={(id) => api.excluir(id)}
+/>;
+
+<Conversa
+  vazio={<InicioConversa titulo="Como posso ajudar?" sugestoes={[{ titulo: 'Resumir as vendas do mês', icone: 'chart-line' }]} aoEscolher={(s) => enviar(s.titulo)} />}
+  campo={<CampoMensagem valor={texto} aoMudar={setTexto} aoEnviar={enviar} anexos={anexos} aoRemoverAnexo={remover} aoAdicionarArquivos={subir} />}
+>
+  {mensagens.map((m) => (
+    <Mensagem key={m.id} autor={m.autor} estado={m.estado}>
+      <ReactMarkdown
+        components={{
+          code: ({ className, children }) =>
+            className ? <BlocoCodigo linguagem={className.replace('language-', '')} codigo={String(children).trimEnd()} /> : <code>{children}</code>,
+        }}
+      >
+        {m.texto}
+      </ReactMarkdown>
+    </Mensagem>
+  ))}
+</Conversa>;
+```
+
+A chamada à API (streaming), o histórico salvo, o envio dos anexos e o
+Markdown ficam com o app.
+
+#### Chat flutuante (site)
+
+`ChatFlutuante` é o atendimento de site: botão fixo no canto ("Fale com a
+gente", com `naoLidas`) que abre um painel com a conversa. Esc fecha e o foco
+volta ao botão; no celular, o painel ocupa a tela. As páginas modelo do site da
+demo já trazem um, com as perguntas frequentes como sugestões.
+
+```tsx
+<ChatFlutuante titulo="Fale com a gente" subtitulo="Respondemos em poucos minutos" naoLidas={1}>
+  <Conversa
+    vazio={<InicioConversa aparencia="pilulas" titulo="Olá! Como podemos ajudar?" sugestoes={faq} aoEscolher={(s) => enviar(s.titulo)} />}
+    campo={<CampoMensagem valor={texto} aoMudar={setTexto} aoEnviar={enviar} />}
+  >
+    {mensagens}
+  </Conversa>
+</ChatFlutuante>
 ```
 
 ### Site público

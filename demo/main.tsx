@@ -38,6 +38,7 @@ import { PaginaModais } from './paginas/avancado/Modais';
 import { PaginaAvaliacoes } from './paginas/avancado/Avaliacoes';
 import { PaginaWidgets } from './paginas/avancado/Widgets';
 import { PaginaConversas } from './paginas/avancado/Conversas';
+import { PaginaAssistente } from './paginas/avancado/Assistente';
 import { PaginaGraficos } from './paginas/avancado/Graficos';
 import { PaginaCalendario } from './paginas/avancado/CalendarioDemo';
 import { PaginaErro } from './paginas/Erro';
@@ -113,6 +114,7 @@ function App() {
   else if (rota === '/avancado/avaliacoes') pagina = <PaginaAvaliacoes />;
   else if (rota === '/avancado/widgets') pagina = <PaginaWidgets />;
   else if (rota === '/avancado/conversas') pagina = <PaginaConversas />;
+  else if (rota === '/avancado/assistente') pagina = <PaginaAssistente />;
   else if (rota === '/avancado/graficos') pagina = <PaginaGraficos />;
   else if (rota === '/avancado/calendario') pagina = <PaginaCalendario />;
   else if (rota === '/ui/trilha') pagina = <PaginaTrilhas modeloAtual={modeloTrilha} aoMudarModelo={mudarModeloTrilha} navegar={navegar} />;

@@ -117,6 +117,17 @@ import {
   X,
   ZoomIn,
   ZoomOut,
+  ThumbsUp,
+  ThumbsDown,
+  SquarePen,
+  Globe,
+  Wrench,
+  Sparkles,
+  Bot,
+  MessageCircle,
+  PanelLeft,
+  FileSearch,
+  Pin,
   type LucideIcon,
 } from 'lucide-react';
 import { cx } from './cx';
@@ -127,6 +138,17 @@ import { cx } from './cx';
  * ou passa o componente direto: `icone={<Rocket />}`.
  */
 const ICONES: Record<string, LucideIcon> = {
+  'thumbs-up': ThumbsUp,
+  'thumbs-down': ThumbsDown,
+  'square-pen': SquarePen,
+  'globe': Globe,
+  'wrench': Wrench,
+  'sparkles': Sparkles,
+  'bot': Bot,
+  'message-circle': MessageCircle,
+  'panel-left': PanelLeft,
+  'file-search': FileSearch,
+  'pin': Pin,
   'app-window': AppWindow,
   'arrow-down': ArrowDown,
   'arrow-down-wide-narrow': ArrowDownWideNarrow,

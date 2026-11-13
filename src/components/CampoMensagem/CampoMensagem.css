@@ -80,3 +80,120 @@
 .lp-campo-mensagem-contador + * {
   margin-inline-start: 0;
 }
+
+/* ---- anexos ---- */
+.lp-campo-mensagem {
+  position: relative;
+}
+.lp-campo-mensagem-anexos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0 0 0.25rem;
+  padding: 0;
+  list-style: none;
+  cursor: default;
+}
+.lp-campo-mensagem-anexo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 15rem;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.375rem 0.375rem 0.375rem 0.5rem;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-field);
+  background: var(--surf-2);
+}
+.lp-campo-mensagem-anexo.is-erro {
+  border-color: var(--err-solid);
+  background: var(--err-bg);
+}
+.lp-campo-mensagem-anexo-icone {
+  flex: none;
+  font-size: 1.125rem;
+  color: var(--pri);
+}
+.lp-campo-mensagem-anexo.is-erro .lp-campo-mensagem-anexo-icone {
+  color: var(--err-fg);
+}
+.lp-campo-mensagem-anexo-tx {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+.lp-campo-mensagem-anexo-nome {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--ink);
+}
+.lp-campo-mensagem-anexo-det {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-micro);
+  color: var(--t4);
+}
+.lp-campo-mensagem-anexo.is-erro .lp-campo-mensagem-anexo-det {
+  color: var(--err-fg);
+}
+.lp-campo-mensagem-anexo-barra {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.1875rem;
+  background: var(--surf-3);
+}
+.lp-campo-mensagem-anexo-barra > span {
+  display: block;
+  height: 100%;
+  background: var(--pri);
+  transition: width 0.2s ease;
+}
+.lp-campo-mensagem-anexo-remover {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--t3);
+  cursor: pointer;
+}
+.lp-campo-mensagem-anexo-remover:hover {
+  background: var(--surf-3);
+  color: var(--ink);
+}
+.lp-campo-mensagem-anexo-remover:focus-visible {
+  outline: 0.125rem solid var(--pri);
+}
+/* arquivo sendo arrastado por cima */
+.lp-campo-mensagem.is-soltando {
+  border-color: var(--pri);
+  border-style: dashed;
+}
+.lp-campo-mensagem-soltar {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--pri-bg) 92%, transparent);
+  color: var(--pri-ink);
+  font-size: var(--fs-corpo-2);
+  font-weight: 700;
+  pointer-events: none;
+}
