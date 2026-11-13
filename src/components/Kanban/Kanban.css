@@ -1,0 +1,199 @@
+.lp-kanban {
+  min-width: 0;
+}
+.lp-kanban--vazio {
+  padding: 2rem 1rem;
+  border: var(--hairline) dashed var(--border-2);
+  border-radius: var(--r-card);
+}
+
+/* ---- coluna ---- */
+.lp-kb-coluna {
+  gap: 0.625rem;
+  padding: 0.625rem;
+  border: var(--hairline) solid var(--border);
+  background: var(--surf-2);
+}
+.lp-kb-coluna--cor {
+  border-top: 0.1875rem solid var(--kb-cor);
+}
+.lp-kb-coluna .lp-quadro-itens {
+  gap: 0.5rem;
+  min-height: 4rem;
+}
+/* a cópia da coluna arrastada não tem o fundo da página atrás */
+.lp-quadro-coluna--fantasma.lp-kb-coluna {
+  background: var(--surf-2);
+}
+
+/* altura fixa: o quadro não passa da altura e cada coluna rola por dentro */
+.lp-kanban--altura .lp-quadro {
+  height: var(--kb-altura);
+}
+.lp-kanban--altura .lp-kb-coluna {
+  max-height: 100%;
+}
+.lp-kanban--altura .lp-kb-coluna:not(.is-recolhida) {
+  min-height: 0;
+}
+.lp-kanban--altura .lp-kb-coluna .lp-quadro-itens {
+  flex: 1 1 auto;
+  min-height: 3rem;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  /* folga para a sombra e o contorno de foco dos cartões */
+  padding: 0.1875rem;
+  margin: -0.1875rem;
+}
+
+/* ---- cabeçalho ---- */
+.lp-kb-cab {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2rem;
+  color: var(--t3);
+}
+.lp-kb-ponto {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--kb-cor, var(--t5));
+}
+.lp-kb-titulo {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--fs-corpo);
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-kb-contagem {
+  flex: none;
+  min-width: 1.5rem;
+  padding: 0.0625rem 0.4375rem;
+  border-radius: var(--r-pill);
+  background: var(--surf-3);
+  color: var(--t3);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.lp-kb-contagem[data-estado='cheia'] {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+.lp-kb-contagem[data-estado='acima'] {
+  background: var(--err-bg);
+  color: var(--err-fg);
+}
+.lp-kb-menu {
+  flex: none;
+  margin-right: -0.25rem;
+}
+.lp-kb-renomear {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* recolhida: faixa estreita com o título na vertical */
+.lp-kb-coluna.is-recolhida {
+  width: 3rem;
+  padding: 0.5rem 0.25rem;
+}
+.lp-kb-cab--recolhida {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.lp-kb-cab--recolhida .lp-kb-titulo {
+  writing-mode: vertical-rl;
+  max-height: 16rem;
+}
+.lp-kb-expandir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-field);
+  background: transparent;
+  color: var(--t3);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.lp-kb-expandir:hover:not(:disabled) {
+  background: var(--surf-3);
+  color: var(--ink);
+}
+.lp-kb-expandir:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+
+/* ---- adicionar cartão / coluna ---- */
+.lp-kb-adicionar,
+.lp-kb-nova-coluna:not(.lp-btn) {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 0;
+  border-radius: var(--r-field);
+  background: transparent;
+  color: var(--t3);
+  font: inherit;
+  font-size: var(--fs-corpo-2);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.lp-kb-adicionar:hover:not(:disabled),
+.lp-kb-nova-coluna:not(.lp-btn):hover {
+  background: var(--surf-3);
+  color: var(--ink);
+}
+.lp-kb-adicionar:focus-visible,
+.lp-kb-nova-coluna:not(.lp-btn):focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-kb-adicionar:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.lp-kb-fim {
+  padding: 0.625rem;
+  border: var(--hairline) dashed var(--border-2);
+  border-radius: var(--r-card);
+}
+.lp-kb-fim:has(.lp-kb-nova-coluna) {
+  padding: 0.25rem;
+}
+.lp-kanban--vazio .lp-kb-fim {
+  width: min(18rem, 100%);
+  text-align: left;
+}
+
+.lp-kb-novo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+textarea.lp-kb-novo-campo {
+  height: auto;
+  padding-block: 0.5rem;
+  resize: vertical;
+  line-height: 1.4;
+}
+.lp-kb-novo-acoes {
+  display: flex;
+  gap: 0.375rem;
+}

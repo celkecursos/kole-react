@@ -3436,6 +3436,122 @@
       }
     ]
   },
+  "CartaoKanban": {
+    "interface": "CartaoKanbanProps",
+    "arquivo": "src/components/Kanban/CartaoKanban.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Resumo em até duas linhas."
+      },
+      {
+        "nome": "capa",
+        "tipo": "string | ReactNode",
+        "obrigatorio": false,
+        "descricao": "Imagem do topo: URL ou um elemento pronto."
+      },
+      {
+        "nome": "etiquetas",
+        "tipo": "EtiquetaKanban[]",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "prioridade",
+        "tipo": "'baixa' | 'media' | 'alta' | 'critica'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "vencimento",
+        "tipo": "Date | string",
+        "obrigatorio": false,
+        "descricao": "Data de vencimento (`Date` ou `AAAA-MM-DD`)."
+      },
+      {
+        "nome": "concluido",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": "Concluído: o prazo fica verde, sem \"Atrasado\"."
+      },
+      {
+        "nome": "subtarefas",
+        "tipo": "ContagemSubtarefas",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "anexos",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "comentarios",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "responsaveis",
+        "tipo": "PessoaAvatar[]",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'neutro' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6'",
+        "obrigatorio": false,
+        "descricao": "Faixa colorida na borda esquerda."
+      },
+      {
+        "nome": "extra",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Espaço livre abaixo do título (ex.: valor e empresa de um negócio no CRM)."
+      },
+      {
+        "nome": "alca",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Botão de arrastar, recebido do `Kanban`/`QuadroArrastavel`."
+      },
+      {
+        "nome": "acoes",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Botões no canto superior (ex.: um `MenuSuspenso` de ações)."
+      },
+      {
+        "nome": "aoAbrir",
+        "tipo": "() => void",
+        "obrigatorio": false,
+        "descricao": "Clicar no cartão (ou Enter no título) abre o detalhe."
+      },
+      {
+        "nome": "agora",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Referência de \"hoje\" para o prazo (padrão: agora)."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "CelulaMapaCalor": {
     "interface": "CelulaMapaCalor",
     "arquivo": "src/components/Grafico/MapaCalor.tsx",
@@ -3736,6 +3852,58 @@
         "tipo": "T[]",
         "obrigatorio": true,
         "descricao": ""
+      },
+      {
+        "nome": "recolhida",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Recolhida: os itens somem e soltar nela põe o item no fim."
+      }
+    ]
+  },
+  "ColunaKanban": {
+    "interface": "ColunaKanban",
+    "arquivo": "src/components/Kanban/Kanban.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Nome da coluna (anunciado ao mover pelo teclado)."
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'neutro' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6'",
+        "obrigatorio": false,
+        "descricao": "Faixa no topo e ponto ao lado do título."
+      },
+      {
+        "nome": "limite",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Máximo de cartões (WIP): a coluna cheia não aceita mais nenhum e a contagem fica laranja."
+      },
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "",
+        "de": "ColunaArrastavel"
+      },
+      {
+        "nome": "itens",
+        "tipo": "T[]",
+        "obrigatorio": true,
+        "descricao": "",
+        "de": "ColunaArrastavel"
+      },
+      {
+        "nome": "recolhida",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Recolhida: os itens somem e soltar nela põe o item no fim.",
+        "de": "ColunaArrastavel"
       }
     ]
   },
@@ -3833,6 +4001,25 @@
         "tipo": "(opcoes: OpcoesAviso) => Promise<void>",
         "obrigatorio": true,
         "descricao": "Só ciência — \"alertar\" é `avisar({ severidade: 'err' })`."
+      }
+    ]
+  },
+  "ContagemSubtarefas": {
+    "interface": "ContagemSubtarefas",
+    "arquivo": "src/components/Kanban/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "feitas",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "total",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
       }
     ]
   },
@@ -4642,6 +4829,51 @@
       {
         "nome": "className",
         "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "Etiqueta": {
+    "interface": "EtiquetaProps",
+    "arquivo": "src/components/Kanban/Pecas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'neutro' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6'",
+        "obrigatorio": false,
+        "padrao": "'neutro'",
+        "descricao": "Cor do ponto e do fundo (padrão: `neutro`)."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "EtiquetaKanban": {
+    "interface": "EtiquetaKanban",
+    "arquivo": "src/components/Kanban/tipos.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'neutro' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6'",
         "obrigatorio": false,
         "descricao": ""
       }
@@ -5928,6 +6160,46 @@
       }
     ]
   },
+  "GrupoAvatares": {
+    "interface": "GrupoAvataresProps",
+    "arquivo": "src/components/Avatar/GrupoAvatares.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "pessoas",
+        "tipo": "PessoaAvatar[]",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "max",
+        "tipo": "number",
+        "obrigatorio": false,
+        "padrao": "3",
+        "descricao": "Quantos aparecem; o resto vira \"+N\" (padrão: 3)."
+      },
+      {
+        "nome": "tamanho",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'1.75rem'",
+        "descricao": "Tamanho CSS de cada avatar (padrão: `1.75rem`)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Responsáveis'",
+        "descricao": "Começo do nome acessível (padrão: \"Responsáveis\"), seguido dos nomes."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "GrupoBotoes": {
     "interface": "GrupoBotoesProps",
     "arquivo": "src/components/GrupoBotoes/GrupoBotoes.tsx",
@@ -6780,6 +7052,143 @@
       }
     ]
   },
+  "Kanban": {
+    "interface": "KanbanProps",
+    "arquivo": "src/components/Kanban/Kanban.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "colunas",
+        "tipo": "(ColunaKanban<T> & C)[]",
+        "obrigatorio": true,
+        "descricao": "Colunas com os cartões; campos a mais voltam em `aoMudar`."
+      },
+      {
+        "nome": "aoMudar",
+        "tipo": "(colunas: C[]) => void",
+        "obrigatorio": true,
+        "descricao": "As colunas na ordem nova (ao soltar um cartão ou uma coluna)."
+      },
+      {
+        "nome": "aoSoltar",
+        "tipo": "(evento: SoltarItem<T, C>) => void",
+        "obrigatorio": false,
+        "descricao": "De onde para onde o cartão foi: grave no servidor aqui."
+      },
+      {
+        "nome": "aoSoltarColuna",
+        "tipo": "(evento: SoltarColuna<C>) => void",
+        "obrigatorio": false,
+        "descricao": "Liga o arraste das colunas pela alça do cabeçalho e avisa a ordem nova."
+      },
+      {
+        "nome": "podeSoltar",
+        "tipo": "(item: T, para: PosicaoQuadro, de: PosicaoQuadro) => boolean",
+        "obrigatorio": false,
+        "descricao": "Regra extra de destino (o `limite` das colunas já é respeitado)."
+      },
+      {
+        "nome": "renderCartao",
+        "tipo": "(item: T, alca: ReactNode) => ReactNode",
+        "obrigatorio": true,
+        "descricao": "Desenha o cartão (em geral um `CartaoKanban`); ponha a `alca` nele."
+      },
+      {
+        "nome": "nomeItem",
+        "tipo": "(item: T) => string",
+        "obrigatorio": true,
+        "descricao": "Nome do cartão para leitor de tela."
+      },
+      {
+        "nome": "filtro",
+        "tipo": "(item: T) => boolean",
+        "obrigatorio": false,
+        "descricao": "Busca e filtros: os cartões com `false` somem, e o arraste dos outros continua valendo."
+      },
+      {
+        "nome": "aoAdicionarCartao",
+        "tipo": "(colunaId: string, titulo: string) => void",
+        "obrigatorio": false,
+        "descricao": "Mostra \"Adicionar cartão\" no pé de cada coluna; recebe o título digitado."
+      },
+      {
+        "nome": "aoAdicionarColuna",
+        "tipo": "(titulo: string) => void",
+        "obrigatorio": false,
+        "descricao": "Mostra \"Adicionar coluna\" no fim do quadro."
+      },
+      {
+        "nome": "aoRenomearColuna",
+        "tipo": "(colunaId: string, titulo: string) => void",
+        "obrigatorio": false,
+        "descricao": "Liga \"Renomear\" no menu da coluna (o título vira um campo)."
+      },
+      {
+        "nome": "aoRecolherColuna",
+        "tipo": "(colunaId: string, recolhida: boolean) => void",
+        "obrigatorio": false,
+        "descricao": "Liga \"Recolher\" no menu e o botão de expandir na coluna recolhida."
+      },
+      {
+        "nome": "aoExcluirColuna",
+        "tipo": "(colunaId: string) => void",
+        "obrigatorio": false,
+        "descricao": "Liga \"Excluir coluna\" no menu. Peça confirmação no app, se quiser (`useConfirmacao`)."
+      },
+      {
+        "nome": "acoesColuna",
+        "tipo": "(coluna: C) => ItemMenuSuspenso[]",
+        "obrigatorio": false,
+        "descricao": "Itens a mais no menu de cada coluna."
+      },
+      {
+        "nome": "aoEscolherAcaoColuna",
+        "tipo": "(acao: string, coluna: C) => void",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "larguraColuna",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'18rem'",
+        "descricao": "Largura de cada coluna (padrão: `18rem`)."
+      },
+      {
+        "nome": "altura",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Altura fixa do quadro (ex.: `calc(100dvh - 14rem)`): cada coluna rola por dentro."
+      },
+      {
+        "nome": "vazioTitulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Nenhuma coluna ainda'",
+        "descricao": ""
+      },
+      {
+        "nome": "vazioDescricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Adicione a primeira coluna para começar a organizar os cartões deste quadro.'",
+        "descricao": ""
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Quadro'",
+        "descricao": "Nome acessível do quadro (padrão: \"Quadro\")."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "LinkRodape": {
     "interface": "LinkRodape",
     "arquivo": "src/components/Site/EstruturaSite.tsx",
@@ -7077,6 +7486,100 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": "Nome da lista para leitor de tela."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "ListaTarefas": {
+    "interface": "ListaTarefasProps",
+    "arquivo": "src/components/ListaTarefas/ListaTarefas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "tarefas",
+        "tipo": "T[]",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "aoConcluir",
+        "tipo": "(tarefa: T, concluida: boolean) => void",
+        "obrigatorio": false,
+        "descricao": "Marcar ou desmarcar como concluída. Sem isto, o círculo não aparece."
+      },
+      {
+        "nome": "aoAbrir",
+        "tipo": "(tarefa: T) => void",
+        "obrigatorio": false,
+        "descricao": "Clicar na tarefa abre o detalhe (ex.: um `Dialogo` lateral)."
+      },
+      {
+        "nome": "aoReordenar",
+        "tipo": "(tarefas: T[], evento: ReordenarTarefa<T>) => void",
+        "obrigatorio": false,
+        "descricao": "Liga o arraste para reordenar; recebe a lista na ordem nova, ao soltar."
+      },
+      {
+        "nome": "selecionada",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Id da tarefa aberta no detalhe (fica destacada)."
+      },
+      {
+        "nome": "filtro",
+        "tipo": "(tarefa: T) => boolean",
+        "obrigatorio": false,
+        "descricao": "Visão e filtros: as tarefas com `false` somem, e a ordem das outras continua valendo ao arrastar."
+      },
+      {
+        "nome": "extra",
+        "tipo": "(tarefa: T) => ReactNode",
+        "obrigatorio": false,
+        "descricao": "Conteúdo a mais em cada linha, antes dos responsáveis."
+      },
+      {
+        "nome": "carregando",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": ""
+      },
+      {
+        "nome": "vazioTitulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Nenhuma tarefa encontrada'",
+        "descricao": ""
+      },
+      {
+        "nome": "vazioDescricao",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "vazioAcoes",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "agora",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Referência de \"hoje\" para os prazos (padrão: agora)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Tarefas'",
+        "descricao": "Nome acessível da lista (padrão: \"Tarefas\")."
       },
       {
         "nome": "className",
@@ -8209,6 +8712,25 @@
       }
     ]
   },
+  "PessoaAvatar": {
+    "interface": "PessoaAvatar",
+    "arquivo": "src/components/Avatar/GrupoAvatares.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "nome",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "foto",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "Picklist": {
     "interface": "PicklistProps",
     "arquivo": "src/components/Picklist/Picklist.tsx",
@@ -8419,6 +8941,56 @@
         "tipo": "boolean",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "PosicaoQuadro": {
+    "interface": "PosicaoQuadro",
+    "arquivo": "src/components/QuadroArrastavel/QuadroArrastavel.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "coluna",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "indice",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "Prazo": {
+    "interface": "Prazo",
+    "arquivo": "src/utils/tempo.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "situacao",
+        "tipo": "'atrasado' | 'hoje' | 'em-breve' | 'no-prazo'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "dias",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": "Dias de hoje até o vencimento (negativo = atrasado)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Curto, para o selo: \"Atrasado\", \"Hoje\", \"Amanhã\", \"13/11\"."
+      },
+      {
+        "nome": "descricao",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": "Por extenso, para dica e leitor de tela: \"Venceu há 2 dias (11/11/2026)\"."
       }
     ]
   },
@@ -8704,15 +9276,33 @@
     "props": [
       {
         "nome": "colunas",
-        "tipo": "ColunaArrastavel<T>[]",
+        "tipo": "(ColunaArrastavel<T> & C)[]",
         "obrigatorio": true,
-        "descricao": ""
+        "descricao": "Colunas com os itens; podem ter campos a mais (cor, limite…), que voltam em `aoMudar`."
       },
       {
         "nome": "aoMudar",
-        "tipo": "(colunas: ColunaArrastavel<T>[]) => void",
+        "tipo": "(colunas: C[]) => void",
         "obrigatorio": true,
-        "descricao": "Recebe as colunas já reordenadas."
+        "descricao": "Recebe as colunas na ordem nova, uma vez, ao soltar (durante o arraste o quadro mostra uma prévia)."
+      },
+      {
+        "nome": "aoSoltar",
+        "tipo": "(evento: SoltarItem<T, C>) => void",
+        "obrigatorio": false,
+        "descricao": "Avisa de onde para onde o item foi, ao soltar: é o que o servidor precisa para gravar."
+      },
+      {
+        "nome": "podeSoltar",
+        "tipo": "(item: T, para: PosicaoQuadro, de: PosicaoQuadro) => boolean",
+        "obrigatorio": false,
+        "descricao": "Regra de destino: `false` impede soltar o item ali (ex.: coluna cheia). `de` é o lugar onde o arraste começou."
+      },
+      {
+        "nome": "visivel",
+        "tipo": "(item: T) => boolean",
+        "obrigatorio": false,
+        "descricao": "Filtro: os itens com `false` ficam escondidos, mas continuam no lugar ao arrastar os outros."
       },
       {
         "nome": "renderItem",
@@ -8725,6 +9315,62 @@
         "tipo": "(item: T) => string",
         "obrigatorio": true,
         "descricao": "Nome de cada item para leitor de tela (ex.: o título do card)."
+      },
+      {
+        "nome": "layout",
+        "tipo": "'grade' | 'faixa'",
+        "obrigatorio": false,
+        "padrao": "'grade'",
+        "descricao": "`grade` (padrão) = as colunas dividem a largura e quebram linha · `faixa` = colunas de largura fixa lado a lado, com rolagem horizontal (kanban)."
+      },
+      {
+        "nome": "larguraColuna",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Na `faixa`, a largura de cada coluna; na `grade`, a largura mínima (padrão: 18rem e 16rem)."
+      },
+      {
+        "nome": "cabecalhoColuna",
+        "tipo": "(coluna: C, alca: ReactNode) => ReactNode",
+        "obrigatorio": false,
+        "descricao": "Topo de cada coluna. `alca` é o botão de arrastar a coluna (com `colunasArrastaveis`)."
+      },
+      {
+        "nome": "rodapeColuna",
+        "tipo": "(coluna: C) => ReactNode",
+        "obrigatorio": false,
+        "descricao": "Pé de cada coluna (ex.: \"Adicionar cartão\"). Some na coluna recolhida."
+      },
+      {
+        "nome": "colunasArrastaveis",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": "As colunas também se reordenam, pela alça do cabeçalho."
+      },
+      {
+        "nome": "aoSoltarColuna",
+        "tipo": "(evento: SoltarColuna<C>) => void",
+        "obrigatorio": false,
+        "descricao": "Avisa a coluna que mudou de lugar, ao soltar."
+      },
+      {
+        "nome": "fim",
+        "tipo": "ReactNode",
+        "obrigatorio": false,
+        "descricao": "Conteúdo depois da última coluna, na mesma fileira (ex.: \"Adicionar coluna\")."
+      },
+      {
+        "nome": "classeColuna",
+        "tipo": "(coluna: C) => string",
+        "obrigatorio": false,
+        "descricao": "Classe extra de cada coluna (vale também para a cópia que segue o ponteiro)."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Nome acessível do quadro."
       },
       {
         "nome": "className",
@@ -8961,6 +9607,31 @@
       }
     ]
   },
+  "ReordenarTarefa": {
+    "interface": "ReordenarTarefa",
+    "arquivo": "src/components/ListaTarefas/ListaTarefas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "tarefa",
+        "tipo": "T",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "de",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "para",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "RodapeSite": {
     "interface": "RodapeSiteProps",
     "arquivo": "src/components/Site/EstruturaSite.tsx",
@@ -9102,6 +9773,71 @@
       }
     ]
   },
+  "SeloPrazo": {
+    "interface": "SeloPrazoProps",
+    "arquivo": "src/components/Kanban/Pecas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "vencimento",
+        "tipo": "Date | string",
+        "obrigatorio": true,
+        "descricao": "Data de vencimento (`Date` ou `AAAA-MM-DD`)."
+      },
+      {
+        "nome": "concluido",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": "Concluído: mostra a data em verde, sem \"Atrasado\"."
+      },
+      {
+        "nome": "emBreve",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Dias antes do vencimento em que vira \"em breve\" (padrão: 2)."
+      },
+      {
+        "nome": "agora",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "padrao": "new Date()",
+        "descricao": "Referência de \"hoje\" (padrão: agora)."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "SeloPrioridade": {
+    "interface": "SeloPrioridadeProps",
+    "arquivo": "src/components/Kanban/Pecas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "prioridade",
+        "tipo": "'baixa' | 'media' | 'alta' | 'critica'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "compacto",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "padrao": "false",
+        "descricao": "Só a bandeira colorida (o nome fica para o leitor de tela e a dica)."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "SerieGrafico": {
     "interface": "SerieGrafico",
     "arquivo": "src/components/Grafico/tipos.ts",
@@ -9207,6 +9943,68 @@
         "tipo": "number",
         "obrigatorio": false,
         "descricao": "Tempo deste slide, em ms (sobrepõe o `intervalo` do carrossel)."
+      }
+    ]
+  },
+  "SoltarColuna": {
+    "interface": "SoltarColuna",
+    "arquivo": "src/components/QuadroArrastavel/QuadroArrastavel.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "coluna",
+        "tipo": "C",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "de",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "para",
+        "tipo": "number",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "colunas",
+        "tipo": "C[]",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
+  "SoltarItem": {
+    "interface": "SoltarItem",
+    "arquivo": "src/components/QuadroArrastavel/QuadroArrastavel.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "item",
+        "tipo": "T",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "de",
+        "tipo": "PosicaoQuadro",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "para",
+        "tipo": "PosicaoQuadro",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "colunas",
+        "tipo": "C[]",
+        "obrigatorio": true,
+        "descricao": "As colunas já com o item no lugar novo (as mesmas de `aoMudar`)."
       }
     ]
   },
@@ -9445,6 +10243,67 @@
       {
         "nome": "className",
         "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
+  "TarefaLista": {
+    "interface": "TarefaLista",
+    "arquivo": "src/components/ListaTarefas/ListaTarefas.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "id",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "concluida",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Marcada como feita (sem isto, vale `situacao === 'concluida'`)."
+      },
+      {
+        "nome": "situacao",
+        "tipo": "'aberta' | 'andamento' | 'bloqueada' | 'concluida'",
+        "obrigatorio": false,
+        "descricao": "Mostrada como selo quando é \"Em andamento\" ou \"Bloqueada\"."
+      },
+      {
+        "nome": "prioridade",
+        "tipo": "'baixa' | 'media' | 'alta' | 'critica'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "vencimento",
+        "tipo": "Date | string",
+        "obrigatorio": false,
+        "descricao": "Data de vencimento (`Date` ou `AAAA-MM-DD`)."
+      },
+      {
+        "nome": "etiquetas",
+        "tipo": "EtiquetaKanban[]",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "responsaveis",
+        "tipo": "PessoaAvatar[]",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "subtarefas",
+        "tipo": "ContagemSubtarefas",
         "obrigatorio": false,
         "descricao": ""
       }

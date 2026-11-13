@@ -1,0 +1,170 @@
+.lp-tarefas {
+  min-width: 0;
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surf-raised);
+  overflow: hidden;
+}
+.lp-tarefas--vazia {
+  padding: 2rem 1rem;
+}
+/* uma coluna só, linhas coladas: sem o vão e o tracejado do quadro */
+.lp-tarefas .lp-quadro {
+  display: block;
+}
+.lp-tarefas .lp-quadro-itens {
+  gap: 0;
+  min-height: 0;
+  outline: none !important;
+}
+.lp-tarefas .lp-quadro-item + .lp-quadro-item {
+  border-top: var(--hairline) solid var(--border);
+}
+.lp-tarefas .lp-quadro-item.is-vazio {
+  border-radius: 0;
+}
+
+.lp-tarefa {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--surf-raised);
+  color: var(--t2);
+}
+.lp-tarefas--arrastavel .lp-tarefa {
+  padding-left: 0.375rem;
+}
+.lp-tarefa--clicavel:hover {
+  background: var(--surf-2);
+}
+.lp-tarefa.is-selecionada {
+  background: var(--pri-bg);
+  box-shadow: inset 0.1875rem 0 0 var(--pri);
+}
+.lp-tarefa--esqueleto + .lp-tarefa--esqueleto {
+  border-top: var(--hairline) solid var(--border);
+}
+/* na cópia que segue o ponteiro: borda e cantos de card */
+.lp-quadro-fantasma > .lp-tarefa {
+  border: var(--hairline) solid var(--border);
+  border-radius: var(--r-card);
+}
+
+.lp-tarefa .lp-quadro-alca {
+  color: var(--t4);
+}
+
+.lp-tarefa-check {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--t4);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.lp-tarefa-check:hover {
+  color: var(--ok-solid);
+}
+.lp-tarefa-check:focus-visible {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: 0.0625rem;
+}
+.lp-tarefa.is-concluida .lp-tarefa-check {
+  color: var(--ok-solid);
+}
+
+.lp-tarefa-texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.lp-tarefa-titulo {
+  font-size: var(--fs-corpo);
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.lp-tarefa.is-concluida .lp-tarefa-titulo {
+  color: var(--t4);
+  text-decoration: line-through;
+}
+.lp-tarefa-abrir {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: inherit;
+  cursor: pointer;
+}
+/* a linha inteira abre o detalhe; o círculo e a alça ficam acima */
+.lp-tarefa-abrir::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.lp-tarefa-abrir:focus-visible {
+  outline: none;
+}
+.lp-tarefa:has(.lp-tarefa-abrir:focus-visible) {
+  outline: 0.125rem solid var(--pri);
+  outline-offset: -0.125rem;
+}
+.lp-tarefa .lp-quadro-alca {
+  position: relative;
+  z-index: 1;
+}
+
+.lp-tarefa-sob {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.375rem;
+}
+.lp-tarefa-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--t3);
+}
+
+.lp-tarefa-meta {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* tela estreita: prazo, prioridade e pessoas descem para baixo do título */
+@media (max-width: 40rem) {
+  .lp-tarefa {
+    flex-wrap: wrap;
+  }
+  .lp-tarefa-texto {
+    flex-basis: calc(100% - 4.5rem);
+  }
+  .lp-tarefa-meta {
+    flex-basis: 100%;
+    padding-left: 2.25rem;
+  }
+  .lp-tarefas--arrastavel .lp-tarefa-meta {
+    padding-left: 4.25rem;
+  }
+}

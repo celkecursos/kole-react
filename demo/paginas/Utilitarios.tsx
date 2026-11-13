@@ -28,6 +28,8 @@ import {
   numeroPorExtenso,
   parseDataBr,
   saudacaoPorHora,
+  situacaoPrazo,
+  tempoRelativo,
   severidadeCor,
   SEVERIDADES,
   tipoDeArquivo,
@@ -65,6 +67,11 @@ export function PaginaUtilitarios() {
   const [moeda, setMoeda] = useState<number | null>(1500.5);
   const [itens, setItens] = useState('Contato, Endereço, Documentos');
   const [data, setData] = useState('31/02/2026');
+  const [vencimento, setVencimento] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 2);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  });
   const [entidade, setEntidade] = useState('veículo');
   const [modo, setModo] = useState<Modo>('novo');
   const [nome, setNome] = useState('GABRIELLY RIBEIRO DA SILVA');
@@ -136,6 +143,20 @@ export function PaginaUtilitarios() {
         </div>
         <div className="demo-util">
           <Linha codigo={`parseDataBr('${data}')`}>{dataBr ? dataBr.toString() : 'null'}</Linha>
+        </div>
+      </Bloco>
+
+      <Bloco titulo="Tempo relativo e prazos" descricao="Datas AAAA-MM-DD valem no fuso local; o prazo vira 'em breve' 2 dias antes.">
+        <div className="demo-grade">
+          <CampoTexto rotulo="Vencimento" type="date" valor={vencimento} aoMudar={setVencimento} />
+        </div>
+        <div className="demo-util">
+          <Linha codigo="tempoRelativo(agora - 5 min)">{tempoRelativo(new Date(Date.now() - 5 * 60_000))}</Linha>
+          <Linha codigo="tempoRelativo(agora - 26 h)">{tempoRelativo(new Date(Date.now() - 26 * 3_600_000))}</Linha>
+          <Linha codigo="tempoRelativo(agora + 3 dias)">{tempoRelativo(new Date(Date.now() + 3 * 86_400_000))}</Linha>
+          {vencimento && (
+            <Linha codigo={`situacaoPrazo('${vencimento}')`}>{JSON.stringify(situacaoPrazo(vencimento))}</Linha>
+          )}
         </div>
       </Bloco>
 

@@ -42,3 +42,25 @@
   background: var(--navy);
   color: var(--ink-on-solid);
 }
+
+/* ---- GrupoAvatares: sobrepostos, com "+N" ---- */
+.lp-av-grupo {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+.lp-av-grupo > .lp-av {
+  box-shadow: 0 0 0 0.125rem var(--surface);
+}
+.lp-av-grupo > .lp-av + .lp-av {
+  margin-left: calc(var(--av-size, 2rem) * -0.2);
+}
+/* iniciais menores: o vizinho cobre a borda direita de cada avatar */
+.lp-av-grupo .lp-av-ini {
+  font-size: calc(var(--av-size, 2rem) * 0.34);
+  letter-spacing: 0;
+  padding-right: calc(var(--av-size, 2rem) * 0.12);
+}
+.lp-av-grupo > .lp-av:last-child .lp-av-ini {
+  padding-right: 0;
+}

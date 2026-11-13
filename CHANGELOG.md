@@ -4,6 +4,38 @@
 
 Novidades:
 
+- `Kanban`: quadro com colunas (cor, contagem, `limite` de cartões, menu de
+  renomear, recolher e excluir, `acoesColuna`), cartões que se arrastam entre
+  colunas, "Adicionar cartão" na coluna, "Adicionar coluna", colunas
+  arrastáveis (`aoSoltarColuna`), `filtro` com contagem "2 de 5", `altura` fixa
+  com rolagem por coluna e tela vazia.
+- `CartaoKanban`: capa, etiquetas, título, descrição, prioridade, vencimento,
+  progresso das subtarefas, anexos, comentários, responsáveis e o espaço livre
+  `extra` (ex.: valor e empresa num funil de vendas); com `aoAbrir`, o cartão
+  inteiro abre o detalhe.
+- `ListaTarefas`: linhas com marcar como feita, situação, prioridade, prazo,
+  etiquetas, subtarefas e responsáveis; reordena arrastando (`aoReordenar`) e
+  faz visões com `filtro` sem perder a ordem das tarefas escondidas.
+- `SeloPrioridade`, `SeloPrazo` e `Etiqueta`, com `PRIORIDADES` e
+  `SITUACOES_TAREFA` para montar selects.
+- `GrupoAvatares`: avatares sobrepostos com "+N" e todos os nomes para o leitor
+  de tela.
+- `tempoRelativo` ("há 5 min", "ontem", "em 3 dias"), `situacaoPrazo`
+  (atrasado, hoje, em breve, no prazo), `diasEntre`, `dataCurta` e `paraData`
+  (`AAAA-MM-DD` no fuso local).
+- `QuadroArrastavel`: `aoSoltar` (item, de onde saiu e para onde foi, uma vez
+  ao soltar), `podeSoltar` (regra de destino; no teclado, as setas pulam as
+  colunas recusadas), `visivel` (esconde itens sem tirá-los do lugar),
+  `layout="faixa"` com `larguraColuna`, `cabecalhoColuna`, `rodapeColuna`,
+  `fim`, `classeColuna`, colunas arrastáveis (`colunasArrastaveis` e
+  `aoSoltarColuna`), colunas `recolhida`, rolagem automática perto das bordas e
+  Esc também no arraste com o mouse.
+- Ícones `flag`, `list-checks`, `list-todo` e `square-kanban`.
+- Demo: seção Aplicativos com a listagem de quadros (favoritos e todos, busca,
+  criar quadro), o quadro com filtros e detalhe do cartão em diálogo (inclusive
+  um funil de vendas) e a tela de Tarefas (visões, listas e etiquetas na lateral,
+  filtros de prazo e painel de detalhe). Documentação: páginas Kanban e Lista de
+  tarefas, exemplos novos no Quadro arrastável e no Avatar.
 - Assistente de IA: `ListaConversas` (histórico agrupado por data, com busca,
   renomear, fixar e excluir), `InicioConversa` (saudação e sugestões, em cartões
   ou pílulas), `BlocoCodigo` (código com a linguagem e o botão de copiar) e
@@ -51,6 +83,11 @@ Novidades:
 
 Correções:
 
+- `CabecalhoPagina`: sem espaço, as ações descem para a linha de baixo, em vez
+  de espremer o título (o título fica com pelo menos 12rem).
+- `QuadroArrastavel`: `aoMudar` passa a ser chamado uma vez, ao soltar (antes, a
+  cada troca de posição durante o arraste); a prévia do movimento fica no
+  próprio quadro.
 - `Dialogo` (e o `Form` em modal): ao fechar, o foco volta a quem abriu também
   quando um campo do diálogo tem `autoFocus`; antes, ficava perdido na página.
 
