@@ -1256,6 +1256,30 @@
         "descricao": "Hora da linha do \"agora\" (para testes). Padrão: a hora atual, atualizada a cada minuto."
       },
       {
+        "nome": "aoAlterarEvento",
+        "tipo": "(evento: EventoCalendario, mudanca: MudancaEvento) => void",
+        "obrigatorio": false,
+        "descricao": "Liga o arrastar: o evento vai para outro dia (mês) ou horário (semana e dia, de 15 em 15 minutos), e a borda de baixo do bloco estica a duração. No toque, segure o evento antes de arrastar. Pelo teclado: Alt+setas movem e Alt+Shift+↑↓ esticam. O app grava a mudança e devolve o evento novo em `eventos`; até lá o calendário mostra o evento onde estava."
+      },
+      {
+        "nome": "aoSelecionarHorario",
+        "tipo": "(intervalo: IntervaloHorario) => void",
+        "obrigatorio": false,
+        "descricao": "Semana e dia: arrastar sobre horários vazios escolhe um intervalo (de 15 em 15 minutos), e um clique escolhe a meia hora. Pelo teclado, Shift+↑↓ no cursor aumentam o intervalo e Enter confirma. Com ele, clique e Enter na faixa de horários chamam este, e não o `aoClicarHorario`."
+      },
+      {
+        "nome": "rascunho",
+        "tipo": "RascunhoCalendario | null",
+        "obrigatorio": false,
+        "descricao": "Evento provisório, tracejado, em qualquer visão (ex.: enquanto o formulário de novo evento está aberto)."
+      },
+      {
+        "nome": "data",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Dia mostrado. Mudar a prop leva o calendário até ele (ex.: o dia escolhido num `MiniCalendario`)."
+      },
+      {
         "nome": "className",
         "tipo": "string",
         "obrigatorio": false,
@@ -4480,6 +4504,24 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": "Texto miúdo na visão lista (ex.: \"Entrega\", \"Reunião\")."
+      },
+      {
+        "nome": "repete",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Mostra o ícone de repetição (o `repetirEvento` já marca)."
+      },
+      {
+        "nome": "serie",
+        "tipo": "string | number",
+        "obrigatorio": false,
+        "descricao": "Id do evento base de uma série (o `repetirEvento` preenche): o app sabe qual série mudar."
+      },
+      {
+        "nome": "fixo",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": "Com `aoAlterarEvento`, este evento não pode ser arrastado nem esticado."
       }
     ]
   },
@@ -5934,6 +5976,25 @@
       }
     ]
   },
+  "IntervaloHorario": {
+    "interface": "IntervaloHorario",
+    "arquivo": "src/components/Calendario/Calendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "inicio",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "fim",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": ""
+      }
+    ]
+  },
   "ItemAcordeao": {
     "interface": "ItemAcordeaoProps",
     "arquivo": "src/components/Acordeao/Acordeao.tsx",
@@ -7131,6 +7192,70 @@
       }
     ]
   },
+  "MiniCalendario": {
+    "interface": "MiniCalendarioProps",
+    "arquivo": "src/components/Calendario/MiniCalendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "valor",
+        "tipo": "Date | null",
+        "obrigatorio": false,
+        "descricao": "Dia escolhido (destacado)."
+      },
+      {
+        "nome": "aoEscolher",
+        "tipo": "(dia: Date) => void",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "marcados",
+        "tipo": "Date[]",
+        "obrigatorio": false,
+        "padrao": "[]",
+        "descricao": "Dias com bolinha (ex.: os que têm evento)."
+      },
+      {
+        "nome": "destaque",
+        "tipo": "{ inicio: Date; fim: Date } | null",
+        "obrigatorio": false,
+        "descricao": "Faixa destacada, com `fim` exclusivo (ex.: o `PeriodoCalendario` da semana visível no `Calendario`)."
+      },
+      {
+        "nome": "inicioSemana",
+        "tipo": "0 | 1",
+        "obrigatorio": false,
+        "padrao": "0",
+        "descricao": "Primeiro dia da semana: `0` = domingo (padrão), `1` = segunda."
+      },
+      {
+        "nome": "aoMudarMes",
+        "tipo": "(mes: Date) => void",
+        "obrigatorio": false,
+        "descricao": "O mês mostrado mudou (setas ou teclado): o app pode buscar os `marcados` dele."
+      },
+      {
+        "nome": "hoje",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "\"Hoje\" do calendário (para testes). Padrão: a data atual."
+      },
+      {
+        "nome": "rotulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "padrao": "'Escolher dia'",
+        "descricao": "Nome para leitor de tela. Padrão: \"Escolher dia\"."
+      },
+      {
+        "nome": "className",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "Minigrafico": {
     "interface": "MinigraficoProps",
     "arquivo": "src/components/Grafico/Minigrafico.tsx",
@@ -7178,6 +7303,31 @@
         "tipo": "'simples' | 'fundo'",
         "obrigatorio": false,
         "descricao": "`simples` (padrão) · `fundo` = faixa com fundo suave."
+      }
+    ]
+  },
+  "MudancaEvento": {
+    "interface": "MudancaEvento",
+    "arquivo": "src/components/Calendario/Calendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "inicio",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "fim",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "tipo",
+        "tipo": "'mover' | 'esticar'",
+        "obrigatorio": true,
+        "descricao": "`mover`: mudou de dia ou de horário, com a mesma duração; `esticar`: mudou só o fim."
       }
     ]
   },
@@ -8206,6 +8356,43 @@
       }
     ]
   },
+  "RascunhoCalendario": {
+    "interface": "RascunhoCalendario",
+    "arquivo": "src/components/Calendario/Calendario.tsx",
+    "externos": [],
+    "props": [
+      {
+        "nome": "inicio",
+        "tipo": "Date",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "fim",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "titulo",
+        "tipo": "string",
+        "obrigatorio": false,
+        "descricao": "Padrão: \"(sem título)\"."
+      },
+      {
+        "nome": "cor",
+        "tipo": "'pri' | 'ok' | 'warn' | 'err' | 'info' | 'destaque' | 'graf-1' | 'graf-2' | 'graf-3' | 'graf-4' | 'graf-5' | 'graf-6'",
+        "obrigatorio": false,
+        "descricao": ""
+      },
+      {
+        "nome": "diaInteiro",
+        "tipo": "boolean",
+        "obrigatorio": false,
+        "descricao": ""
+      }
+    ]
+  },
   "Recolhivel": {
     "interface": "RecolhivelProps",
     "arquivo": "src/components/Recolhivel/Recolhivel.tsx",
@@ -8313,6 +8500,49 @@
         "tipo": "string",
         "obrigatorio": false,
         "descricao": ""
+      }
+    ]
+  },
+  "RegraRepeticao": {
+    "interface": "RegraRepeticao",
+    "arquivo": "src/components/Calendario/repetirEvento.ts",
+    "externos": [],
+    "props": [
+      {
+        "nome": "frequencia",
+        "tipo": "'diaria' | 'semanal' | 'mensal' | 'anual'",
+        "obrigatorio": true,
+        "descricao": ""
+      },
+      {
+        "nome": "intervalo",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "A cada quantos dias, semanas, meses ou anos. Padrão: `1`."
+      },
+      {
+        "nome": "diasSemana",
+        "tipo": "number[]",
+        "obrigatorio": false,
+        "descricao": "Semanal: dias da semana (`0` = domingo … `6` = sábado). Padrão: o dia do `inicio`."
+      },
+      {
+        "nome": "ate",
+        "tipo": "Date",
+        "obrigatorio": false,
+        "descricao": "Último dia possível (inclusive)."
+      },
+      {
+        "nome": "vezes",
+        "tipo": "number",
+        "obrigatorio": false,
+        "descricao": "Número de ocorrências, contadas desde o início da série (as `excecoes` também contam)."
+      },
+      {
+        "nome": "excecoes",
+        "tipo": "Date[]",
+        "obrigatorio": false,
+        "descricao": "Dias que a série pula (ex.: a ocorrência foi apagada ou movida sozinha)."
       }
     ]
   },

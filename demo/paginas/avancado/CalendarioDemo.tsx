@@ -1,5 +1,20 @@
 import { useMemo, useState } from 'react';
-import { Botao, CabecalhoPagina, Calendario, Detalhes, Dialogo, useToast, type EventoCalendario, type PeriodoCalendario } from '../../../src';
+import {
+  Botao,
+  CabecalhoPagina,
+  Calendario,
+  Card,
+  Detalhes,
+  Dialogo,
+  MiniCalendario,
+  repetirEvento,
+  useToast,
+  type EventoCalendario,
+  type MudancaEvento,
+  type PeriodoCalendario,
+  type RegraRepeticao,
+} from '../../../src';
+import { DialogoEvento, useAgenda } from '../../docs/exemplos/calendario/Cadastro';
 import { Bloco } from '../Bloco';
 
 /*
@@ -46,6 +61,100 @@ function agendaDaSemana(hoje: Date): EventoCalendario[] {
     { id: 's11', titulo: 'Café com fornecedor', inicio: em(-2, 8), fim: em(-2, 9), cor: 'graf-6', categoria: 'Reunião' },
     { id: 's12', titulo: 'Entrega · Distribuidora Litoral', inicio: em(3, 7, 30), fim: em(3, 9), cor: 'ok', categoria: 'Entrega' },
   ];
+}
+
+/** Séries da agenda editável: o app guarda a regra e calcula as ocorrências do período visível. */
+function seriesDaAgenda(hoje: Date): { base: EventoCalendario; regra: RegraRepeticao }[] {
+  const em = (dias: number, h = 0, min = 0) => new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + dias, h, min);
+  return [
+    {
+      base: { id: 'abertura', titulo: 'Abertura do caixa', inicio: em(-30, 7, 30), fim: em(-30, 8), cor: 'destaque', categoria: 'Financeiro' },
+      regra: { frequencia: 'semanal', diasSemana: [1, 2, 3, 4, 5] },
+    },
+    {
+      base: { id: 'vendas', titulo: 'Reunião de vendas', inicio: em(-28, 9), fim: em(-28, 10), cor: 'pri', categoria: 'Reunião' },
+      regra: { frequencia: 'semanal', diasSemana: [hoje.getDay()] },
+    },
+    {
+      base: { id: 'aluguel', titulo: 'Aluguel da loja', inicio: new Date(hoje.getFullYear(), hoje.getMonth() - 2, 5), diaInteiro: true, cor: 'err', categoria: 'Financeiro' },
+      regra: { frequencia: 'mensal' },
+    },
+  ];
+}
+
+/** Eventos avulsos da agenda editável. */
+function avulsosDaAgenda(hoje: Date): EventoCalendario[] {
+  const em = (dias: number, h = 0, min = 0) => new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + dias, h, min);
+  return [
+    { id: 'a1', titulo: 'Visita · Loja Casa & Cia', inicio: em(0, 13), fim: em(0, 14, 30), cor: 'graf-4', categoria: 'Visita' },
+    { id: 'a2', titulo: 'Entrega · Mercado Bom Preço', inicio: em(1, 10), fim: em(1, 12), cor: 'ok', categoria: 'Entrega' },
+    { id: 'a3', titulo: 'Ligação · Clínica Bem-Estar', inicio: em(2, 15), fim: em(2, 15, 30), cor: 'info', categoria: 'Ligação' },
+    { id: 'a4', titulo: 'Feira do setor', inicio: em(-1), fim: em(0, 23, 59), diaInteiro: true, cor: 'graf-2', categoria: 'Marketing' },
+    { id: 'a5', titulo: 'Inventário', inicio: em(2, 8), fim: em(2, 11), cor: 'warn', categoria: 'Estoque', fixo: true },
+  ];
+}
+
+/**
+ * Agenda editável: arrastar e esticar mudam os eventos (numa série, só a ocorrência arrastada);
+ * clicar ou arrastar num horário vazio abre o cadastro, e clicar num evento abre a edição.
+ * O estado e o diálogo são os do exemplo "Cadastro" da documentação.
+ */
+function AgendaEditavel() {
+  const toast = useToast();
+  const hoje = useMemo(() => new Date(), []);
+  const agenda = useAgenda({ avulsos: avulsosDaAgenda(hoje), series: seriesDaAgenda(hoje).map((s) => ({ ...s, excecoes: [] })) });
+  const { avulsos, series, periodo, setAvulsos, setSeries } = agenda;
+  const [dia, setDia] = useState(hoje);
+  const [mesMini, setMesMini] = useState(hoje);
+
+  // bolinhas do minicalendário: dias com visita, entrega, ligação ou reunião no mês mostrado nele
+  const marcados = useMemo(() => {
+    const ini = new Date(mesMini.getFullYear(), mesMini.getMonth() - 1, 20);
+    const fim = new Date(mesMini.getFullYear(), mesMini.getMonth() + 1, 15);
+    const todos = [...series.flatMap((s) => repetirEvento(s.base, { ...s.regra, excecoes: s.excecoes }, { inicio: ini, fim })), ...avulsos];
+    return todos.filter((e) => e.categoria !== 'Financeiro').map((e) => e.inicio);
+  }, [avulsos, series, mesMini]);
+
+  // o dia escolhido acompanha o calendário grande (setas, Hoje, troca de visão)
+  const mudarPeriodo = (p: PeriodoCalendario) => {
+    agenda.setPeriodo(p);
+    const meio = new Date((p.inicio.getTime() + p.fim.getTime()) / 2);
+    const [ini, fim] = p.visao === 'mes' || p.visao === 'lista' ? [new Date(meio.getFullYear(), meio.getMonth(), 1), new Date(meio.getFullYear(), meio.getMonth() + 1, 1)] : [p.inicio, p.fim];
+    setDia((d) => (d >= ini && d < fim ? d : ini));
+  };
+
+  const alterar = (ev: EventoCalendario, m: MudancaEvento) => {
+    const novo = { inicio: m.inicio, fim: m.fim };
+    if (ev.serie != null) {
+      // ocorrência de uma série: a série pula esse dia e a ocorrência vira um evento avulso
+      setSeries((l) => l.map((s) => (s.base.id === ev.serie ? { ...s, excecoes: [...s.excecoes, ev.inicio] } : s)));
+      setAvulsos((l) => [...l, { ...ev, ...novo, id: `${ev.id}-avulso`, serie: undefined, repete: false }]);
+      toast.info('Só esta ocorrência', `"${ev.titulo}" mudou só neste dia; a série continua igual.`);
+      return;
+    }
+    setAvulsos((l) => l.map((e) => (e.id === ev.id ? { ...e, ...novo } : e)));
+  };
+
+  return (
+    <div className="demo-agenda">
+      <Card className="demo-agenda-lado">
+        <MiniCalendario valor={dia} aoEscolher={setDia} aoMudarMes={setMesMini} marcados={marcados} destaque={periodo?.visao === 'mes' ? null : periodo} />
+      </Card>
+      <Calendario
+        rotulo="Agenda editável"
+        eventos={agenda.eventos}
+        visaoInicial="semana"
+        data={dia}
+        aoMudarPeriodo={mudarPeriodo}
+        aoAlterarEvento={alterar}
+        aoSelecionarHorario={({ inicio, fim }) => agenda.novo(inicio, fim)}
+        aoClicarDia={(d) => agenda.novo(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 9))}
+        aoClicarEvento={agenda.abrir}
+        rascunho={agenda.rascunho}
+      />
+      <DialogoEvento {...agenda.dialogo} />
+    </div>
+  );
 }
 
 const DATA = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -104,6 +213,13 @@ export function PaginaCalendario() {
           aoClicarHorario={(d) => toast.info('Novo evento', `Criar evento em ${DATA.format(d)}, às ${HORA.format(d)}.`)}
           aoClicarEvento={setAberto}
         />
+      </Bloco>
+
+      <Bloco
+        titulo="Cadastrar, arrastar e repetir"
+        descricao="Clique num horário vazio, ou arraste sobre ele para escolher o intervalo, e cadastre o evento (com o campo Repete); clique num evento para editar ou excluir. Arraste um evento para outro dia ou horário, ou puxe a borda de baixo para mudar a duração (no toque, segure antes de arrastar; pelo teclado, Alt+setas e Alt+Shift+↑↓; no cursor de horário, Shift+↑↓ aumentam o intervalo e Enter abre o cadastro). O Inventário é fixo. O minicalendário escolhe o dia."
+      >
+        <AgendaEditavel />
       </Bloco>
 
       <Bloco titulo="Visão lista" descricao="Eventos do mês agrupados por dia: a visão boa para o celular.">

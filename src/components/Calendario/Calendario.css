@@ -478,7 +478,15 @@
   white-space: nowrap;
 }
 .lp-cal-bloco.is-curto .lp-cal-bloco-titulo {
+  flex: 0 1 auto;
   min-width: 0;
+}
+/* sem espaço, o horário cede antes do título */
+.lp-cal-bloco.is-curto .lp-cal-bloco-hora {
+  flex: 0 1000 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* bloco estreito (três ou mais lado a lado na semana): uma linha só, com reticências */
 .lp-cal-bloco.is-estreito .lp-cal-bloco-titulo,
@@ -555,4 +563,98 @@
 .lp-cal-cursor:focus-visible {
   box-shadow: inset 0 0 0 0.125rem var(--pri);
   background: color-mix(in srgb, var(--pri) 10%, transparent);
+}
+
+/* ---- evento que se repete ---- */
+.lp-cal-repete {
+  display: inline-flex;
+  flex: none;
+  margin-left: 0.25rem;
+  font-size: 0.75em;
+  vertical-align: -0.0625rem;
+  opacity: 0.8;
+}
+
+/* ---- arrastar e esticar ---- */
+.lp-cal-evento.is-movel,
+.lp-cal-bloco.is-movel {
+  cursor: grab;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.lp-cal.is-arrastando,
+.lp-cal.is-arrastando * {
+  cursor: grabbing;
+  user-select: none;
+}
+.lp-cal-evento.is-origem,
+.lp-cal-bloco.is-origem {
+  opacity: 0.4;
+}
+.lp-cal-dia.is-alvo,
+.lp-cal-horas-inteiro-cel.is-alvo {
+  background: color-mix(in srgb, var(--pri) 10%, transparent);
+  box-shadow: inset 0 0 0 0.125rem var(--pri-bd);
+}
+/* onde o evento fica se soltar agora */
+.lp-cal-bloco.is-fantasma {
+  left: 0.125rem;
+  width: calc(100% - 0.25rem);
+  z-index: 4;
+  border: 0.0625rem dashed var(--ev-cor);
+  border-left: 0.1875rem solid var(--ev-cor);
+  background: color-mix(in srgb, var(--ev-cor) 24%, var(--surface));
+  box-shadow: var(--overlay-shadow);
+  pointer-events: none;
+}
+/* alça de esticar: a borda de baixo do bloco */
+.lp-cal-bloco-alca {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.5rem;
+  cursor: ns-resize;
+  touch-action: none;
+}
+.lp-cal-bloco-alca::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0.125rem;
+  width: 1.25rem;
+  height: 0.1875rem;
+  margin-left: -0.625rem;
+  border-radius: var(--r-pill);
+  background: var(--ev-cor);
+  opacity: 0;
+}
+.lp-cal-bloco:hover .lp-cal-bloco-alca::after,
+.lp-cal-bloco:focus-visible .lp-cal-bloco-alca::after {
+  opacity: 0.7;
+}
+.lp-cal.is-arrastando .lp-cal-bloco-alca {
+  cursor: ns-resize;
+}
+
+/* ---- seleção de intervalo e rascunho ---- */
+.lp-cal-horas.is-selecionando,
+.lp-cal-horas.is-selecionando * {
+  cursor: ns-resize;
+  user-select: none;
+}
+.lp-cal-bloco.is-selecao {
+  --ev-cor: var(--pri);
+  font-weight: 700;
+}
+.lp-cal-bloco.is-rascunho {
+  z-index: 3;
+  box-shadow: none;
+}
+.lp-cal-evento.is-rascunho {
+  border: 0.0625rem dashed var(--ev-cor);
+  border-left: 0.1875rem solid var(--ev-cor);
+  background: color-mix(in srgb, var(--ev-cor) 18%, var(--surface));
+  color: var(--ink);
+  cursor: default;
 }
