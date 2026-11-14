@@ -1,8 +1,6 @@
 # Changelog
 
-## Não publicado
-
-Versão alvo: 0.6.0.
+## 0.6.0
 
 Novidades:
 
