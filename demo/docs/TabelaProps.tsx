@@ -1,12 +1,21 @@
 import { Alerta, Tabela } from '../../src';
 import { C } from './Codigo';
 import PROPS from './props.gerado.json';
+import PROPS_EN from './props.en.json';
+import PROPS_ES from './props.es.json';
 import { useT } from '../i18n/useT';
 import { rico } from '../i18n/rico';
 
 type Prop = { nome: string; tipo: string; obrigatorio: boolean; padrao?: string; descricao: string; de?: string };
 type Entrada = { interface: string; arquivo: string; externos: string[]; props: Prop[] };
 const TODAS = PROPS as Record<string, Entrada>;
+
+/**
+ * Descrições traduzidas (scripts/gerar-props.mjs confere): a chave é o texto
+ * pt-BR do JSDoc, então JSDoc alterado fica sem tradução e sai em pt-BR até
+ * alguém traduzir de novo.
+ */
+const TRADUCOES: Record<string, Record<string, string>> = { en: PROPS_EN, es: PROPS_ES };
 
 /** Descrição com `código` entre crases. */
 function Texto({ texto }: { texto: string }) {
@@ -32,7 +41,8 @@ function nativo(externo: string) {
  * que não sai da desestruturação (ex.: vem de um contexto).
  */
 export function TabelaProps({ componente, padroes = {} }: { componente: string; padroes?: Record<string, string> }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
+  const descricao = (pt: string) => TRADUCOES[idioma]?.[pt] ?? pt;
   const entrada = TODAS[componente];
   if (!entrada) return <Alerta severidade="err" mensagem={t('docs.comum.textos.semPropsGeradasPara', { componente })} />;
   if (!entrada.props.length)
@@ -66,7 +76,7 @@ export function TabelaProps({ componente, padroes = {} }: { componente: string; 
             rotulo: t('docs.comum.textos.descricao'),
             render: (p) => (
               <>
-                <Texto texto={p.descricao} />
+                <Texto texto={descricao(p.descricao)} />
                 {p.de && <span className="doc-props-de">{t('docs.comum.textos.deDe', { de: p.de })}</span>}
               </>
             ),

@@ -2,6 +2,10 @@ import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
 import './demo.css';
+// tokens e base direto, como o app importa o estilos.css: o `sideEffects` do package.json deixa o
+// bundler pular o src/index.ts (e os imports de CSS dele) no build da demo
+import '../src/styles/tokens.css';
+import '../src/styles/base.css';
 import { Estrutura, ProvedorUi, useToast } from '../src';
 import { PaginaCadastro } from './paginas/Cadastro';
 import { PaginaListagem } from './paginas/Listagem';

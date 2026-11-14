@@ -50,6 +50,12 @@ Novidades:
   `<strong>`/`<em>`/`<code>` na própria string). Ficam em português o código
   dos exemplos, o CHANGELOG, as respostas simuladas do assistente e os dados de
   exemplo das listas.
+- Documentação: as descrições das props (JSDoc) em inglês e espanhol, em
+  `demo/docs/props.en.json` e `props.es.json`, com o texto pt-BR do JSDoc como
+  chave. `npm run docs:conferir` falha se uma descrição ficar sem tradução ou
+  se sobrar tradução de texto que saiu do JSDoc (`npm run docs:props` limpa as
+  que sobram); sem tradução, a descrição aparece em pt-BR. A conferência deixa
+  de acusar o `props.gerado.json` como desatualizado só por fim de linha CRLF.
 - Teste visual: projeto `en` com as telas de texto da biblioteca (tabela vazia,
   paginação, calendário e o seletor aberto) e com a moldura traduzida da demo
   (documentação, formulário e cards); nas referências antigas, o seletor fica
@@ -169,6 +175,10 @@ Correções:
   próprio quadro.
 - `Dialogo` (e o `Form` em modal): ao fechar, o foco volta a quem abriu também
   quando um campo do diálogo tem `autoFocus`; antes, ficava perdido na página.
+- Demo estática (`npm run build:demo`): o CSS saía sem os tokens de cor, sem o
+  `base.css` e sem os seletores de tema, porque o `sideEffects` do pacote fazia
+  o bundler pular os imports de CSS do `src/index.ts`. A demo importa os dois
+  arquivos direto, e o build falha se o CSS sair sem os tokens.
 
 ## 0.5.0
 
