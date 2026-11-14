@@ -53,7 +53,7 @@ function fimDosMeses(ate: string, n: number): string[] {
 }
 
 export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -109,7 +109,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
   };
   const pagar = (l: Lancamento) => {
     acoes.marcarPago([l.id]);
-    toast.ok(l.tipo === 'receita' ? t('paginas.finVisaoGeral.textos.recebimentoRegistrado') : t('paginas.finVisaoGeral.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor)}`);
+    toast.ok(l.tipo === 'receita' ? t('paginas.finVisaoGeral.textos.recebimentoRegistrado') : t('paginas.finVisaoGeral.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor, { idioma })}`);
   };
 
   return (
@@ -133,7 +133,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
           icone={empresa ? 'chart-column' : 'piggy-bank'}
           cor={soma.saldo >= 0 ? 'var(--graf-3)' : 'var(--err-solid)'}
           valor={moeda(soma.saldo, { sinal: true })}
-          descricao={soma.receitas ? `${formatarPercentual(margem)} ${empresa ? 'de margem' : 'das receitas'}` : t('paginas.finVisaoGeral.textos.semReceitasNoPeriodo')}
+          descricao={soma.receitas ? `${formatarPercentual(margem, { idioma })} ${empresa ? 'de margem' : 'das receitas'}` : t('paginas.finVisaoGeral.textos.semReceitasNoPeriodo')}
         />
       </Indicadores>
 
@@ -255,7 +255,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
                     <Valor valor={gasto} />{t('paginas.finVisaoGeral.textos.de')}<Valor valor={limite} centavos={false} />
                   </small>
                 </div>
-                <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={parte > 1 ? 'err' : parte > 0.85 ? 'warn' : 'ok'} rotulo={t('paginas.finVisaoGeral.textos.nomeValorDoOrcamento', { nome: c.nome, valor: formatarPercentual(parte * 100, { casas: 0 }) })} />
+                <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={parte > 1 ? 'err' : parte > 0.85 ? 'warn' : 'ok'} rotulo={t('paginas.finVisaoGeral.textos.nomeValorDoOrcamento', { nome: c.nome, valor: formatarPercentual(parte * 100, { casas: 0 , idioma }) })} />
               </div>
             ))}
           </div>

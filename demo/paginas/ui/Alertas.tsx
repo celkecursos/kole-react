@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alerta, Avatar, Botao, CabecalhoPagina, type CorAlerta } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
 
 const CORES: { cor: CorAlerta; nome: string }[] = [
@@ -16,12 +16,12 @@ const CORES: { cor: CorAlerta; nome: string }[] = [
 
 const PRINCIPAIS = CORES.filter((c) => ['pri', 'destaque', 'warn', 'err'].includes(c.cor));
 
-const PESSOAS = [
-  { nome: 'Ana Pereira', cor: '#1f5fe0' },
-  { nome: 'Bruno Lima', cor: '#f7931e' },
-  { nome: 'Carla Dias', cor: '#15803d' },
-  { nome: 'Daniel Moreira', cor: '#b42318' },
-];
+const PESSOAS = (t: TradutorDemo['t']) => ([
+  { nome: t('paginas.alertas.textos.anaPereira'), cor: '#1f5fe0' },
+  { nome: t('paginas.alertas.textos.brunoLima'), cor: '#f7931e' },
+  { nome: t('paginas.alertas.textos.carlaDias'), cor: '#15803d' },
+  { nome: t('paginas.alertas.textos.danielMoreira'), cor: '#b42318' },
+]);
 
 export function PaginaAlertas() {
   const { t } = useT();
@@ -138,7 +138,7 @@ export function PaginaAlertas() {
         </Bloco>
 
         <Bloco titulo={t('paginas.alertas.secoes.comImagem')}>
-          {PESSOAS.map((p, i) => (
+          {PESSOAS(t).map((p, i) => (
             <Alerta
               key={p.nome}
               severidade={PRINCIPAIS[i].cor}
@@ -151,7 +151,7 @@ export function PaginaAlertas() {
         </Bloco>
 
         <Bloco titulo={t('paginas.alertas.secoes.comImagensDeTamanhos')}>
-          {PESSOAS.map((p, i) => (
+          {PESSOAS(t).map((p, i) => (
             <Alerta
               key={p.nome}
               severidade={PRINCIPAIS[i].cor}

@@ -39,18 +39,18 @@ import {
   type QuadroDemo,
 } from './dados';
 import './apps.css';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 const OPCOES_PRIORIDADE = (Object.keys(PRIORIDADES) as Prioridade[]).map((p) => ({ valor: p, rotulo: PRIORIDADES[p].rotulo }));
 const OPCOES_PESSOAS = PESSOAS.map((p) => ({ valor: p.id, rotulo: p.nome }));
 const OPCOES_ETIQUETAS = ETIQUETAS.map((e) => ({ valor: e.id, rotulo: e.rotulo }));
-const CORES_QUADRO: { valor: CorKanban; rotulo: string }[] = [
-  { valor: 'pri', rotulo: 'Azul' },
-  { valor: 'graf-3', rotulo: 'Verde' },
-  { valor: 'graf-2', rotulo: 'Laranja' },
-  { valor: 'graf-4', rotulo: 'Roxo' },
-  { valor: 'graf-5', rotulo: 'Rosa' },
-];
+const CORES_QUADRO = (t: TradutorDemo['t']): { valor: CorKanban; rotulo: string }[] => ([
+  { valor: 'pri', rotulo: t('paginas.kanban.textos.azul') },
+  { valor: 'graf-3', rotulo: t('paginas.kanban.textos.verde') },
+  { valor: 'graf-2', rotulo: t('paginas.kanban.textos.laranja') },
+  { valor: 'graf-4', rotulo: t('paginas.kanban.textos.roxo') },
+  { valor: 'graf-5', rotulo: t('paginas.kanban.textos.rosa') },
+]);
 
 const contarCartoes = (q: QuadroDemo) => q.colunas.reduce((n, c) => n + c.itens.length, 0);
 const concluidos = (q: QuadroDemo) => q.colunas.find((c) => c.id === q.colunaConcluida)?.itens.length ?? 0;
@@ -104,7 +104,7 @@ function ListaQuadros({
   alternarFavorito: (id: string) => void;
   criar: (q: QuadroDemo) => void;
 }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const [busca, setBusca] = useState('');
   const [criando, setCriando] = useState(false);
   const termo = normalizar(busca);
@@ -137,7 +137,7 @@ function ListaQuadros({
         rodape={
           <div className="demo-quadro-rodape">
             <GrupoAvatares pessoas={pessoas(q.membros)} rotulo={t('paginas.kanban.textos.membros')} />
-            <small>{t('paginas.kanban.textos.atualizado')}{tempoRelativo(q.atualizado)}</small>
+            <small>{t('paginas.kanban.textos.atualizado')}{tempoRelativo(q.atualizado, undefined, idioma)}</small>
           </div>
         }
       >
@@ -243,7 +243,7 @@ function DialogoNovoQuadro({ aberto, aoFechar, aoCriar }: { aberto: boolean; aoF
       <div className="demo-apps-form">
         <CampoTexto rotulo={t('paginas.kanban.textos.nome')} obrigatorio valor={nome} aoMudar={(v) => (setNome(v), setErro(''))} erro={erro} autoFocus />
         <CampoTextarea rotulo={t('paginas.kanban.textos.descricao')} valor={descricao} aoMudar={setDescricao} rows={2} />
-        <CampoSelect rotulo={t('paginas.kanban.textos.cor')} opcoes={CORES_QUADRO} valor={cor} aoMudar={(v) => v && setCor(v)} />
+        <CampoSelect rotulo={t('paginas.kanban.textos.cor')} opcoes={CORES_QUADRO(t)} valor={cor} aoMudar={(v) => v && setCor(v)} />
         <Escolha
           rotulo={t('paginas.kanban.textos.colunas')}
           opcoes={[
@@ -463,7 +463,7 @@ function DialogoCartao({
   aoSalvar: (c: CartaoDemo, colunaId: string) => void;
   aoExcluir: (c: CartaoDemo) => void;
 }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const [c, setC] = useState<CartaoDemo>(
     () => cartao ?? { id: novoId('c'), titulo: '', etiquetas: [], responsaveis: [], subtarefas: [], comentarios: [] },
   );
@@ -555,7 +555,7 @@ function DialogoCartao({
                 <li key={i}>
                   <GrupoAvatares pessoas={[pessoa(m.autor)]} tamanho="1.75rem" rotulo={t('paginas.kanban.textos.autor')} />
                   <div>
-                    <strong>{pessoa(m.autor).nome}</strong> <small>{tempoRelativo(m.quando)}</small>
+                    <strong>{pessoa(m.autor).nome}</strong> <small>{tempoRelativo(m.quando, undefined, idioma)}</small>
                     <p>{m.texto}</p>
                   </div>
                 </li>

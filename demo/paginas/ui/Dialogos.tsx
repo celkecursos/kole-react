@@ -16,14 +16,14 @@ import {
   type TamanhoDialogo,
 } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const TAMANHOS_DIALOGO: { valor: TamanhoDialogo; rotulo: string; largura: string }[] = [
-  { valor: 'pequeno', rotulo: 'Pequeno', largura: '28rem (448px)' },
-  { valor: 'medio', rotulo: 'Médio', largura: '42rem (672px)' },
-  { valor: 'grande', rotulo: 'Grande', largura: '60rem (960px)' },
-  { valor: 'full', rotulo: 'Tela cheia', largura: '96% da tela × 90% de altura' },
-];
+const TAMANHOS_DIALOGO = (t: TradutorDemo['t']): { valor: TamanhoDialogo; rotulo: string; largura: string }[] => ([
+  { valor: 'pequeno', rotulo: t('paginas.dialogos.textos.pequeno'), largura: '28rem (448px)' },
+  { valor: 'medio', rotulo: t('paginas.dialogos.textos.medio'), largura: '42rem (672px)' },
+  { valor: 'grande', rotulo: t('paginas.dialogos.textos.grande'), largura: '60rem (960px)' },
+  { valor: 'full', rotulo: t('paginas.dialogos.textos.telaCheia'), largura: '96% da tela × 90% de altura' },
+]);
 
 export function PaginaDialogos() {
   const { t: tx } = useT();
@@ -35,7 +35,7 @@ export function PaginaDialogos() {
   const [dlgTamanho, setDlgTamanho] = useState<TamanhoDialogo | null>(null);
   const [dlgTom, setDlgTom] = useState<'claro' | 'escuro'>('claro');
   const [dlgDispensavel, setDlgDispensavel] = useState(true);
-  const dlgAtual = TAMANHOS_DIALOGO.find((t) => t.valor === dlgTamanho);
+  const dlgAtual = TAMANHOS_DIALOGO(t).find((t) => t.valor === dlgTamanho);
 
   return (
     <div className="demo-pilha">
@@ -55,7 +55,7 @@ export function PaginaDialogos() {
           <CampoMarcacao aparencia="chave" rotulo={t('paginas.dialogos.textos.fecharComEscOu')} valor={dlgDispensavel} aoMudar={setDlgDispensavel} />
         </div>
         <div className="demo-linha">
-          {TAMANHOS_DIALOGO.map((t) => (
+          {TAMANHOS_DIALOGO(t).map((t) => (
             <Botao key={t.valor} rotulo={t.rotulo} icone="app-window" severidade="secundario" onClick={() => setDlgTamanho(t.valor)} />
           ))}
         </div>

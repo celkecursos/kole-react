@@ -24,7 +24,8 @@ import {
   useToast,
   type ItemMenuForm,
 } from '../../src';
-import { useT } from '../i18n/useT';
+import type { ChaveTexto } from '../i18n/tipos';
+import { useT, type TradutorDemo } from '../i18n/useT';
 
 const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -36,15 +37,21 @@ const FORMULARIOS = [
 ] as const;
 
 type IdFormulario = (typeof FORMULARIOS)[number]['id'];
+/** O rótulo de cada formulário vem do dicionário (a lista acima guarda o id e a rota). */
+const ROTULO_FORMULARIO: Record<IdFormulario, ChaveTexto> = {
+  cliente: 'paginas.novoPedido.textos.clienteEEntrega',
+  itens: 'paginas.novoPedido.textos.itensEValores',
+  pagamento: 'paginas.novoPedido.textos.pagamentoEPrazos',
+};
 
-const PRODUTOS = [
-  { valor: 'arroz', rotulo: 'Arroz tipo 1 — 5 kg', preco: 27.9 },
-  { valor: 'feijao', rotulo: 'Feijão carioca — 1 kg', preco: 8.49 },
-  { valor: 'cafe', rotulo: 'Café torrado — 500 g', preco: 18.9 },
-  { valor: 'detergente', rotulo: 'Detergente neutro — 500 ml', preco: 2.79 },
-  { valor: 'papel', rotulo: 'Papel A4 — resma 500 fls', preco: 32.5 },
-  { valor: 'caneta', rotulo: 'Caneta esferográfica — cx 50', preco: 44.0 },
-];
+const PRODUTOS = (t: TradutorDemo['t']) => ([
+  { valor: 'arroz', rotulo: t('paginas.novoPedido.textos.arrozTipo15'), preco: 27.9 },
+  { valor: 'feijao', rotulo: t('paginas.novoPedido.textos.feijaoCarioca1Kg'), preco: 8.49 },
+  { valor: 'cafe', rotulo: t('paginas.novoPedido.textos.cafeTorrado500G'), preco: 18.9 },
+  { valor: 'detergente', rotulo: t('paginas.novoPedido.textos.detergenteNeutro500Ml'), preco: 2.79 },
+  { valor: 'papel', rotulo: t('paginas.novoPedido.textos.papelA4Resma500'), preco: 32.5 },
+  { valor: 'caneta', rotulo: t('paginas.novoPedido.textos.canetaEsferograficaCx50'), preco: 44.0 },
+]);
 
 interface ItemPedido {
   id: number;
@@ -112,14 +119,14 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
 
   const menu: ItemMenuForm[] = FORMULARIOS.map((x) => ({
     id: x.id,
-    rotulo: x.rotulo,
+    rotulo: t(ROTULO_FORMULARIO[x.id]),
     icone: x.icone,
     href: `#${x.rota}`,
     pendencias: tentou ? pendenciasPorForm[x.id] : undefined,
   }));
 
   const adicionarItem = () => {
-    const p = PRODUTOS.find((x) => x.valor === f.produto);
+    const p = PRODUTOS(t).find((x) => x.valor === f.produto);
     if (!p || !f.quantidade) {
       toast.warn(t('paginas.novoPedido.textos.escolhaOProdutoE'));
       return;
@@ -137,7 +144,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
     setSalvando(true);
     setTimeout(() => {
       setSalvando(false);
-      toast.ok(t('paginas.novoPedido.textos.rotuloSalvo', { rotulo: FORMULARIOS.find((x) => x.id === atual)!.rotulo }), f.cliente || undefined);
+      toast.ok(t('paginas.novoPedido.textos.rotuloSalvo', { rotulo: t(ROTULO_FORMULARIO[atual]) }), f.cliente || undefined);
     }, 1000);
   };
 
@@ -147,7 +154,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
     <Form
       titulo={t('paginas.novoPedido.titulo')}
       icone="shopping-cart"
-      trilha={[{ rotulo: FORMULARIOS.find((x) => x.id === atual)!.rotulo }]}
+      trilha={[{ rotulo: t(ROTULO_FORMULARIO[atual]) }]}
       aoSalvar={salvar}
       aoCancelar={() => navegar('/pedidos')}
       salvando={salvando}
@@ -196,9 +203,9 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
               className="lp-col-2"
               rotulo={t('paginas.novoPedido.textos.produto')}
               comBusca
-              opcoes={PRODUTOS}
+              opcoes={PRODUTOS(t)}
               valor={f.produto}
-              aoMudar={(produto) => setF((x) => ({ ...x, produto, preco: PRODUTOS.find((p) => p.valor === produto)?.preco ?? null }))}
+              aoMudar={(produto) => setF((x) => ({ ...x, produto, preco: PRODUTOS(t).find((p) => p.valor === produto)?.preco ?? null }))}
             />
             <CampoInteiro rotulo={t('paginas.novoPedido.textos.quantidade')} valor={f.quantidade} aoMudar={mudar('quantidade')} />
             <CampoMoeda rotulo={t('paginas.novoPedido.textos.precoUnitario')} valor={f.preco} aoMudar={mudar('preco')} dica={t('paginas.novoPedido.textos.precoDeTabelaPode')} />

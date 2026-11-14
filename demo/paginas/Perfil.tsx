@@ -24,7 +24,8 @@ import {
   type ItemMenuForm,
 } from '../../src';
 import { retrato } from './Bloco';
-import { useT } from '../i18n/useT';
+import type { ChaveTexto } from '../i18n/tipos';
+import { useT, type TradutorDemo } from '../i18n/useT';
 
 export interface DadosPerfil {
   nome: string;
@@ -55,11 +56,11 @@ const PEDIDOS_RECENTES = [
   { numero: 'PED-2026-0054', cliente: 'Farmácia Vida Plena', total: 1239.9 },
   { numero: 'PED-2026-0049', cliente: 'Construtora Alicerce', total: 15320.0 },
 ];
-const ATIVIDADES = [
-  { icone: 'circle-check', texto: 'Confirmou o pagamento do PED-2026-0042', tempo: 'há 25 min' },
-  { icone: 'user-plus', texto: 'Cadastrou o cliente Papelaria Ponto Final', tempo: 'há 2 h' },
-  { icone: 'tag', texto: 'Aprovou desconto de 5% no PED-2026-0039', tempo: 'ontem' },
-];
+const ATIVIDADES = (t: TradutorDemo['t']) => ([
+  { icone: 'circle-check', texto: t('paginas.perfil.textos.confirmouOPagamentoDo'), tempo: t('paginas.perfil.textos.ha25Min') },
+  { icone: 'user-plus', texto: t('paginas.perfil.textos.cadastrouOClientePapelaria'), tempo: t('paginas.perfil.textos.ha2H') },
+  { icone: 'tag', texto: t('paginas.perfil.textos.aprovouDescontoDe5'), tempo: 'ontem' },
+]);
 
 // cada item do menu é um formulário próprio, com rota e Salvar independentes
 const FORMULARIOS = [
@@ -69,6 +70,12 @@ const FORMULARIOS = [
 ] as const;
 
 type IdFormulario = (typeof FORMULARIOS)[number]['id'];
+/** O rótulo de cada formulário vem do dicionário (a lista acima guarda o id e a rota). */
+const ROTULO_FORMULARIO: Record<IdFormulario, ChaveTexto> = {
+  editar: 'paginas.perfil.textos.editarPerfil',
+  senha: 'paginas.perfil.textos.editarSenha',
+  foto: 'paginas.perfil.textos.editarFoto',
+};
 
 interface PaginaPerfilProps {
   rota: string;
@@ -86,7 +93,7 @@ export function PaginaPerfil(props: PaginaPerfilProps) {
 /* ---------------- visualizar ---------------- */
 
 function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const atendidos = 1248;
   return (
     <div className="demo-pilha">
@@ -113,7 +120,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
               </div>
               <span className="demo-perfil-cargo">{perfil.cargo}</span>
               <div className="demo-perfil-stat">
-                <strong title={String(atendidos)}>{formatarNumero(atendidos)}</strong>
+                <strong title={String(atendidos)}>{formatarNumero(atendidos, { idioma })}</strong>
                 <span>{t('paginas.perfil.textos.pedidosAtendidos')}</span>
               </div>
             </div>
@@ -161,7 +168,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
                 <Icone icone="history" />
               </span>{t('paginas.perfil.textos.atividadesRecentes')}</div>
             <ul className="demo-perfil-lista">
-              {ATIVIDADES.map((a) => (
+              {ATIVIDADES(t).map((a) => (
                 <li key={a.texto}>
                   <Icone icone={a.icone} />
                   <span>
@@ -189,7 +196,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
   const [novaFoto, setNovaFoto] = useState<Anexo[]>([]);
   const [fotoVisivel, setFotoNoRanking] = useState(perfil.fotoVisivel ? 'sim' : 'nao');
 
-  const menu: ItemMenuForm[] = FORMULARIOS.map((f) => ({ id: f.id, rotulo: f.rotulo, icone: f.icone, href: `#${f.rota}` }));
+  const menu: ItemMenuForm[] = FORMULARIOS.map((f) => ({ id: f.id, rotulo: t(ROTULO_FORMULARIO[f.id]), icone: f.icone, href: `#${f.rota}` }));
 
   // pendências do formulário aberto (os campos mostram as mensagens sozinhos)
   const pendencias = {
@@ -224,7 +231,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
     <Form
       titulo={t('paginas.perfil.titulo')}
       icone="user"
-      trilha={[{ rotulo: FORMULARIOS.find((f) => f.id === atual)!.rotulo }]}
+      trilha={[{ rotulo: t(ROTULO_FORMULARIO[atual]) }]}
       menu={menu}
       menuTitulo={t('paginas.perfil.textos.configuracoes')}
       menuAtivo={atual}

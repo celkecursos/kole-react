@@ -83,6 +83,11 @@ export const paginasApps = {
       em1Semana: 'Em 1 semana',
       anexos: 'Anexos',
       naDemoSoA: 'Na demo, só a contagem.',
+      azul: 'Azul',
+      verde: 'Verde',
+      laranja: 'Laranja',
+      roxo: 'Roxo',
+      rosa: 'Rosa',
     },
   },
   tarefas: {

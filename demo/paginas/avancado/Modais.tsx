@@ -13,33 +13,32 @@ import {
   type DialogoProps,
 } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const PARAGRAFO =
-  'Este é um texto de exemplo para o diálogo. Ele existe só para ocupar espaço e mostrar como o conteúdo se comporta: quebra de linha, espaçamento e rolagem quando passa da altura da tela.';
+const PARAGRAFO = (t: TradutorDemo['t']) => (t('paginas.modais.textos.esteEUmTexto'));
 
-const ANIMACOES: Array<[AnimacaoDialogo, string]> = [
-  ['escala', 'Escala'],
-  ['deslizar-direita', 'Deslizar da direita'],
-  ['deslizar-baixo', 'Deslizar de baixo'],
-  ['jornal', 'Jornal'],
-  ['queda', 'Queda'],
-  ['girar-horizontal', 'Girar na horizontal'],
-  ['girar-vertical', 'Girar na vertical'],
-  ['super-escala', 'Super escala'],
-  ['placa', 'Placa'],
-  ['girar-baixo', 'Girar de baixo'],
-  ['girar-esquerda', 'Girar da esquerda'],
-];
+const ANIMACOES = (t: TradutorDemo['t']): Array<[AnimacaoDialogo, string]> => ([
+  ['escala', t('paginas.modais.textos.escala')],
+  ['deslizar-direita', t('paginas.modais.textos.deslizarDaDireita')],
+  ['deslizar-baixo', t('paginas.modais.textos.deslizarDeBaixo')],
+  ['jornal', t('paginas.modais.textos.jornal')],
+  ['queda', t('paginas.modais.textos.queda')],
+  ['girar-horizontal', t('paginas.modais.textos.girarNaHorizontal')],
+  ['girar-vertical', t('paginas.modais.textos.girarNaVertical')],
+  ['super-escala', t('paginas.modais.textos.superEscala')],
+  ['placa', t('paginas.modais.textos.placa')],
+  ['girar-baixo', t('paginas.modais.textos.girarDeBaixo')],
+  ['girar-esquerda', t('paginas.modais.textos.girarDaEsquerda')],
+]);
 
-const TELA_CHEIA: Array<[DialogoProps['telaCheiaAbaixo'] | 'sempre', string]> = [
-  ['sempre', 'Tela cheia'],
-  ['sm', 'Tela cheia abaixo de sm'],
-  ['md', 'Tela cheia abaixo de md'],
-  ['lg', 'Tela cheia abaixo de lg'],
-  ['xl', 'Tela cheia abaixo de xl'],
-  ['xxl', 'Tela cheia abaixo de xxl'],
-];
+const TELA_CHEIA = (t: TradutorDemo['t']): Array<[DialogoProps['telaCheiaAbaixo'] | 'sempre', string]> => ([
+  ['sempre', t('paginas.modais.textos.telaCheia')],
+  ['sm', t('paginas.modais.textos.telaCheiaAbaixoDe')],
+  ['md', t('paginas.modais.textos.telaCheiaAbaixoDe2')],
+  ['lg', t('paginas.modais.textos.telaCheiaAbaixoDe3')],
+  ['xl', t('paginas.modais.textos.telaCheiaAbaixoDe4')],
+  ['xxl', t('paginas.modais.textos.telaCheiaAbaixoDe5')],
+]);
 
 export function PaginaModais() {
   const { t } = useT();
@@ -62,7 +61,7 @@ export function PaginaModais() {
       />
     </>
   );
-  const texto = (n: number) => Array.from({ length: n }, (_, i) => <p key={i}>{PARAGRAFO}</p>);
+  const texto = (n: number) => Array.from({ length: n }, (_, i) => <p key={i}>{PARAGRAFO(t)}</p>);
   const props = (chave: string): Pick<DialogoProps, 'aberto' | 'aoFechar'> => ({ aberto: aberto === chave, aoFechar: fechar });
 
   return (
@@ -124,7 +123,7 @@ export function PaginaModais() {
 
       <Bloco titulo={t('paginas.modais.secoes.telaCheia')} descricao={t('paginas.modais.textos.sempreOuSoAbaixo')}>
         <div className="demo-linha">
-          {TELA_CHEIA.map(([chave, rotulo]) => (
+          {TELA_CHEIA(t).map(([chave, rotulo]) => (
             <Botao key={chave} rotulo={rotulo} formato="retangulo" onClick={abrir(`cheia-${chave}`)} />
           ))}
         </div>
@@ -150,7 +149,7 @@ export function PaginaModais() {
 
       <Bloco titulo={t('paginas.modais.secoes.efeitosDeEntrada')} descricao={<>animacao no Dialogo; desligados para quem prefere menos movimento.</>}>
         <div className="demo-modais-efeitos">
-          {ANIMACOES.map(([chave, rotulo]) => (
+          {ANIMACOES(t).map(([chave, rotulo]) => (
             <Botao key={chave} rotulo={rotulo} aparencia="contorno" formato="retangulo" bloco onClick={abrir(`anim-${chave}`)} />
           ))}
         </div>
@@ -177,7 +176,7 @@ export function PaginaModais() {
 
       {/* ---- os diálogos ---- */}
       <Dialogo {...props('basico')} titulo={t('paginas.modais.textos.tituloDoDialogo')} rodape={rodapePadrao}>
-        <p className="demo-modais-texto">{PARAGRAFO}</p>
+        <p className="demo-modais-texto">{PARAGRAFO(t)}</p>
       </Dialogo>
       <Dialogo {...props('estatico')} titulo={t('paginas.modais.textos.fundoEstatico')} dispensavel={false} rodape={rodapePadrao}>
         <p className="demo-modais-texto">{t('paginas.modais.textos.cliqueForaOuAperte')}</p>
@@ -235,15 +234,15 @@ export function PaginaModais() {
         <p className="demo-modais-texto">{t('paginas.modais.textos.escondaEsteDialogoE')}</p>
       </Dialogo>
       <Dialogo {...props('xg')} titulo={t('paginas.modais.textos.dialogoExtragrande')} tamanho="extragrande">
-        <p className="demo-modais-texto">{PARAGRAFO}</p>
+        <p className="demo-modais-texto">{PARAGRAFO(t)}</p>
       </Dialogo>
       <Dialogo {...props('g')} titulo={t('paginas.modais.textos.dialogoGrande')} tamanho="grande">
-        <p className="demo-modais-texto">{PARAGRAFO}</p>
+        <p className="demo-modais-texto">{PARAGRAFO(t)}</p>
       </Dialogo>
       <Dialogo {...props('p')} titulo={t('paginas.modais.textos.dialogoPequeno')} tamanho="pequeno">
-        <p className="demo-modais-texto">{PARAGRAFO}</p>
+        <p className="demo-modais-texto">{PARAGRAFO(t)}</p>
       </Dialogo>
-      {TELA_CHEIA.map(([chave, rotulo]) => (
+      {TELA_CHEIA(t).map(([chave, rotulo]) => (
         <Dialogo
           key={chave}
           {...props(`cheia-${chave}`)}
@@ -279,9 +278,9 @@ export function PaginaModais() {
           <CampoTextarea rotulo={t('paginas.modais.textos.mensagem')} />
         </div>
       </Dialogo>
-      {ANIMACOES.map(([chave, rotulo]) => (
+      {ANIMACOES(t).map(([chave, rotulo]) => (
         <Dialogo key={chave} {...props(`anim-${chave}`)} titulo={rotulo} animacao={chave} rodape={rodapePadrao}>
-          <p className="demo-modais-texto">{PARAGRAFO}</p>
+          <p className="demo-modais-texto">{PARAGRAFO(t)}</p>
         </Dialogo>
       ))}
     </div>

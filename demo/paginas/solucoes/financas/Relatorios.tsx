@@ -30,7 +30,7 @@ function mesesDoRelatorio(p: { tipo: string; de: string; ate: string }) {
 }
 
 export function Relatorios() {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, periodo, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -93,11 +93,11 @@ export function Relatorios() {
     });
   const todasAbertas = linhas.filter((l) => l.filhos).every((l) => abertos.has(l.id));
 
-  const celula = (l: Linha, v: number) => (l.tipo === 'percentual' ? formatarPercentual(v) : moeda(v, { centavos: false }));
+  const celula = (l: Linha, v: number) => (l.tipo === 'percentual' ? formatarPercentual(v, { idioma }) : moeda(v, { centavos: false }));
 
   const exportar = () => {
     const nomes = meses.map((m) => MES.format(paraData(m)));
-    const csv = (v: number, l: Linha) => (l.tipo === 'percentual' ? formatarPercentual(v) : formatarMoeda(v, { semSimbolo: true }));
+    const csv = (v: number, l: Linha) => (l.tipo === 'percentual' ? formatarPercentual(v, { idioma }) : formatarMoeda(v, { semSimbolo: true , idioma }));
     const planas = linhas.flatMap((l) => [l, ...(l.filhos ?? [])]);
     const conteudo = [
       ['Linha', ...nomes, 'Total'].join(';'),
@@ -138,7 +138,7 @@ export function Relatorios() {
           </td>
         ))}
         <td className={`fin-dre-total${t < 0 && l.tipo !== 'item' ? ' is-neg' : ''}`}>{celula(l, t)}</td>
-        <td className="fin-dre-av">{l.tipo === 'percentual' || !totalBase ? '' : formatarPercentual((t / totalBase) * 100)}</td>
+        <td className="fin-dre-av">{l.tipo === 'percentual' || !totalBase ? '' : formatarPercentual((t / totalBase) * 100, { idioma })}</td>
       </tr>
     );
   };

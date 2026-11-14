@@ -1,6 +1,6 @@
 import { Avatar, CabecalhoPagina, Figura, Foto, Imagem, Status, type Anexo } from '../../../src';
 import { Bloco, cena, retrato } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 const FOTOS: Anexo[] = [
   { nome: 'frente.svg', tamanho: 18_000, tipo: 'image/svg+xml', url: retrato('#0b1a36', 'AP') },
@@ -18,8 +18,7 @@ const IMG = {
   floresta: cena('#7cc4a0', '#14532d', '#fef3c7'),
 };
 
-const TEXTO =
-  'Texto de exemplo correndo em volta da imagem. A imagem flutua para o lado e o parágrafo ocupa o espaço que sobra, descendo por baixo dela quando acaba a altura.';
+const TEXTO = (t: TradutorDemo['t']) => (t('paginas.imagens.textos.textoDeExemploCorrendo'));
 
 export function PaginaImagens() {
   const { t } = useT();
@@ -49,7 +48,7 @@ export function PaginaImagens() {
         <Bloco titulo={t('paginas.imagens.secoes.alinhadaAEsquerda')}>
           <div className="demo-img-fluxo">
             <Imagem src={IMG.rosa} alt={t('paginas.imagens.textos.paisagemRosada')} cantos="arredondado" alinhamento="esquerda" proporcao="1 / 1" largura="8rem" />
-            <p>{TEXTO}</p>
+            <p>{TEXTO(t)}</p>
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.imagens.secoes.centralizada')}>
@@ -60,7 +59,7 @@ export function PaginaImagens() {
         <Bloco titulo={t('paginas.imagens.secoes.alinhadaADireita')}>
           <div className="demo-img-fluxo">
             <Imagem src={IMG.deserto} alt={t('paginas.imagens.textos.paisagemDeDeserto')} cantos="arredondado" alinhamento="direita" proporcao="1 / 1" largura="8rem" />
-            <p>{TEXTO}</p>
+            <p>{TEXTO(t)}</p>
           </div>
         </Bloco>
       </div>

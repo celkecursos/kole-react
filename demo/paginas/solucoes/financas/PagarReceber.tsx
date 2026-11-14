@@ -22,7 +22,7 @@ const naJanela = (j: Janela, dias: number) => {
 };
 
 export function PagarReceber() {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -55,7 +55,7 @@ export function PagarReceber() {
 
   const baixar = (l: Lancamento) => {
     acoes.marcarPago([l.id]);
-    toast.ok(l.tipo === 'receita' ? t('paginas.finPagarReceber.textos.recebimentoRegistrado') : t('paginas.finPagarReceber.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor)}`);
+    toast.ok(l.tipo === 'receita' ? t('paginas.finPagarReceber.textos.recebimentoRegistrado') : t('paginas.finPagarReceber.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor, { idioma })}`);
   };
 
   const totalPagar = soma(pendentes.filter((l) => !aReceber(l) && dias(l) <= 30));

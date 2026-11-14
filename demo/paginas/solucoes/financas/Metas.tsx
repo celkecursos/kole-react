@@ -24,25 +24,25 @@ import {
 import { dia, hoje, novoId, type Meta } from './dados';
 import { CabecalhoFinancas, dataBr, useMoeda } from './comum';
 import { acoes, useFinancas } from './estado';
-import { useT } from '../../../i18n/useT';
+import { useT, type TradutorDemo } from '../../../i18n/useT';
 
-const CORES: { valor: CorProgresso; rotulo: string }[] = [
-  { valor: 'ok', rotulo: 'Verde' },
-  { valor: 'info', rotulo: 'Azul' },
-  { valor: 'destaque', rotulo: 'Roxo' },
-  { valor: 'warn', rotulo: 'Laranja' },
-  { valor: 'pri', rotulo: 'Cor principal' },
-];
-const ICONES = [
-  { valor: 'piggy-bank', rotulo: 'Cofrinho' },
-  { valor: 'shield-check', rotulo: 'Proteção' },
-  { valor: 'plane', rotulo: 'Viagem' },
-  { valor: 'car', rotulo: 'Carro' },
-  { valor: 'house', rotulo: 'Casa' },
-  { valor: 'graduation-cap', rotulo: 'Estudos' },
-  { valor: 'camera', rotulo: 'Equipamento' },
-  { valor: 'target', rotulo: 'Alvo' },
-];
+const CORES = (t: TradutorDemo['t']): { valor: CorProgresso; rotulo: string }[] => ([
+  { valor: 'ok', rotulo: t('paginas.finMetas.textos.verde') },
+  { valor: 'info', rotulo: t('paginas.finMetas.textos.azul') },
+  { valor: 'destaque', rotulo: t('paginas.finMetas.textos.roxo') },
+  { valor: 'warn', rotulo: t('paginas.finMetas.textos.laranja') },
+  { valor: 'pri', rotulo: t('paginas.finMetas.textos.corPrincipal') },
+]);
+const ICONES = (t: TradutorDemo['t']) => ([
+  { valor: 'piggy-bank', rotulo: t('paginas.finMetas.textos.cofrinho') },
+  { valor: 'shield-check', rotulo: t('paginas.finMetas.textos.protecao') },
+  { valor: 'plane', rotulo: t('paginas.finMetas.textos.viagem') },
+  { valor: 'car', rotulo: t('paginas.finMetas.textos.carro') },
+  { valor: 'house', rotulo: t('paginas.finMetas.textos.casa') },
+  { valor: 'graduation-cap', rotulo: t('paginas.finMetas.textos.estudos') },
+  { valor: 'camera', rotulo: t('paginas.finMetas.textos.equipamento') },
+  { valor: 'target', rotulo: t('paginas.finMetas.textos.alvo') },
+]);
 
 /** Meses inteiros até o prazo (no mínimo 1). */
 const mesesAte = (prazo: string) => Math.max(1, Math.ceil(diasEntre(hoje(), prazo) / 30.44));
@@ -90,8 +90,8 @@ function DialogoMeta({ inicial, aoFechar }: { inicial: Meta; aoFechar: () => voi
         <CampoMoeda rotulo={t('paginas.finMetas.textos.quantoQuerJuntar')} obrigatorio valor={m.alvo || null} aoMudar={(v) => setM({ ...m, alvo: v ?? 0 })} erro={tentou ? erros.alvo : undefined} />
         <CampoMoeda rotulo={t('paginas.finMetas.textos.jaGuardado')} valor={m.guardado || null} aoMudar={(v) => setM({ ...m, guardado: v ?? 0 })} />
         <CampoData rotulo={t('paginas.finMetas.textos.ateQuando')} obrigatorio valor={m.prazo} aoMudar={(prazo) => setM({ ...m, prazo })} erro={tentou ? erros.prazo : undefined} />
-        <CampoSelect rotulo={t('paginas.finMetas.textos.icone')} opcoes={ICONES} valor={m.icone} aoMudar={(icone) => icone && setM({ ...m, icone })} />
-        <CampoSelect rotulo={t('paginas.finMetas.textos.cor')} opcoes={CORES} valor={m.cor as CorProgresso} aoMudar={(cor) => cor && setM({ ...m, cor })} />
+        <CampoSelect rotulo={t('paginas.finMetas.textos.icone')} opcoes={ICONES(t)} valor={m.icone} aoMudar={(icone) => icone && setM({ ...m, icone })} />
+        <CampoSelect rotulo={t('paginas.finMetas.textos.cor')} opcoes={CORES(t)} valor={m.cor as CorProgresso} aoMudar={(cor) => cor && setM({ ...m, cor })} />
         <button type="submit" hidden />
       </form>
     </Dialogo>
@@ -99,7 +99,7 @@ function DialogoMeta({ inicial, aoFechar }: { inicial: Meta; aoFechar: () => voi
 }
 
 function Guardar({ meta }: { meta: Meta }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const toast = useToast();
   const [valor, setValor] = useState<number | null>(null);
   return (
@@ -111,7 +111,7 @@ function Guardar({ meta }: { meta: Meta }) {
             e.preventDefault();
             if (!valor) return;
             acoes.salvarMeta({ ...meta, guardado: somarMoeda([meta.guardado, valor]) });
-            toast.ok(t('paginas.finMetas.textos.valorGuardado'), t('paginas.finMetas.textos.valorEmNome', { valor: formatarMoeda(valor), nome: meta.nome }));
+            toast.ok(t('paginas.finMetas.textos.valorGuardado'), t('paginas.finMetas.textos.valorEmNome', { valor: formatarMoeda(valor, { idioma }), nome: meta.nome }));
             setValor(null);
             fechar();
           }}
@@ -125,7 +125,7 @@ function Guardar({ meta }: { meta: Meta }) {
 }
 
 export function Metas() {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, metas } = useFinancas();
   const moeda = useMoeda();
   const confirmar = useConfirmacao();
@@ -148,7 +148,7 @@ export function Metas() {
       <CabecalhoFinancas titulo={t('paginas.finMetas.titulo')} icone="target" semPeriodo acoes={<Botao rotulo={t('paginas.finMetas.textos.novaMeta')} icone="plus" onClick={nova} />}>
         {lista.length > 0 && (
           <p className="fin-metas-resumo">
-            <Valor valor={guardado} forte />{t('paginas.finMetas.textos.guardadosDe')}<Valor valor={alvo} centavos={false} /> ({formatarPercentual(alvo ? (guardado / alvo) * 100 : 0, { casas: 0 })}{t('paginas.finMetas.textos.paraCumprirOsPrazos')}<strong>{moeda(porMes, { centavos: false })}{t('paginas.finMetas.textos.porMes')}</strong>.
+            <Valor valor={guardado} forte />{t('paginas.finMetas.textos.guardadosDe')}<Valor valor={alvo} centavos={false} /> ({formatarPercentual(alvo ? (guardado / alvo) * 100 : 0, { casas: 0 , idioma })}{t('paginas.finMetas.textos.paraCumprirOsPrazos')}<strong>{moeda(porMes, { centavos: false })}{t('paginas.finMetas.textos.porMes')}</strong>.
           </p>
         )}
       </CabecalhoFinancas>
@@ -200,12 +200,12 @@ export function Metas() {
                   <span>{t('paginas.finMetas.textos.de')}<Valor valor={m.alvo} centavos={false} />
                   </span>
                 </div>
-                <Progresso valor={parte * 100} cor={m.cor as CorProgresso} altura="md" mostrarValor="fim" rotulo={`${m.nome}: ${formatarPercentual(parte * 100, { casas: 0 })}`} />
+                <Progresso valor={parte * 100} cor={m.cor as CorProgresso} altura="md" mostrarValor="fim" rotulo={`${m.nome}: ${formatarPercentual(parte * 100, { casas: 0 , idioma })}`} />
                 <dl className="fin-meta-dados">
                   <div>
                     <dt>{t('paginas.finMetas.textos.prazo')}</dt>
                     <dd>
-                      {dataBr(m.prazo)} <small>({tempoRelativo(m.prazo, hoje())})</small>
+                      {dataBr(m.prazo)} <small>({tempoRelativo(m.prazo, hoje(), idioma)})</small>
                     </dd>
                   </div>
                   <div>

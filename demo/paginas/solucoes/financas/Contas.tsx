@@ -35,7 +35,7 @@ function CartaoCredito({ conta, titular }: { conta: Conta; titular: string }) {
 }
 
 export function Contas({ navegar }: { navegar: (r: string) => void }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -91,7 +91,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
                 </div>
               </div>
               <Valor valor={saldo} tamanho="destaque" colorir={saldo < 0} />
-              <small className="fin-conta-var">{formatarPercentual(mes, { sinal: true })}{t('paginas.finContas.textos.em30Dias')}</small>
+              <small className="fin-conta-var">{formatarPercentual(mes, { sinal: true , idioma })}{t('paginas.finContas.textos.em30Dias')}</small>
               <Minigrafico valores={serie} className="fin-conta-mini" />
               <div className="fin-conta-acoes">
                 <Botao rotulo={t('paginas.finContas.textos.extrato')} icone="list" tamanho="pequeno" aparencia="contorno" severidade="secundario" onClick={() => extrato(c)} />
@@ -125,7 +125,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
                   valor={Math.min(100, usado * 100)}
                   altura="sm"
                   cor={usado > 0.9 ? 'err' : usado > 0.7 ? 'warn' : 'pri'}
-                  rotulo={t('paginas.finContas.textos.limiteUsadoValor', { valor: formatarPercentual(usado * 100, { casas: 0 }) })}
+                  rotulo={t('paginas.finContas.textos.limiteUsadoValor', { valor: formatarPercentual(usado * 100, { casas: 0 , idioma }) })}
                 />
                 <div className="fin-cartao-limite">
                   <span>{t('paginas.finContas.textos.usado')}<Valor valor={fatura} />
@@ -151,7 +151,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
                       tamanho="pequeno"
                       onClick={() => {
                         acoes.marcarPago([pendente.id]);
-                        toast.ok(t('paginas.finContas.textos.faturaPaga'), `${c.nome} · ${formatarMoeda(pendente.valor)}`);
+                        toast.ok(t('paginas.finContas.textos.faturaPaga'), `${c.nome} · ${formatarMoeda(pendente.valor, { idioma })}`);
                       }}
                     />
                   ) : (

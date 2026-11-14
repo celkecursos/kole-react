@@ -42,7 +42,7 @@ const POR_PAGINA = 15;
 const naSituacao = (f: FiltroSituacao, s: Situacao) => (f === 'pagos' ? s === 'pago' || s === 'recebido' : f === 'atrasados' ? s === 'atrasado' : s === 'pendente' || s === 'hoje' || s === 'atrasado');
 
 export function Lancamentos() {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, periodo, lancamentos, filtroInicial } = useFinancas();
   const toast = useToast();
   const confirmar = useConfirmacao();
@@ -120,7 +120,7 @@ export function Lancamentos() {
     <div className="demo-pilha">
       <CabecalhoFinancas titulo={t('paginas.finLancamentos.titulo')} icone="list" />
 
-      <div className="fin-resumo" aria-label={t('paginas.finLancamentos.textos.resumoDeValor', { valor: rotuloPeriodo(periodo) })}>
+      <div className="fin-resumo" aria-label={t('paginas.finLancamentos.textos.resumoDeValor', { valor: rotuloPeriodo(periodo, { idioma }) })}>
         <div>{rico(t('paginas.finLancamentos.textos.receitas'))}<Valor valor={soma.receitas} tipo="receita" tamanho="grande" />
         </div>
         <div>{rico(t('paginas.finLancamentos.textos.despesas'))}<Valor valor={soma.despesas} tipo="despesa" tamanho="grande" />
@@ -183,7 +183,7 @@ export function Lancamentos() {
       )}
 
       <Tabela<Lancamento>
-        rotulo={t('paginas.finLancamentos.textos.lancamentosDeValor', { valor: rotuloPeriodo(periodo) })}
+        rotulo={t('paginas.finLancamentos.textos.lancamentosDeValor', { valor: rotuloPeriodo(periodo, { idioma }) })}
         className="fin-tabela"
         registros={nestaPagina}
         selecao="multipla"
@@ -241,7 +241,7 @@ export function Lancamentos() {
               onClick={(e) => {
                 e.stopPropagation();
                 acoes.marcarPago([l.id]);
-                toast.ok(l.tipo === 'receita' ? t('paginas.finLancamentos.textos.recebimentoRegistrado') : t('paginas.finLancamentos.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor)}`);
+                toast.ok(l.tipo === 'receita' ? t('paginas.finLancamentos.textos.recebimentoRegistrado') : t('paginas.finLancamentos.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor, { idioma })}`);
               }}
             />
           ) : (

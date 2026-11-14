@@ -23,12 +23,13 @@ import {
   registrarIcones,
   useConfirmacao,
   useToast,
+  useIdioma,
   useValoresOcultos,
   type OpcoesMoeda,
 } from '../../../../src';
 import { CENTROS_CUSTO, CONTATOS, ESPACOS, dia, novoId, type Categoria, type Conta, type Espaco, type Lancamento, type TipoConta, type TipoLancamento } from './dados';
 import { acoes, categoriasDo, contasDo, useFinancas } from './estado';
-import { useT } from '../../../i18n/useT';
+import { useT, type TradutorDemo } from '../../../i18n/useT';
 
 // ícones das categorias: o app registra os que a biblioteca não traz
 registrarIcones({
@@ -51,7 +52,8 @@ export const dataBr = (iso: string) => DATA.format(paraData(iso));
 /** `formatarMoeda` que respeita o "ocultar valores" (para textos fora do `Valor`: indicadores, eixos). */
 export function useMoeda() {
   const { ocultos } = useValoresOcultos();
-  return (v: number, opcoes?: OpcoesMoeda) => (ocultos ? 'R$ ••••' : formatarMoeda(v, opcoes));
+  const idioma = useIdioma();
+  return (v: number, opcoes?: OpcoesMoeda) => (ocultos ? 'R$ ••••' : formatarMoeda(v, { idioma, ...opcoes }));
 }
 
 const ICONE_CONTA: Record<TipoConta, string> = { corrente: 'landmark', poupanca: 'piggy-bank', investimento: 'trending-up', carteira: 'wallet', cartao: 'credit-card' };
@@ -120,11 +122,11 @@ export function ProvedorEditor({ children }: { children: ReactNode }) {
   );
 }
 
-const TIPOS: { valor: TipoLancamento; rotulo: string }[] = [
-  { valor: 'despesa', rotulo: 'Despesa' },
-  { valor: 'receita', rotulo: 'Receita' },
-  { valor: 'transferencia', rotulo: 'Transferência' },
-];
+const TIPOS = (t: TradutorDemo['t']): { valor: TipoLancamento; rotulo: string }[] => ([
+  { valor: 'despesa', rotulo: t('paginas.financas.textos.despesa') },
+  { valor: 'receita', rotulo: t('paginas.financas.textos.receita') },
+  { valor: 'transferencia', rotulo: t('paginas.financas.textos.transferencia') },
+]);
 
 type Repetir = 'nao' | 'parcelado' | 'fixo';
 
@@ -222,7 +224,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         <Escolha
           ariaLabel="Tipo"
           className="fin-form-inteiro"
-          opcoes={TIPOS}
+          opcoes={TIPOS(t)}
           valor={l.tipo}
           aoMudar={(tipo) => mudar({ tipo, categoria: undefined, contato: undefined, pago: tipo !== 'receita' ? l.pago : false })}
           disabled={!novo && !!l.parcela}

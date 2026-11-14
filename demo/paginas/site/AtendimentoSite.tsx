@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Botao, CampoMensagem, ChatFlutuante, Conversa, InicioConversa, Mensagem, type EstadoMensagem, type SugestaoConversa } from '../../../src';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 /*
  * Chat de atendimento do site modelo: respostas prontas para as perguntas frequentes
@@ -16,11 +16,11 @@ interface MsgSite {
   humano?: boolean;
 }
 
-const PERGUNTAS: SugestaoConversa[] = [
-  { titulo: 'Quais são os planos?' },
-  { titulo: 'Como falar com o suporte?' },
-  { titulo: 'Vocês emitem nota fiscal?' },
-];
+const PERGUNTAS = (t: TradutorDemo['t']): SugestaoConversa[] => ([
+  { titulo: t('paginas.site.textos.quaisSaoOsPlanos') },
+  { titulo: t('paginas.site.textos.comoFalarComO') },
+  { titulo: t('paginas.site.textos.vocesEmitemNotaFiscal') },
+]);
 
 function responder(texto: string): { texto: string; humano?: boolean } {
   const t = texto.toLowerCase();
@@ -80,7 +80,7 @@ export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }
             icone="message-circle"
             titulo={t('paginas.site.textos.olaComoPodemosAjudar')}
             descricao={t('paginas.site.textos.escolhaUmaDasPerguntas')}
-            sugestoes={PERGUNTAS}
+            sugestoes={PERGUNTAS(t)}
             aoEscolher={(s) => enviar(s.titulo)}
           />
         }

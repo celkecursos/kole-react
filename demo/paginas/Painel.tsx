@@ -5,7 +5,7 @@ import { useT } from '../i18n/useT';
 const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 
 export function PaginaPainel({ navegar }: { navegar: (r: string) => void }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const abertos = PEDIDOS.filter((p) => p.situacao === 'Aguardando pagamento' || p.situacao === 'Pago');
   const vendas = PEDIDOS.filter((p) => p.situacao !== 'Cancelado').reduce((s, p) => s + p.total, 0);
   const ticket = vendas / PEDIDOS.filter((p) => p.situacao !== 'Cancelado').length;
@@ -18,7 +18,7 @@ export function PaginaPainel({ navegar }: { navegar: (r: string) => void }) {
       </BoasVindas>
 
       <Indicadores>
-        <Indicador rotulo={t('paginas.painel.textos.vendasDoMes')} valor={`R$ ${formatarNumero(vendas, { compacto: true })}`} icone="chart-line" cor="var(--info-solid)" aoClicar={() => navegar('/pedidos')}>
+        <Indicador rotulo={t('paginas.painel.textos.vendasDoMes')} valor={`R$ ${formatarNumero(vendas, { compacto: true , idioma })}`} icone="chart-line" cor="var(--info-solid)" aoClicar={() => navegar('/pedidos')}>
           <span style={{ color: 'var(--ok-fg)' }}>
             <Icone icone="arrow-up" />
           </span>{t('paginas.painel.textos.t12SobreOMes')}</Indicador>

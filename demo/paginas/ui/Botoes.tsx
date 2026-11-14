@@ -1,24 +1,25 @@
 import { useState } from 'react';
 import { AcaoLinha, Botao, CabecalhoPagina, useToast, type BotaoProps, type SeveridadeBotao } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const CORES: { cor: SeveridadeBotao; nome: string }[] = [
-  { cor: 'pri', nome: 'Principal' },
-  { cor: 'destaque', nome: 'Destaque' },
-  { cor: 'ok', nome: 'Sucesso' },
-  { cor: 'err', nome: 'Erro' },
-  { cor: 'warn', nome: 'Atenção' },
-  { cor: 'info', nome: 'Info' },
-  { cor: 'secundario', nome: 'Secundário' },
-  { cor: 'escuro', nome: 'Escuro' },
-];
+const CORES = (t: TradutorDemo['t']): { cor: SeveridadeBotao; nome: string }[] => ([
+  { cor: 'pri', nome: t('paginas.botoes.textos.principal') },
+  { cor: 'destaque', nome: t('paginas.botoes.textos.destaque') },
+  { cor: 'ok', nome: t('paginas.botoes.textos.sucesso') },
+  { cor: 'err', nome: t('paginas.botoes.textos.erro') },
+  { cor: 'warn', nome: t('paginas.botoes.textos.atencao') },
+  { cor: 'info', nome: t('paginas.botoes.textos.info') },
+  { cor: 'secundario', nome: t('paginas.botoes.textos.secundario') },
+  { cor: 'escuro', nome: t('paginas.botoes.textos.escuro') },
+]);
 
 /** O botão em todas as cores. */
 function Todas(props: Omit<BotaoProps, 'severidade' | 'rotulo'>) {
+  const { t } = useT();
   return (
     <div className="demo-linha">
-      {CORES.map((c) => (
+      {CORES(t).map((c) => (
         <Botao key={c.cor} severidade={c.cor} rotulo={c.nome} {...props} />
       ))}
     </div>

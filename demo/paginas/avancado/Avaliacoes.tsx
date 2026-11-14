@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Avaliacao, CabecalhoPagina, Icone, useToast } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const MENSAGENS = ['Muito ruim', 'Ruim', 'Regular', 'Bom', 'Excelente!'];
+const MENSAGENS = (t: TradutorDemo['t']) => ([t('paginas.avaliacoes.textos.muitoRuim'), t('paginas.avaliacoes.textos.ruim'), t('paginas.avaliacoes.textos.regular'), t('paginas.avaliacoes.textos.bom'), t('paginas.avaliacoes.textos.excelente')]);
 
 export function PaginaAvaliacoes() {
   const { t } = useT();
@@ -38,7 +38,7 @@ export function PaginaAvaliacoes() {
         <Bloco titulo={t('paginas.avaliacoes.secoes.mensagensPorNota')}>
           <div className="demo-aval">
             <p>{t('paginas.avaliacoes.textos.suaAvaliacaoEMuito')}</p>
-            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoComMensagem')} valor={mensagem} aoMudar={setMensagem} mensagens={MENSAGENS} />
+            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoComMensagem')} valor={mensagem} aoMudar={setMensagem} mensagens={MENSAGENS(t)} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.avaliacoes.secoes.salvandoNoServidor')} descricao={t('paginas.avaliacoes.textos.aomudarDevolveUmaPromise')}>

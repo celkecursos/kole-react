@@ -26,7 +26,7 @@ import { ROTAS } from './rotas';
 import { useT } from '../../../i18n/useT';
 
 function EditarOrcamento({ categoria, valor }: { categoria: Categoria; valor: number }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const toast = useToast();
   const [novo, setNovo] = useState<number | null>(valor);
   return (
@@ -38,7 +38,7 @@ function EditarOrcamento({ categoria, valor }: { categoria: Categoria; valor: nu
             e.preventDefault();
             if (novo === null || novo < 0) return;
             acoes.definirOrcamento(categoria.id, novo);
-            toast.ok(t('paginas.finOrcamento.textos.orcamentoAtualizado'), t('paginas.finOrcamento.textos.nomeValorPorMes', { nome: categoria.nome, valor: formatarMoeda(novo) }));
+            toast.ok(t('paginas.finOrcamento.textos.orcamentoAtualizado'), t('paginas.finOrcamento.textos.nomeValorPorMes', { nome: categoria.nome, valor: formatarMoeda(novo, { idioma }) }));
             fechar();
           }}
         >
@@ -51,7 +51,7 @@ function EditarOrcamento({ categoria, valor }: { categoria: Categoria; valor: nu
 }
 
 export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const meses = mesesDoPeriodo(periodo).length;
@@ -79,8 +79,8 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
 
       <Indicadores>
         <Indicador rotulo={t('paginas.finOrcamento.textos.orcado')} icone="target" cor="var(--graf-1)" valor={moeda(orcado, { centavos: false })} descricao={meses === 1 ? t('paginas.finOrcamento.textos.paraOMes') : t('paginas.finOrcamento.textos.paraMesesMeses', { meses })} />
-        <Indicador rotulo={t('paginas.finOrcamento.textos.gasto')} icone="trending-down" cor="var(--err-solid)" valor={moeda(gasto)} descricao={t('paginas.finOrcamento.textos.valorDoOrcadoCom', { valor: formatarPercentual(orcado ? (gasto / orcado) * 100 : 0, { casas: 0 }) })} />
-        <Indicador rotulo={t('paginas.finOrcamento.textos.disponivel')} icone="wallet" cor="var(--ok-solid)" valor={moeda(Math.max(0, orcado - gasto))} descricao={emAndamento ? t('paginas.finOrcamento.textos.vDiasAteO', { v: total - passados }) : rotuloPeriodo(periodo)} />
+        <Indicador rotulo={t('paginas.finOrcamento.textos.gasto')} icone="trending-down" cor="var(--err-solid)" valor={moeda(gasto)} descricao={t('paginas.finOrcamento.textos.valorDoOrcadoCom', { valor: formatarPercentual(orcado ? (gasto / orcado) * 100 : 0, { casas: 0 , idioma }) })} />
+        <Indicador rotulo={t('paginas.finOrcamento.textos.disponivel')} icone="wallet" cor="var(--ok-solid)" valor={moeda(Math.max(0, orcado - gasto))} descricao={emAndamento ? t('paginas.finOrcamento.textos.vDiasAteO', { v: total - passados }) : rotuloPeriodo(periodo, { idioma })} />
         <Indicador
           rotulo={t('paginas.finOrcamento.textos.acimaDoLimite')}
           icone="circle-alert"
@@ -90,7 +90,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
         />
       </Indicadores>
 
-      <Card titulo={t('paginas.finOrcamento.secoes.porCategoria')} subtitulo={emAndamento ? t('paginas.finOrcamento.textos.aMarcaNaBarra', { valor: formatarPercentual(ritmo, { casas: 0 }) }) : undefined}>
+      <Card titulo={t('paginas.finOrcamento.secoes.porCategoria')} subtitulo={emAndamento ? t('paginas.finOrcamento.textos.aMarcaNaBarra', { valor: formatarPercentual(ritmo, { casas: 0 , idioma }) }) : undefined}>
         <ul className="fin-orc-tabela">
           {linhas.map(({ c, gasto: g, mensal, limite, parte }) => {
             const resta = somarMoeda([limite, -g]);
@@ -111,7 +111,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
                       <Valor valor={g} forte />{t('paginas.finOrcamento.textos.de')}<Valor valor={limite} centavos={false} />
                     </small>
                   </div>
-                  <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={cor} marcos={emAndamento ? [ritmo] : undefined} rotulo={t('paginas.finOrcamento.textos.nomeValorDoOrcamento', { nome: c.nome, valor: formatarPercentual(parte * 100, { casas: 0 }) })} />
+                  <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={cor} marcos={emAndamento ? [ritmo] : undefined} rotulo={t('paginas.finOrcamento.textos.nomeValorDoOrcamento', { nome: c.nome, valor: formatarPercentual(parte * 100, { casas: 0 , idioma }) })} />
                   <small className={`fin-orc-resta${resta < 0 ? ' is-passou' : ''}`}>
                     {limite === 0 ? 'Sem orçamento' : resta >= 0 ? <>{t('paginas.finOrcamento.textos.restam')}<Valor valor={resta} /></> : <>{t('paginas.finOrcamento.textos.passou')}<Valor valor={-resta} /></>}
                   </small>

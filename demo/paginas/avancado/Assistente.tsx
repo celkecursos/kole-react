@@ -22,7 +22,7 @@ import {
   type ItemReferencia,
   type SugestaoConversa,
 } from '../../../src';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
 
 /*
@@ -270,24 +270,25 @@ function historicoInicial(): ConversaIA[] {
   ];
 }
 
-const SUGESTOES: SugestaoConversa[] = [
-  { titulo: 'Resumir as vendas do mês', descricao: 'Faturamento por região e meta', icone: 'chart-line' },
-  { titulo: 'Listar pedidos atrasados', descricao: 'Com cliente e dias de atraso', icone: 'truck' },
-  { titulo: 'Gerar a consulta SQL das vendas', descricao: 'Para usar no relatório', icone: 'code' },
-  { titulo: 'Escrever um e-mail de cobrança', descricao: 'Educado e direto', icone: 'mail' },
-];
+const SUGESTOES = (t: TradutorDemo['t']): SugestaoConversa[] => ([
+  { titulo: t('paginas.assistente.textos.resumirAsVendasDo'), descricao: t('paginas.assistente.textos.faturamentoPorRegiaoE'), icone: 'chart-line' },
+  { titulo: t('paginas.assistente.textos.listarPedidosAtrasados'), descricao: t('paginas.assistente.textos.comClienteEDias'), icone: 'truck' },
+  { titulo: t('paginas.assistente.textos.gerarAConsultaSql'), descricao: t('paginas.assistente.textos.paraUsarNoRelatorio'), icone: 'code' },
+  { titulo: t('paginas.assistente.textos.escreverUmEMail'), descricao: t('paginas.assistente.textos.educadoEDireto'), icone: 'mail' },
+]);
 
-const MODOS = [
-  { id: 'rapido', rotulo: 'Rápido', extra: 'respostas curtas' },
-  { id: 'detalhado', rotulo: 'Detalhado', extra: 'pensa mais' },
-];
-const FERRAMENTAS: Record<string, string> = { docs: 'Documentos', web: 'Web' };
+const MODOS = (t: TradutorDemo['t']) => ([
+  { id: 'rapido', rotulo: t('paginas.assistente.textos.rapido'), extra: t('paginas.assistente.textos.respostasCurtas') },
+  { id: 'detalhado', rotulo: t('paginas.assistente.textos.detalhado'), extra: t('paginas.assistente.textos.pensaMais') },
+]);
+const FERRAMENTAS = (t: TradutorDemo['t']): Record<string, string> => ({ docs: t('paginas.assistente.textos.documentos'), web: t('paginas.assistente.textos.web') });
 
 let seq = 1000;
 
 /* ---------- a página ---------- */
 
 export function PaginaAssistente() {
+  const { t: tx, idioma } = useT();
   const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
@@ -331,7 +332,7 @@ export function PaginaAssistente() {
     const idU = ++seq;
     const idR = ++seq;
     const novas: MsgIA[] = [
-      { id: idU, autor: 'usuario', texto: t, anexos: anexosProntos, ferramentas: ferramentas.map((f) => FERRAMENTAS[f]), estado: 'concluida', hora: agora },
+      { id: idU, autor: 'usuario', texto: t, anexos: anexosProntos, ferramentas: ferramentas.map((f) => FERRAMENTAS(tx)[f]), estado: 'concluida', hora: agora },
       { id: idR, autor: 'assistente', estado: 'gerando', hora: agora, visiveis: 0 },
     ];
     if (!idConv) {
@@ -407,7 +408,7 @@ export function PaginaAssistente() {
     />
   );
 
-  const modoAtual = MODOS.find((m) => m.id === modo)!;
+  const modoAtual = MODOS(t).find((m) => m.id === modo)!;
   const campo = (
     <CampoMensagem
       valor={texto}
@@ -443,7 +444,7 @@ export function PaginaAssistente() {
             }}
           />
           {ferramentas.map((f) => (
-            <Chip key={f} rotulo={FERRAMENTAS[f]} aoRemover={() => setFerramentas((l) => l.filter((x) => x !== f))} />
+            <Chip key={f} rotulo={FERRAMENTAS(t)[f]} aoRemover={() => setFerramentas((l) => l.filter((x) => x !== f))} />
           ))}
           <MenuSuspenso
             rotulo={modoAtual.rotulo}
@@ -453,7 +454,7 @@ export function PaginaAssistente() {
             aparencia="texto"
             tamanho="pequeno"
             direcao="cima"
-            itens={MODOS.map((m) => ({ ...m, ativo: m.id === modo }))}
+            itens={MODOS(t).map((m) => ({ ...m, ativo: m.id === modo }))}
             aoEscolher={setModo}
           />
           <input
@@ -505,9 +506,9 @@ export function PaginaAssistente() {
             vazio={
               <InicioConversa
                 icone="sparkles"
-                titulo={t('paginas.assistente.textos.valorAnaComoPosso', { valor: saudacaoPorHora(AGORA) })}
+                titulo={t('paginas.assistente.textos.valorAnaComoPosso', { valor: saudacaoPorHora(AGORA, idioma) })}
                 descricao={t('paginas.assistente.textos.pergunteSobreVendasPedidos')}
-                sugestoes={SUGESTOES}
+                sugestoes={SUGESTOES(t)}
                 aoEscolher={(s) => enviar(s.texto ?? s.titulo)}
               >
                 <p className="demo-ia-aviso">{t('paginas.assistente.textos.asRespostasPodemConter')}</p>

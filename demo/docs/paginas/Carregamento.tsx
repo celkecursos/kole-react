@@ -1,21 +1,21 @@
 import { Tabela } from '../../../src';
 import { Exemplo } from '../Exemplo';
 import { PaginaGuia, Secao } from '../PaginaDoc';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
 
-const QUAL_USAR = [
-  { id: 1, situacao: 'Salvar um formulário', usar: 'Form com salvando', porque: 'O Salvar gira e recusa clique repetido; o Cancelar fica desabilitado.' },
-  { id: 2, situacao: 'Ação de um botão', usar: 'Botao ou AcaoLinha com carregando', porque: 'O botão continua focável e não dispara de novo.' },
-  { id: 3, situacao: 'Abrir uma página ou card', usar: 'Skeleton', porque: 'A silhueta tem o formato do conteúdo: a página não pula.' },
-  { id: 4, situacao: 'Primeira carga de lista', usar: 'Tabela / ListaCards com carregando', porque: 'Silhuetas no lugar das linhas, já prontas.' },
-  { id: 5, situacao: 'Paginar, ordenar, filtrar', usar: 'Tabela / ListaCards com atualizando', porque: 'Mantém os dados atuais esmaecidos, sem piscar.' },
-  { id: 6, situacao: 'Área sem formato conhecido', usar: 'Carregando', porque: 'Mensagem e animação no lugar da área.' },
-  { id: 7, situacao: 'Nada na tela pode ser usado', usar: 'Carregando bloqueante', porque: 'Cobre a tela e segura o foco até terminar.' },
-  { id: 8, situacao: 'Sabe quanto falta', usar: 'Progresso', porque: 'Upload e importação: a pessoa vê o andamento.' },
-  { id: 9, situacao: 'Cards de painel e gráficos', usar: 'Indicador / gráficos com carregando', porque: 'Cada card carrega sozinho; o painel aparece aos poucos.' },
-  { id: 10, situacao: 'Trecho pequeno, inline', usar: 'Girador', porque: 'Indicador avulso, com rótulo para leitor de tela.' },
-];
+const QUAL_USAR = (t: TradutorDemo['t']) => ([
+  { id: 1, situacao: t('docs.carregamento.textos.salvarUmFormulario'), usar: t('docs.carregamento.textos.formComSalvando'), porque: t('docs.carregamento.textos.oSalvarGiraE') },
+  { id: 2, situacao: t('docs.carregamento.textos.acaoDeUmBotao'), usar: t('docs.carregamento.textos.botaoOuAcaolinhaCom'), porque: t('docs.carregamento.textos.oBotaoContinuaFocavel') },
+  { id: 3, situacao: t('docs.carregamento.textos.abrirUmaPaginaOu'), usar: t('docs.carregamento.textos.skeleton'), porque: t('docs.carregamento.textos.aSilhuetaTemO') },
+  { id: 4, situacao: t('docs.carregamento.textos.primeiraCargaDeLista'), usar: t('docs.carregamento.textos.tabelaListacardsComCarregando'), porque: t('docs.carregamento.textos.silhuetasNoLugarDas') },
+  { id: 5, situacao: t('docs.carregamento.textos.paginarOrdenarFiltrar'), usar: t('docs.carregamento.textos.tabelaListacardsComAtualizando'), porque: t('docs.carregamento.textos.mantemOsDadosAtuais') },
+  { id: 6, situacao: t('docs.carregamento.textos.areaSemFormatoConhecido'), usar: t('docs.carregamento.textos.carregando'), porque: t('docs.carregamento.textos.mensagemEAnimacaoNo') },
+  { id: 7, situacao: t('docs.carregamento.textos.nadaNaTelaPode'), usar: t('docs.carregamento.textos.carregandoBloqueante'), porque: t('docs.carregamento.textos.cobreATelaE') },
+  { id: 8, situacao: t('docs.carregamento.textos.sabeQuantoFalta'), usar: t('docs.carregamento.textos.progresso'), porque: t('docs.carregamento.textos.uploadEImportacaoA') },
+  { id: 9, situacao: t('docs.carregamento.textos.cardsDePainelE'), usar: t('docs.carregamento.textos.indicadorGraficosComCarregando'), porque: t('docs.carregamento.textos.cadaCardCarregaSozinho') },
+  { id: 10, situacao: t('docs.carregamento.textos.trechoPequenoInline'), usar: t('docs.carregamento.textos.girador'), porque: t('docs.carregamento.textos.indicadorAvulsoComRotulo') },
+]);
 
 export function DocCarregamento() {
   const { t } = useT();
@@ -27,7 +27,7 @@ export function DocCarregamento() {
       <Secao id="qual-usar" titulo={t('docs.carregamento.secoes.qualUsar')}>
         <Tabela
           rotulo={t('docs.carregamento.textos.qualLoadingUsarEm')}
-          registros={QUAL_USAR}
+          registros={QUAL_USAR(t)}
           colunas={[
             { campo: 'situacao', rotulo: t('docs.carregamento.textos.situacao'), destaque: true },
             { campo: 'usar', rotulo: t('docs.carregamento.textos.use') },

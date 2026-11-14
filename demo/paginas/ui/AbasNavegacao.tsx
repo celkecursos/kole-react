@@ -1,19 +1,20 @@
 import { Aba, Abas, Avatar, Badge, CabecalhoPagina, Detalhes, ItemLista, Lista } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const TEXTOS = [
-  'Como um bom atendimento ajuda a vender mais. Clientes satisfeitos voltam, indicam a loja e compram com mais frequência. Pequenos cuidados no pós-venda fazem diferença no fim do mês.',
-  'Por que o controle de estoque importa. Sem saber o que entra e o que sai, a loja compra demais o que encalha e de menos o que vende. Um inventário semanal resolve boa parte disso.',
-  'Dicas para organizar a equipe. Metas claras, rotina de reuniões curtas e um quadro de tarefas visível ajudam todo mundo a saber o que fazer e quando.',
-  'Como planejar promoções sem perder margem. Defina o desconto máximo antes, escolha produtos com estoque alto e acompanhe o resultado dia a dia.',
-];
+const TEXTOS = (t: TradutorDemo['t']) => ([
+  t('paginas.abas.textos.comoUmBomAtendimento'),
+  t('paginas.abas.textos.porQueOControle'),
+  t('paginas.abas.textos.dicasParaOrganizarA'),
+  t('paginas.abas.textos.comoPlanejarPromocoesSem'),
+]);
 
 function Texto({ n = 0, paragrafos = 1 }: { n?: number; paragrafos?: number }) {
+  const { t } = useT();
   return (
     <div className="demo-abas-texto">
       {Array.from({ length: paragrafos }, (_, i) => (
-        <p key={i}>{TEXTOS[(n + i) % TEXTOS.length]}</p>
+        <p key={i}>{TEXTOS(t)[(n + i) % TEXTOS(t).length]}</p>
       ))}
     </div>
   );

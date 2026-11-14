@@ -1,6 +1,6 @@
 import { useMemo, useState, type Key, type ReactNode } from 'react';
 import type { ChaveTexto } from '../i18n/tipos';
-import { useT } from '../i18n/useT';
+import { useT, type TradutorDemo } from '../i18n/useT';
 import {
   AcaoLinha,
   Botao,
@@ -51,8 +51,8 @@ interface ConfigTabela<T> {
 
 const PCT = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-const CATEGORIAS: ConfigTabela<Categoria> = {
-  titulo: 'Categorias',
+const CATEGORIAS = (t: TradutorDemo['t']): ConfigTabela<Categoria> => ({
+  titulo: t('paginas.tabelas.textos.categorias'),
   chaveTitulo: 'paginas.categorias.titulo',
   icone: 'tags',
   item: 'categoria',
@@ -60,32 +60,32 @@ const CATEGORIAS: ConfigTabela<Categoria> = {
   descrever: (c) => c.nome,
   ordemInicial: 'nome',
   colunas: [
-    { campo: 'codigo', rotulo: 'Código', ordenavel: true, largura: '6rem' },
-    { campo: 'nome', rotulo: 'Categoria', ordenavel: true, destaque: true },
-    { campo: 'descricao', rotulo: 'Descrição' },
-    { campo: 'produtos', rotulo: 'Produtos', ordenavel: true, alinhamento: 'direita' },
-    { campo: 'ativa', rotulo: 'Situação', formato: (v) => (v ? 'Ativa' : 'Inativa'), severidade: (c) => (c.ativa ? 'ok' : 'neutral') },
+    { campo: 'codigo', rotulo: t('paginas.tabelas.textos.codigo'), ordenavel: true, largura: '6rem' },
+    { campo: 'nome', rotulo: t('paginas.tabelas.textos.categoria'), ordenavel: true, destaque: true },
+    { campo: 'descricao', rotulo: t('paginas.tabelas.textos.descricao') },
+    { campo: 'produtos', rotulo: t('paginas.tabelas.textos.produtos'), ordenavel: true, alinhamento: 'direita' },
+    { campo: 'ativa', rotulo: t('paginas.tabelas.textos.situacao'), formato: (v) => (v ? t('paginas.tabelas.textos.ativa') : t('paginas.tabelas.textos.inativa')), severidade: (c) => (c.ativa ? 'ok' : 'neutral') },
   ],
-};
+});
 
-const PAGAMENTOS: ConfigTabela<FormaPagamento> = {
-  titulo: 'Formas de pagamento',
+const PAGAMENTOS = (t: TradutorDemo['t']): ConfigTabela<FormaPagamento> => ({
+  titulo: t('paginas.tabelas.textos.formasDePagamento'),
   chaveTitulo: 'paginas.formasPagamento.titulo',
   icone: 'credit-card',
-  item: 'forma de pagamento',
+  item: t('paginas.tabelas.textos.formaDePagamento'),
   registros: TABELA_PAGAMENTOS,
   descrever: (f) => f.nome,
   ordemInicial: 'nome',
   colunas: [
-    { campo: 'nome', rotulo: 'Forma de pagamento', ordenavel: true, destaque: true },
-    { campo: 'tipo', rotulo: 'Tipo', ordenavel: true, severidade: (f) => (f.tipo === 'À vista' ? 'ok' : 'info') },
-    { campo: 'taxa', rotulo: 'Taxa', ordenavel: true, alinhamento: 'direita', formato: (v) => `${PCT.format(v as number)}%` },
-    { campo: 'prazo', rotulo: 'Recebimento', ordenavel: true, alinhamento: 'direita', formato: (v) => (v ? `${v} dia(s)` : 'Na hora') },
+    { campo: 'nome', rotulo: t('paginas.tabelas.textos.formaDePagamento2'), ordenavel: true, destaque: true },
+    { campo: 'tipo', rotulo: t('paginas.tabelas.textos.tipo'), ordenavel: true, severidade: (f) => (f.tipo === 'À vista' ? 'ok' : 'info') },
+    { campo: 'taxa', rotulo: t('paginas.tabelas.textos.taxa'), ordenavel: true, alinhamento: 'direita', formato: (v) => `${PCT.format(v as number)}%` },
+    { campo: 'prazo', rotulo: t('paginas.tabelas.textos.recebimento'), ordenavel: true, alinhamento: 'direita', formato: (v) => (v ? `${v} dia(s)` : t('paginas.tabelas.textos.naHora')) },
   ],
-};
+});
 
-const ESTADOS: ConfigTabela<Estado> = {
-  titulo: 'Estados',
+const ESTADOS = (t: TradutorDemo['t']): ConfigTabela<Estado> => ({
+  titulo: t('paginas.tabelas.textos.estados'),
   chaveTitulo: 'paginas.estados.titulo',
   icone: 'map',
   item: 'estado',
@@ -93,15 +93,15 @@ const ESTADOS: ConfigTabela<Estado> = {
   descrever: (e) => e.nome,
   ordemInicial: 'sigla',
   colunas: [
-    { campo: 'sigla', rotulo: 'UF', ordenavel: true, destaque: true, alinhamento: 'centro', largura: '5rem' },
-    { campo: 'nome', rotulo: 'Nome', ordenavel: true },
-    { campo: 'regiao', rotulo: 'Região', ordenavel: true },
-    { campo: 'capital', rotulo: 'Capital', ordenavel: true },
+    { campo: 'sigla', rotulo: t('paginas.tabelas.textos.uf'), ordenavel: true, destaque: true, alinhamento: 'centro', largura: '5rem' },
+    { campo: 'nome', rotulo: t('paginas.tabelas.textos.nome'), ordenavel: true },
+    { campo: 'regiao', rotulo: t('paginas.tabelas.textos.regiao'), ordenavel: true },
+    { campo: 'capital', rotulo: t('paginas.tabelas.textos.capital'), ordenavel: true },
   ],
-};
+});
 
-const CIDADES: ConfigTabela<Cidade> = {
-  titulo: 'Cidades',
+const CIDADES = (t: TradutorDemo['t']): ConfigTabela<Cidade> => ({
+  titulo: t('paginas.tabelas.textos.cidades'),
   chaveTitulo: 'paginas.cidades.titulo',
   icone: 'map-pin',
   item: 'cidade',
@@ -109,12 +109,12 @@ const CIDADES: ConfigTabela<Cidade> = {
   descrever: (c) => `${c.nome}/${c.uf}`,
   ordemInicial: 'nome',
   colunas: [
-    { campo: 'nome', rotulo: 'Cidade', ordenavel: true, destaque: true },
-    { campo: 'uf', rotulo: 'UF', ordenavel: true, alinhamento: 'centro', largura: '5rem' },
-    { campo: 'populacao', rotulo: 'População', ordenavel: true, alinhamento: 'direita', formato: (v) => NUM.format(v as number) },
-    { campo: 'capital', rotulo: 'Capital', formato: (v) => (v ? 'Sim' : 'Não'), severidade: (c) => (c.capital ? 'info' : 'neutral') },
+    { campo: 'nome', rotulo: t('paginas.tabelas.textos.cidade'), ordenavel: true, destaque: true },
+    { campo: 'uf', rotulo: t('paginas.tabelas.textos.uf'), ordenavel: true, alinhamento: 'centro', largura: '5rem' },
+    { campo: 'populacao', rotulo: t('paginas.tabelas.textos.populacao'), ordenavel: true, alinhamento: 'direita', formato: (v) => NUM.format(v as number) },
+    { campo: 'capital', rotulo: t('paginas.tabelas.textos.capital'), formato: (v) => (v ? t('paginas.tabelas.textos.sim') : t('paginas.tabelas.textos.nao')), severidade: (c) => (c.capital ? 'info' : 'neutral') },
   ],
-};
+});
 
 function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTabela<T> }) {
   const { t } = useT();
@@ -249,7 +249,7 @@ function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTa
 export function PaginaTabelas({ tabela }: { tabela: string }) {
   const toast = useToast();
   const { t } = useT();
-  const config = { categorias: CATEGORIAS, pagamentos: PAGAMENTOS, estados: ESTADOS, cidades: CIDADES }[tabela] ?? CATEGORIAS;
+  const config = { categorias: CATEGORIAS(t), pagamentos: PAGAMENTOS(t), estados: ESTADOS(t), cidades: CIDADES(t) }[tabela] ?? CATEGORIAS(t);
 
   return (
     <div className="demo-pilha">

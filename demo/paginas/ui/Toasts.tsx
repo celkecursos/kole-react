@@ -1,28 +1,28 @@
 import { useState } from 'react';
 import { Botao, CabecalhoPagina, Toast, useToast, type CorToast, type PosicaoToast, type SeveridadeBotao } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const POSICOES: Array<{ posicao: PosicaoToast; rotulo: string }> = [
-  { posicao: 'topo-esquerda', rotulo: 'Topo à esquerda' },
-  { posicao: 'topo-centro', rotulo: 'Topo ao centro' },
-  { posicao: 'topo-direita', rotulo: 'Topo à direita' },
-  { posicao: 'meio-esquerda', rotulo: 'Meio à esquerda' },
-  { posicao: 'meio-centro', rotulo: 'Meio ao centro' },
-  { posicao: 'meio-direita', rotulo: 'Meio à direita' },
-  { posicao: 'base-esquerda', rotulo: 'Base à esquerda' },
-  { posicao: 'base-centro', rotulo: 'Base ao centro' },
-  { posicao: 'base-direita', rotulo: 'Base à direita' },
-];
+const POSICOES = (t: TradutorDemo['t']): Array<{ posicao: PosicaoToast; rotulo: string }> => ([
+  { posicao: 'topo-esquerda', rotulo: t('paginas.toasts.textos.topoAEsquerda') },
+  { posicao: 'topo-centro', rotulo: t('paginas.toasts.textos.topoAoCentro') },
+  { posicao: 'topo-direita', rotulo: t('paginas.toasts.textos.topoADireita') },
+  { posicao: 'meio-esquerda', rotulo: t('paginas.toasts.textos.meioAEsquerda') },
+  { posicao: 'meio-centro', rotulo: t('paginas.toasts.textos.meioAoCentro') },
+  { posicao: 'meio-direita', rotulo: t('paginas.toasts.textos.meioADireita') },
+  { posicao: 'base-esquerda', rotulo: t('paginas.toasts.textos.baseAEsquerda') },
+  { posicao: 'base-centro', rotulo: t('paginas.toasts.textos.baseAoCentro') },
+  { posicao: 'base-direita', rotulo: t('paginas.toasts.textos.baseADireita') },
+]);
 
-const CORES: Array<{ cor: CorToast; rotulo: string }> = [
-  { cor: 'pri', rotulo: 'Primário' },
-  { cor: 'secundario', rotulo: 'Secundário' },
-  { cor: 'warn', rotulo: 'Aviso' },
-  { cor: 'info', rotulo: 'Info' },
-  { cor: 'ok', rotulo: 'Sucesso' },
-  { cor: 'err', rotulo: 'Perigo' },
-];
+const CORES = (t: TradutorDemo['t']): Array<{ cor: CorToast; rotulo: string }> => ([
+  { cor: 'pri', rotulo: t('paginas.toasts.textos.primario') },
+  { cor: 'secundario', rotulo: t('paginas.toasts.textos.secundario') },
+  { cor: 'warn', rotulo: t('paginas.toasts.textos.aviso') },
+  { cor: 'info', rotulo: t('paginas.toasts.textos.info') },
+  { cor: 'ok', rotulo: t('paginas.toasts.textos.sucesso') },
+  { cor: 'err', rotulo: t('paginas.toasts.textos.perigo') },
+]);
 
 export function PaginaToasts() {
   const { t } = useT();
@@ -38,7 +38,7 @@ export function PaginaToasts() {
 
       <Bloco titulo={t('paginas.toasts.secoes.posicoes')} descricao={t('paginas.toasts.textos.usetoastMostrarPosicaoCada')}>
         <div className="demo-linha">
-          {POSICOES.map((p) => (
+          {POSICOES(t).map((p) => (
             <Botao
               key={p.posicao}
               rotulo={p.rotulo}
@@ -53,7 +53,7 @@ export function PaginaToasts() {
       <div className="demo-colunas">
         <Bloco titulo={t('paginas.toasts.secoes.coresSuaves')} descricao={t('paginas.toasts.textos.fundoClaroDaCor')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
+            {CORES(t).map((c) => (
               <Botao
                 key={c.cor}
                 rotulo={c.rotulo}
@@ -67,7 +67,7 @@ export function PaginaToasts() {
         </Bloco>
         <Bloco titulo={t('paginas.toasts.secoes.coresSolidas')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
+            {CORES(t).map((c) => (
               <Botao
                 key={c.cor}
                 rotulo={c.rotulo}

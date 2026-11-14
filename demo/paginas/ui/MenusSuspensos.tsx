@@ -11,24 +11,24 @@ import {
   type SeveridadeBotao,
 } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const ACOES: ItemMenuSuspenso[] = [
-  { id: 'acao', rotulo: 'Ação' },
-  { id: 'outra', rotulo: 'Outra ação' },
-  { id: 'mais', rotulo: 'Mais alguma coisa' },
-];
+const ACOES = (t: TradutorDemo['t']): ItemMenuSuspenso[] => ([
+  { id: 'acao', rotulo: t('paginas.menus.textos.acao') },
+  { id: 'outra', rotulo: t('paginas.menus.textos.outraAcao') },
+  { id: 'mais', rotulo: t('paginas.menus.textos.maisAlgumaCoisa') },
+]);
 
-const ACOES_SEPARADAS: ItemMenuSuspenso[] = [...ACOES, { tipo: 'divisor' }, { id: 'separado', rotulo: 'Link separado' }];
+const ACOES_SEPARADAS = (t: TradutorDemo['t']): ItemMenuSuspenso[] => ([...ACOES(t), { tipo: 'divisor' }, { id: 'separado', rotulo: t('paginas.menus.textos.linkSeparado') }]);
 
-const CORES: Array<{ cor: SeveridadeBotao; rotulo: string }> = [
-  { cor: 'pri', rotulo: 'Primário' },
-  { cor: 'secundario', rotulo: 'Secundário' },
-  { cor: 'ok', rotulo: 'Sucesso' },
-  { cor: 'info', rotulo: 'Info' },
-  { cor: 'warn', rotulo: 'Aviso' },
-  { cor: 'err', rotulo: 'Perigo' },
-];
+const CORES = (t: TradutorDemo['t']): Array<{ cor: SeveridadeBotao; rotulo: string }> => ([
+  { cor: 'pri', rotulo: t('paginas.menus.textos.primario') },
+  { cor: 'secundario', rotulo: t('paginas.menus.textos.secundario') },
+  { cor: 'ok', rotulo: t('paginas.menus.textos.sucesso') },
+  { cor: 'info', rotulo: t('paginas.menus.textos.info') },
+  { cor: 'warn', rotulo: t('paginas.menus.textos.aviso') },
+  { cor: 'err', rotulo: t('paginas.menus.textos.perigo') },
+]);
 
 export function PaginaMenusSuspensos() {
   const { t } = useT();
@@ -44,51 +44,51 @@ export function PaginaMenusSuspensos() {
 
       <Bloco titulo={t('paginas.menus.secoes.menuSuspenso')} descricao={t('paginas.menus.textos.oGatilhoPodeSer')}>
         <div className="demo-linha">
-          <MenuSuspenso rotulo={t('paginas.menus.textos.botaoComMenu')} formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-          <MenuSuspenso rotulo={t('paginas.menus.textos.linkComMenu')} severidade="secundario" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-          <MenuSuspenso rotulo={t('paginas.menus.textos.opcoes')} aparencia="texto" itens={ACOES} aoEscolher={escolher} />
+          <MenuSuspenso rotulo={t('paginas.menus.textos.botaoComMenu')} formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+          <MenuSuspenso rotulo={t('paginas.menus.textos.linkComMenu')} severidade="secundario" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+          <MenuSuspenso rotulo={t('paginas.menus.textos.opcoes')} aparencia="texto" itens={ACOES(t)} aoEscolher={escolher} />
         </div>
       </Bloco>
 
       <div className="demo-colunas">
         <Bloco titulo={t('paginas.menus.secoes.botoesSolidos')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            {CORES(t).map((c) => (
+              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.pilula')} descricao={t('paginas.menus.textos.formatoPadraoDoBotao')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            {CORES(t).map((c) => (
+              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.contorno')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="contorno" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            {CORES(t).map((c) => (
+              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="contorno" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.contornoEmPilula')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="contorno" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            {CORES(t).map((c) => (
+              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="contorno" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.botaoDividido')} descricao={t('paginas.menus.textos.aAcaoPrincipalFica')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
+            {CORES(t).map((c) => (
               <MenuSuspenso
                 key={c.cor}
                 dividido
                 rotulo={c.rotulo}
                 severidade={c.cor}
                 formato="retangulo"
-                itens={ACOES_SEPARADAS}
+                itens={ACOES_SEPARADAS(t)}
                 aoEscolher={escolher}
                 aoClicarPrincipal={() => toast.ok(c.rotulo, t('paginas.menus.textos.acaoPrincipal'))}
               />
@@ -97,12 +97,12 @@ export function PaginaMenusSuspensos() {
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.tamanhos')}>
           <div className="demo-linha demo-linha--centro">
-            <MenuSuspenso rotulo={t('paginas.menus.textos.botaoGrande')} tamanho="grande" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
-            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.grandeDividido')} severidade="secundario" tamanho="grande" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.botaoGrande')} tamanho="grande" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.grandeDividido')} severidade="secundario" tamanho="grande" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
           </div>
           <div className="demo-linha demo-linha--centro">
-            <MenuSuspenso rotulo={t('paginas.menus.textos.botaoPequeno')} tamanho="pequeno" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
-            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.pequenoDividido')} severidade="secundario" tamanho="pequeno" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.botaoPequeno')} tamanho="pequeno" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.pequenoDividido')} severidade="secundario" tamanho="pequeno" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
       </div>
@@ -110,20 +110,20 @@ export function PaginaMenusSuspensos() {
       <div className="demo-colunas-4">
         <Bloco titulo={t('paginas.menus.secoes.paraCima')}>
           <div className="demo-linha">
-            <MenuSuspenso rotulo={t('paginas.menus.textos.paraCima')} direcao="cima" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
-            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.dividido')} direcao="cima" severidade="info" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.paraCima')} direcao="cima" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.dividido')} direcao="cima" severidade="info" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.paraADireita')}>
           <div className="demo-linha">
-            <MenuSuspenso rotulo={t('paginas.menus.textos.direita')} direcao="direita" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
-            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.dividido')} direcao="direita" severidade="info" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.direita')} direcao="direita" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.dividido')} direcao="direita" severidade="info" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.paraAEsquerda')}>
           <div className="demo-linha">
-            <MenuSuspenso rotulo={t('paginas.menus.textos.esquerda')} direcao="esquerda" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
-            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.dividido')} direcao="esquerda" severidade="info" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.esquerda')} direcao="esquerda" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.dividido')} direcao="esquerda" severidade="info" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.itemAtivo')} descricao={t('paginas.menus.textos.marcaAOpcaoAtual')}>
@@ -159,10 +159,10 @@ export function PaginaMenusSuspensos() {
         <div className="demo-span-2">
           <Bloco titulo={t('paginas.menus.secoes.fechamento')} descricao={t('paginas.menus.textos.escolheSeOMenu')}>
             <div className="demo-linha">
-              <MenuSuspenso rotulo={t('paginas.menus.textos.padrao')} formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.cliqueFora')} fechamento="fora" severidade="secundario" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.cliqueDentro')} fechamento="dentro" severidade="info" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.manual')} fechamento="manual" severidade="warn" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.padrao')} formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.cliqueFora')} fechamento="fora" severidade="secundario" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.cliqueDentro')} fechamento="dentro" severidade="info" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.manual')} fechamento="manual" severidade="warn" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
             </div>
           </Bloco>
         </div>
@@ -196,12 +196,12 @@ export function PaginaMenusSuspensos() {
       <div className="demo-colunas-4">
         <Bloco titulo={t('paginas.menus.secoes.centralizado')} descricao={t('paginas.menus.textos.oPainelAbreCentrado')}>
           <div>
-            <MenuSuspenso rotulo={t('paginas.menus.textos.centralizado')} alinhamento="centro" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.centralizado')} alinhamento="centro" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.centralizadoParaCima')}>
           <div>
-            <MenuSuspenso rotulo={t('paginas.menus.textos.paraCima')} direcao="cima" alinhamento="centro" severidade="secundario" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.paraCima')} direcao="cima" alinhamento="centro" severidade="secundario" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.itensLinkOuBotao')} descricao={t('paginas.menus.textos.itemComHrefVira')}>
@@ -223,8 +223,8 @@ export function PaginaMenusSuspensos() {
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.deslocamentoEReferencia')} descricao={t('paginas.menus.textos.afastaOPainelOu')}>
           <div className="demo-linha">
-            <MenuSuspenso rotulo={t('paginas.menus.textos.deslocado')} deslocamento={[10, 20]} formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.referencia')} referencia="pai" severidade="info" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.deslocado')} deslocamento={[10, 20]} formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+            <MenuSuspenso dividido rotulo={t('paginas.menus.textos.referencia')} referencia="pai" severidade="info" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
       </div>
@@ -233,13 +233,13 @@ export function PaginaMenusSuspensos() {
         <div className="demo-span-3">
           <Bloco titulo={t('paginas.menus.secoes.alinhamento')} descricao={t('paginas.menus.textos.inicioPadraoFimOu')}>
             <div className="demo-linha">
-              <MenuSuspenso rotulo={t('paginas.menus.textos.inicio')} formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.alinhadoADireita')} alinhamento="fim" severidade="secundario" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.inicioFimNaTela')} alinhamentoTelaGrande="fim" severidade="info" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.fimInicioNaTela')} alinhamento="fim" alinhamentoTelaGrande="inicio" severidade="warn" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.esquerda')} direcao="esquerda" severidade="ok" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.direita')} direcao="direita" severidade="err" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
-              <MenuSuspenso rotulo={t('paginas.menus.textos.paraCima')} direcao="cima" severidade="destaque" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.inicio')} formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.alinhadoADireita')} alinhamento="fim" severidade="secundario" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.inicioFimNaTela')} alinhamentoTelaGrande="fim" severidade="info" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.fimInicioNaTela')} alinhamento="fim" alinhamentoTelaGrande="inicio" severidade="warn" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.esquerda')} direcao="esquerda" severidade="ok" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.direita')} direcao="direita" severidade="err" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
+              <MenuSuspenso rotulo={t('paginas.menus.textos.paraCima')} direcao="cima" severidade="destaque" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
             </div>
           </Bloco>
         </div>
@@ -266,17 +266,17 @@ export function PaginaMenusSuspensos() {
       <div className="demo-colunas-3">
         <Bloco titulo={t('paginas.menus.secoes.painelAlinhadoADireita')}>
           <div>
-            <MenuSuspenso rotulo={t('paginas.menus.textos.alinhadoADireita')} alinhamento="fim" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.alinhadoADireita')} alinhamento="fim" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.responsivoFimNaTela')} descricao={t('paginas.menus.textos.inicioNoCelularFim')}>
           <div>
-            <MenuSuspenso rotulo={t('paginas.menus.textos.responsivo')} alinhamentoTelaGrande="fim" severidade="secundario" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.responsivo')} alinhamentoTelaGrande="fim" severidade="secundario" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.responsivoInicioNaTela')} descricao={t('paginas.menus.textos.fimNoCelularInicio')}>
           <div>
-            <MenuSuspenso rotulo={t('paginas.menus.textos.responsivo')} alinhamento="fim" alinhamentoTelaGrande="inicio" severidade="info" formato="retangulo" itens={ACOES} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.responsivo')} alinhamento="fim" alinhamentoTelaGrande="inicio" severidade="info" formato="retangulo" itens={ACOES(t)} aoEscolher={escolher} />
           </div>
         </Bloco>
       </div>
@@ -284,15 +284,15 @@ export function PaginaMenusSuspensos() {
       <div className="demo-colunas">
         <Bloco titulo={t('paginas.menus.secoes.paineisColoridos')} descricao={t('paginas.menus.textos.oItemEmFoco')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} cor={c.cor} formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            {CORES(t).map((c) => (
+              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} cor={c.cor} formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.fantasma')} descricao={t('paginas.menus.textos.contornoDiscretoQueSe')}>
           <div className="demo-linha">
-            {CORES.map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="fantasma" formato="retangulo" itens={ACOES_SEPARADAS} aoEscolher={escolher} />
+            {CORES(t).map((c) => (
+              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="fantasma" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
@@ -301,7 +301,7 @@ export function PaginaMenusSuspensos() {
       <div className="demo-colunas-4">
         <Bloco titulo={t('paginas.menus.secoes.textoNaoInterativo')} descricao={t('paginas.menus.textos.linhaDeTextoQue')}>
           <div>
-            <MenuSuspenso rotulo={t('paginas.menus.textos.menu')} formato="retangulo" itens={[{ tipo: 'texto', rotulo: t('paginas.menus.textos.textoDoMenu') }, ...ACOES]} aoEscolher={escolher} />
+            <MenuSuspenso rotulo={t('paginas.menus.textos.menu')} formato="retangulo" itens={[{ tipo: 'texto', rotulo: t('paginas.menus.textos.textoDoMenu') }, ...ACOES(t)]} aoEscolher={escolher} />
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.titulos')} descricao={t('paginas.menus.textos.rotulamGruposDeAcoes')}>
@@ -310,7 +310,7 @@ export function PaginaMenusSuspensos() {
               rotulo={t('paginas.menus.textos.menu')}
               severidade="secundario"
               formato="retangulo"
-              itens={[{ tipo: 'titulo', rotulo: t('paginas.menus.textos.tituloDoGrupo') }, ...ACOES, { tipo: 'titulo', rotulo: t('paginas.menus.textos.outroGrupo') }, { id: 'arquivar', rotulo: t('paginas.menus.textos.arquivar') }]}
+              itens={[{ tipo: 'titulo', rotulo: t('paginas.menus.textos.tituloDoGrupo') }, ...ACOES(t), { tipo: 'titulo', rotulo: t('paginas.menus.textos.outroGrupo') }, { id: 'arquivar', rotulo: t('paginas.menus.textos.arquivar') }]}
               aoEscolher={escolher}
             />
           </div>
@@ -321,7 +321,7 @@ export function PaginaMenusSuspensos() {
               rotulo={t('paginas.menus.textos.menu')}
               severidade="info"
               formato="retangulo"
-              itens={[{ tipo: 'titulo', rotulo: t('paginas.menus.textos.titulo') }, ...ACOES_SEPARADAS]}
+              itens={[{ tipo: 'titulo', rotulo: t('paginas.menus.textos.titulo') }, ...ACOES_SEPARADAS(t)]}
               aoEscolher={escolher}
             />
           </div>

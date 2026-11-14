@@ -83,14 +83,14 @@ const POR_DIA: DadoGrafico[] = Array.from({ length: 120 }, (_, i) => {
 
 // vendas por categoria (as seis ativas com mais produtos da tabela Categorias), 1º semestre de 2025 e de 2026
 const s4 = sorteio(8);
-const POR_CATEGORIA: DadoGrafico[] = TABELA_CATEGORIAS.filter((c) => c.ativa)
+const POR_CATEGORIA: DadoGrafico[] = (TABELA_CATEGORIAS.filter((c) => c.ativa)
   .sort((a, b) => b.produtos - a.produtos)
   .slice(0, 6)
   .map((c, i) => ({
     categoria: c.nome,
     ano2025: c.nome === 'Utilidades' ? null : arred(c.produtos * 0.62 * (0.85 + s4() * 0.3), 1),
     ano2026: arred(c.produtos * 0.62 * (1.02 + s4() * 0.3) + i, 1),
-  }));
+  })));
 
 // clientes que mais compraram: somados dos pedidos da página Pedidos
 const totalPorCliente = new Map<string, number>();

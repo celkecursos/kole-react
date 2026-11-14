@@ -18,7 +18,7 @@ import {
   type CorCard,
 } from '../../../src';
 import { cena, retrato } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
 
 const IMG = {
@@ -46,16 +46,16 @@ function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
   );
 }
 
-const PESSOAS = [
-  ['Ana Pereira', '#1f5fe0', 'Finaliza hoje'],
-  ['Bruno Lima', '#f7931e', 'Concluído há 2 dias'],
-  ['Carla Dias', '#15803d', 'Concluído hoje'],
-  ['Daniel Moreira', '#0b72aa', 'Pendente há 4 dias'],
-  ['Eduarda Martins', '#b45309', 'Em férias até sexta'],
-  ['Fábio Andrade', '#b42318', 'Concluído amanhã'],
-  ['Gabriela Rocha', '#55627a', 'Finaliza dia 24'],
-  ['Henrique Alves', '#0e1726', 'Concluído dia 24'],
-] as const;
+const PESSOAS = (t: TradutorDemo['t']) => ([
+  [t('paginas.cards.textos.anaPereira2'), '#1f5fe0', t('paginas.cards.textos.finalizaHoje')],
+  [t('paginas.cards.textos.brunoLima'), '#f7931e', t('paginas.cards.textos.concluidoHa2Dias')],
+  [t('paginas.cards.textos.carlaDias'), '#15803d', t('paginas.cards.textos.concluidoHoje')],
+  [t('paginas.cards.textos.danielMoreira'), '#0b72aa', t('paginas.cards.textos.pendenteHa4Dias')],
+  [t('paginas.cards.textos.eduardaMartins'), '#b45309', t('paginas.cards.textos.emFeriasAteSexta')],
+  [t('paginas.cards.textos.fabioAndrade'), '#b42318', t('paginas.cards.textos.concluidoAmanha')],
+  [t('paginas.cards.textos.gabrielaRocha'), '#55627a', t('paginas.cards.textos.finalizaDia24')],
+  [t('paginas.cards.textos.henriqueAlves'), '#0e1726', t('paginas.cards.textos.concluidoDia24')],
+] as const);
 const CORES_CARD: CorCard[] = ['pri', 'destaque', 'warn', 'info', 'ok', 'err', 'neutral', 'neutral'];
 
 interface Veiculo {
@@ -69,14 +69,18 @@ interface Veiculo {
   proprietario: string;
 }
 
-const VEICULOS: Veiculo[] = [
+const VEICULOS: Veiculo[] = ([
   { id: 1, placa: 'QBX-7H42', uf: 'PR', modelo: 'Fiat Strada', cor: 'Branca', ano: 2022, situacao: 'Regular', proprietario: 'Ana Pereira' },
   { id: 2, placa: 'NJU-4021', uf: 'PR', modelo: 'Toyota Hilux', cor: 'Prata', ano: 2018, situacao: 'Licenciamento vencido', proprietario: 'Bruno Lima' },
   { id: 3, placa: 'RTA-2B19', uf: 'GO', modelo: 'VW Gol', cor: 'Vermelha', ano: 2020, situacao: 'Em manutenção', proprietario: 'Carla Dias' },
   { id: 4, placa: 'QCD-9E07', uf: 'PR', modelo: 'Honda CG 160', cor: 'Preta', ano: 2023, situacao: 'Regular', proprietario: 'Daniel Moreira' },
   { id: 5, placa: 'OAK-3311', uf: 'MS', modelo: 'Chevrolet Onix', cor: 'Cinza', ano: 2019, situacao: 'Regular', proprietario: 'Eduarda Martins' },
   { id: 6, placa: 'QBZ-1F88', uf: 'PR', modelo: 'Renault Duster', cor: 'Azul', ano: 2021, situacao: 'Licenciamento vencido', proprietario: 'Fábio Andrade' },
-];
+]);
+
+/** A situação é a chave (severidade, filtros); o texto mostrado vem do dicionário. */
+const rotuloSituacao = (t: TradutorDemo['t'], s: Veiculo['situacao']) =>
+  ({ Regular: t('paginas.cards.textos.regular'), 'Licenciamento vencido': t('paginas.cards.textos.licenciamentoVencido'), 'Em manutenção': t('paginas.cards.textos.emManutencao') })[s];
 
 const SEV_VEICULO = { Regular: 'ok', 'Licenciamento vencido': 'err', 'Em manutenção': 'warn' } as const;
 
@@ -152,7 +156,7 @@ export function PaginaCards() {
             {(['esquerda', 'centro', 'direita'] as const).map((a, i) => (
               <Card key={a} alinhamento={a}>
                 <div className="demo-cards-avatar" style={{ justifyContent: a === 'centro' ? 'center' : a === 'direita' ? 'flex-end' : 'flex-start' }}>
-                  <Avatar nome={PESSOAS[i][0]} foto={retrato(PESSOAS[i][1], PESSOAS[i][0][0])} formato="quadrado" tamanho="2rem" />
+                  <Avatar nome={PESSOAS(t)[i][0]} foto={retrato(PESSOAS(t)[i][1], PESSOAS(t)[i][0][0])} formato="quadrado" tamanho="2rem" />
                 </div>
                 <div className="demo-card-titulo">{['De onde vem', 'Por que usar?', 'O que tem de especial?'][i]}</div>
                 <p className="demo-cards-texto">{LOREM}</p>
@@ -473,7 +477,7 @@ export function PaginaCards() {
 
       <Secao titulo={t('paginas.cards.secoes.fundoColorido')}>
         <div className="demo-cards-4">
-          {PESSOAS.map(([nome, corAvatar, status], i) => (
+          {PESSOAS(t).map(([nome, corAvatar, status], i) => (
             <Card key={nome} cor={CORES_CARD[i]} style={i === 6 ? { background: 'var(--surf-3)', borderColor: 'var(--surf-3)', color: 'var(--ink)' } : undefined}>
               <div className="demo-cards-pessoa">
                 <Avatar nome={nome} foto={retrato(corAvatar, nome[0])} tamanho="2.25rem" />
@@ -515,7 +519,7 @@ export function PaginaCards() {
                 ))}
               </div>
               <div className="demo-cards-avatares">
-                {PESSOAS.slice(i % 3, (i % 3) + 3).map(([n, c]) => (
+                {PESSOAS(t).slice(i % 3, (i % 3) + 3).map(([n, c]) => (
                   <Avatar key={n} nome={n} foto={retrato(c, n[0])} tamanho="1.75rem" />
                 ))}
               </div>
@@ -637,7 +641,7 @@ export function PaginaCards() {
                   <AcaoLinha icone="pencil" rotulo={t('paginas.cards.textos.editar')} severidade="destaque" onClick={() => toast.info(t('paginas.cards.textos.editar'), v.placa)} />
                 </>
               }
-              rodape={<Status rotulo={v.situacao} severidade={SEV_VEICULO[v.situacao]} />}
+              rodape={<Status rotulo={rotuloSituacao(t, v.situacao)} severidade={SEV_VEICULO[v.situacao]} />}
               detalhes={
                 <>
                   <Detalhes rotulo={t('paginas.cards.textos.proprietario')} valor={v.proprietario} disposicao="linha" />

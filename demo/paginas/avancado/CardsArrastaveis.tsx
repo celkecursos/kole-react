@@ -9,31 +9,31 @@ interface ItemCard {
   nome: string;
 }
 
-const TEXTO = 'Existem muitas variações de passagens disponíveis, mas a maioria sofreu alguma alteração, por humor inserido ou palavras ao acaso.';
+const TEXTO = (t: TradutorDemo['t']) => (t('paginas.cardsArrastaveis.textos.existemMuitasVariacoesDe'));
 
-const INICIAL: ColunaArrastavel<ItemCard>[] = [
+const INICIAL = (t: TradutorDemo['t']): ColunaArrastavel<ItemCard>[] => ([
   {
     id: 'esq',
-    titulo: 'coluna da esquerda',
+    titulo: t('paginas.cardsArrastaveis.textos.colunaDaEsquerda'),
     itens: [
-      { id: 'tela-cheia', nome: 'Card com tela cheia' },
-      { id: 'citacao', nome: 'Card de citação' },
-      { id: 'imagem-1', nome: 'Card com imagem de fundo' },
-      { id: 'perfil-1', nome: 'Card de perfil de Atharva Simão' },
+      { id: 'tela-cheia', nome: t('paginas.cardsArrastaveis.textos.cardComTelaCheia') },
+      { id: 'citacao', nome: t('paginas.cardsArrastaveis.textos.cardDeCitacao') },
+      { id: 'imagem-1', nome: t('paginas.cardsArrastaveis.textos.cardComImagemDe') },
+      { id: 'perfil-1', nome: t('paginas.cardsArrastaveis.textos.cardDePerfilDe') },
     ],
   },
   {
     id: 'dir',
-    titulo: 'coluna da direita',
+    titulo: t('paginas.cardsArrastaveis.textos.colunaDaDireita'),
     itens: [
-      { id: 'perfil-2', nome: 'Card de perfil de Alícia Keller' },
-      { id: 'imagem-2', nome: 'Card com imagem de fundo 2' },
-      { id: 'licenca', nome: 'Card de licença' },
-      { id: 'recolher', nome: 'Card recolhível' },
-      { id: 'fechar', nome: 'Card que fecha' },
+      { id: 'perfil-2', nome: t('paginas.cardsArrastaveis.textos.cardDePerfilDe2') },
+      { id: 'imagem-2', nome: t('paginas.cardsArrastaveis.textos.cardComImagemDe2') },
+      { id: 'licenca', nome: t('paginas.cardsArrastaveis.textos.cardDeLicenca') },
+      { id: 'recolher', nome: t('paginas.cardsArrastaveis.textos.cardRecolhivel2') },
+      { id: 'fechar', nome: t('paginas.cardsArrastaveis.textos.cardQueFecha') },
     ],
   },
-];
+]);
 
 /** O conteúdo de cada card; `alca` é o botão de arrastar. */
 // recebe o `t` de quem renderiza: é chamada pelo QuadroArrastavel, não é um componente
@@ -41,7 +41,7 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
   switch (item.id) {
     case 'tela-cheia':
       return (
-        <Card titulo={t('paginas.cardsArrastaveis.secoes.telaCheia')} telaCheia ferramentas={alca} rodape={<Botao rotulo={t('paginas.cardsArrastaveis.textos.lerMais')} tamanho="pequeno" formato="retangulo" />}>{rico(t('paginas.cardsArrastaveis.textos.cardEmTelaCheia'))}<p className="demo-arrasta-texto">{TEXTO}</p>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.telaCheia')} telaCheia ferramentas={alca} rodape={<Botao rotulo={t('paginas.cardsArrastaveis.textos.lerMais')} tamanho="pequeno" formato="retangulo" />}>{rico(t('paginas.cardsArrastaveis.textos.cardEmTelaCheia'))}<p className="demo-arrasta-texto">{TEXTO(t)}</p>
         </Card>
       );
     case 'citacao':
@@ -58,7 +58,7 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
           titulo={t('paginas.cardsArrastaveis.secoes.imagensVeu')}
           acoes={alca}
         >
-          <p className="demo-arrasta-texto">{TEXTO}</p>{rico(t('paginas.cardsArrastaveis.textos.atualizadoHa2Min'))}</Card>
+          <p className="demo-arrasta-texto">{TEXTO(t)}</p>{rico(t('paginas.cardsArrastaveis.textos.atualizadoHa2Min'))}</Card>
       );
     case 'perfil-1':
       return (
@@ -96,12 +96,12 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
       );
     case 'recolher':
       return (
-        <Card titulo={t('paginas.cardsArrastaveis.secoes.recolhivel')} recolhivel ferramentas={alca}>{rico(t('paginas.cardsArrastaveis.textos.cardRecolhivel'))}<p className="demo-arrasta-texto">{TEXTO}</p>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.recolhivel')} recolhivel ferramentas={alca}>{rico(t('paginas.cardsArrastaveis.textos.cardRecolhivel'))}<p className="demo-arrasta-texto">{TEXTO(t)}</p>
         </Card>
       );
     default:
       return (
-        <Card titulo={t('paginas.cardsArrastaveis.secoes.fecha')} dispensavel ferramentas={alca}>{rico(t('paginas.cardsArrastaveis.textos.cardFechavel'))}<p className="demo-arrasta-texto">{TEXTO}</p>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.fecha')} dispensavel ferramentas={alca}>{rico(t('paginas.cardsArrastaveis.textos.cardFechavel'))}<p className="demo-arrasta-texto">{TEXTO(t)}</p>
         </Card>
       );
   }
@@ -109,7 +109,7 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
 
 export function PaginaCardsArrastaveis() {
   const { t } = useT();
-  const [colunas, setColunas] = useState(INICIAL);
+  const [colunas, setColunas] = useState(INICIAL(t));
 
   return (
     <div className="demo-pilha">
@@ -117,7 +117,7 @@ export function PaginaCardsArrastaveis() {
       <p className="demo-bloco-desc demo-arrasta-ajuda">{t('paginas.cardsArrastaveis.textos.arrastePelaAlca')}<span aria-hidden="true">⋮⋮</span>{t('paginas.cardsArrastaveis.textos.paraReordenarOuTrocar')}</p>
       <QuadroArrastavel colunas={colunas} aoMudar={setColunas} renderItem={(item, alca) => conteudo(item, alca, t)} nomeItem={(i) => i.nome} />
       <div>
-        <Botao rotulo={t('paginas.cardsArrastaveis.textos.voltarAOrdemInicial')} icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setColunas(INICIAL)} />
+        <Botao rotulo={t('paginas.cardsArrastaveis.textos.voltarAOrdemInicial')} icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setColunas(INICIAL(t))} />
       </div>
     </div>
   );

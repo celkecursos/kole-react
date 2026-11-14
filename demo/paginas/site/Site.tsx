@@ -53,13 +53,13 @@ const LOGO = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><defs><clipPath id="m"><rect width="36" height="36" rx="10"/></clipPath></defs><g clip-path="url(#m)"><rect width="36" height="36" fill="#0b1a36"/><rect x="18" y="18" width="22" height="22" rx="6" fill="#1f5fe0" transform="rotate(45 29 29)"/></g><circle cx="18" cy="18" r="5" fill="#ff9a2e"/></svg>',
 )}`;
 
-const NAV = [
-  { rotulo: 'Home', rota: '/site' },
-  { rotulo: 'Sobre', rota: '/site/sobre' },
-  { rotulo: 'Serviços', rota: '/site/servicos' },
-  { rotulo: 'Blog', rota: '/site/blog' },
-  { rotulo: 'Contato', rota: '/site/contato' },
-];
+const NAV = (t: TradutorDemo['t']) => ([
+  { rotulo: t('paginas.site.textos.home'), rota: '/site' },
+  { rotulo: t('paginas.site.textos.sobre'), rota: '/site/sobre' },
+  { rotulo: t('paginas.site.textos.servicos'), rota: '/site/servicos' },
+  { rotulo: t('paginas.site.textos.blog'), rota: '/site/blog' },
+  { rotulo: t('paginas.site.textos.contato'), rota: '/site/contato' },
+]);
 
 interface Post {
   cat: string;
@@ -67,22 +67,22 @@ interface Post {
   data: string;
 }
 
-const POSTS: Post[] = (
+const POSTS = (t: TradutorDemo['t']): Post[] => ((
   [
-    ['Guias', 'Como dar o primeiro passo: um guia prático para iniciantes', '05/11/2026'],
-    ['Novidades', 'O que mudou na nova versão do nosso serviço', '03/11/2026'],
-    ['Dicas', '7 dicas simples para aproveitar melhor o seu tempo', '30/10/2026'],
-    ['Cases', 'Como um cliente reduziu custos em poucas semanas', '27/10/2026'],
-    ['Guias', 'Checklist completo antes de contratar um fornecedor', '22/10/2026'],
-    ['Dicas', 'Erros comuns e como evitá-los no dia a dia', '18/10/2026'],
-    ['Novidades', 'Novos canais de atendimento para você', '14/10/2026'],
-    ['Cases', 'De planilhas a resultados: a virada de um cliente', '09/10/2026'],
-    ['Guias', 'Como escolher o plano certo para a sua empresa', '03/10/2026'],
-    ['Dicas', 'Organize a semana em quinze minutos', '29/09/2026'],
-    ['Novidades', 'Agenda de eventos do próximo trimestre', '24/09/2026'],
-    ['Cases', 'Atendimento mais rápido com uma rotina simples', '19/09/2026'],
+    [t('paginas.site.textos.guias'), t('paginas.site.textos.comoDarOPrimeiro'), '05/11/2026'],
+    [t('paginas.site.textos.novidades'), t('paginas.site.textos.oQueMudouNa'), '03/11/2026'],
+    [t('paginas.site.textos.dicas'), '7 dicas simples para aproveitar melhor o seu tempo', '30/10/2026'],
+    [t('paginas.site.textos.cases'), t('paginas.site.textos.comoUmClienteReduziu'), '27/10/2026'],
+    [t('paginas.site.textos.guias'), t('paginas.site.textos.checklistCompletoAntesDe'), '22/10/2026'],
+    [t('paginas.site.textos.dicas'), t('paginas.site.textos.errosComunsEComo'), '18/10/2026'],
+    [t('paginas.site.textos.novidades'), t('paginas.site.textos.novosCanaisDeAtendimento'), '14/10/2026'],
+    [t('paginas.site.textos.cases'), t('paginas.site.textos.dePlanilhasAResultados'), '09/10/2026'],
+    [t('paginas.site.textos.guias'), t('paginas.site.textos.comoEscolherOPlano'), '03/10/2026'],
+    [t('paginas.site.textos.dicas'), t('paginas.site.textos.organizeASemanaEm'), '29/09/2026'],
+    [t('paginas.site.textos.novidades'), t('paginas.site.textos.agendaDeEventosDo'), '24/09/2026'],
+    [t('paginas.site.textos.cases'), t('paginas.site.textos.atendimentoMaisRapidoCom'), '19/09/2026'],
   ] as const
-).map(([cat, titulo, data]) => ({ cat, titulo, data }));
+).map(([cat, titulo, data]) => ({ cat, titulo, data })));
 
 /** Área de imagem do modelo (listrada, com legenda), para trocar pela foto de verdade. */
 function Imagem({ legenda, proporcao, className }: { legenda?: string; proporcao?: string; className?: string }) {
@@ -124,7 +124,7 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
   return (
     <EstruturaSite
       marca={{ nome: MARCA, href: '/site', logo: LOGO }}
-      nav={NAV}
+      nav={NAV(t)}
       rotaAtual={rota}
       // rotas da demo ficam no #hash: o link de verdade aponta para "#/site/…"
       renderLink={(p) => (
@@ -155,7 +155,7 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
           descricao={t('paginas.site.textos.umaFraseQueResume')}
           extra={<Newsletter aparencia="linha" rotuloBotao={t('paginas.site.textos.assinar')} aoInscrever={() => undefined} />}
           colunas={[
-            { titulo: t('paginas.site.textos.navegacao'), links: NAV },
+            { titulo: t('paginas.site.textos.navegacao'), links: NAV(t) },
             {
               titulo: t('paginas.site.textos.legal'),
               links: [
@@ -182,24 +182,24 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
 
 /* ---------------- Home ---------------- */
 
-const TITULO_HOME = 'Uma frase forte que diz o que o seu negócio resolve.';
-const TEXTO_HOME = 'Um parágrafo curto explicando para quem é, o que entrega e por que vale a pena. Troque pelo texto da sua empresa, loja, escritório ou projeto.';
+const TITULO_HOME = (t: TradutorDemo['t']) => (t('paginas.site.textos.umaFraseForteQue'));
+const TEXTO_HOME = (t: TradutorDemo['t']) => (t('paginas.site.textos.umParagrafoCurtoExplicando'));
 
-const DIFERENCIAIS = [
-  { icone: <Zap />, titulo: 'Rápido de começar', texto: 'Explique em uma frase como é simples dar o primeiro passo.' },
-  { icone: 'shield', titulo: 'Seguro e confiável', texto: 'Fale de garantias, certificações ou cuidados com o cliente.' },
-  { icone: 'chart-line', titulo: 'Resultados medidos', texto: 'Mostre como o cliente acompanha o que foi entregue.' },
-  { icone: 'users', titulo: 'Equipe especializada', texto: 'Destaque a experiência das pessoas por trás do serviço.' },
-  { icone: 'clock', titulo: 'Atendimento ágil', texto: 'Prazos de resposta e disponibilidade de horários.' },
-  { icone: 'message-square', titulo: 'Suporte humano', texto: 'Canais de contato e como o cliente é acompanhado.' },
-] as const;
+const DIFERENCIAIS = (t: TradutorDemo['t']) => ([
+  { icone: <Zap />, titulo: t('paginas.site.textos.rapidoDeComecar'), texto: t('paginas.site.textos.expliqueEmUmaFrase') },
+  { icone: 'shield', titulo: t('paginas.site.textos.seguroEConfiavel'), texto: t('paginas.site.textos.faleDeGarantiasCertificacoes') },
+  { icone: 'chart-line', titulo: t('paginas.site.textos.resultadosMedidos'), texto: t('paginas.site.textos.mostreComoOCliente') },
+  { icone: 'users', titulo: t('paginas.site.textos.equipeEspecializada'), texto: t('paginas.site.textos.destaqueAExperienciaDas') },
+  { icone: 'clock', titulo: t('paginas.site.textos.atendimentoAgil'), texto: t('paginas.site.textos.prazosDeRespostaE') },
+  { icone: 'message-square', titulo: t('paginas.site.textos.suporteHumano'), texto: t('paginas.site.textos.canaisDeContatoE') },
+] as const);
 
-const FAQ = [
-  ['Como funciona o atendimento?', 'Explique aqui o passo a passo do atendimento, prazos e canais disponíveis.'],
-  ['Quais são as formas de pagamento?', 'Liste as formas aceitas: cartão, boleto, Pix, transferência ou outras.'],
-  ['Posso cancelar quando quiser?', 'Descreva a política de cancelamento de forma clara e direta.'],
-  ['Vocês atendem em todo o Brasil?', 'Informe a área de atuação ou se o atendimento é online.'],
-];
+const FAQ = (t: TradutorDemo['t']) => ([
+  [t('paginas.site.textos.comoFuncionaOAtendimento'), t('paginas.site.textos.expliqueAquiOPasso')],
+  [t('paginas.site.textos.quaisSaoAsFormas'), t('paginas.site.textos.listeAsFormasAceitas')],
+  [t('paginas.site.textos.possoCancelarQuandoQuiser'), t('paginas.site.textos.descrevaAPoliticaDe')],
+  [t('paginas.site.textos.vocesAtendemEmTodo'), t('paginas.site.textos.informeAAreaDe')],
+]);
 
 function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'escuro' | 'claro' }) {
   const { t } = useT();
@@ -214,9 +214,9 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
       {faixa === 'escuro' ? (
         <DestaqueSite
           selo={t('paginas.site.textos.seuSloganOuNovidade')}
-          titulo={TITULO_HOME}
+          titulo={TITULO_HOME(t)}
           realce="negócio"
-          descricao={TEXTO_HOME}
+          descricao={TEXTO_HOME(t)}
           lateral={
             <div className="demo-site-hero-midia">
               <div className="demo-site-hero-fundo" aria-hidden="true" />
@@ -246,9 +246,9 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         <DestaqueSite
           aparencia="claro"
           selo={t('paginas.site.textos.seuSloganOuNovidade')}
-          titulo={TITULO_HOME}
+          titulo={TITULO_HOME(t)}
           realce="negócio"
-          descricao={TEXTO_HOME}
+          descricao={TEXTO_HOME(t)}
           midia={<Imagem legenda={t('paginas.site.textos.imagemPrincipalMockupDo')} proporcao="16 / 7" />}
         >
           {botoes}
@@ -273,7 +273,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
           descricao={t('paginas.site.textos.listeOsPrincipaisBeneficios')}
         />
         <div className="demo-site-grade demo-site-grade--300">
-          {DIFERENCIAIS.map((d) => (
+          {DIFERENCIAIS(t).map((d) => (
             <CardRecurso key={d.titulo} icone={d.icone} titulo={d.titulo}>
               {d.texto}
             </CardRecurso>
@@ -322,7 +322,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
       <SecaoSite rotulo={t('paginas.site.textos.blog')}>
         <CabecalhoSecao sobretitulo={t('paginas.site.textos.blog')} titulo={t('paginas.site.textos.conteudosRecentes')} acao={<LinkDemo rota="/site/blog">{t('paginas.site.textos.verTodos')}</LinkDemo>} />
         <div className="demo-site-grade demo-site-grade--300">
-          {POSTS.slice(0, 3).map((p) => (
+          {POSTS(t).slice(0, 3).map((p) => (
             <CardConteudo
               key={p.titulo}
               href="/site/blog/post"
@@ -342,7 +342,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
       <SecaoSite largura="estreita" rotulo={t('paginas.site.textos.perguntasFrequentes')}>
         <CabecalhoSecao sobretitulo={t('paginas.site.textos.duvidas')} titulo={t('paginas.site.textos.perguntasFrequentes')} alinhamento="centro" />
         <Acordeao icone="mais" padraoAbertos={['0']}>
-          {FAQ.map(([p, r], i) => (
+          {FAQ(t).map(([p, r], i) => (
             <ItemAcordeao key={p} valor={String(i)} titulo={p}>
               {r}
             </ItemAcordeao>
@@ -435,18 +435,18 @@ function Sobre() {
 
 /* ---------------- Serviços e planos ---------------- */
 
-const PLANOS = [
-  { nome: 'Básico', descricao: 'Para quem está começando', mensal: '49', anual: '39', itens: ['Recurso essencial 1', 'Recurso essencial 2', 'Suporte por e-mail', '1 usuário'] },
+const PLANOS = (t: TradutorDemo['t']) => ([
+  { nome: t('paginas.site.textos.basico'), descricao: t('paginas.site.textos.paraQuemEstaComecando'), mensal: '49', anual: '39', itens: [t('paginas.site.textos.recursoEssencial1'), t('paginas.site.textos.recursoEssencial2'), t('paginas.site.textos.suportePorEMail'), '1 usuário'] },
   {
-    nome: 'Profissional',
-    descricao: 'Para negócios em crescimento',
+    nome: t('paginas.site.textos.profissional'),
+    descricao: t('paginas.site.textos.paraNegociosEmCrescimento'),
     mensal: '99',
     anual: '79',
-    itens: ['Tudo do Básico', 'Recurso avançado 1', 'Recurso avançado 2', 'Suporte prioritário', 'Até 5 usuários'],
+    itens: [t('paginas.site.textos.tudoDoBasico'), t('paginas.site.textos.recursoAvancado1'), t('paginas.site.textos.recursoAvancado2'), t('paginas.site.textos.suportePrioritario'), t('paginas.site.textos.ate5Usuarios')],
     destaque: true,
   },
-  { nome: 'Empresa', descricao: 'Para equipes maiores', mensal: '199', anual: '159', itens: ['Tudo do Profissional', 'Integrações personalizadas', 'Gerente de conta', 'Usuários ilimitados'] },
-];
+  { nome: t('paginas.site.textos.empresa'), descricao: t('paginas.site.textos.paraEquipesMaiores'), mensal: '199', anual: '159', itens: [t('paginas.site.textos.tudoDoProfissional'), t('paginas.site.textos.integracoesPersonalizadas'), t('paginas.site.textos.gerenteDeConta'), t('paginas.site.textos.usuariosIlimitados')] },
+]);
 
 function Servicos({ navegar }: { navegar: (rota: string) => void }) {
   const { t } = useT();
@@ -482,7 +482,7 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
           </Abas>
         </div>
         <div className="demo-site-grade demo-site-grade--300 demo-site-planos">
-          {PLANOS.map((p) => (
+          {PLANOS(t).map((p) => (
             <CardPlano
               key={p.nome}
               nome={p.nome}
@@ -519,7 +519,7 @@ function Blog() {
   const [busca, setBusca] = useState('');
   const [cat, setCat] = useState('Todos');
   const [pagina, setPagina] = useState(1);
-  const filtrados = POSTS.slice(1).filter((p) => (cat === 'Todos' || p.cat === cat) && (!busca || p.titulo.toLowerCase().includes(busca.toLowerCase())));
+  const filtrados = POSTS(t).slice(1).filter((p) => (cat === 'Todos' || p.cat === cat) && (!busca || p.titulo.toLowerCase().includes(busca.toLowerCase())));
   const visiveis = filtrados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
   return (
     <>
@@ -563,7 +563,7 @@ function Blog() {
               etiquetas={
                 <>
                   <Badge cor="destaque" formato="pilula" rotulo={t('paginas.site.textos.destaque')} />
-                  <Badge cor="pri" aparencia="suave" formato="pilula" rotulo={POSTS[0].cat} />
+                  <Badge cor="pri" aparencia="suave" formato="pilula" rotulo={POSTS(t)[0].cat} />
                 </>
               }
               titulo={t('paginas.site.textos.tituloDoPostEm')}
@@ -601,13 +601,13 @@ function Blog() {
 
 /* ---------------- Post (sem e com coluna lateral) ---------------- */
 
-const TRILHA_POST = [{ rotulo: 'Home', rota: '/site', icone: 'house' as const }, { rotulo: 'Blog', rota: '/site/blog' }, { rotulo: 'Guias' }];
+const TRILHA_POST = (t: TradutorDemo['t']) => ([{ rotulo: t('paginas.site.textos.home'), rota: '/site', icone: 'house' as const }, { rotulo: t('paginas.site.textos.blog'), rota: '/site/blog' }, { rotulo: t('paginas.site.textos.guias') }]);
 
 function CabecalhoPost() {
   const { t } = useT();
   return (
     <>
-      <Trilha itens={TRILHA_POST} />
+      <Trilha itens={TRILHA_POST(t)} />
       <CabecalhoSecao nivel={1} tamanho="pagina" titulo={t('paginas.site.textos.tituloDoPostEm')} descricao={t('paginas.site.textos.linhaFinaQueResume')} />
       <div className="demo-site-autor">
         <Avatar nome="Nome do Autor" tamanho="2.5rem" />
@@ -647,7 +647,7 @@ function LeiaTambem() {
     <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.leiaTambem')}>
       <CabecalhoSecao titulo={t('paginas.site.textos.leiaTambem')} />
       <div className="demo-site-grade demo-site-grade--280">
-        {POSTS.slice(0, 3).map((p) => (
+        {POSTS(t).slice(0, 3).map((p) => (
           <CardConteudo key={p.titulo} href="/site/blog/post" etiquetas={<span className="demo-site-cat-tx">{p.cat}</span>} titulo={p.titulo} />
         ))}
       </div>
@@ -662,7 +662,7 @@ function LateralBlog() {
     <aside className="demo-site-lateral" aria-label={t('paginas.site.textos.maisDoBlog')}>
       <Newsletter descricao={t('paginas.site.textos.umEMailPor')} aoInscrever={() => undefined} />
       <Card titulo={t('paginas.site.secoes.maisLidos')}>
-        <ListaNumerada tamanho="compacto" rotulo={t('paginas.site.textos.maisLidos')} itens={POSTS.slice(1, 5).map((p) => ({ titulo: p.titulo, href: '/site/blog/post' }))} />
+        <ListaNumerada tamanho="compacto" rotulo={t('paginas.site.textos.maisLidos')} itens={POSTS(t).slice(1, 5).map((p) => ({ titulo: p.titulo, href: '/site/blog/post' }))} />
       </Card>
       <Imagem legenda={t('paginas.site.textos.banner')} proporcao="4 / 3" className="demo-site-img--tracejada" />
     </aside>

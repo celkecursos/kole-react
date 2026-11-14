@@ -1,14 +1,12 @@
 import { useState, type ReactNode } from 'react';
 import { Acordeao, Botao, CabecalhoPagina, ItemAcordeao, Recolhivel, type AcordeaoProps } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
-const TEXTO = (
-  <>
-    <strong>Este é o corpo do primeiro item.</strong> Ele aparece aberto por padrão, até que o componente adicione as classes que fazem a animação
-    de abrir e fechar. Dá para colocar qualquer conteúdo aqui dentro: texto, listas, formulários.
-  </>
-);
+const TEXTO = (t: TradutorDemo['t']) => ((
+  <>{rico(t('paginas.acordeoes.textos.esteEOCorpo'))}</>
+));
 
 /** Os 3 itens de exemplo, com o primeiro aberto. */
 function Exemplo(props: Omit<AcordeaoProps, 'children'> & { icones?: boolean }) {
@@ -17,7 +15,7 @@ function Exemplo(props: Omit<AcordeaoProps, 'children'> & { icones?: boolean }) 
   return (
     <Acordeao padraoAbertos={['um']} {...resto}>
       <ItemAcordeao valor="um" titulo={t('paginas.acordeoes.textos.item1DoAcordeao')} icone={icones ? 'package' : undefined}>
-        {TEXTO}
+        {TEXTO(t)}
       </ItemAcordeao>
       <ItemAcordeao valor="dois" titulo={t('paginas.acordeoes.textos.item2DoAcordeao')} icone={icones ? 'truck' : undefined}>{t('paginas.acordeoes.textos.conteudoDoSegundoItem')}</ItemAcordeao>
       <ItemAcordeao valor="tres" titulo={t('paginas.acordeoes.textos.item3DoAcordeao')} icone={icones ? 'wallet' : undefined}>{t('paginas.acordeoes.textos.conteudoDoTerceiroItem')}</ItemAcordeao>
@@ -87,7 +85,7 @@ export function PaginaAcordeoes() {
         <Bloco titulo={t('paginas.acordeoes.secoes.umaCorPorItem')} descricao={t('paginas.acordeoes.textos.aCorDoItem')}>
           <Acordeao separado variante="suave" padraoAbertos={['um']}>
             <ItemAcordeao valor="um" titulo={t('paginas.acordeoes.textos.item1DoAcordeao')} cor="pri">
-              {TEXTO}
+              {TEXTO(t)}
             </ItemAcordeao>
             <ItemAcordeao valor="dois" titulo={t('paginas.acordeoes.textos.item2DoAcordeao')} cor="err">{t('paginas.acordeoes.textos.conteudoDoSegundoItem2')}</ItemAcordeao>
             <ItemAcordeao valor="tres" titulo={t('paginas.acordeoes.textos.item3DoAcordeao')} cor="destaque">{t('paginas.acordeoes.textos.conteudoDoTerceiroItem')}</ItemAcordeao>

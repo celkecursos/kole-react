@@ -1,6 +1,6 @@
 import { CabecalhoPagina, Carrossel, type SlideCarrossel } from '../../../src';
 import { Bloco, cena } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 const IMAGENS = [
   { imagem: cena('#1f5fe0', '#0b1a36'), alt: 'Paisagem azul ao anoitecer' },
@@ -9,11 +9,11 @@ const IMAGENS = [
 ];
 
 /** Imagens claras, para a variante escura. */
-const CLARAS = [
-  { imagem: cena('#dbeafe', '#93c5fd', '#fde68a'), alt: 'Paisagem azul-clara' },
-  { imagem: cena('#fef3c7', '#fcd34d', '#fb923c'), alt: 'Paisagem amarela' },
-  { imagem: cena('#dcfce7', '#86efac', '#fde68a'), alt: 'Paisagem verde-clara' },
-];
+const CLARAS = (t: TradutorDemo['t']) => ([
+  { imagem: cena('#dbeafe', '#93c5fd', '#fde68a'), alt: t('paginas.carrossel.textos.paisagemAzulClara') },
+  { imagem: cena('#fef3c7', '#fcd34d', '#fb923c'), alt: t('paginas.carrossel.textos.paisagemAmarela') },
+  { imagem: cena('#dcfce7', '#86efac', '#fde68a'), alt: t('paginas.carrossel.textos.paisagemVerdeClara') },
+]);
 
 const LEGENDAS = [
   { titulo: 'Primeiro slide', descricao: 'Um conteúdo de exemplo para o primeiro slide.' },
@@ -54,7 +54,7 @@ export function PaginaCarrosseis() {
           <Carrossel rotulo={t('paginas.carrossel.textos.semArrastar')} slides={IMAGENS} controles arrastar={false} automatico={false} />
         </Bloco>
         <Bloco titulo={t('paginas.carrossel.secoes.varianteEscura')} descricao={t('paginas.carrossel.textos.controlesELegendasEscuros')}>
-          <Carrossel rotulo={t('paginas.carrossel.textos.varianteEscura')} slides={comLegendas(CLARAS)} controles indicadores escuro />
+          <Carrossel rotulo={t('paginas.carrossel.textos.varianteEscura')} slides={comLegendas(CLARAS(t))} controles indicadores escuro />
         </Bloco>
       </div>
     </div>

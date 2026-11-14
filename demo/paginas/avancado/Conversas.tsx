@@ -13,7 +13,7 @@ import {
   type ItemReferencia,
 } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 interface Msg {
   id: number;
@@ -61,13 +61,13 @@ const RESPOSTAS: Resposta[] = [
 const AGORA = Date.now();
 const minutosAtras = (m: number) => new Date(AGORA - m * 60_000);
 
-const INICIAIS: Msg[] = [
-  { id: 1, autor: 'sistema', texto: 'Conversa iniciada hoje', estado: 'concluida', hora: minutosAtras(12) },
-  { id: 2, autor: 'usuario', texto: 'Como funciona o frete grátis?', estado: 'concluida', hora: minutosAtras(11) },
+const INICIAIS = (t: TradutorDemo['t']): Msg[] => ([
+  { id: 1, autor: 'sistema', texto: t('paginas.conversas.textos.conversaIniciadaHoje'), estado: 'concluida', hora: minutosAtras(12) },
+  { id: 2, autor: 'usuario', texto: t('paginas.conversas.textos.comoFuncionaOFrete'), estado: 'concluida', hora: minutosAtras(11) },
   { id: 3, autor: 'assistente', texto: RESPOSTAS[0].texto, referencias: FONTES_FRETE, estado: 'concluida', hora: minutosAtras(11) },
-  { id: 4, autor: 'usuario', texto: 'E para mudar o endereço de um pedido?', estado: 'concluida', hora: minutosAtras(10) },
+  { id: 4, autor: 'usuario', texto: t('paginas.conversas.textos.eParaMudarO'), estado: 'concluida', hora: minutosAtras(10) },
   { id: 5, autor: 'assistente', texto: RESPOSTAS[1].texto, estado: 'concluida', hora: minutosAtras(10) },
-];
+]);
 
 let seq = 100;
 
@@ -208,7 +208,7 @@ export function PaginaConversas() {
         descricao={t('paginas.conversas.textos.envieUmaMensagemA')}
       >
         <div className="demo-chat-pagina">
-          <ChatDemo inicial={INICIAIS} larguraMaxima="48rem" />
+          <ChatDemo inicial={INICIAIS(t)} larguraMaxima="48rem" />
         </div>
       </Bloco>
 

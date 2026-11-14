@@ -3,21 +3,22 @@ import { Avatar, Badge, Botao, CabecalhoPagina, Chip, ComBadge, Icone, Placa, St
 import { Bloco, retrato } from '../Bloco';
 import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const CORES: { cor: CorBadge; nome: string }[] = [
-  { cor: 'pri', nome: 'Principal' },
-  { cor: 'destaque', nome: 'Destaque' },
-  { cor: 'ok', nome: 'Sucesso' },
-  { cor: 'err', nome: 'Erro' },
-  { cor: 'warn', nome: 'Atenção' },
-  { cor: 'info', nome: 'Info' },
-  { cor: 'neutral', nome: 'Neutro' },
-];
+const CORES = (t: TradutorDemo['t']): { cor: CorBadge; nome: string }[] => ([
+  { cor: 'pri', nome: t('paginas.badges.textos.principal') },
+  { cor: 'destaque', nome: t('paginas.badges.textos.destaque') },
+  { cor: 'ok', nome: t('paginas.badges.textos.sucesso') },
+  { cor: 'err', nome: t('paginas.badges.textos.erro') },
+  { cor: 'warn', nome: t('paginas.badges.textos.atencao') },
+  { cor: 'info', nome: t('paginas.badges.textos.info') },
+  { cor: 'neutral', nome: t('paginas.badges.textos.neutro') },
+]);
 
 /** Uma linha com o badge em todas as cores. */
 function Todas(props: Omit<BadgeProps, 'cor' | 'rotulo'>) {
+  const { t } = useT();
   return (
     <div className="demo-linha demo-linha--centro">
-      {CORES.map((c) => (
+      {CORES(t).map((c) => (
         <Badge key={c.cor} cor={c.cor} rotulo={c.nome} {...props} />
       ))}
     </div>
@@ -34,11 +35,11 @@ const titulosDe = (t: TradutorDemo['t']): [string, ReactNode][] => [
   ['h6', <h6 key="6">{t('paginas.badges.textos.tituloDeExemplo')}<Badge tamanho="herdar" rotulo={t('paginas.badges.textos.novo')} /></h6>],
 ];
 
-const CHIPS = ['Pix', 'PR', 'Pago'];
+const CHIPS = (t: TradutorDemo['t']) => ([t('paginas.badges.textos.pix'), 'PR', t('paginas.badges.textos.pago')]);
 
 export function PaginaBadges() {
   const { t } = useT();
-  const [chips, setChips] = useState(CHIPS);
+  const [chips, setChips] = useState(CHIPS(t));
 
   return (
     <div className="demo-pilha">
@@ -171,7 +172,7 @@ export function PaginaBadges() {
             {chips.map((c) => (
               <Chip key={c} campo="Filtro" rotulo={c} aoRemover={() => setChips((l) => l.filter((x) => x !== c))} />
             ))}
-            {chips.length === 0 && <Botao rotulo={t('paginas.badges.textos.restaurarFiltros')} severidade="secundario" aparencia="texto" onClick={() => setChips(CHIPS)} />}
+            {chips.length === 0 && <Botao rotulo={t('paginas.badges.textos.restaurarFiltros')} severidade="secundario" aparencia="texto" onClick={() => setChips(CHIPS(t))} />}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.badges.secoes.placaDeVeiculo')} descricao={t('paginas.badges.textos.padraoAntigoOuMercosul')}>

@@ -36,7 +36,7 @@ import {
 } from '../../src';
 import { Bloco, retrato } from './Bloco';
 import { OPCOES_PAGAMENTO } from './dados';
-import { useT } from '../i18n/useT';
+import { useT, type TradutorDemo } from '../i18n/useT';
 
 interface Servidor {
   id: number;
@@ -73,7 +73,7 @@ const MUNICIPIOS: Record<string, string[]> = {
 };
 const buscarMunicipios = async (uf: string): Promise<Municipio[]> => (MUNICIPIOS[uf] ?? []).map((nome, i) => ({ id: `${uf}-${i}`, nome }));
 
-const PERMISSOES = ['Cadastrar pedido', 'Editar pedido', 'Excluir pedido', 'Aprovar desconto', 'Emitir nota fiscal', 'Gerenciar categorias', 'Ver relatórios', 'Exportar dados'];
+const PERMISSOES = (t: TradutorDemo['t']) => ([t('paginas.campos.textos.cadastrarPedido'), t('paginas.campos.textos.editarPedido'), t('paginas.campos.textos.excluirPedido'), t('paginas.campos.textos.aprovarDesconto'), t('paginas.campos.textos.emitirNotaFiscal'), t('paginas.campos.textos.gerenciarCategorias'), t('paginas.campos.textos.verRelatorios'), t('paginas.campos.textos.exportarDados')]);
 
 const ARQUIVOS: Record<string, Anexo | null> = {
   imagem: { nome: 'perfil.svg', tamanho: 17_500, tipo: 'image/svg+xml', url: retrato('#1f5fe0', 'AP') },
@@ -100,7 +100,7 @@ export function PaginaCampos() {
   const [cidadeLivre, setCidadeLivre] = useState<Municipio | string | null>('');
   const [tipoPessoa, setTipoPessoa] = useState<'F' | 'J' | null>('F');
   const [servidor, setServidor] = useState<Servidor | null>(null);
-  const [permissoes, setPermissoes] = useState<PicklistValor<string>>({ fonte: PERMISSOES.slice(2), alvo: PERMISSOES.slice(0, 2) });
+  const [permissoes, setPermissoes] = useState<PicklistValor<string>>({ fonte: PERMISSOES(t).slice(2), alvo: PERMISSOES(t).slice(0, 2) });
   const [anexos, setAnexos] = useState<Anexo[]>(ANEXOS_INICIAIS);
   const [arquivo, setArquivo] = useState('imagem');
   const [texto, setTexto] = useState('');

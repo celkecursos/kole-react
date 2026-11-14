@@ -254,7 +254,7 @@ function PainelTarefa({
   aoSalvar: (t: TarefaDemo) => void;
   aoExcluir: (t: TarefaDemo) => void;
 }) {
-  const { t: tx } = useT();
+  const { t: tx, idioma } = useT();
   const [t, setT] = useState<TarefaDemo>(
     () => tarefa ?? { id: novoId(), titulo: '', situacao: 'aberta', prioridade: 'media', idsEtiquetas: [], idResponsavel: 'ana', criadaEm: new Date() },
   );
@@ -273,7 +273,7 @@ function PainelTarefa({
       tamanho="medio"
       aoFechar={aoFechar}
       titulo={tarefa ? tx('paginas.tarefas.textos.detalhesDaTarefa') : tx('paginas.tarefas.textos.novaTarefa')}
-      subtitulo={tarefa ? tx('paginas.tarefas.textos.criadaValor', { valor: tempoRelativo(tarefa.criadaEm) }) : undefined}
+      subtitulo={tarefa ? tx('paginas.tarefas.textos.criadaValor', { valor: tempoRelativo(tarefa.criadaEm, undefined, idioma) }) : undefined}
       icone="list-todo"
       rodape={
         <>

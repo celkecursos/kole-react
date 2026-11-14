@@ -40,7 +40,7 @@ import {
   type TipoDeCampo,
 } from '../../src';
 import { Bloco } from './Bloco';
-import { useT } from '../i18n/useT';
+import { useT, type TradutorDemo } from '../i18n/useT';
 
 function Linha({ codigo, children }: { codigo: string; children: ReactNode }) {
   return (
@@ -52,17 +52,17 @@ function Linha({ codigo, children }: { codigo: string; children: ReactNode }) {
 }
 
 // token de exemplo (assinatura falsa): só o payload é lido
-const JWT_EXEMPLO = [
+const JWT_EXEMPLO = (t: TradutorDemo['t']) => ([
   'eyJhbGciOiJIUzI1NiJ9',
-  btoa(JSON.stringify({ sub: '52998224725', name: 'GABRIELLY RIBEIRO DA SILVA', iat: 1790000000, exp: 1790003600 }))
+  btoa(JSON.stringify({ sub: '52998224725', name: t('paginas.utilitarios.textos.gabriellyRibeiroDaSilva'), iat: 1790000000, exp: 1790003600 }))
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, ''),
   'assinatura',
-].join('.');
+].join('.'));
 
 export function PaginaUtilitarios() {
-  const { t } = useT();
+  const { t, idioma } = useT();
   const [tipo, setTipo] = useState<TipoDeCampo | null>('cpf');
   const [valorTipo, setValorTipo] = useState('529.982.247-25');
   const [numero, setNumero] = useState('1234567');
@@ -79,9 +79,9 @@ export function PaginaUtilitarios() {
   const [nome, setNome] = useState('GABRIELLY RIBEIRO DA SILVA');
   const [bytes, setBytes] = useState('5242880');
   const [arquivo, setArquivo] = useState('relatorio.xlsx');
-  const [jwt, setJwt] = useState(JWT_EXEMPLO);
+  const [jwt, setJwt] = useState(JWT_EXEMPLO(t));
 
-  const msg = tipo ? validar(tipo, valorTipo) : '';
+  const msg = tipo ? validar(tipo, valorTipo, idioma) : '';
   const meta = tipo ? TIPOS_CAMPO[tipo] : null;
   const payload = decodificarJwt(jwt);
   const exp = expiracaoJwt(jwt);
@@ -120,8 +120,8 @@ export function PaginaUtilitarios() {
         <div className="demo-util">
           <Linha codigo={`numeroPorExtenso(${numero || 0})`}>{numeroPorExtenso(Number(numero) || 0)}</Linha>
           <Linha codigo={`valorMonetarioPorExtenso(${moeda ?? 0})`}>{valorMonetarioPorExtenso(moeda ?? 0)}</Linha>
-          <Linha codigo="listaPorExtenso(itens)">{listaPorExtenso(itens.split(','))}</Linha>
-          <Linha codigo="formatarNumero(12400, { compacto: true })">{formatarNumero(12400, { compacto: true })}</Linha>
+          <Linha codigo="listaPorExtenso(itens)">{listaPorExtenso(itens.split(','), idioma)}</Linha>
+          <Linha codigo="formatarNumero(12400, { compacto: true })">{formatarNumero(12400, { compacto: true , idioma })}</Linha>
         </div>
       </Bloco>
 
@@ -134,7 +134,7 @@ export function PaginaUtilitarios() {
           <Linha codigo="nomeCurto(nome)">{nomeCurto(nome)}</Linha>
           <Linha codigo="iniciais(nome)">{iniciais(nome)}</Linha>
           <Linha codigo="normalizar(nome)">{normalizar(nome)}</Linha>
-          <Linha codigo="saudacaoPorHora()">{saudacaoPorHora()}</Linha>
+          <Linha codigo="saudacaoPorHora()">{saudacaoPorHora(undefined, idioma)}</Linha>
           <Linha codigo="formatCpfCnpj('11222333000181')">{formatCpfCnpj('11222333000181')}</Linha>
         </div>
       </Bloco>
@@ -153,11 +153,11 @@ export function PaginaUtilitarios() {
           <CampoTexto rotulo={t('paginas.utilitarios.textos.vencimento')} type="date" valor={vencimento} aoMudar={setVencimento} />
         </div>
         <div className="demo-util">
-          <Linha codigo="tempoRelativo(agora - 5 min)">{tempoRelativo(new Date(Date.now() - 5 * 60_000))}</Linha>
-          <Linha codigo="tempoRelativo(agora - 26 h)">{tempoRelativo(new Date(Date.now() - 26 * 3_600_000))}</Linha>
-          <Linha codigo="tempoRelativo(agora + 3 dias)">{tempoRelativo(new Date(Date.now() + 3 * 86_400_000))}</Linha>
+          <Linha codigo="tempoRelativo(agora - 5 min)">{tempoRelativo(new Date(Date.now() - 5 * 60_000), undefined, idioma)}</Linha>
+          <Linha codigo="tempoRelativo(agora - 26 h)">{tempoRelativo(new Date(Date.now() - 26 * 3_600_000), undefined, idioma)}</Linha>
+          <Linha codigo="tempoRelativo(agora + 3 dias)">{tempoRelativo(new Date(Date.now() + 3 * 86_400_000), undefined, idioma)}</Linha>
           {vencimento && (
-            <Linha codigo={`situacaoPrazo('${vencimento}')`}>{JSON.stringify(situacaoPrazo(vencimento))}</Linha>
+            <Linha codigo={`situacaoPrazo('${vencimento}')`}>{JSON.stringify(situacaoPrazo(vencimento, undefined, undefined, idioma))}</Linha>
           )}
         </div>
       </Bloco>

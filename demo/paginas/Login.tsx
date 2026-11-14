@@ -1,5 +1,5 @@
 import { TelaLogin, isCpf, useToast, type ApresentacaoLogin } from '../../src';
-import { useT } from '../i18n/useT';
+import { useT, type TradutorDemo } from '../i18n/useT';
 
 /** Ilustração do painel: evolução do faturamento (decorativa). */
 function GraficoFaturamento() {
@@ -25,17 +25,17 @@ function GraficoFaturamento() {
   );
 }
 
-const APRESENTACAO: ApresentacaoLogin = {
-  chamada: 'Plataforma comercial',
-  titulo: 'Vendas, estoque e clientes num só lugar.',
-  descricao: 'Cadastre pedidos, acompanhe pagamentos e entregas e veja o faturamento do mês com os números reais da operação.',
+const APRESENTACAO = (t: TradutorDemo['t']): ApresentacaoLogin => ({
+  chamada: t('paginas.login.textos.plataformaComercial'),
+  titulo: t('paginas.login.textos.vendasEstoqueEClientes'),
+  descricao: t('paginas.login.textos.cadastrePedidosAcompanhePagamentos'),
   destaques: [
-    { icone: 'shopping-cart', texto: 'Pedidos, produtos e clientes organizados' },
-    { icone: 'chart-line', texto: 'Faturamento e ticket médio atualizados' },
-    { icone: 'shield', texto: 'Acesso seguro com verificação em duas etapas' },
+    { icone: 'shopping-cart', texto: t('paginas.login.textos.pedidosProdutosEClientes') },
+    { icone: 'chart-line', texto: t('paginas.login.textos.faturamentoETicketMedio') },
+    { icone: 'shield', texto: t('paginas.login.textos.acessoSeguroComVerificacao') },
   ],
   extra: <GraficoFaturamento />,
-};
+});
 
 /** Tela de login de exemplo. Senha "123456" pede o código; código "123456" entra. */
 export function PaginaLogin({ navegar, modelo }: { navegar: (r: string) => void; modelo: 'conteudo' | 'formulario' }) {
@@ -44,7 +44,7 @@ export function PaginaLogin({ navegar, modelo }: { navegar: (r: string) => void;
   return (
     <TelaLogin
       modelo={modelo}
-      apresentacao={APRESENTACAO}
+      apresentacao={APRESENTACAO(t)}
       marca={{ nome: 'Gestor', subtitulo: t('paginas.login.textos.gestaoComercial') }}
       ambiente={{ rotulo: t('paginas.login.textos.homologacao'), severidade: 'warn' }}
       descricao={t('paginas.login.textos.useQualquerCpfValido')}

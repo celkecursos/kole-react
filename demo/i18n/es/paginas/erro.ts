@@ -12,6 +12,8 @@ export const paginasErro: TextosDemoParciais<typeof Pt> = {
       codigoDoIncidente7f3a: 'Código del incidente: 7F3A-2C91 · informe al soporte si el error continúa',
       paginaNaoEncontrada: 'Página no encontrada',
       voltarAPaginaAnterior: 'Volver a la página anterior',
+      gestor: 'Gestor',
+      gestaoComercial: 'Gestión comercial',
     },
   },
 };

@@ -86,6 +86,11 @@ export const paginasApps: TextosDemoParciais<typeof Pt> = {
       em1Semana: 'En 1 semana',
       anexos: 'Adjuntos',
       naDemoSoA: 'En la demo, solo el conteo.',
+      azul: 'Azul',
+      verde: 'Verde',
+      laranja: 'Naranja',
+      roxo: 'Morado',
+      rosa: 'Rosa',
     },
   },
   tarefas: {

@@ -1,30 +1,30 @@
 import { CabecalhoPagina, Citacao, type CorCitacao } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
 
 /** A escala tipográfica do projeto (tokens.css), do maior para o menor. */
-const ESCALA = [
-  ['--fs-display-2', '34px', 'Hero (saudação do login)'],
-  ['--fs-display', '24px', 'Números e destaques de painel'],
-  ['--fs-titulo', '20px', 'Título de página (único)'],
-  ['--fs-titulo-secao', '16px', 'Seção de formulário, título de diálogo'],
-  ['--fs-corpo', '14px', 'Corpo de leitura do app'],
-  ['--fs-corpo-2', '13px', 'Secundário denso (menu, tabela)'],
-  ['--fs-caption', '12px', 'Rótulo de campo, dica, erro'],
-  ['--fs-micro', '11px', 'Caixa-alta estrutural, contadores'],
-] as const;
+const ESCALA = (t: TradutorDemo['t']) => ([
+  ['--fs-display-2', '34px', t('paginas.tipografia.textos.heroSaudacaoDoLogin')],
+  ['--fs-display', '24px', t('paginas.tipografia.textos.numerosEDestaquesDe')],
+  ['--fs-titulo', '20px', t('paginas.tipografia.textos.tituloDePaginaUnico')],
+  ['--fs-titulo-secao', '16px', t('paginas.tipografia.textos.secaoDeFormularioTitulo')],
+  ['--fs-corpo', '14px', t('paginas.tipografia.textos.corpoDeLeituraDo')],
+  ['--fs-corpo-2', '13px', t('paginas.tipografia.textos.secundarioDensoMenuTabela')],
+  ['--fs-caption', '12px', t('paginas.tipografia.textos.rotuloDeCampoDica')],
+  ['--fs-micro', '11px', t('paginas.tipografia.textos.caixaAltaEstruturalContadores')],
+] as const);
 
-const FRASE = 'A maior glória da vida não está em nunca cair, mas em levantar a cada queda.';
+const FRASE = (t: TradutorDemo['t']) => (t('paginas.tipografia.textos.aMaiorGloriaDa'));
 
-const CITACOES: Array<[CorCitacao, string]> = [
-  ['pri', 'primária'],
-  ['secundario', 'secundária'],
-  ['warn', 'de aviso'],
-  ['ok', 'de sucesso'],
+const CITACOES = (t: TradutorDemo['t']): Array<[CorCitacao, string]> => ([
+  ['pri', t('paginas.tipografia.textos.primaria')],
+  ['secundario', t('paginas.tipografia.textos.secundaria')],
+  ['warn', t('paginas.tipografia.textos.deAviso')],
+  ['ok', t('paginas.tipografia.textos.deSucesso')],
   ['info', 'informativa'],
-  ['err', 'de perigo'],
-];
+  ['err', t('paginas.tipografia.textos.dePerigo')],
+]);
 
 export function PaginaTipografia() {
   const { t: tx } = useT();
@@ -71,7 +71,7 @@ export function PaginaTipografia() {
         </Bloco>
         <Bloco titulo={t('paginas.tipografia.secoes.escalaDoProjeto')} descricao={t('paginas.tipografia.textos.osTamanhosVemDos')}>
           <div className="demo-tipo-escala">
-            {ESCALA.map(([token, px, uso]) => (
+            {ESCALA(t).map(([token, px, uso]) => (
               <div key={token} className="demo-tipo-escala-linha">
                 <span style={{ fontSize: `var(${token})` }}>{t('paginas.tipografia.textos.textoDeExemplo')}</span>
                 <code>
@@ -123,18 +123,18 @@ export function PaginaTipografia() {
         </Bloco>
 
         <Bloco titulo={t('paginas.tipografia.secoes.citacaoAEsquerda')}>
-          <Citacao autor="Nelson Mandela">{FRASE}</Citacao>
+          <Citacao autor="Nelson Mandela">{FRASE(t)}</Citacao>
         </Bloco>
         <Bloco titulo={t('paginas.tipografia.secoes.citacaoADireita')}>
           <Citacao autor="Nelson Mandela" alinhamento="fim" cor="destaque">
-            {FRASE}
+            {FRASE(t)}
           </Citacao>
         </Bloco>
       </div>
 
       <h2 className="demo-secao-titulo">{t('paginas.tipografia.textos.citacoesEmCartao')}</h2>
       <div className="demo-colunas-3">
-        {CITACOES.map(([cor, nome]) => (
+        {CITACOES(t).map(([cor, nome]) => (
           <Bloco key={cor} titulo={t('paginas.tipografia.secoes.citacaoNome', { nome })}>
             <Citacao cor={cor} aparencia="cartao" alinhamento="centro" autor="Eleanor Roosevelt">{t('paginas.tipografia.textos.oFuturoPertenceA')}</Citacao>
           </Bloco>

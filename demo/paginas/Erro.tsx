@@ -1,7 +1,7 @@
 import { Botao, TelaErro } from '../../src';
-import { useT } from '../i18n/useT';
+import { useT, type TradutorDemo } from '../i18n/useT';
 
-const MARCA = { nome: 'Gestor', subtitulo: 'Gestão comercial' };
+const MARCA = (t: TradutorDemo['t']) => ({ nome: t('paginas.erro.textos.gestor'), subtitulo: t('paginas.erro.textos.gestaoComercial') });
 
 export function PaginaErro({ codigo, navegar }: { codigo: '401' | '404' | '500'; navegar: (rota: string) => void }) {
   const { t } = useT();
@@ -10,7 +10,7 @@ export function PaginaErro({ codigo, navegar }: { codigo: '401' | '404' | '500';
   if (codigo === '401')
     return (
       <TelaErro
-        marca={MARCA}
+        marca={MARCA(t)}
         codigo={401}
         icone="lock"
         cor="warn"
@@ -28,7 +28,7 @@ export function PaginaErro({ codigo, navegar }: { codigo: '401' | '404' | '500';
   if (codigo === '500')
     return (
       <TelaErro
-        marca={MARCA}
+        marca={MARCA(t)}
         codigo={500}
         icone="triangle-alert"
         cor="err"
@@ -46,7 +46,7 @@ export function PaginaErro({ codigo, navegar }: { codigo: '401' | '404' | '500';
 
   return (
     <TelaErro
-      marca={MARCA}
+      marca={MARCA(t)}
       codigo={404}
       icone="search"
       titulo={t('paginas.erro.textos.paginaNaoEncontrada')}

@@ -1,6 +1,6 @@
 import { Botao, CabecalhoPagina, Escolha, Trilha, type ItemTrilha, type ModeloTrilha } from '../../../src';
 import { Bloco } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 /** Modelos prontos — os mesmos que o seletor "Usar no sistema" aplica. */
 export const MODELOS_TRILHA: { id: string; nome: string; modelo: ModeloTrilha; codigo: string }[] = [
@@ -13,16 +13,20 @@ export const MODELOS_TRILHA: { id: string; nome: string; modelo: ModeloTrilha; c
   { id: 'fundo', nome: 'Com fundo', modelo: { aparencia: 'fundo' }, codigo: "{ aparencia: 'fundo' }" },
 ];
 
-const INICIO: ItemTrilha = { rotulo: 'Início', rota: '/', icone: 'house' };
-const PEDIDOS: ItemTrilha = { rotulo: 'Pedidos', rota: '/pedidos', icone: 'shopping-cart' };
-const PEDIDO: ItemTrilha = { rotulo: 'PED-2026-0042', icone: 'file-text' };
-const NIVEIS: ItemTrilha[][] = [[INICIO], [INICIO, PEDIDOS], [INICIO, PEDIDOS, PEDIDO]];
+// os passos de exemplo recebem o `t` de quem desenha: os rótulos ficam no dicionário
+const niveisDe = (t: TradutorDemo['t']): ItemTrilha[][] => {
+  const inicio: ItemTrilha = { rotulo: t('paginas.trilha.textos.inicio'), rota: '/', icone: 'house' };
+  const pedidos: ItemTrilha = { rotulo: t('paginas.trilha.textos.pedidos'), rota: '/pedidos', icone: 'shopping-cart' };
+  const pedido: ItemTrilha = { rotulo: 'PED-2026-0042', icone: 'file-text' };
+  return [[inicio], [inicio, pedidos], [inicio, pedidos, pedido]];
+};
 
 /** Os três níveis (1, 2 e 3 passos), num modelo — sem herdar o modelo do sistema. */
 function Niveis({ separador = 'chevron', icones = 'inicio', aparencia = 'simples' }: ModeloTrilha) {
+  const { t } = useT();
   return (
     <div className="demo-trilhas">
-      {NIVEIS.map((itens) => (
+      {niveisDe(t).map((itens) => (
         <Trilha key={itens.length} itens={itens} mostrarUnico separador={separador} icones={icones} aparencia={aparencia} />
       ))}
     </div>

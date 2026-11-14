@@ -50,6 +50,13 @@ Novidades:
   `<strong>`/`<em>`/`<code>` na própria string). Ficam em português o código
   dos exemplos, o CHANGELOG, as respostas simuladas do assistente e os dados de
   exemplo das listas.
+- Demo: os textos de interface guardados em listas e constantes das páginas
+  (opções, colunas de tabela, nomes de cores e posições, cards, FAQ, planos e
+  posts do site, tabelas do guia de Tema e de Carregamento) também saem no
+  idioma escolhido: cada constante virou uma função que recebe o `t`. Datas
+  relativas, porcentagens, valores e saudações da demo passam o idioma aos
+  utilitários da biblioteca (`tempoRelativo`, `formatarMoeda`,
+  `formatarPercentual`, `rotuloPeriodo`…).
 - Documentação: as descrições das props (JSDoc) em inglês e espanhol, em
   `demo/docs/props.en.json` e `props.es.json`, com o texto pt-BR do JSDoc como
   chave. `npm run docs:conferir` falha se uma descrição ficar sem tradução ou

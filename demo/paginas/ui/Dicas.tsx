@@ -1,25 +1,25 @@
 import { Avatar, Botao, CabecalhoPagina, Dica, Icone, type CorDica, type PosicaoDica, type SeveridadeBotao } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
-import { useT } from '../../i18n/useT';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const DIRECOES: Array<{ posicao: PosicaoDica; rotulo: string }> = [
-  { posicao: 'cima', rotulo: 'Dica em cima' },
-  { posicao: 'direita', rotulo: 'Dica à direita' },
-  { posicao: 'baixo', rotulo: 'Dica embaixo' },
-  { posicao: 'esquerda', rotulo: 'Dica à esquerda' },
-];
+const DIRECOES = (t: TradutorDemo['t']): Array<{ posicao: PosicaoDica; rotulo: string }> => ([
+  { posicao: 'cima', rotulo: t('paginas.dicas.textos.dicaEmCima') },
+  { posicao: 'direita', rotulo: t('paginas.dicas.textos.dicaADireita') },
+  { posicao: 'baixo', rotulo: t('paginas.dicas.textos.dicaEmbaixo') },
+  { posicao: 'esquerda', rotulo: t('paginas.dicas.textos.dicaAEsquerda') },
+]);
 
-const CORES: Array<{ cor: CorDica; rotulo: string; posicao: PosicaoDica; botao: SeveridadeBotao; aparencia?: 'contorno' }> = [
-  { cor: 'pri', rotulo: 'Primária', posicao: 'cima', botao: 'pri' },
-  { cor: 'secundario', rotulo: 'Secundária', posicao: 'direita', botao: 'secundario' },
-  { cor: 'warn', rotulo: 'Aviso', posicao: 'baixo', botao: 'warn' },
-  { cor: 'info', rotulo: 'Info', posicao: 'esquerda', botao: 'info' },
-  { cor: 'ok', rotulo: 'Sucesso', posicao: 'cima', botao: 'ok' },
-  { cor: 'err', rotulo: 'Perigo', posicao: 'baixo', botao: 'err' },
-  { cor: 'destaque', rotulo: 'Destaque', posicao: 'cima', botao: 'destaque' },
-  { cor: 'claro', rotulo: 'Clara', posicao: 'cima', botao: 'secundario', aparencia: 'contorno' },
-  { cor: 'padrao', rotulo: 'Padrão', posicao: 'cima', botao: 'escuro' },
-];
+const CORES = (t: TradutorDemo['t']): Array<{ cor: CorDica; rotulo: string; posicao: PosicaoDica; botao: SeveridadeBotao; aparencia?: 'contorno' }> => ([
+  { cor: 'pri', rotulo: t('paginas.dicas.textos.primaria'), posicao: 'cima', botao: 'pri' },
+  { cor: 'secundario', rotulo: t('paginas.dicas.textos.secundaria'), posicao: 'direita', botao: 'secundario' },
+  { cor: 'warn', rotulo: t('paginas.dicas.textos.aviso'), posicao: 'baixo', botao: 'warn' },
+  { cor: 'info', rotulo: t('paginas.dicas.textos.info'), posicao: 'esquerda', botao: 'info' },
+  { cor: 'ok', rotulo: t('paginas.dicas.textos.sucesso'), posicao: 'cima', botao: 'ok' },
+  { cor: 'err', rotulo: t('paginas.dicas.textos.perigo'), posicao: 'baixo', botao: 'err' },
+  { cor: 'destaque', rotulo: t('paginas.dicas.textos.destaque'), posicao: 'cima', botao: 'destaque' },
+  { cor: 'claro', rotulo: t('paginas.dicas.textos.clara'), posicao: 'cima', botao: 'secundario', aparencia: 'contorno' },
+  { cor: 'padrao', rotulo: t('paginas.dicas.textos.padrao'), posicao: 'cima', botao: 'escuro' },
+]);
 
 export function PaginaDicas() {
   const { t } = useT();
@@ -29,7 +29,7 @@ export function PaginaDicas() {
 
       <Bloco titulo={t('paginas.dicas.secoes.direcoes')} descricao={t('paginas.dicas.textos.passeOMouseOu')}>
         <div className="demo-linha">
-          {DIRECOES.map((d) => (
+          {DIRECOES(t).map((d) => (
             <Dica key={d.posicao} texto={d.rotulo} posicao={d.posicao}>
               <Botao rotulo={d.rotulo} formato="retangulo" />
             </Dica>
@@ -39,7 +39,7 @@ export function PaginaDicas() {
 
       <Bloco titulo={t('paginas.dicas.secoes.cores')}>
         <div className="demo-linha">
-          {CORES.map((c) => (
+          {CORES(t).map((c) => (
             <Dica key={c.cor} texto={t('paginas.dicas.textos.dicaValor', { valor: c.rotulo.toLowerCase() })} cor={c.cor} posicao={c.posicao}>
               <Botao rotulo={c.rotulo} severidade={c.botao} aparencia={c.aparencia} formato="retangulo" />
             </Dica>
