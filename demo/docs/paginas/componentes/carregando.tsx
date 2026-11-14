@@ -1,31 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Carregando"
+      pagina="carregando"
       icone="loader-circle"
       componente="Carregando"
-      resumo="Aviso de espera com animação e mensagem, numa área ou cobrindo a tela inteira (bloqueante)."
       notas={
         <ul className="doc-lista">
-          <li>
-            <C>bloqueante</C> é para quando nada na tela pode ser usado (gerar arquivo, trocar de empresa): segura o foco e devolve ao
-            terminar.
-          </li>
-          <li>
-            Na primeira carga de listas, prefira o <C>carregando</C> da <C>Tabela</C> e da <C>ListaCards</C>, que mostram silhuetas
-            (<C>Skeleton</C>).
-          </li>
-          <li>
-            Tem <C>role="status"</C>: o leitor de tela anuncia a mensagem. <C>logo</C> troca a animação pelo logotipo do app.
-          </li>
+          <li>{rico(t('docs.carregando.textos.bloqueanteEParaQuando'))}</li>
+          <li>{rico(t('docs.carregando.textos.naPrimeiraCargaDe'))}</li>
+          <li>{rico(t('docs.carregando.textos.temRoleStatusO'))}</li>
         </ul>
       }
     >
-      <Exemplo id="carregando/Basico" titulo="Em área e bloqueante" />
+      <Exemplo id="carregando/Basico" titulo={t('docs.carregando.secoes.emAreaEBloqueante')} />
     </PaginaComponente>
   );
 }

@@ -1,5 +1,8 @@
-import { Fragment, type ReactNode } from 'react';
+import { Fragment, useMemo, type ReactNode } from 'react';
 import CHANGELOG from '../../../CHANGELOG.md?raw';
+import CHANGELOG_EN from '../../../CHANGELOG.en.md?raw';
+import CHANGELOG_ES from '../../../CHANGELOG.es.md?raw';
+import { useT } from '../../i18n/useT';
 import { C } from '../Codigo';
 import { PaginaGuia } from '../PaginaDoc';
 
@@ -56,12 +59,15 @@ function renderizar(md: string): ReactNode[] {
   return blocos;
 }
 
-const CONTEUDO = renderizar(CHANGELOG);
+/** O CHANGELOG de cada idioma (o pt-BR é o original; os outros são traduções dele). */
+const POR_IDIOMA: Record<string, string> = { en: CHANGELOG_EN, es: CHANGELOG_ES };
 
 export function DocChangelog() {
+  const { idioma } = useT();
+  const conteudo = useMemo(() => renderizar(POR_IDIOMA[idioma] ?? CHANGELOG), [idioma]);
   return (
-    <PaginaGuia titulo="Changelog" icone="history" resumo="O que mudou em cada versão, lido do CHANGELOG.md do pacote.">
-      <div className="doc-md">{CONTEUDO}</div>
+    <PaginaGuia pagina="changelog" icone="history">
+      <div className="doc-md">{conteudo}</div>
     </PaginaGuia>
   );
 }

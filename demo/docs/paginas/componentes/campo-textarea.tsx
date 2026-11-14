@@ -1,29 +1,25 @@
 import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Área de texto"
+      pagina="campoTextarea"
       icone="file-text"
       componente="CampoTextarea"
-      resumo="Texto de várias linhas, com rótulo, dica, erro e contador de caracteres."
       notas={
         <ul className="doc-lista">
-          <li>
-            O contador aparece com <C>maxLength</C>; desligue com <C>{'contador={false}'}</C>.
-          </li>
-          <li>
-            Aceita os atributos nativos de <C>{'<textarea>'}</C>, como <C>rows</C> e <C>placeholder</C>.
-          </li>
-          <li>
-            Para mensagem de chat com Enter para enviar, use o <C>CampoMensagem</C>.
-          </li>
+          <li>{rico(t('docs.campoTextarea.textos.oContadorApareceCom'))}</li>
+          <li>{t('docs.campoTextarea.textos.aceitaOsAtributosNativos')}<C>{'<textarea>'}</C>{rico(t('docs.campoTextarea.textos.comoRowsEPlaceholder'))}</li>
+          <li>{rico(t('docs.campoTextarea.textos.paraMensagemDeChat'))}</li>
         </ul>
       }
     >
-      <Exemplo id="campo-textarea/Basico" titulo="Básico e com erro" />
+      <Exemplo id="campo-textarea/Basico" titulo={t('docs.campoTextarea.secoes.basicoEComErro')} />
     </PaginaComponente>
   );
 }

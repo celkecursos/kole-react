@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   BlocoCodigo,
   Botao,
@@ -22,6 +22,8 @@ import {
   type ItemReferencia,
   type SugestaoConversa,
 } from '../../../src';
+import { useT, type TradutorDemo } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 /*
  * Página modelo de um assistente de IA dentro do sistema. Tudo aqui é simulado, sem rede:
@@ -31,9 +33,9 @@ import {
  */
 
 type BlocoResposta =
-  | { tipo: 'p'; texto: ReactNode }
+  | { tipo: 'p'; texto: string }
   | { tipo: 'titulo'; texto: string }
-  | { tipo: 'lista'; itens: ReactNode[]; ordenada?: boolean }
+  | { tipo: 'lista'; itens: string[]; ordenada?: boolean }
   | { tipo: 'tabela'; colunas: string[]; linhas: string[][]; numericas?: number[] }
   | { tipo: 'codigo'; linguagem: string; codigo: string };
 
@@ -73,7 +75,7 @@ const FONTE_VENDAS: ItemReferencia[] = [
 
 const VENDAS: Resposta = {
   blocos: [
-    { tipo: 'p', texto: <>O faturamento de outubro foi de <strong>R$ 1,28 milhão</strong>, 8% acima de setembro e 3% acima da meta.</> },
+    { tipo: 'p', texto: 'O faturamento de outubro foi de <strong>R$ 1,28 milhão</strong>, 8% acima de setembro e 3% acima da meta.' },
     {
       tipo: 'tabela',
       colunas: ['Região', 'Faturamento', 'Pedidos', 'Meta'],
@@ -89,9 +91,9 @@ const VENDAS: Resposta = {
     {
       tipo: 'lista',
       itens: [
-        <>O <strong>Sul</strong> teve o melhor resultado sobre a meta, puxado pela promoção de Pix.</>,
-        <>Norte e Centro-Oeste ficaram abaixo da meta; o frete subiu 12% nessas regiões.</>,
-        <>O ticket médio ficou em <code>R$ 459,90</code>.</>,
+        'O <strong>Sul</strong> teve o melhor resultado sobre a meta, puxado pela promoção de Pix.',
+        'Norte e Centro-Oeste ficaram abaixo da meta; o frete subiu 12% nessas regiões.',
+        'O ticket médio ficou em <code>R$ 459,90</code>.',
       ],
     },
   ],
@@ -157,33 +159,37 @@ const GENERICA: Resposta = {
   ],
 };
 
-function responderA(texto: string, anexos: AnexoMensagem[]): Resposta {
+function responderA(texto: string, anexos: AnexoMensagem[], tx: TradutorDemo['t']): Resposta {
   const t = texto.toLowerCase();
   if (anexos.length) {
     return {
       blocos: [
-        { tipo: 'p', texto: <>Li {anexos.length === 1 ? <>o arquivo <strong>{anexos[0].nome}</strong></> : `os ${anexos.length} arquivos`}. Os pontos principais:</> },
+        {
+          tipo: 'p',
+          texto: anexos.length === 1
+            ? tx('paginas.assistente.textos.liOArquivo', { nome: anexos[0].nome })
+            : tx('paginas.assistente.textos.liOsArquivos', { n: anexos.length }),
+        },
         { tipo: 'lista', itens: ['O documento trata de prazos e condições de entrega.', 'Há uma tabela de valores por região na página 2.', 'Nenhuma cláusula conflita com a política atual.'] },
       ],
     };
   }
   if (t.includes('sql') || t.includes('consulta')) return SQL;
-  if (t.includes('atras')) return ATRASADOS;
-  if (t.includes('venda')) return VENDAS;
+  if (t.includes('atras') || t.includes('overdue') || t.includes('late')) return ATRASADOS;
+  if (t.includes('venda') || t.includes('sale')) return VENDAS;
   if (t.includes('mail') || t.includes('cobran')) return EMAIL;
   return GENERICA;
 }
 
 /** Texto puro da resposta, para o botão de copiar. */
-function textoDe(r: Resposta): string {
-  const tx = (n: ReactNode): string =>
-    typeof n === 'string' || typeof n === 'number' ? String(n) : Array.isArray(n) ? n.map(tx).join('') : n && typeof n === 'object' && 'props' in n ? tx((n.props as { children?: ReactNode }).children) : '';
+function textoDe(r: Resposta, tc: TradutorDemo['tc']): string {
+  const tx = (n: string): string => tc(n).replace(/<[^>]+>/g, '');
   return r.blocos
     .map((b) =>
       b.tipo === 'codigo'
         ? b.codigo
         : b.tipo === 'tabela'
-          ? [b.colunas, ...b.linhas].map((l) => l.join(' | ')).join('\n')
+          ? [b.colunas, ...b.linhas].map((l) => l.map(tx).join(' | ')).join('\n')
           : b.tipo === 'lista'
             ? b.itens.map((i, n) => `${b.ordenada ? `${n + 1}.` : '-'} ${tx(i)}`).join('\n')
             : tx(b.texto),
@@ -193,18 +199,19 @@ function textoDe(r: Resposta): string {
 
 /** "Markdown renderizado": no app, viria do renderizador de Markdown. */
 function ConteudoResposta({ resposta, visiveis }: { resposta: Resposta; visiveis: number }) {
+  const { tc } = useT();
   return (
     <>
       {resposta.blocos.slice(0, visiveis).map((b, i) => {
-        if (b.tipo === 'p') return <p key={i}>{b.texto}</p>;
-        if (b.tipo === 'titulo') return <h3 key={i}>{b.texto}</h3>;
+        if (b.tipo === 'p') return <p key={i}>{rico(tc(b.texto))}</p>;
+        if (b.tipo === 'titulo') return <h3 key={i}>{tc(b.texto)}</h3>;
         if (b.tipo === 'codigo') return <BlocoCodigo key={i} linguagem={b.linguagem} codigo={b.codigo} />;
         if (b.tipo === 'lista') {
           const L = b.ordenada ? 'ol' : 'ul';
           return (
             <L key={i}>
               {b.itens.map((it, n) => (
-                <li key={n}>{it}</li>
+                <li key={n}>{rico(tc(it))}</li>
               ))}
             </L>
           );
@@ -215,7 +222,7 @@ function ConteudoResposta({ resposta, visiveis }: { resposta: Resposta; visiveis
               <tr>
                 {b.colunas.map((c, n) => (
                   <th key={c} className={b.numericas?.includes(n) ? 'is-num' : undefined}>
-                    {c}
+                    {tc(c)}
                   </th>
                 ))}
               </tr>
@@ -225,7 +232,7 @@ function ConteudoResposta({ resposta, visiveis }: { resposta: Resposta; visiveis
                 <tr key={l[0]}>
                   {l.map((c, n) => (
                     <td key={n} className={b.numericas?.includes(n) ? 'is-num' : undefined}>
-                      {c}
+                      {tc(c)}
                     </td>
                   ))}
                 </tr>
@@ -268,24 +275,26 @@ function historicoInicial(): ConversaIA[] {
   ];
 }
 
-const SUGESTOES: SugestaoConversa[] = [
-  { titulo: 'Resumir as vendas do mês', descricao: 'Faturamento por região e meta', icone: 'chart-line' },
-  { titulo: 'Listar pedidos atrasados', descricao: 'Com cliente e dias de atraso', icone: 'truck' },
-  { titulo: 'Gerar a consulta SQL das vendas', descricao: 'Para usar no relatório', icone: 'code' },
-  { titulo: 'Escrever um e-mail de cobrança', descricao: 'Educado e direto', icone: 'mail' },
-];
+const SUGESTOES = (t: TradutorDemo['t']): SugestaoConversa[] => ([
+  { titulo: t('paginas.assistente.textos.resumirAsVendasDo'), descricao: t('paginas.assistente.textos.faturamentoPorRegiaoE'), icone: 'chart-line' },
+  { titulo: t('paginas.assistente.textos.listarPedidosAtrasados'), descricao: t('paginas.assistente.textos.comClienteEDias'), icone: 'truck' },
+  { titulo: t('paginas.assistente.textos.gerarAConsultaSql'), descricao: t('paginas.assistente.textos.paraUsarNoRelatorio'), icone: 'code' },
+  { titulo: t('paginas.assistente.textos.escreverUmEMail'), descricao: t('paginas.assistente.textos.educadoEDireto'), icone: 'mail' },
+]);
 
-const MODOS = [
-  { id: 'rapido', rotulo: 'Rápido', extra: 'respostas curtas' },
-  { id: 'detalhado', rotulo: 'Detalhado', extra: 'pensa mais' },
-];
-const FERRAMENTAS: Record<string, string> = { docs: 'Documentos', web: 'Web' };
+const MODOS = (t: TradutorDemo['t']) => ([
+  { id: 'rapido', rotulo: t('paginas.assistente.textos.rapido'), extra: t('paginas.assistente.textos.respostasCurtas') },
+  { id: 'detalhado', rotulo: t('paginas.assistente.textos.detalhado'), extra: t('paginas.assistente.textos.pensaMais') },
+]);
+const FERRAMENTAS = (t: TradutorDemo['t']): Record<string, string> => ({ docs: t('paginas.assistente.textos.documentos'), web: t('paginas.assistente.textos.web') });
 
 let seq = 1000;
 
 /* ---------- a página ---------- */
 
 export function PaginaAssistente() {
+  const { t: tx, idioma, tc } = useT();
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [conversas, setConversas] = useState(historicoInicial);
@@ -328,13 +337,13 @@ export function PaginaAssistente() {
     const idU = ++seq;
     const idR = ++seq;
     const novas: MsgIA[] = [
-      { id: idU, autor: 'usuario', texto: t, anexos: anexosProntos, ferramentas: ferramentas.map((f) => FERRAMENTAS[f]), estado: 'concluida', hora: agora },
+      { id: idU, autor: 'usuario', texto: t, anexos: anexosProntos, ferramentas: ferramentas.map((f) => FERRAMENTAS(tx)[f]), estado: 'concluida', hora: agora },
       { id: idR, autor: 'assistente', estado: 'gerando', hora: agora, visiveis: 0 },
     ];
     if (!idConv) {
       // conversa nova: o título vem da primeira pergunta (o app pode pedir um título à IA)
       idConv = `c${++seq}`;
-      const titulo = t ? (t.length > 42 ? `${t.slice(0, 40)}…` : t) : (anexosProntos[0]?.nome ?? 'Nova conversa');
+      const titulo = t ? (t.length > 42 ? `${t.slice(0, 40)}…` : t) : (anexosProntos[0]?.nome ?? tc('Nova conversa'));
       setConversas((l) => [{ id: idConv!, titulo, data: agora, mensagens: novas }, ...l]);
       setAtiva(idConv);
     } else {
@@ -342,7 +351,7 @@ export function PaginaAssistente() {
     }
     setTexto('');
     setAnexos([]);
-    transmitir(idConv, idR, responderA(t, anexosProntos));
+    transmitir(idConv, idR, responderA(t, anexosProntos, tx));
   };
 
   const parar = () => {
@@ -357,20 +366,20 @@ export function PaginaAssistente() {
     const i = conversa.mensagens.findIndex((x) => x.id === m.id);
     const pergunta = conversa.mensagens[i - 1];
     mudarMsg(conversa.id, m.id, { estado: 'gerando', visiveis: 0, avaliacao: undefined });
-    transmitir(conversa.id, m.id, responderA(pergunta?.texto ?? '', pergunta?.anexos ?? []));
+    transmitir(conversa.id, m.id, responderA(pergunta?.texto ?? '', pergunta?.anexos ?? [], tx));
   };
 
   const avaliar = (m: MsgIA, avaliacao: 'boa' | 'ruim') => {
     if (!conversa) return;
     const nova = m.avaliacao === avaliacao ? undefined : avaliacao;
     mudarMsg(conversa.id, m.id, { avaliacao: nova });
-    if (nova) toast.ok('Obrigado pelo retorno', nova === 'boa' ? 'Isso ajuda a melhorar as respostas.' : 'Vamos usar isso para melhorar.');
+    if (nova) toast.ok(t('paginas.assistente.textos.obrigadoPeloRetorno'), nova === 'boa' ? t('paginas.assistente.textos.issoAjudaAMelhorar') : t('paginas.assistente.textos.vamosUsarIssoPara'));
   };
 
   // anexos: o "upload" sobe aos poucos (no app, o progresso viria do envio de verdade)
   const anexar = (arquivos: File[]) => {
     const grande = 20 * 1024 * 1024;
-    const novos = arquivos.map((f) => ({ id: ++seq, nome: f.name, tamanho: f.size, tipo: f.type, progresso: 0, erro: f.size > grande ? 'Maior que 20 MB' : undefined }));
+    const novos = arquivos.map((f) => ({ id: ++seq, nome: f.name, tamanho: f.size, tipo: f.type, progresso: 0, erro: f.size > grande ? t('paginas.assistente.textos.maiorQue20Mb') : undefined }));
     setAnexos((l) => [...l, ...novos]);
     for (const a of novos.filter((x) => !x.erro)) {
       [35, 70, 100].forEach((p, i) => depois(300 * (i + 1), () => setAnexos((l) => l.map((x) => (x.id === a.id ? { ...x, progresso: p } : x)))));
@@ -387,14 +396,14 @@ export function PaginaAssistente() {
   };
   const excluir = async (id: string | number) => {
     const c = conversas.find((x) => x.id === id);
-    if (!c || !(await confirmar.remover({ mensagem: `A conversa "${c.titulo}" será excluída.` }))) return;
+    if (!c || !(await confirmar.remover({ mensagem: t('paginas.assistente.textos.aConversaTituloSera', { titulo: c.titulo }) }))) return;
     setConversas((l) => l.filter((x) => x.id !== id));
     if (ativa === id) setAtiva(null);
   };
 
   const historico = (
     <ListaConversas
-      itens={conversas}
+      itens={conversas.map((c) => ({ ...c, titulo: tc(c.titulo) }))}
       ativa={ativa}
       aoEscolher={escolher}
       aoNova={nova}
@@ -404,7 +413,7 @@ export function PaginaAssistente() {
     />
   );
 
-  const modoAtual = MODOS.find((m) => m.id === modo)!;
+  const modoAtual = MODOS(t).find((m) => m.id === modo)!;
   const campo = (
     <CampoMensagem
       valor={texto}
@@ -412,7 +421,7 @@ export function PaginaAssistente() {
       aoEnviar={enviar}
       gerando={gerando}
       aoParar={parar}
-      placeholder="Pergunte ao assistente"
+      placeholder={t('paginas.assistente.textos.pergunteAoAssistente')}
       anexos={anexos}
       aoRemoverAnexo={(id) => setAnexos((l) => l.filter((a) => a.id !== id))}
       aoAdicionarArquivos={anexar}
@@ -420,19 +429,19 @@ export function PaginaAssistente() {
         <>
           <MenuSuspenso
             icone="plus"
-            aria-label="Adicionar"
-            dica="Anexar e ferramentas"
+            aria-label={t('paginas.assistente.textos.adicionar')}
+            dica={t('paginas.assistente.textos.anexarEFerramentas')}
             severidade="secundario"
             aparencia="texto"
             tamanho="pequeno"
             semSeta
             direcao="cima"
             itens={[
-              { id: 'anexar', rotulo: 'Anexar arquivo', icone: 'paperclip' },
+              { id: 'anexar', rotulo: t('paginas.assistente.textos.anexarArquivo'), icone: 'paperclip' },
               { tipo: 'divisor' },
-              { tipo: 'titulo', rotulo: 'Ferramentas' },
-              { id: 'docs', rotulo: 'Buscar nos documentos', icone: 'file-search', ativo: ferramentas.includes('docs') },
-              { id: 'web', rotulo: 'Pesquisar na web', icone: 'globe', ativo: ferramentas.includes('web') },
+              { tipo: 'titulo', rotulo: t('paginas.assistente.textos.ferramentas') },
+              { id: 'docs', rotulo: t('paginas.assistente.textos.buscarNosDocumentos'), icone: 'file-search', ativo: ferramentas.includes('docs') },
+              { id: 'web', rotulo: t('paginas.assistente.textos.pesquisarNaWeb'), icone: 'globe', ativo: ferramentas.includes('web') },
             ]}
             aoEscolher={(id) => {
               if (id === 'anexar') arquivo.current?.click();
@@ -440,17 +449,17 @@ export function PaginaAssistente() {
             }}
           />
           {ferramentas.map((f) => (
-            <Chip key={f} rotulo={FERRAMENTAS[f]} aoRemover={() => setFerramentas((l) => l.filter((x) => x !== f))} />
+            <Chip key={f} rotulo={FERRAMENTAS(t)[f]} aoRemover={() => setFerramentas((l) => l.filter((x) => x !== f))} />
           ))}
           <MenuSuspenso
-            rotulo={modoAtual.rotulo}
+            rotulo={tc(modoAtual.rotulo)}
             icone="sparkles"
-            aria-label={`Modo: ${modoAtual.rotulo}`}
+            aria-label={t('paginas.assistente.textos.modoRotulo', { rotulo: modoAtual.rotulo })}
             severidade="secundario"
             aparencia="texto"
             tamanho="pequeno"
             direcao="cima"
-            itens={MODOS.map((m) => ({ ...m, ativo: m.id === modo }))}
+            itens={MODOS(t).map((m) => ({ ...m, ativo: m.id === modo }))}
             aoEscolher={setModo}
           />
           <input
@@ -476,40 +485,38 @@ export function PaginaAssistente() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Assistente" icone="sparkles" trilha>
-        Página modelo de um assistente de IA no sistema: histórico, tela inicial com sugestões, anexos, ferramentas e respostas com tabela e código.
-      </CabecalhoPagina>
+      <CabecalhoPagina titulo={t('paginas.assistente.titulo')} icone="sparkles" trilha>{t('paginas.assistente.textos.paginaModeloDeUm')}</CabecalhoPagina>
 
       <div className="demo-ia">
         <aside className="demo-ia-lado">{historico}</aside>
-        <section className="demo-ia-chat" aria-label="Conversa com o assistente">
+        <section className="demo-ia-chat" aria-label={t('paginas.assistente.textos.conversaComOAssistente')}>
           <div className="demo-ia-topo">
             <Botao
               className="demo-ia-bt-historico"
               icone="panel-left"
-              aria-label="Histórico de conversas"
-              dica="Histórico"
+              aria-label={t('paginas.assistente.textos.historicoDeConversas')}
+              dica={t('paginas.assistente.textos.historico')}
               severidade="secundario"
               aparencia="texto"
               tamanho="pequeno"
               onClick={() => setHistoricoAberto(true)}
             />
-            <h2 className="demo-ia-titulo">{conversa?.titulo ?? 'Nova conversa'}</h2>
-            {conversa && <Botao icone="square-pen" aria-label="Nova conversa" dica="Nova conversa" severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={nova} />}
+            <h2 className="demo-ia-titulo">{tc(conversa?.titulo) ?? tc('Nova conversa')}</h2>
+            {conversa && <Botao icone="square-pen" aria-label={t('paginas.assistente.textos.novaConversa')} dica={t('paginas.assistente.textos.novaConversa')} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={nova} />}
           </div>
           <Conversa
-            rotulo={conversa?.titulo ?? 'Nova conversa'}
+            rotulo={tc(conversa?.titulo) ?? t('paginas.assistente.textos.novaConversa')}
             larguraMaxima="46rem"
             campo={campo}
             vazio={
               <InicioConversa
                 icone="sparkles"
-                titulo={`${saudacaoPorHora(AGORA)}, Ana. Como posso ajudar?`}
-                descricao="Pergunte sobre vendas, pedidos e clientes, ou anexe um documento para eu ler."
-                sugestoes={SUGESTOES}
+                titulo={t('paginas.assistente.textos.valorAnaComoPosso', { valor: saudacaoPorHora(AGORA, idioma) })}
+                descricao={t('paginas.assistente.textos.pergunteSobreVendasPedidos')}
+                sugestoes={SUGESTOES(t)}
                 aoEscolher={(s) => enviar(s.texto ?? s.titulo)}
               >
-                <p className="demo-ia-aviso">As respostas podem conter erros. Confira os números antes de decidir.</p>
+                <p className="demo-ia-aviso">{t('paginas.assistente.textos.asRespostasPodemConter')}</p>
               </InicioConversa>
             }
           >
@@ -518,38 +525,38 @@ export function PaginaAssistente() {
                 <Mensagem
                   key={m.id}
                   autor="usuario"
-                  nome="Você"
+                  nome={tc("Você")}
                   hora={m.hora}
                   rodape={
                     !!(m.anexos?.length || m.ferramentas?.length) && (
                       <div className="demo-ia-anexos">
-                        {m.anexos?.map((a) => <Chip key={a.id} rotulo={a.nome} />)}
-                        {m.ferramentas?.map((f) => <Chip key={f} campo="Com" rotulo={f} />)}
+                        {m.anexos?.map((a) => <Chip key={a.id} rotulo={tc(a.nome)} />)}
+                        {m.ferramentas?.map((f) => <Chip key={f} campo={tc("Com")} rotulo={f} />)}
                       </div>
                     )
                   }
                 >
-                  {m.texto || undefined}
+                  {tc(m.texto) || undefined}
                 </Mensagem>
               ) : (
                 <Mensagem
                   key={m.id}
                   autor="assistente"
-                  nome="Assistente"
+                  nome={tc("Assistente")}
                   avatar={avatarIA}
                   hora={m.hora}
                   estado={m.estado}
                   copiavel={m.estado === 'concluida'}
-                  textoCopia={m.resposta && textoDe(m.resposta)}
-                  rodape={m.estado === 'concluida' && m.resposta?.referencias && <Referencias itens={m.resposta.referencias} />}
+                  textoCopia={m.resposta && textoDe(m.resposta, tc)}
+                  rodape={m.estado === 'concluida' && m.resposta?.referencias && <Referencias itens={m.resposta.referencias.map((r) => ({ ...r, titulo: tc(r.titulo), detalhe: tc(r.detalhe), trecho: tc(r.trecho) }))} />}
                   acoes={
                     m.estado === 'concluida' && (
                       <>
-                        <Botao icone="refresh-cw" aria-label="Gerar de novo" dica="Gerar de novo" severidade="secundario" aparencia="texto" tamanho="pequeno" disabled={gerando} onClick={() => gerarDeNovo(m)} />
+                        <Botao icone="refresh-cw" aria-label={t('paginas.assistente.textos.gerarDeNovo')} dica={t('paginas.assistente.textos.gerarDeNovo')} severidade="secundario" aparencia="texto" tamanho="pequeno" disabled={gerando} onClick={() => gerarDeNovo(m)} />
                         <Botao
                           icone="thumbs-up"
-                          aria-label="Boa resposta"
-                          dica="Boa resposta"
+                          aria-label={t('paginas.assistente.textos.boaResposta')}
+                          dica={t('paginas.assistente.textos.boaResposta')}
                           severidade="secundario"
                           aparencia="texto"
                           tamanho="pequeno"
@@ -558,8 +565,8 @@ export function PaginaAssistente() {
                         />
                         <Botao
                           icone="thumbs-down"
-                          aria-label="Resposta ruim"
-                          dica="Resposta ruim"
+                          aria-label={t('paginas.assistente.textos.respostaRuim')}
+                          dica={t('paginas.assistente.textos.respostaRuim')}
                           severidade="secundario"
                           aparencia="texto"
                           tamanho="pequeno"
@@ -578,34 +585,26 @@ export function PaginaAssistente() {
         </section>
       </div>
 
-      <Dialogo aberto={historicoAberto} aoFechar={() => setHistoricoAberto(false)} titulo="Conversas" icone="history" aparencia="lateral" tamanho="pequeno">
+      <Dialogo aberto={historicoAberto} aoFechar={() => setHistoricoAberto(false)} titulo={t('paginas.assistente.textos.conversas')} icone="history" aparencia="lateral" tamanho="pequeno">
         <div className="demo-ia-gaveta">{historico}</div>
       </Dialogo>
 
       <div className="demo-colunas">
-        <Card titulo="Componentes do kole" subtitulo="O que esta página usa">
+        <Card titulo={t('paginas.assistente.secoes.componentesKole')} subtitulo={t('paginas.assistente.textos.oQueEstaPagina')}>
           <ul className="demo-ia-lista">
-            <li>
-              <b>ListaConversas</b>: histórico agrupado por data, busca, renomear, fixar e excluir.
-            </li>
-            <li>
-              <b>Conversa</b> + <b>InicioConversa</b>: rolagem que acompanha a resposta e a tela inicial com sugestões.
-            </li>
-            <li>
-              <b>CampoMensagem</b>: anexos em chips (arrastar, colar ou pelo "+"), ferramentas e modo em <code>acoesExtras</code>, Parar.
-            </li>
-            <li>
-              <b>Mensagem</b>: conteúdo rico (tabela, listas, <b>BlocoCodigo</b>), copiar, gerar de novo, 👍/👎 e <b>Referencias</b>.
-            </li>
+            <li>{rico(t('paginas.assistente.textos.listaconversasHistoricoAgrupadoPor'))}</li>
+            <li>{rico(t('paginas.assistente.textos.conversaInicioconversaRolagemQue'))}</li>
+            <li>{rico(t('paginas.assistente.textos.campomensagemAnexosEmChips'))}</li>
+            <li>{rico(t('paginas.assistente.textos.mensagemConteudoRicoTabela'))}</li>
           </ul>
         </Card>
-        <Card titulo="O que fica com o app" subtitulo="Fora da biblioteca">
+        <Card titulo={t('paginas.assistente.secoes.ficaComApp')} subtitulo={t('paginas.assistente.textos.foraDaBiblioteca')}>
           <ul className="demo-ia-lista">
-            <li>Chamar a API do modelo e ler a resposta em pedaços (streaming), atualizando a mensagem com <code>estado="gerando"</code>.</li>
-            <li>Salvar e buscar o histórico; a <b>ListaConversas</b> só mostra e avisa (renomear, excluir).</li>
-            <li>Enviar os anexos e informar o <code>progresso</code>; validar tipo e tamanho.</li>
-            <li>Renderizar o Markdown da resposta (ex.: react-markdown, com o <b>BlocoCodigo</b> como <code>code</code>).</li>
-            <li>Guardar as avaliações 👍/👎 e o título automático da conversa.</li>
+            <li>{rico(t('paginas.assistente.textos.chamarAApiDo'))}</li>
+            <li>{rico(t('paginas.assistente.textos.salvarEBuscarO'))}</li>
+            <li>{rico(t('paginas.assistente.textos.enviarOsAnexosE'))}</li>
+            <li>{rico(t('paginas.assistente.textos.renderizarOMarkdownDa'))}</li>
+            <li>{t('paginas.assistente.textos.guardarAsAvaliacoesE')}</li>
           </ul>
         </Card>
       </div>

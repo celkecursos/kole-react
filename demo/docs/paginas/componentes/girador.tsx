@@ -1,29 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Girador"
+      pagina="girador"
       icone="loader-circle"
       componente="Girador"
-      resumo="Indicador de atividade em três formas (anel, pulso, pontos), com cor e tamanho."
       notas={
         <ul className="doc-lista">
-          <li>
-            O <C>rotulo</C> é sempre anunciado ao leitor de tela (<C>role="status"</C>); <C>mostrarRotulo</C> também o mostra na tela.
-          </li>
-          <li>
-            Dentro de botão, use o <C>carregando</C> do <C>Botao</C>, que já troca o ícone pelo girador.
-          </li>
-          <li>
-            <C>tamanho</C> aceita também uma medida CSS (<C>"3rem"</C>).
-          </li>
+          <li>{rico(t('docs.girador.textos.oRotuloESempre'))}</li>
+          <li>{rico(t('docs.girador.textos.dentroDeBotaoUse'))}</li>
+          <li>{rico(t('docs.girador.textos.tamanhoAceitaTambemUma'))}</li>
         </ul>
       }
     >
-      <Exemplo id="girador/Basico" titulo="Formas, cores e tamanhos" />
+      <Exemplo id="girador/Basico" titulo={t('docs.girador.secoes.formasCoresETamanhos')} />
     </PaginaComponente>
   );
 }

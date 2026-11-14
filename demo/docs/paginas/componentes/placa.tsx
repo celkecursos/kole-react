@@ -1,26 +1,23 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Placa"
+      pagina="placa"
       icone="truck"
       componente="Placa"
-      resumo="Placa de veículo no padrão Mercosul, para cadastros de frota, entregas e estacionamento."
       notas={
         <ul className="doc-lista">
-          <li>
-            O <C>numero</C> sai sempre em maiúsculas. Para digitar a placa, use o <C>CampoPlaca</C>.
-          </li>
-          <li>
-            O leitor de tela anuncia "Placa BRA2E19, PR" (<C>role="img"</C> com <C>aria-label</C>), sem soletrar a faixa azul.
-          </li>
+          <li>{rico(t('docs.placa.textos.oNumeroSaiSempre'))}</li>
+          <li>{rico(t('docs.placa.textos.oLeitorDeTela'))}</li>
         </ul>
       }
     >
-      <Exemplo id="placa/Basico" titulo="Básico" />
+      <Exemplo id="placa/Basico" titulo={t('docs.placa.secoes.basico')} />
     </PaginaComponente>
   );
 }

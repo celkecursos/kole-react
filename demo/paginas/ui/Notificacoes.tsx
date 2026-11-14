@@ -1,62 +1,64 @@
 import { useState } from 'react';
 import { Botao, CabecalhoPagina, Carregando, Vazio, useConfirmacao, useToast } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 export function PaginaNotificacoes() {
+  const { t, tc } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [bloqueio, setBloqueio] = useState(false);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Notificações" icone="bell" trilha />
+      <CabecalhoPagina titulo={t('paginas.notificacoes.titulo')} icone="bell" trilha />
 
-      <Bloco titulo="Toasts" descricao="Aparecem no canto e somem sozinhos; o × fecha antes.">
+      <Bloco titulo={t('paginas.notificacoes.secoes.toasts')} descricao={t('paginas.notificacoes.textos.aparecemNoCantoE')}>
         <div className="demo-linha">
-          <Botao rotulo="Sucesso" severidade="ok" aparencia="contorno" onClick={() => toast.ok('Registro salvo', 'As alterações foram gravadas.')} />
-          <Botao rotulo="Informação" aparencia="contorno" onClick={() => toast.info('Sincronizando…')} />
-          <Botao rotulo="Atenção" severidade="warn" aparencia="contorno" onClick={() => toast.warn('Sessão expira em 5 minutos')} />
-          <Botao rotulo="Erro" severidade="err" aparencia="contorno" onClick={() => toast.err('Falha ao salvar', 'Tente novamente.')} />
+          <Botao rotulo={t('paginas.notificacoes.textos.sucesso')} severidade="ok" aparencia="contorno" onClick={() => toast.ok(t('paginas.notificacoes.textos.registroSalvo'), t('paginas.notificacoes.textos.asAlteracoesForamGravadas'))} />
+          <Botao rotulo={t('paginas.notificacoes.textos.informacao')} aparencia="contorno" onClick={() => toast.info(t('paginas.notificacoes.textos.sincronizando'))} />
+          <Botao rotulo={t('paginas.notificacoes.textos.atencao')} severidade="warn" aparencia="contorno" onClick={() => toast.warn(t('paginas.notificacoes.textos.sessaoExpiraEm5'))} />
+          <Botao rotulo={t('paginas.notificacoes.textos.erro')} severidade="err" aparencia="contorno" onClick={() => toast.err(t('paginas.notificacoes.textos.falhaAoSalvar'), t('paginas.notificacoes.textos.tenteNovamente'))} />
           <Botao
-            rotulo="Sem fechar sozinho"
+            rotulo={t('paginas.notificacoes.textos.semFecharSozinho')}
             severidade="secundario"
             aparencia="contorno"
-            onClick={() => toast.mostrar({ severidade: 'info', titulo: 'Importação em andamento', detalhe: 'Feche no × quando quiser.', duracao: 0 })}
+            onClick={() => toast.mostrar({ severidade: 'info', titulo: t('paginas.notificacoes.textos.importacaoEmAndamento'), detalhe: t('paginas.notificacoes.textos.fecheNoQuandoQuiser'), duracao: 0 })}
           />
         </div>
       </Bloco>
 
-      <Bloco titulo="Confirmações" descricao="useConfirmacao() devolve uma Promise com a resposta.">
+      <Bloco titulo={t('paginas.notificacoes.secoes.confirmacoes')} descricao={t('paginas.notificacoes.textos.useconfirmacaoDevolveUmaPromise')}>
         <div className="demo-linha">
           <Botao
-            rotulo="confirmar()"
+            rotulo={t('paginas.notificacoes.textos.confirmar')}
             severidade="secundario"
             onClick={async () => {
-              const ok = await confirmar({ titulo: 'Enviar pedido ao cliente?', mensagem: 'O cliente recebe o resumo por e-mail.', rotuloAceitar: 'Enviar' });
-              toast.info(ok ? 'Confirmado' : 'Cancelado');
+              const ok = await confirmar({ titulo: t('paginas.notificacoes.textos.enviarPedidoAoCliente'), mensagem: t('paginas.notificacoes.textos.oClienteRecebeO'), rotuloAceitar: tc('Enviar') });
+              toast.info(ok ? t('paginas.notificacoes.textos.confirmado') : t('paginas.notificacoes.textos.cancelado'));
             }}
           />
           <Botao
-            rotulo="confirmar.remover()"
+            rotulo={t('paginas.notificacoes.textos.confirmarRemover')}
             icone="trash-2"
             severidade="err"
             aparencia="contorno"
-            onClick={async () => toast.info((await confirmar.remover({ mensagem: '"Fiat Strada QBX-7H42" será removido definitivamente.' })) ? 'Removido' : 'Cancelado')}
+            onClick={async () => toast.info((await confirmar.remover({ mensagem: t('paginas.notificacoes.textos.fiatStradaQbx7h42') })) ? t('paginas.notificacoes.textos.removido') : t('paginas.notificacoes.textos.cancelado'))}
           />
           <Botao
-            rotulo="confirmar.avisar()"
+            rotulo={t('paginas.notificacoes.textos.confirmarAvisar')}
             icone="info"
             severidade="secundario"
-            onClick={() => confirmar.avisar({ titulo: 'Prazo encerrado', mensagem: 'O período de recursos terminou ontem.', severidade: 'warn' })}
+            onClick={() => confirmar.avisar({ titulo: t('paginas.notificacoes.textos.prazoEncerrado'), mensagem: t('paginas.notificacoes.textos.oPeriodoDeRecursos'), severidade: 'warn' })}
           />
         </div>
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Carregando bloqueante" descricao="Cobre a tela inteira enquanto a operação roda.">
+        <Bloco titulo={t('paginas.notificacoes.secoes.carregandoBloqueante')} descricao={t('paginas.notificacoes.textos.cobreATelaInteira')}>
           <div>
             <Botao
-              rotulo="Processar"
+              rotulo={t('paginas.notificacoes.textos.processar')}
               icone="refresh-cw"
               severidade="secundario"
               onClick={() => {
@@ -66,14 +68,14 @@ export function PaginaNotificacoes() {
             />
           </div>
         </Bloco>
-        <Bloco titulo="Estado vazio" descricao="Quando a lista não tem nada para mostrar.">
-          <Vazio titulo="Nenhum item no pedido" descricao="Adicione os produtos que o cliente comprou.">
-            <Botao rotulo="Adicionar item" icone="plus" onClick={() => toast.info('Adicionar item')} />
+        <Bloco titulo={t('paginas.notificacoes.secoes.estadoVazio')} descricao={t('paginas.notificacoes.textos.quandoAListaNao')}>
+          <Vazio titulo={t('paginas.notificacoes.textos.nenhumItemNoPedido')} descricao={t('paginas.notificacoes.textos.adicioneOsProdutosQue')}>
+            <Botao rotulo={t('paginas.notificacoes.textos.adicionarItem')} icone="plus" onClick={() => toast.info(t('paginas.notificacoes.textos.adicionarItem'))} />
           </Vazio>
         </Bloco>
       </div>
 
-      {bloqueio && <Carregando bloqueante mensagem="Processando" />}
+      {bloqueio && <Carregando bloqueante mensagem={t('paginas.notificacoes.textos.processando')} />}
     </div>
   );
 }

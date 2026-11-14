@@ -1,30 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Paginação"
+      pagina="paginacao"
       icone="chevrons-right"
       componente="Paginacao"
-      resumo="Navegação entre páginas de uma listagem, com o total de registros e a escolha de itens por página."
       notas={
         <ul className="doc-lista">
-          <li>
-            A <C>Tabela</C> e a <C>ListaCards</C> já desenham a paginação pela prop <C>paginacao</C>: use este componente sozinho só em
-            outras listas.
-          </li>
-          <li>
-            <C>pagina</C> começa em 1. Ao mudar o tamanho, volte para a primeira página.
-          </li>
-          <li>
-            Sem <C>aoMudarTamanho</C>, a escolha de itens por página não aparece.
-          </li>
+          <li>{rico(t('docs.paginacao.textos.aTabelaEA'))}</li>
+          <li>{rico(t('docs.paginacao.textos.paginaComecaEm1'))}</li>
+          <li>{rico(t('docs.paginacao.textos.semAomudartamanhoAEscolha'))}</li>
         </ul>
       }
     >
-      <Exemplo id="paginacao/Basico" titulo="Básico" />
+      <Exemplo id="paginacao/Basico" titulo={t('docs.paginacao.secoes.basico')} />
     </PaginaComponente>
   );
 }

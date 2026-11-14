@@ -39,17 +39,18 @@ import {
   type QuadroDemo,
 } from './dados';
 import './apps.css';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 const OPCOES_PRIORIDADE = (Object.keys(PRIORIDADES) as Prioridade[]).map((p) => ({ valor: p, rotulo: PRIORIDADES[p].rotulo }));
 const OPCOES_PESSOAS = PESSOAS.map((p) => ({ valor: p.id, rotulo: p.nome }));
 const OPCOES_ETIQUETAS = ETIQUETAS.map((e) => ({ valor: e.id, rotulo: e.rotulo }));
-const CORES_QUADRO: { valor: CorKanban; rotulo: string }[] = [
-  { valor: 'pri', rotulo: 'Azul' },
-  { valor: 'graf-3', rotulo: 'Verde' },
-  { valor: 'graf-2', rotulo: 'Laranja' },
-  { valor: 'graf-4', rotulo: 'Roxo' },
-  { valor: 'graf-5', rotulo: 'Rosa' },
-];
+const CORES_QUADRO = (t: TradutorDemo['t']): { valor: CorKanban; rotulo: string }[] => ([
+  { valor: 'pri', rotulo: t('paginas.kanban.textos.azul') },
+  { valor: 'graf-3', rotulo: t('paginas.kanban.textos.verde') },
+  { valor: 'graf-2', rotulo: t('paginas.kanban.textos.laranja') },
+  { valor: 'graf-4', rotulo: t('paginas.kanban.textos.roxo') },
+  { valor: 'graf-5', rotulo: t('paginas.kanban.textos.rosa') },
+]);
 
 const contarCartoes = (q: QuadroDemo) => q.colunas.reduce((n, c) => n + c.itens.length, 0);
 const concluidos = (q: QuadroDemo) => q.colunas.find((c) => c.id === q.colunaConcluida)?.itens.length ?? 0;
@@ -57,6 +58,7 @@ const novoId = (prefixo: string) => `${prefixo}-${Date.now().toString(36)}-${Mat
 
 /** Listagem (/apps/kanban) e quadro (/apps/kanban/<id>), com os quadros guardados aqui enquanto a demo está aberta. */
 export function PaginaKanban({ rota, navegar }: { rota: string; navegar: (rota: string) => void }) {
+  const { t } = useT();
   const [quadros, setQuadros] = useState(quadrosIniciais);
   const id = rota.startsWith('/apps/kanban/') ? rota.slice('/apps/kanban/'.length) : null;
   const alterar = (qid: string, f: (q: QuadroDemo) => QuadroDemo) => setQuadros((qs) => qs.map((q) => (q.id === qid ? { ...f(q), atualizado: new Date() } : q)));
@@ -79,9 +81,9 @@ export function PaginaKanban({ rota, navegar }: { rota: string; navegar: (rota: 
   if (!quadro)
     return (
       <div className="demo-pilha">
-        <CabecalhoPagina titulo="Quadro não encontrado" icone="square-kanban" />
-        <Vazio titulo="Quadro não encontrado" descricao="O quadro que você procura não existe ou foi excluído." icone="square-kanban">
-          <Botao rotulo="Voltar para os quadros" icone="arrow-left" onClick={() => navegar('/apps/kanban')} />
+        <CabecalhoPagina titulo={t('paginas.kanban.textos.naoEncontrado')} icone="square-kanban" />
+        <Vazio titulo={t('paginas.kanban.textos.naoEncontrado')} descricao={t('paginas.kanban.textos.oQuadroQueVoce')} icone="square-kanban">
+          <Botao rotulo={t('paginas.kanban.textos.voltarParaOsQuadros')} icone="arrow-left" onClick={() => navegar('/apps/kanban')} />
         </Vazio>
       </div>
     );
@@ -102,10 +104,11 @@ function ListaQuadros({
   alternarFavorito: (id: string) => void;
   criar: (q: QuadroDemo) => void;
 }) {
+  const { t, idioma, tc } = useT();
   const [busca, setBusca] = useState('');
   const [criando, setCriando] = useState(false);
   const termo = normalizar(busca);
-  const achados = quadros.filter((q) => !termo || normalizar(`${q.nome} ${q.descricao}`).includes(termo));
+  const achados = quadros.filter((q) => !termo || normalizar(`${tc(q.nome)} ${tc(q.descricao)}`).includes(termo));
   const favoritos = achados.filter((q) => q.favorito);
 
   const card = (q: QuadroDemo) => {
@@ -115,9 +118,9 @@ function ListaQuadros({
       <Card
         className={`demo-quadro lp-kb-cor--${q.cor}`}
         aoClicar={() => abrir(q)}
-        aria-label={`Abrir o quadro ${q.nome}`}
-        titulo={q.nome}
-        subtitulo={q.descricao}
+        aria-label={t('paginas.kanban.textos.abrirOQuadroNome', { nome: q.nome })}
+        titulo={tc(q.nome)}
+        subtitulo={tc(q.descricao)}
         ferramentas={
           <Botao
             icone="star"
@@ -125,29 +128,29 @@ function ListaQuadros({
             severidade={q.favorito ? 'destaque' : 'secundario'}
             tamanho="pequeno"
             pressionado={q.favorito}
-            aria-label={q.favorito ? `Tirar ${q.nome} dos favoritos` : `Favoritar ${q.nome}`}
-            dica={q.favorito ? 'Tirar dos favoritos' : 'Favoritar'}
+            aria-label={q.favorito ? t('paginas.kanban.textos.tirarNomeDosFavoritos', { nome: q.nome }) : t('paginas.kanban.textos.favoritarNome', { nome: q.nome })}
+            dica={q.favorito ? t('paginas.kanban.textos.tirarDosFavoritos') : t('paginas.kanban.textos.favoritar')}
             className={q.favorito ? 'demo-favorito is-favorito' : 'demo-favorito'}
             onClick={() => alternarFavorito(q.id)}
           />
         }
         rodape={
           <div className="demo-quadro-rodape">
-            <GrupoAvatares pessoas={pessoas(q.membros)} rotulo="Membros" />
-            <small>Atualizado {tempoRelativo(q.atualizado)}</small>
+            <GrupoAvatares pessoas={pessoas(q.membros)} rotulo={t('paginas.kanban.textos.membros')} />
+            <small>{t('paginas.kanban.textos.atualizado')}{tempoRelativo(q.atualizado, undefined, idioma)}</small>
           </div>
         }
       >
         <div className="demo-quadro-numeros">
           <span>
-            {q.colunas.length} {q.colunas.length === 1 ? 'coluna' : 'colunas'}
+            {q.colunas.length} {q.colunas.length === 1 ? tc('coluna') : tc('colunas')}
           </span>
           <span>
-            {total} {total === 1 ? 'cartão' : 'cartões'}
+            {total} {total === 1 ? tc('cartão') : tc('cartões')}
           </span>
         </div>
         {total > 0 && q.colunaConcluida && (
-          <Progresso valor={feitos} max={total} altura="sm" mostrarValor="fim" cor="ok" rotulo={`Concluídos em ${q.nome}`} />
+          <Progresso valor={feitos} max={total} altura="sm" mostrarValor="fim" cor="ok" rotulo={t('paginas.kanban.textos.concluidosEmNome', { nome: q.nome })} />
         )}
       </Card>
     );
@@ -156,36 +159,30 @@ function ListaQuadros({
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo="Quadros Kanban"
+        titulo={t('paginas.kanban.titulo')}
         icone="square-kanban"
         trilha
-        acoes={<Botao rotulo="Criar quadro" icone="plus" onClick={() => setCriando(true)} />}
-      >
-        Organize projetos e tarefas em colunas.
-      </CabecalhoPagina>
+        acoes={<Botao rotulo={t('paginas.kanban.textos.criarQuadro')} icone="plus" onClick={() => setCriando(true)} />}
+      >{t('paginas.kanban.textos.organizeProjetosETarefas')}</CabecalhoPagina>
       <div className="demo-apps-barra">
-        <CampoTexto icone="search" placeholder="Buscar quadro" aria-label="Buscar quadro" valor={busca} aoMudar={setBusca} />
+        <CampoTexto icone="search" placeholder={t('paginas.kanban.textos.buscarQuadro')} aria-label={t('paginas.kanban.textos.buscarQuadro')} valor={busca} aoMudar={setBusca} />
       </div>
       {favoritos.length > 0 && (
         <section className="demo-apps-secao" aria-labelledby="quadros-favoritos">
-          <h2 id="quadros-favoritos" className="demo-apps-secao-titulo">
-            Favoritos
-          </h2>
-          <ListaCards itens={favoritos} card={card} chave={(q) => q.id} larguraMin="17rem" rotulo="Quadros favoritos" />
+          <h2 id="quadros-favoritos" className="demo-apps-secao-titulo">{t('paginas.kanban.textos.favoritos')}</h2>
+          <ListaCards itens={favoritos} card={card} chave={(q) => q.id} larguraMin="17rem" rotulo={t('paginas.kanban.textos.quadrosFavoritos')} />
         </section>
       )}
       <section className="demo-apps-secao" aria-labelledby="quadros-todos">
-        <h2 id="quadros-todos" className="demo-apps-secao-titulo">
-          Todos os quadros
-        </h2>
+        <h2 id="quadros-todos" className="demo-apps-secao-titulo">{t('paginas.kanban.textos.todosOsQuadros')}</h2>
         <ListaCards
           itens={achados}
           card={card}
           chave={(q) => q.id}
           larguraMin="17rem"
-          rotulo="Todos os quadros"
-          vazioTitulo={busca ? 'Nenhum quadro encontrado' : 'Nenhum quadro ainda'}
-          vazioDescricao={busca ? 'Tente outra busca.' : 'Crie o primeiro quadro para organizar projetos e tarefas.'}
+          rotulo={t('paginas.kanban.textos.todosOsQuadros')}
+          vazioTitulo={busca ? t('paginas.kanban.textos.nenhumQuadroEncontrado') : t('paginas.kanban.textos.nenhumQuadroAinda')}
+          vazioDescricao={busca ? t('paginas.kanban.textos.tenteOutraBusca') : t('paginas.kanban.textos.crieOPrimeiroQuadro')}
           vazioIcone="square-kanban"
         />
       </section>
@@ -195,6 +192,7 @@ function ListaQuadros({
 }
 
 function DialogoNovoQuadro({ aberto, aoFechar, aoCriar }: { aberto: boolean; aoFechar: () => void; aoCriar: (q: QuadroDemo) => void }) {
+  const { t, tc } = useT();
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [cor, setCor] = useState<CorKanban>('pri');
@@ -207,13 +205,13 @@ function DialogoNovoQuadro({ aberto, aoFechar, aoCriar }: { aberto: boolean; aoF
     aoFechar();
   };
   const criar = () => {
-    if (!nome.trim()) return setErro('Informe o nome do quadro.');
+    if (!nome.trim()) return setErro(tc('Informe o nome do quadro.'));
     const colunas: ColunaDemo[] =
       modelo === 'basico'
         ? [
-            { id: novoId('col'), titulo: 'A fazer', cor: 'neutro', itens: [] },
-            { id: novoId('col'), titulo: 'Em andamento', cor: 'info', itens: [] },
-            { id: 'feito', titulo: 'Concluído', cor: 'ok', itens: [] },
+            { id: novoId('col'), titulo: t('paginas.kanban.textos.aFazer'), cor: 'neutro', itens: [] },
+            { id: novoId('col'), titulo: t('paginas.kanban.textos.emAndamento'), cor: 'info', itens: [] },
+            { id: 'feito', titulo: t('paginas.kanban.textos.concluido'), cor: 'ok', itens: [] },
           ]
         : [];
     aoCriar({
@@ -233,24 +231,24 @@ function DialogoNovoQuadro({ aberto, aoFechar, aoCriar }: { aberto: boolean; aoF
     <Dialogo
       aberto={aberto}
       aoFechar={fechar}
-      titulo="Criar quadro"
+      titulo={t('paginas.kanban.textos.criarQuadro')}
       icone="square-kanban"
       rodape={
         <>
-          <Botao rotulo="Cancelar" aparencia="contorno" severidade="secundario" onClick={fechar} />
-          <Botao rotulo="Criar quadro" icone="plus" onClick={criar} />
+          <Botao rotulo={t('paginas.kanban.textos.cancelar')} aparencia="contorno" severidade="secundario" onClick={fechar} />
+          <Botao rotulo={t('paginas.kanban.textos.criarQuadro')} icone="plus" onClick={criar} />
         </>
       }
     >
       <div className="demo-apps-form">
-        <CampoTexto rotulo="Nome" obrigatorio valor={nome} aoMudar={(v) => (setNome(v), setErro(''))} erro={erro} autoFocus />
-        <CampoTextarea rotulo="Descrição" valor={descricao} aoMudar={setDescricao} rows={2} />
-        <CampoSelect rotulo="Cor" opcoes={CORES_QUADRO} valor={cor} aoMudar={(v) => v && setCor(v)} />
+        <CampoTexto rotulo={t('paginas.kanban.textos.nome')} obrigatorio valor={nome} aoMudar={(v) => (setNome(v), setErro(''))} erro={erro} autoFocus />
+        <CampoTextarea rotulo={t('paginas.kanban.textos.descricao')} valor={descricao} aoMudar={setDescricao} rows={2} />
+        <CampoSelect rotulo={t('paginas.kanban.textos.cor')} opcoes={CORES_QUADRO(t)} valor={cor} aoMudar={(v) => v && setCor(v)} />
         <Escolha
-          rotulo="Colunas"
+          rotulo={t('paginas.kanban.textos.colunas')}
           opcoes={[
-            { valor: 'basico', rotulo: 'A fazer, Em andamento, Concluído' },
-            { valor: 'vazio', rotulo: 'Começar sem colunas' },
+            { valor: 'basico', rotulo: t('paginas.kanban.textos.aFazerEmAndamento') },
+            { valor: 'vazio', rotulo: t('paginas.kanban.textos.comecarSemColunas') },
           ]}
           valor={modelo}
           aoMudar={(v) => setModelo(v as 'basico' | 'vazio')}
@@ -272,6 +270,7 @@ function PaginaQuadro({
   alterar: (f: (q: QuadroDemo) => QuadroDemo) => void;
   alternarFavorito: () => void;
 }) {
+  const { t, tc } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [busca, setBusca] = useState('');
@@ -286,7 +285,7 @@ function PaginaQuadro({
   const filtro = useMemo(() => {
     if (!temFiltro) return undefined;
     return (c: CartaoDemo) =>
-      (!termo || normalizar(`${c.titulo} ${c.descricao ?? ''} ${c.negocio?.empresa ?? ''}`).includes(termo)) &&
+      (!termo || normalizar(`${tc(c.titulo)} ${tc(c.descricao) ?? ''} ${c.negocio?.empresa ?? ''}`).includes(termo)) &&
       (!filtroEtiquetas.length || filtroEtiquetas.some((e) => c.etiquetas.includes(e))) &&
       (!filtroPessoas.length || filtroPessoas.some((p) => c.responsaveis.includes(p))) &&
       (!filtroPrioridades.length || (!!c.prioridade && filtroPrioridades.includes(c.prioridade)));
@@ -299,6 +298,9 @@ function PaginaQuadro({
   };
 
   const colunas = quadro.colunas;
+  // títulos das colunas de exemplo no idioma; ao mudar, volta o título guardado (o que a pessoa digitou fica como está)
+  const colunasNoIdioma = useMemo(() => colunas.map((c) => ({ ...c, titulo: tc(c.titulo) })), [colunas, tc]);
+  const tituloGuardado = (cs: ColunaDemo[]) => cs.map((c) => ({ ...c, titulo: colunas.find((o) => o.id === c.id)?.titulo ?? c.titulo }));
   const mudarColunas = (f: (cs: ColunaDemo[]) => ColunaDemo[]) => alterar((q) => ({ ...q, colunas: f(q.colunas) }));
   const colunaDe = (id: string) => colunas.find((c) => c.itens.some((i) => i.id === id));
   const cartaoAberto = aberto?.id ? colunas.flatMap((c) => c.itens).find((i) => i.id === aberto.id) : undefined;
@@ -319,61 +321,61 @@ function PaginaQuadro({
         return { ...col, itens: [...col.itens, c] };
       });
     });
-    toast.ok(aberto?.id ? 'Cartão salvo' : 'Cartão criado');
+    toast.ok(aberto?.id ? t('paginas.kanban.textos.cartaoSalvo') : t('paginas.kanban.textos.cartaoCriado'));
     setAberto(null);
   };
 
   const excluirCartao = async (c: CartaoDemo) => {
-    if (!(await confirmar.remover({ titulo: 'Excluir o cartão?', mensagem: `"${c.titulo}" será excluído.`, rotuloAceitar: 'Excluir' }))) return;
+    if (!(await confirmar.remover({ titulo: t('paginas.kanban.textos.excluirOCartao'), mensagem: t('paginas.kanban.textos.tituloSeraExcluido', { titulo: c.titulo }), rotuloAceitar: tc('Excluir') }))) return;
     mudarColunas((cs) => cs.map((col) => ({ ...col, itens: col.itens.filter((i) => i.id !== c.id) })));
     setAberto(null);
-    toast.ok('Cartão excluído');
+    toast.ok(t('paginas.kanban.textos.cartaoExcluido'));
   };
 
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo={quadro.nome}
+        titulo={tc(quadro.nome)}
         icone="square-kanban"
         trilha
         acoes={
           <div className="demo-apps-acoes">
-            <GrupoAvatares pessoas={pessoas(quadro.membros)} rotulo="Membros" max={4} tamanho="2rem" />
+            <GrupoAvatares pessoas={pessoas(quadro.membros)} rotulo={t('paginas.kanban.textos.membros')} max={4} tamanho="2rem" />
             <Botao
               icone="star"
               aparencia="contorno"
               severidade={quadro.favorito ? 'destaque' : 'secundario'}
               pressionado={quadro.favorito}
-              aria-label={quadro.favorito ? 'Tirar dos favoritos' : 'Favoritar'}
-              dica={quadro.favorito ? 'Tirar dos favoritos' : 'Favoritar'}
+              aria-label={quadro.favorito ? t('paginas.kanban.textos.tirarDosFavoritos') : t('paginas.kanban.textos.favoritar')}
+              dica={quadro.favorito ? t('paginas.kanban.textos.tirarDosFavoritos') : t('paginas.kanban.textos.favoritar')}
               className={quadro.favorito ? 'demo-favorito is-favorito' : 'demo-favorito'}
               onClick={alternarFavorito}
             />
-            {colunas.length > 0 && <Botao rotulo="Novo cartão" icone="plus" onClick={() => setAberto({ coluna: colunas[0].id })} />}
+            {colunas.length > 0 && <Botao rotulo={t('paginas.kanban.textos.novoCartao')} icone="plus" onClick={() => setAberto({ coluna: colunas[0].id })} />}
           </div>
         }
       >
-        {quadro.descricao}
+        {tc(quadro.descricao)}
       </CabecalhoPagina>
 
       {colunas.length > 0 && (
-        <div className="demo-apps-filtros" role="search" aria-label="Filtrar cartões">
-          <CampoTexto icone="search" placeholder="Buscar cartões" aria-label="Buscar cartões" valor={busca} aoMudar={setBusca} />
-          <CampoSelectMultiplo placeholder="Etiquetas" aria-label="Etiquetas" opcoes={OPCOES_ETIQUETAS} valor={filtroEtiquetas} aoMudar={setFiltroEtiquetas} />
-          <CampoSelectMultiplo placeholder="Responsáveis" aria-label="Responsáveis" opcoes={OPCOES_PESSOAS} valor={filtroPessoas} aoMudar={setFiltroPessoas} />
-          <CampoSelectMultiplo placeholder="Prioridade" aria-label="Prioridade" opcoes={OPCOES_PRIORIDADE} valor={filtroPrioridades} aoMudar={setFiltroPrioridades} />
-          {temFiltro && <Botao rotulo="Limpar" icone="funnel-x" aparencia="texto" severidade="secundario" onClick={limpar} />}
+        <div className="demo-apps-filtros" role="search" aria-label={t('paginas.kanban.textos.filtrarCartoes')}>
+          <CampoTexto icone="search" placeholder={t('paginas.kanban.textos.buscarCartoes')} aria-label={t('paginas.kanban.textos.buscarCartoes')} valor={busca} aoMudar={setBusca} />
+          <CampoSelectMultiplo placeholder={t('paginas.kanban.textos.etiquetas')} aria-label={t('paginas.kanban.textos.etiquetas')} opcoes={OPCOES_ETIQUETAS} valor={filtroEtiquetas} aoMudar={setFiltroEtiquetas} />
+          <CampoSelectMultiplo placeholder={t('paginas.kanban.textos.responsaveis')} aria-label={t('paginas.kanban.textos.responsaveis')} opcoes={OPCOES_PESSOAS} valor={filtroPessoas} aoMudar={setFiltroPessoas} />
+          <CampoSelectMultiplo placeholder={t('paginas.kanban.textos.prioridade')} aria-label={t('paginas.kanban.textos.prioridade')} opcoes={OPCOES_PRIORIDADE} valor={filtroPrioridades} aoMudar={setFiltroPrioridades} />
+          {temFiltro && <Botao rotulo={t('paginas.kanban.textos.limpar')} icone="funnel-x" aparencia="texto" severidade="secundario" onClick={limpar} />}
         </div>
       )}
 
       <Kanban<CartaoDemo, ColunaDemo>
-        rotulo={`Quadro ${quadro.nome}`}
-        colunas={colunas}
-        aoMudar={(cs) => mudarColunas(() => cs)}
+        rotulo={t('paginas.kanban.textos.quadroNome', { nome: quadro.nome })}
+        colunas={colunasNoIdioma}
+        aoMudar={(cs) => mudarColunas(() => tituloGuardado(cs))}
         aoSoltar={({ item, para, de }) => {
-          if (para.coluna !== de.coluna) toast.info(`"${item.titulo}" foi para ${colunas.find((c) => c.id === para.coluna)?.titulo}`);
+          if (para.coluna !== de.coluna) toast.info(t('paginas.kanban.textos.tituloFoiParaTitulo2', { titulo: item.titulo, titulo2: tc(colunas.find((c) => c.id === para.coluna)?.titulo) ?? '' }));
         }}
-        aoSoltarColuna={() => toast.info('Ordem das colunas salva')}
+        aoSoltarColuna={() => toast.info(t('paginas.kanban.textos.ordemDasColunasSalva'))}
         filtro={filtro}
         nomeItem={(c) => c.titulo}
         renderCartao={(c, alca) => (
@@ -389,13 +391,13 @@ function PaginaQuadro({
           const col = colunas.find((c) => c.id === cid)!;
           const n = col.itens.length;
           const ok = await confirmar.remover({
-            titulo: `Excluir a coluna "${col.titulo}"?`,
-            mensagem: n ? `Os ${n === 1 ? 'cartão dela também será excluído' : `${n} cartões dela também serão excluídos`}.` : 'A coluna está vazia.',
-            rotuloAceitar: 'Excluir coluna',
+            titulo: t('paginas.kanban.textos.excluirAColunaTitulo', { titulo: col.titulo }),
+            mensagem: n ? t('paginas.kanban.textos.osV', { v: n === 1 ? 'cartão dela também será excluído' : `${n} cartões dela também serão excluídos` }) : t('paginas.kanban.textos.aColunaEstaVazia'),
+            rotuloAceitar: tc('Excluir coluna'),
           });
           if (ok) mudarColunas((cs) => cs.filter((c) => c.id !== cid));
         }}
-        acoesColuna={(c) => [{ id: 'limite', rotulo: c.limite ? `Tirar o limite (${c.limite})` : 'Limitar a 3 cartões', icone: 'sliders-horizontal' }]}
+        acoesColuna={(c) => [{ id: 'limite', rotulo: c.limite ? t('paginas.kanban.textos.tirarOLimiteLimite', { limite: c.limite }) : t('paginas.kanban.textos.limitarA3Cartoes'), icone: 'sliders-horizontal' }]}
         aoEscolherAcaoColuna={(acao, c) => {
           if (acao === 'limite') mudarColunas((cs) => cs.map((x) => (x.id === c.id ? { ...x, limite: x.limite ? undefined : 3 } : x)));
         }}
@@ -418,11 +420,12 @@ function PaginaQuadro({
 
 /** O cartão do quadro, montado com os dados da demo (o funil de vendas usa o espaço `extra`). */
 function CartaoQuadro({ cartao: c, alca, concluido, abrir }: { cartao: CartaoDemo; alca: ReactNode; concluido: boolean; abrir: () => void }) {
+  const { t, tc } = useT();
   const feitas = c.subtarefas.filter((s) => s.feita).length;
   return (
     <CartaoKanban
-      titulo={c.titulo}
-      descricao={c.descricao}
+      titulo={tc(c.titulo)}
+      descricao={tc(c.descricao)}
       capa={c.capa}
       etiquetas={etiquetas(c.etiquetas)}
       prioridade={c.prioridade}
@@ -439,8 +442,8 @@ function CartaoQuadro({ cartao: c, alca, concluido, abrir }: { cartao: CartaoDem
           <div className="demo-negocio">
             <span>{c.negocio.empresa}</span>
             <strong>{formatarMoeda(c.negocio.valor)}</strong>
-            <Progresso valor={c.negocio.chance} altura="xs" cor={c.negocio.chance >= 70 ? 'ok' : 'pri'} rotulo="Chance de fechar" />
-            <small>{c.negocio.chance}% de chance</small>
+            <Progresso valor={c.negocio.chance} altura="xs" cor={c.negocio.chance >= 70 ? 'ok' : 'pri'} rotulo={t('paginas.kanban.textos.chanceDeFechar')} />
+            <small>{t('paginas.kanban.textos.chanceDeChance', { chance: c.negocio.chance })}</small>
           </div>
         )
       }
@@ -463,6 +466,7 @@ function DialogoCartao({
   aoSalvar: (c: CartaoDemo, colunaId: string) => void;
   aoExcluir: (c: CartaoDemo) => void;
 }) {
+  const { t, idioma, tc } = useT();
   const [c, setC] = useState<CartaoDemo>(
     () => cartao ?? { id: novoId('c'), titulo: '', etiquetas: [], responsaveis: [], subtarefas: [], comentarios: [] },
   );
@@ -473,7 +477,7 @@ function DialogoCartao({
   const mudar = (parcial: Partial<CartaoDemo>) => setC((x) => ({ ...x, ...parcial }));
 
   const salvar = () => {
-    if (!c.titulo.trim()) return setErro('Informe o título do cartão.');
+    if (!c.titulo.trim()) return setErro(tc('Informe o título do cartão.'));
     aoSalvar({ ...c, titulo: c.titulo.trim() }, coluna);
   };
   const adicionarSub = () => {
@@ -492,51 +496,47 @@ function DialogoCartao({
     <Dialogo
       aberto
       aoFechar={aoFechar}
-      titulo={cartao ? 'Detalhes do cartão' : 'Novo cartão'}
-      subtitulo={cartao ? `em ${colunas.find((x) => x.id === colunaInicial)?.titulo}` : undefined}
+      titulo={cartao ? t('paginas.kanban.textos.detalhesDoCartao') : t('paginas.kanban.textos.novoCartao')}
+      subtitulo={cartao ? t('paginas.kanban.textos.emTitulo', { titulo: colunas.find((x) => x.id === colunaInicial)?.titulo ?? '' }) : undefined}
       icone="square-kanban"
       tamanho="grande"
       telaCheiaAbaixo="md"
       rodape={
         <>
-          {cartao && <Botao rotulo="Excluir" icone="trash-2" aparencia="texto" severidade="err" className="demo-apps-rodape-esq" onClick={() => aoExcluir(cartao)} />}
-          <Botao rotulo="Cancelar" aparencia="contorno" severidade="secundario" onClick={aoFechar} />
-          <Botao rotulo={cartao ? 'Salvar' : 'Criar cartão'} icone="save" onClick={salvar} />
+          {cartao && <Botao rotulo={t('paginas.kanban.textos.excluir')} icone="trash-2" aparencia="texto" severidade="err" className="demo-apps-rodape-esq" onClick={() => aoExcluir(cartao)} />}
+          <Botao rotulo={t('paginas.kanban.textos.cancelar')} aparencia="contorno" severidade="secundario" onClick={aoFechar} />
+          <Botao rotulo={cartao ? t('paginas.kanban.textos.salvar') : t('paginas.kanban.textos.criarCartao')} icone="save" onClick={salvar} />
         </>
       }
     >
       <div className="demo-cartao-detalhe">
         <div className="demo-apps-form">
-          <CampoTexto rotulo="Título" obrigatorio valor={c.titulo} aoMudar={(v) => (mudar({ titulo: v }), setErro(''))} erro={erro} autoFocus={!cartao} />
-          <CampoTextarea rotulo="Descrição" placeholder="Adicione uma descrição…" valor={c.descricao ?? ''} aoMudar={(v) => mudar({ descricao: v || undefined })} rows={3} />
+          <CampoTexto rotulo={t('paginas.kanban.textos.titulo')} obrigatorio valor={c.titulo} aoMudar={(v) => (mudar({ titulo: v }), setErro(''))} erro={erro} autoFocus={!cartao} />
+          <CampoTextarea rotulo={t('paginas.kanban.textos.descricao')} placeholder={t('paginas.kanban.textos.adicioneUmaDescricao')} valor={c.descricao ?? ''} aoMudar={(v) => mudar({ descricao: v || undefined })} rows={3} />
 
           <fieldset className="demo-apps-grupo">
-            <legend>
-              Subtarefas{' '}
-              {c.subtarefas.length > 0 && (
-                <small>
-                  {feitas} de {c.subtarefas.length}
-                </small>
+            <legend>{t('paginas.kanban.textos.subtarefas')}{c.subtarefas.length > 0 && (
+                <small>{t('paginas.kanban.textos.feitasDeN', { feitas, n: c.subtarefas.length })}</small>
               )}
             </legend>
-            {c.subtarefas.length > 0 && <Progresso valor={feitas} max={c.subtarefas.length} altura="xs" cor={feitas === c.subtarefas.length ? 'ok' : 'pri'} rotulo="Subtarefas feitas" />}
+            {c.subtarefas.length > 0 && <Progresso valor={feitas} max={c.subtarefas.length} altura="xs" cor={feitas === c.subtarefas.length ? 'ok' : 'pri'} rotulo={t('paginas.kanban.textos.subtarefasFeitas')} />}
             {c.subtarefas.map((s) => (
               <div key={s.id} className="demo-sub">
-                <CampoMarcacao rotulo={s.texto} valor={s.feita} aoMudar={(v) => mudar({ subtarefas: c.subtarefas.map((x) => (x.id === s.id ? { ...x, feita: v } : x)) })} />
+                <CampoMarcacao rotulo={tc(s.texto)} valor={s.feita} aoMudar={(v) => mudar({ subtarefas: c.subtarefas.map((x) => (x.id === s.id ? { ...x, feita: v } : x)) })} />
                 <Botao
                   icone="x"
                   aparencia="texto"
                   severidade="secundario"
                   tamanho="pequeno"
-                  aria-label={`Remover a subtarefa ${s.texto}`}
+                  aria-label={t('paginas.kanban.textos.removerASubtarefaTexto', { texto: s.texto })}
                   onClick={() => mudar({ subtarefas: c.subtarefas.filter((x) => x.id !== s.id) })}
                 />
               </div>
             ))}
             <div className="demo-apps-linha">
               <CampoTexto
-                placeholder="Nova subtarefa"
-                aria-label="Nova subtarefa"
+                placeholder={t('paginas.kanban.textos.novaSubtarefa')}
+                aria-label={t('paginas.kanban.textos.novaSubtarefa')}
                 valor={novaSub}
                 aoMudar={setNovaSub}
                 onKeyDown={(e) => {
@@ -546,49 +546,49 @@ function DialogoCartao({
                   }
                 }}
               />
-              <Botao rotulo="Adicionar" icone="plus" aparencia="contorno" severidade="secundario" onClick={adicionarSub} disabled={!novaSub.trim()} />
+              <Botao rotulo={t('paginas.kanban.textos.adicionar')} icone="plus" aparencia="contorno" severidade="secundario" onClick={adicionarSub} disabled={!novaSub.trim()} />
             </div>
           </fieldset>
 
           <fieldset className="demo-apps-grupo">
-            <legend>Atividade</legend>
-            {c.comentarios.length === 0 && <p className="demo-apps-nada">Nenhum comentário ainda.</p>}
+            <legend>{t('paginas.kanban.textos.atividade')}</legend>
+            {c.comentarios.length === 0 && <p className="demo-apps-nada">{t('paginas.kanban.textos.nenhumComentarioAinda')}</p>}
             <ul className="demo-comentarios">
               {c.comentarios.map((m, i) => (
                 <li key={i}>
-                  <GrupoAvatares pessoas={[pessoa(m.autor)]} tamanho="1.75rem" rotulo="Autor" />
+                  <GrupoAvatares pessoas={[pessoa(m.autor)]} tamanho="1.75rem" rotulo={t('paginas.kanban.textos.autor')} />
                   <div>
-                    <strong>{pessoa(m.autor).nome}</strong> <small>{tempoRelativo(m.quando)}</small>
-                    <p>{m.texto}</p>
+                    <strong>{tc(pessoa(m.autor).nome)}</strong> <small>{tempoRelativo(m.quando, undefined, idioma)}</small>
+                    <p>{tc(m.texto)}</p>
                   </div>
                 </li>
               ))}
             </ul>
-            <CampoTextarea placeholder="Escreva um comentário…" aria-label="Comentário" valor={comentario} aoMudar={setComentario} rows={2} />
+            <CampoTextarea placeholder={t('paginas.kanban.textos.escrevaUmComentario')} aria-label={t('paginas.kanban.textos.comentario')} valor={comentario} aoMudar={setComentario} rows={2} />
             <div>
-              <Botao rotulo="Comentar" icone="send" tamanho="pequeno" onClick={comentar} disabled={!comentario.trim()} />
+              <Botao rotulo={t('paginas.kanban.textos.comentar')} icone="send" tamanho="pequeno" onClick={comentar} disabled={!comentario.trim()} />
             </div>
           </fieldset>
         </div>
 
-        <aside className="demo-apps-form demo-cartao-lado" aria-label="Propriedades do cartão">
-          <CampoSelect rotulo="Coluna" opcoes={colunas.map((x) => ({ valor: x.id, rotulo: x.titulo }))} valor={coluna} aoMudar={(v) => v && setColuna(v)} />
-          <CampoSelect rotulo="Prioridade" opcoes={OPCOES_PRIORIDADE} valor={c.prioridade ?? null} aoMudar={(v) => mudar({ prioridade: v ?? undefined })} botaoLimpar placeholder="Sem prioridade" />
-          <CampoData rotulo="Vencimento" valor={c.vencimento ?? ''} aoMudar={(v) => mudar({ vencimento: v || undefined })} />
+        <aside className="demo-apps-form demo-cartao-lado" aria-label={t('paginas.kanban.textos.propriedadesDoCartao')}>
+          <CampoSelect rotulo={t('paginas.kanban.textos.coluna')} opcoes={colunas.map((x) => ({ valor: x.id, rotulo: tc(x.titulo) }))} valor={coluna} aoMudar={(v) => v && setColuna(v)} />
+          <CampoSelect rotulo={t('paginas.kanban.textos.prioridade')} opcoes={OPCOES_PRIORIDADE} valor={c.prioridade ?? null} aoMudar={(v) => mudar({ prioridade: v ?? undefined })} botaoLimpar placeholder={t('paginas.kanban.textos.semPrioridade')} />
+          <CampoData rotulo={t('paginas.kanban.textos.vencimento')} valor={c.vencimento ?? ''} aoMudar={(v) => mudar({ vencimento: v || undefined })} />
           <div className="demo-apps-linha">
-            <Botao rotulo="Hoje" aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(0) })} />
-            <Botao rotulo="Amanhã" aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(1) })} />
-            <Botao rotulo="Em 1 semana" aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(7) })} />
+            <Botao rotulo={t('paginas.kanban.textos.hoje')} aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(0) })} />
+            <Botao rotulo={t('paginas.kanban.textos.amanha')} aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(1) })} />
+            <Botao rotulo={t('paginas.kanban.textos.em1Semana')} aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(7) })} />
           </div>
-          <CampoSelectMultiplo rotulo="Responsáveis" opcoes={OPCOES_PESSOAS} valor={c.responsaveis} aoMudar={(v) => mudar({ responsaveis: v })} comBusca />
-          <CampoSelectMultiplo rotulo="Etiquetas" opcoes={OPCOES_ETIQUETAS} valor={c.etiquetas} aoMudar={(v) => mudar({ etiquetas: v })} />
+          <CampoSelectMultiplo rotulo={t('paginas.kanban.textos.responsaveis')} opcoes={OPCOES_PESSOAS} valor={c.responsaveis} aoMudar={(v) => mudar({ responsaveis: v })} comBusca />
+          <CampoSelectMultiplo rotulo={t('paginas.kanban.textos.etiquetas')} opcoes={OPCOES_ETIQUETAS} valor={c.etiquetas} aoMudar={(v) => mudar({ etiquetas: v })} />
           <CampoTexto
-            rotulo="Anexos"
+            rotulo={t('paginas.kanban.textos.anexos')}
             type="number"
             min={0}
             valor={String(c.anexos ?? 0)}
             aoMudar={(v) => mudar({ anexos: Number(v) || undefined })}
-            dica="Na demo, só a contagem."
+            dica={t('paginas.kanban.textos.naDemoSoA')}
           />
         </aside>
       </div>

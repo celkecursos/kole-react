@@ -1,40 +1,30 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Tabela"
+      pagina="tabela"
       icone="table"
       componente="Tabela"
       tipos={['Coluna']}
       importar={['type Coluna', 'type Ordenacao']}
-      resumo="Listagem de registros com colunas formatadas, selo de situação, ações por linha, ordenação, seleção, paginação e os estados de carregando, vazio e erro."
       notas={
         <ul className="doc-lista">
-          <li>
-            A tabela não ordena nem pagina sozinha: ela mostra <C>ordenacao</C> e <C>paginacao</C> e avisa por <C>aoOrdenar</C> e{' '}
-            <C>aoMudarPagina</C>. Assim, o mesmo código serve para dados do servidor.
-          </li>
-          <li>
-            <C>campo</C> aceita caminho com ponto (<C>endereco.cidade</C>). <C>formato</C> formata o valor; <C>render</C> desenha a
-            célula inteira.
-          </li>
-          <li>
-            <C>carregando</C> mostra silhuetas na primeira carga; <C>atualizando</C> esmaece a tabela já preenchida ao paginar ou
-            ordenar.
-          </li>
-          <li>Em tela estreita, a tabela rola na horizontal dentro da própria moldura; a página não ganha rolagem lateral.</li>
-          <li>
-            Para registros que leem melhor como cartão (produtos, pessoas), veja a <C>ListaCards</C>.
-          </li>
+          <li>{rico(t('docs.tabela.textos.aTabelaNaoOrdena'))}</li>
+          <li>{rico(t('docs.tabela.textos.campoAceitaCaminhoCom'))}</li>
+          <li>{rico(t('docs.tabela.textos.carregandoMostraSilhuetasNa'))}</li>
+          <li>{t('docs.tabela.textos.emTelaEstreitaA')}</li>
+          <li>{rico(t('docs.tabela.textos.paraRegistrosQueLeem'))}</li>
         </ul>
       }
     >
-      <Exemplo id="tabela/Basico" titulo="Colunas, situação e ações" />
-      <Exemplo id="tabela/OrdenarPaginar" titulo="Ordenação, seleção e paginação" />
-      <Exemplo id="tabela/Estados" titulo="Carregando, vazia e erro" />
+      <Exemplo id="tabela/Basico" titulo={t('docs.tabela.secoes.colunasSituacaoEAcoes')} />
+      <Exemplo id="tabela/OrdenarPaginar" titulo={t('docs.tabela.secoes.ordenacaoSelecaoEPaginacao')} />
+      <Exemplo id="tabela/Estados" titulo={t('docs.tabela.secoes.carregandoVaziaEErro')} />
     </PaginaComponente>
   );
 }

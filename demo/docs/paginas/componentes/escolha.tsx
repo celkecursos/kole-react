@@ -1,27 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Escolha"
+      pagina="escolha"
       icone="list"
       componente="Escolha"
-      resumo="Uma opção entre poucas, todas à vista: controle segmentado ou grupo de rádios."
       notas={
         <ul className="doc-lista">
-          <li>Segmentado para duas a quatro opções curtas; rádio para textos maiores ou quando cada opção precisa de explicação.</li>
-          <li>
-            As setas mudam a opção (padrão de <C>radiogroup</C>), e Tab entra e sai do grupo de uma vez.
-          </li>
-          <li>
-            Com mais de cinco opções, o <C>CampoSelect</C> ocupa menos espaço.
-          </li>
+          <li>{t('docs.escolha.textos.segmentadoParaDuasA')}</li>
+          <li>{rico(t('docs.escolha.textos.asSetasMudamA'))}</li>
+          <li>{rico(t('docs.escolha.textos.comMaisDeCinco'))}</li>
         </ul>
       }
     >
-      <Exemplo id="escolha/Basico" titulo="Segmentado e rádio" />
+      <Exemplo id="escolha/Basico" titulo={t('docs.escolha.secoes.segmentadoERadio')} />
     </PaginaComponente>
   );
 }

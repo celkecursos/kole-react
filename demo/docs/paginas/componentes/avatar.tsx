@@ -1,37 +1,28 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Avatar"
+      pagina="avatar"
       icone="circle-user"
       componente="Avatar"
       outros={['ComBadge', 'GrupoAvatares']}
       tipos={['PessoaAvatar']}
-      resumo="Foto ou iniciais de uma pessoa ou empresa, com contagem ou ponto de status no canto (ComBadge) e avatares sobrepostos com +N (GrupoAvatares)."
       notas={
         <ul className="doc-lista">
-          <li>
-            Sem <C>foto</C>, ou se a imagem falhar, mostra as <C>iniciais</C> do <C>nome</C>.
-          </li>
-          <li>
-            O <C>nome</C> vira o texto alternativo. Passe sempre, mesmo com foto.
-          </li>
-          <li>
-            <C>ComBadge</C> vale para qualquer elemento (ícone, botão). A <C>descricao</C> é o que o leitor de tela anuncia ("5
-            mensagens não lidas"); acima de <C>max</C>, vira "99+".
-          </li>
-          <li>
-            <C>GrupoAvatares</C> mostra até <C>max</C> pessoas (padrão: 3) e junta o resto em "+N". O leitor de tela ouve o <C>rotulo</C> seguido de
-            todos os nomes ("Responsáveis: Ana, Bruno e Carla").
-          </li>
+          <li>{rico(t('docs.avatar.textos.semFotoOuSe'))}</li>
+          <li>{rico(t('docs.avatar.textos.oNomeViraO'))}</li>
+          <li>{rico(t('docs.avatar.textos.combadgeValeParaQualquer'))}</li>
+          <li>{rico(t('docs.avatar.textos.grupoavataresMostraAteMax'))}</li>
         </ul>
       }
     >
-      <Exemplo id="avatar/Basico" titulo="Foto, iniciais e badge" />
-      <Exemplo id="avatar/Grupo" titulo="Grupo de avatares" />
+      <Exemplo id="avatar/Basico" titulo={t('docs.avatar.secoes.fotoIniciaisEBadge')} />
+      <Exemplo id="avatar/Grupo" titulo={t('docs.avatar.secoes.grupoDeAvatares')} />
     </PaginaComponente>
   );
 }

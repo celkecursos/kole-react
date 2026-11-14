@@ -2,6 +2,8 @@ import { Botao } from '../../../../src';
 import { C, Codigo } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 const MOLDURA = `import { EstruturaSite, RodapeSite } from '@celke/kole-react';
 
@@ -28,45 +30,33 @@ const MOLDURA = `import { EstruturaSite, RodapeSite } from '@celke/kole-react';
 </EstruturaSite>`;
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Site público"
+      pagina="site"
       icone="app-window"
       componente="EstruturaSite"
       outros={['RodapeSite', 'SecaoSite', 'DestaqueSite', 'CabecalhoSecao', 'CardRecurso', 'CardPlano', 'CardConteudo', 'FaixaNumeros', 'FaixaChamada']}
       importar={['CardDepoimento', 'CampoPesquisa', 'FiltroPilulas', 'Newsletter', 'ListaNumerada', 'SumarioPagina', 'ConteudoArtigo']}
-      resumo="Componentes para o site da empresa, no mesmo pacote e com os mesmos tokens do sistema: moldura com menu e rodapé, faixa de abertura, seções, cards de recurso, plano, conteúdo e depoimento."
       notas={
         <ul className="doc-lista">
-          <li>
-            Os links são de verdade (<C>{'<a href>'}</C>): Ctrl+clique abre em nova aba. Dentro da <C>EstruturaSite</C>, eles navegam pelo{' '}
-            <C>aoNavegar</C>/<C>renderLink</C> do app.
-          </li>
-          <li>
-            <C>CabecalhoSecao</C> escolhe o nível do título (<C>nivel</C>): mantenha um único <C>h1</C>, o da faixa de abertura.
-          </li>
-          <li>
-            Com Tailwind, os utilitários do site (<C>max-w-site</C>, <C>rounded-site</C>, <C>text-site-hero</C>) seguem os mesmos tokens.
-          </li>
-          <li>
-            <C>ConteudoArtigo</C> formata o HTML de um post (títulos, listas, imagens); <C>SumarioPagina</C> monta o "Nesta página" com
-            âncoras.
-          </li>
+          <li>{t('docs.site.textos.osLinksSaoDe')}<C>{'<a href>'}</C>{rico(t('docs.site.textos.ctrlCliqueAbreEm'))}</li>
+          <li>{rico(t('docs.site.textos.cabecalhosecaoEscolheONivel'))}</li>
+          <li>{rico(t('docs.site.textos.comTailwindOsUtilitarios'))}</li>
+          <li>{rico(t('docs.site.textos.conteudoartigoFormataOHtml'))}</li>
         </ul>
       }
     >
-      <p className="doc-p">
-        A moldura (<C>EstruturaSite</C> e <C>RodapeSite</C>) ocupa a janela inteira; veja as páginas modelo do site na demo.
-      </p>
+      <p className="doc-p">{rico(t('docs.site.textos.aMolduraEstruturasiteE'))}</p>
       <div className="demo-linha">
-        <Botao rotulo="Abrir o site modelo" icone="external-link" onClick={() => (window.location.hash = '/site')} />
+        <Botao rotulo={t('docs.site.textos.abrirOSiteModelo')} icone="external-link" onClick={() => (window.location.hash = '/site')} />
       </div>
-      <h3 className="doc-exemplo-titulo">Moldura</h3>
+      <h3 className="doc-exemplo-titulo">{t('docs.site.textos.moldura')}</h3>
       <Codigo codigo={MOLDURA} />
-      <Exemplo id="site/Destaque" titulo="Faixa de abertura" />
-      <Exemplo id="site/Secao" titulo="Seção, recursos e números" />
-      <Exemplo id="site/Planos" titulo="Planos, depoimento e chamada" />
-      <Exemplo id="site/Conteudo" titulo="Blog: pesquisa, filtro, cards e newsletter" />
+      <Exemplo id="site/Destaque" titulo={t('docs.site.secoes.faixaDeAbertura')} />
+      <Exemplo id="site/Secao" titulo={t('docs.site.secoes.secaoRecursosENumeros')} />
+      <Exemplo id="site/Planos" titulo={t('docs.site.secoes.planosDepoimentoEChamada')} />
+      <Exemplo id="site/Conteudo" titulo={t('docs.site.secoes.blogPesquisaFiltroCards')} />
     </PaginaComponente>
   );
 }

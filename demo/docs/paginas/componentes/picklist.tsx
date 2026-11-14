@@ -1,28 +1,25 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Picklist"
+      pagina="picklist"
       icone="arrow-up-down"
       componente="Picklist"
       importar={['type PicklistValor']}
-      resumo="Duas listas lado a lado para mover itens de uma para a outra: permissões, colunas visíveis, membros de um grupo."
       notas={
         <ul className="doc-lista">
-          <li>
-            O valor guarda as duas listas: <C>{'{ fonte, alvo }'}</C>. A ordem do alvo é a que a pessoa deixou.
-          </li>
-          <li>Clique seleciona (Ctrl para vários), duplo clique ou Enter move, e também dá para arrastar. Alt + setas reordena.</li>
-          <li>
-            Para objetos, passe <C>paraRotulo</C> (e <C>renderItem</C> para um item mais rico).
-          </li>
+          <li>{rico(t('docs.picklist.textos.oValorGuardaAs'))}</li>
+          <li>{t('docs.picklist.textos.cliqueSelecionaCtrlPara')}</li>
+          <li>{rico(t('docs.picklist.textos.paraObjetosPassePararotulo'))}</li>
         </ul>
       }
     >
-      <Exemplo id="picklist/Basico" titulo="Básico com filtro" />
+      <Exemplo id="picklist/Basico" titulo={t('docs.picklist.secoes.basicoComFiltro')} />
     </PaginaComponente>
   );
 }

@@ -1,5 +1,7 @@
 import { Alerta } from '../../../src';
-import { C, Codigo } from '../Codigo';
+import { useT } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
+import { Codigo } from '../Codigo';
 import { PaginaGuia, Secao } from '../PaginaDoc';
 
 const USO = `// main.tsx
@@ -40,50 +42,32 @@ const TAILWIND = `/* app.css: a ordem das camadas vem antes do Tailwind */
 @import '@celke/kole-react/tailwind.css'; /* opcional: tokens como utilitários */`;
 
 export function DocInstalacao() {
+  const { t } = useT();
   return (
-    <PaginaGuia
-      titulo="Instalação"
-      icone="download"
-      resumo="Do npm install à primeira tela, em três passos. Funciona com Vite, Next.js (App Router) e qualquer app React 18.2+ ou 19."
-    >
-      <Secao id="instalar" titulo="1. Instalar o pacote">
+    <PaginaGuia pagina="instalacao" icone="download">
+      <Secao id="instalar" titulo={t('docs.instalacao.secoes.instalar')}>
         <Codigo linguagem="bash" codigo="npm i @celke/kole-react" />
-        <p className="doc-p">
-          O pacote é só ESM, traz os tipos TypeScript e já vem marcado com <C>'use client'</C>. A fonte Inter vem embutida no{' '}
-          <C>estilos.css</C>, e os ícones são do Lucide (instalado junto).
-        </p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.pacote'))}</p>
       </Secao>
 
-      <Secao id="provedor" titulo="2. Importar o CSS e o ProvedorUi">
+      <Secao id="provedor" titulo={t('docs.instalacao.secoes.provedor')}>
         <Codigo codigo={USO} />
-        <p className="doc-p">
-          O <C>ProvedorUi</C> liga o tema e a densidade (lembrados no navegador), os toasts (<C>useToast</C>) e as confirmações (
-          <C>useConfirmacao</C>). Importe o <C>estilos.css</C> uma vez só, no ponto de entrada.
-        </p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.provedor'))}</p>
       </Secao>
 
-      <Secao id="primeira-tela" titulo="3. Primeira tela">
+      <Secao id="primeira-tela" titulo={t('docs.instalacao.secoes.primeiraTela')}>
         <Codigo codigo={PRIMEIRA_TELA} />
       </Secao>
 
-      <Secao id="tema-sem-piscar" titulo="Tema sem piscar ao abrir">
-        <p className="doc-p">
-          O <C>ProvedorUi</C> aplica o tema depois que o React monta. Para quem usa o tema escuro não ver a página clara piscar, aplique o
-          tema no <C>{'<head>'}</C>, antes da primeira pintura:
-        </p>
+      <Secao id="tema-sem-piscar" titulo={t('docs.instalacao.secoes.temaSemPiscar')}>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.temaHead'))}</p>
         <Codigo codigo={TEMA_HEAD} />
-        <p className="doc-p">
-          Sem SSR, cole no <C>index.html</C> o texto que <C>scriptTemaInicial()</C> devolve. O README tem a versão pronta e a alternativa
-          para Content-Security-Policy sem <C>'unsafe-inline'</C>.
-        </p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.temaSemSsr'))}</p>
       </Secao>
 
-      <Secao id="tailwind" titulo="Com Tailwind 4">
+      <Secao id="tailwind" titulo={t('docs.instalacao.secoes.tailwind')}>
         <Codigo linguagem="css" codigo={TAILWIND} />
-        <Alerta
-          severidade="warn"
-          mensagem="Importe o app.css antes do estilos.css. Se o estilos.css vier primeiro, a camada kole fica abaixo do preflight do Tailwind e os componentes perdem o estilo."
-        />
+        <Alerta severidade="warn" mensagem={t('docs.instalacao.textos.ordemTailwind')} />
       </Secao>
     </PaginaGuia>
   );

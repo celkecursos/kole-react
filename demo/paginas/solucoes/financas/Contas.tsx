@@ -4,6 +4,8 @@ import { dia, hoje, type Conta } from './dados';
 import { CabecalhoFinancas, IconeConta, TIPO_CONTA, dataBr, useEditorLancamento, useMoeda } from './comum';
 import { acoes, contasDo, doEspaco, saldoConta, useFinancas } from './estado';
 import { ROTAS } from './rotas';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 /** Próxima data com o dia `d` (hoje conta). */
 function proximoDia(d: number): string {
@@ -14,10 +16,11 @@ function proximoDia(d: number): string {
 
 /** O cartão desenhado: banco, final do número e titular. Decorativo (as informações estão ao lado, em texto). */
 function CartaoCredito({ conta, titular }: { conta: Conta; titular: string }) {
+  const { tc } = useT();
   return (
     <div className="fin-cartao" style={{ '--fin-cor': conta.cor } as CSSProperties} aria-hidden="true">
       <div className="fin-cartao-topo">
-        <strong>{conta.instituicao}</strong>
+        <strong>{tc(conta.instituicao)}</strong>
         <span className="fin-cartao-chip" />
       </div>
       <div className="fin-cartao-numero">•••• •••• •••• {conta.final}</div>
@@ -33,6 +36,7 @@ function CartaoCredito({ conta, titular }: { conta: Conta; titular: string }) {
 }
 
 export function Contas({ navegar }: { navegar: (r: string) => void }) {
+  const { t, idioma, tc } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -56,20 +60,20 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
   return (
     <div className="demo-pilha">
       <CabecalhoFinancas
-        titulo="Contas e cartões"
+        titulo={t('paginas.finContas.titulo')}
         icone="landmark"
         semPeriodo
-        acoes={<Botao rotulo="Nova conta" icone="plus" onClick={() => toast.info('Nova conta', 'Aqui entraria o cadastro da conta ou do cartão.')} />}
+        acoes={<Botao rotulo={t('paginas.finContas.textos.novaConta')} icone="plus" onClick={() => toast.info(t('paginas.finContas.textos.novaConta'), t('paginas.finContas.textos.aquiEntrariaOCadastro'))} />}
       />
 
       <Indicadores>
-        <Indicador rotulo="Disponível" icone="wallet" cor="var(--graf-1)" valor={moeda(disponivel)} descricao="Contas, poupança e dinheiro" />
-        <Indicador rotulo="Investido" icone="trending-up" cor="var(--graf-3)" valor={moeda(investido)} descricao="Aplicações com liquidez" />
-        <Indicador rotulo="Faturas abertas" icone="credit-card" cor="var(--warn-solid)" valor={moeda(faturas)} descricao={`${cartoes.length} ${cartoes.length === 1 ? 'cartão' : 'cartões'}`} />
-        <Indicador rotulo="Limite disponível" icone="shield-check" cor="var(--ok-solid)" valor={moeda(Math.max(0, limite - faturas))} descricao={`de ${moeda(limite, { centavos: false })}`} />
+        <Indicador rotulo={t('paginas.finContas.textos.disponivel')} icone="wallet" cor="var(--graf-1)" valor={moeda(disponivel)} descricao={t('paginas.finContas.textos.contasPoupancaEDinheiro')} />
+        <Indicador rotulo={t('paginas.finContas.textos.investido')} icone="trending-up" cor="var(--graf-3)" valor={moeda(investido)} descricao={t('paginas.finContas.textos.aplicacoesComLiquidez')} />
+        <Indicador rotulo={t('paginas.finContas.textos.faturasAbertas')} icone="credit-card" cor="var(--warn-solid)" valor={moeda(faturas)} descricao={`${cartoes.length} ${cartoes.length === 1 ? tc('cartão') : tc('cartões')}`} />
+        <Indicador rotulo={t('paginas.finContas.textos.limiteDisponivel')} icone="shield-check" cor="var(--ok-solid)" valor={moeda(Math.max(0, limite - faturas))} descricao={t('paginas.finContas.textos.deValor', { valor: moeda(limite, { centavos: false }) })} />
       </Indicadores>
 
-      <h2 className="fin-titulo-secao">Contas</h2>
+      <h2 className="fin-titulo-secao">{t('paginas.finContas.textos.contas')}</h2>
       <div className="fin-grade fin-grade--contas">
         {bancarias.map((c) => {
           // saldo de cada um dos últimos 30 dias: a forma da tendência
@@ -81,24 +85,24 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
               <div className="fin-conta-topo">
                 <IconeConta conta={c} />
                 <div>
-                  <strong>{c.nome}</strong>
+                  <strong>{tc(c.nome)}</strong>
                   <small>
-                    {c.instituicao} · {TIPO_CONTA[c.tipo]}
+                    {tc(c.instituicao)} · {tc(TIPO_CONTA[c.tipo])}
                   </small>
                 </div>
               </div>
               <Valor valor={saldo} tamanho="destaque" colorir={saldo < 0} />
-              <small className="fin-conta-var">{formatarPercentual(mes, { sinal: true })} em 30 dias</small>
+              <small className="fin-conta-var">{formatarPercentual(mes, { sinal: true , idioma })}{t('paginas.finContas.textos.em30Dias')}</small>
               <Minigrafico valores={serie} className="fin-conta-mini" />
               <div className="fin-conta-acoes">
-                <Botao rotulo="Extrato" icone="list" tamanho="pequeno" aparencia="contorno" severidade="secundario" onClick={() => extrato(c)} />
+                <Botao rotulo={t('paginas.finContas.textos.extrato')} icone="list" tamanho="pequeno" aparencia="contorno" severidade="secundario" onClick={() => extrato(c)} />
                 <Botao
-                  rotulo="Transferir"
+                  rotulo={t('paginas.finContas.textos.transferir')}
                   icone="arrow-left-right"
                   tamanho="pequeno"
                   aparencia="texto"
                   severidade="secundario"
-                  onClick={() => abrir('transferencia', { conta: c.id, pago: true, descricao: 'Transferência' })}
+                  onClick={() => abrir('transferencia', { conta: c.id, pago: true, descricao: t('paginas.finContas.textos.transferencia') })}
                 />
               </div>
             </Card>
@@ -106,7 +110,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
         })}
       </div>
 
-      <h2 className="fin-titulo-secao">Cartões de crédito</h2>
+      <h2 className="fin-titulo-secao">{t('paginas.finContas.textos.cartoesDeCredito')}</h2>
       <div className="fin-grade fin-grade--cartoes">
         {cartoes.map((c) => {
           const fatura = Math.max(0, -saldos.get(c.id)!);
@@ -116,55 +120,51 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
             <Card key={c.id} className="fin-cartao-card">
               <CartaoCredito conta={c} titular={titular} />
               <div className="fin-cartao-info">
-                <div>
-                  <small>Fatura atual</small>
-                  <Valor valor={fatura} tamanho="destaque" />
+                <div>{rico(t('paginas.finContas.textos.faturaAtual'))}<Valor valor={fatura} tamanho="destaque" />
                 </div>
                 <Progresso
                   valor={Math.min(100, usado * 100)}
                   altura="sm"
                   cor={usado > 0.9 ? 'err' : usado > 0.7 ? 'warn' : 'pri'}
-                  rotulo={`Limite usado: ${formatarPercentual(usado * 100, { casas: 0 })}`}
+                  rotulo={t('paginas.finContas.textos.limiteUsadoValor', { valor: formatarPercentual(usado * 100, { casas: 0 , idioma }) })}
                 />
                 <div className="fin-cartao-limite">
-                  <span>
-                    Usado <Valor valor={fatura} />
+                  <span>{t('paginas.finContas.textos.usado')}<Valor valor={fatura} />
                   </span>
-                  <span>
-                    Limite <Valor valor={c.limite ?? 0} centavos={false} />
+                  <span>{t('paginas.finContas.textos.limite')}<Valor valor={c.limite ?? 0} centavos={false} />
                   </span>
                 </div>
                 <dl className="fin-cartao-datas">
                   <div>
-                    <dt>Fecha</dt>
+                    <dt>{t('paginas.finContas.textos.fecha')}</dt>
                     <dd>{dataBr(proximoDia(c.fechamento ?? 1))}</dd>
                   </div>
                   <div>
-                    <dt>Vence</dt>
+                    <dt>{t('paginas.finContas.textos.vence')}</dt>
                     <dd>{dataBr(pendente?.data ?? proximoDia(c.vencimento ?? 10))}</dd>
                   </div>
                 </dl>
                 <div className="fin-conta-acoes">
                   {pendente ? (
                     <Botao
-                      rotulo={`Pagar fatura de ${moeda(pendente.valor)}`}
+                      rotulo={t('paginas.finContas.textos.pagarFaturaDeValor', { valor: moeda(pendente.valor) })}
                       icone="check"
                       tamanho="pequeno"
                       onClick={() => {
                         acoes.marcarPago([pendente.id]);
-                        toast.ok('Fatura paga', `${c.nome} · ${formatarMoeda(pendente.valor)}`);
+                        toast.ok(t('paginas.finContas.textos.faturaPaga'), `${tc(c.nome)} · ${formatarMoeda(pendente.valor, { idioma })}`);
                       }}
                     />
                   ) : (
                     <Botao
-                      rotulo="Pagar fatura"
+                      rotulo={t('paginas.finContas.textos.pagarFatura')}
                       icone="check"
                       tamanho="pequeno"
                       disabled={fatura === 0}
-                      onClick={() => abrir('transferencia', { conta: bancarias[0].id, contaDestino: c.id, valor: fatura, pago: true, descricao: `Fatura ${c.nome}` })}
+                      onClick={() => abrir('transferencia', { conta: bancarias[0].id, contaDestino: c.id, valor: fatura, pago: true, descricao: t('paginas.finContas.textos.faturaNome', { nome: c.nome }) })}
                     />
                   )}
-                  <Botao rotulo="Compras" icone="list" tamanho="pequeno" aparencia="contorno" severidade="secundario" onClick={() => extrato(c)} />
+                  <Botao rotulo={t('paginas.finContas.textos.compras')} icone="list" tamanho="pequeno" aparencia="contorno" severidade="secundario" onClick={() => extrato(c)} />
                 </div>
               </div>
             </Card>

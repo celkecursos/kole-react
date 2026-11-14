@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Alerta, Avatar, Botao, CabecalhoPagina, type CorAlerta } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT, type TradutorDemo } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 const CORES: { cor: CorAlerta; nome: string }[] = [
   { cor: 'pri', nome: 'principal' },
@@ -14,103 +16,100 @@ const CORES: { cor: CorAlerta; nome: string }[] = [
 
 const PRINCIPAIS = CORES.filter((c) => ['pri', 'destaque', 'warn', 'err'].includes(c.cor));
 
-const PESSOAS = [
-  { nome: 'Ana Pereira', cor: '#1f5fe0' },
-  { nome: 'Bruno Lima', cor: '#f7931e' },
-  { nome: 'Carla Dias', cor: '#15803d' },
-  { nome: 'Daniel Moreira', cor: '#b42318' },
-];
+const PESSOAS = (t: TradutorDemo['t']) => ([
+  { nome: t('paginas.alertas.textos.anaPereira'), cor: '#1f5fe0' },
+  { nome: t('paginas.alertas.textos.brunoLima'), cor: '#f7931e' },
+  { nome: t('paginas.alertas.textos.carlaDias'), cor: '#15803d' },
+  { nome: t('paginas.alertas.textos.danielMoreira'), cor: '#b42318' },
+]);
 
 export function PaginaAlertas() {
+  const { t, tc } = useT();
   const [vivos, setVivos] = useState<number[]>([]);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Alertas" icone="triangle-alert" trilha />
+      <CabecalhoPagina titulo={t('paginas.alertas.titulo')} icone="triangle-alert" trilha />
 
       <div className="demo-colunas">
-        <Bloco titulo="Padrão">
+        <Bloco titulo={t('paginas.alertas.secoes.padrao')}>
           {CORES.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} icone={false} mensagem={`Um alerta ${c.nome} simples — confira!`} />
+            <Alerta key={c.cor} severidade={c.cor} icone={false} mensagem={t('paginas.alertas.textos.umAlertaNomeSimples', { nome: c.nome })} />
           ))}
         </Bloco>
 
-        <Bloco titulo="Com links">
+        <Bloco titulo={t('paginas.alertas.secoes.comLinks')}>
           {CORES.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} icone={false}>
-              Um alerta {c.nome} com <a href="#/ui/alertas">um link de exemplo</a>. Clique se quiser.
-            </Alerta>
+            <Alerta key={c.cor} severidade={c.cor} icone={false}>{t('paginas.alertas.textos.umAlertaNomeCom', { nome: c.nome })}<a href="#/ui/alertas">{t('paginas.alertas.textos.umLinkDeExemplo')}</a>{t('paginas.alertas.textos.cliqueSeQuiser')}</Alerta>
           ))}
         </Bloco>
 
-        <Bloco titulo="Sólidos">
+        <Bloco titulo={t('paginas.alertas.secoes.solidos')}>
           {CORES.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} aparencia="solido" icone={false} dispensavel mensagem={`Um alerta sólido ${c.nome} — confira!`} />
+            <Alerta key={c.cor} severidade={c.cor} aparencia="solido" icone={false} dispensavel mensagem={t('paginas.alertas.textos.umAlertaSolidoNome', { nome: c.nome })} />
           ))}
         </Bloco>
 
-        <Bloco titulo="Contorno">
+        <Bloco titulo={t('paginas.alertas.secoes.contorno')}>
           {CORES.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} aparencia="contorno" icone={false} dispensavel mensagem={`Um alerta de contorno ${c.nome} — confira!`} />
+            <Alerta key={c.cor} severidade={c.cor} aparencia="contorno" icone={false} dispensavel mensagem={t('paginas.alertas.textos.umAlertaDeContorno', { nome: c.nome })} />
           ))}
         </Bloco>
 
-        <Bloco titulo="Dispensável" descricao="O “×” tira o alerta da tela.">
-          <Alerta severidade="warn" icone={false} dispensavel>
-            <strong>Atenção!</strong> Revise os campos de entrega antes de enviar o pedido.
-          </Alerta>
+        <Bloco titulo={t('paginas.alertas.secoes.dispensavel')} descricao={t('paginas.alertas.textos.oTiraOAlerta')}>
+          <Alerta severidade="warn" icone={false} dispensavel>{rico(t('paginas.alertas.textos.atencaoReviseOsCampos'))}</Alerta>
         </Bloco>
 
-        <Bloco titulo="Exemplo ao vivo" descricao="Cada clique cria um alerta novo; o “×” remove.">
+        <Bloco titulo={t('paginas.alertas.secoes.exemploAoVivo')} descricao={t('paginas.alertas.textos.cadaCliqueCriaUm')}>
           <div>
-            <Botao rotulo="Mostrar alerta" icone="plus" onClick={() => setVivos((l) => [...l, Date.now()])} />
+            <Botao rotulo={t('paginas.alertas.textos.mostrarAlerta')} icone="plus" onClick={() => setVivos((l) => [...l, Date.now()])} />
           </div>
           {vivos.map((id, i) => (
             <Alerta
               key={id}
               severidade="ok"
               icone="circle-check"
-              mensagem={`Pedido PED-2026-${String(60 + i).padStart(4, '0')} salvo com sucesso.`}
+              mensagem={t('paginas.alertas.textos.pedidoPed2026Valor', { valor: String(60 + i).padStart(4, '0') })}
               aoFechar={() => setVivos((l) => l.filter((x) => x !== id))}
             />
           ))}
         </Bloco>
 
-        <Bloco titulo="Arredondados sólidos">
+        <Bloco titulo={t('paginas.alertas.secoes.arredondadosSolidos')}>
           {PRINCIPAIS.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} aparencia="solido" formato="pilula" icone={false} dispensavel mensagem={`Um alerta sólido arredondado ${c.nome} — confira!`} />
+            <Alerta key={c.cor} severidade={c.cor} aparencia="solido" formato="pilula" icone={false} dispensavel mensagem={t('paginas.alertas.textos.umAlertaSolidoArredondado', { nome: c.nome })} />
           ))}
         </Bloco>
 
-        <Bloco titulo="Arredondados de contorno">
+        <Bloco titulo={t('paginas.alertas.secoes.arredondadosDeContorno')}>
           {PRINCIPAIS.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} aparencia="contorno" formato="pilula" icone={false} dispensavel mensagem={`Um alerta de contorno arredondado ${c.nome} — confira!`} />
+            <Alerta key={c.cor} severidade={c.cor} aparencia="contorno" formato="pilula" icone={false} dispensavel mensagem={t('paginas.alertas.textos.umAlertaDeContorno2', { nome: c.nome })} />
           ))}
         </Bloco>
 
-        <Bloco titulo="Sólidos com sombras">
+        <Bloco titulo={t('paginas.alertas.secoes.solidosComSombras')}>
           {(['pri', 'destaque'] as const).flatMap((cor) =>
             (['pequena', 'media', 'grande'] as const).map((s) => (
-              <Alerta key={cor + s} severidade={cor} aparencia="solido" sombra={s} icone={false} dispensavel mensagem={`Um alerta sólido com sombra ${s}.`} />
+              <Alerta key={cor + s} severidade={cor} aparencia="solido" sombra={s} icone={false} dispensavel mensagem={t('paginas.alertas.textos.umAlertaSolidoCom', { s })} />
             )),
           )}
         </Bloco>
 
-        <Bloco titulo="Padrão com sombras">
+        <Bloco titulo={t('paginas.alertas.secoes.padraoComSombras')}>
           {(['pri', 'destaque'] as const).flatMap((cor) =>
             (['pequena', 'media', 'grande'] as const).map((s) => (
-              <Alerta key={cor + s} severidade={cor} sombra={s} icone={false} mensagem={`Um alerta com sombra ${s}.`} />
+              <Alerta key={cor + s} severidade={cor} sombra={s} icone={false} mensagem={t('paginas.alertas.textos.umAlertaComSombra', { s })} />
             )),
           )}
         </Bloco>
 
-        <Bloco titulo="Arredondados padrão">
+        <Bloco titulo={t('paginas.alertas.secoes.arredondadosPadrao')}>
           {PRINCIPAIS.map((c) => (
-            <Alerta key={c.cor} severidade={c.cor} formato="pilula" icone={false} dispensavel mensagem={`Um alerta arredondado ${c.nome} — confira!`} />
+            <Alerta key={c.cor} severidade={c.cor} formato="pilula" icone={false} dispensavel mensagem={t('paginas.alertas.textos.umAlertaArredondadoNome', { nome: c.nome })} />
           ))}
         </Bloco>
 
-        <Bloco titulo="Arredondados com “×” destacado">
+        <Bloco titulo={t('paginas.alertas.secoes.arredondadosComDestacado')}>
           {PRINCIPAIS.map((c) => (
             <Alerta
               key={c.cor}
@@ -119,46 +118,46 @@ export function PaginaAlertas() {
               icone={false}
               dispensavel
               botaoFechar="circulo"
-              mensagem={`Um alerta arredondado ${c.nome} — confira!`}
+              mensagem={t('paginas.alertas.textos.umAlertaArredondadoNome', { nome: c.nome })}
             />
           ))}
         </Bloco>
 
-        <Bloco titulo="Com ícones">
-          <Alerta severidade="pri" mensagem="Um alerta de exemplo com ícone." />
-          <Alerta severidade="ok" mensagem="Pagamento confirmado." />
-          <Alerta severidade="warn" mensagem="Estoque de café abaixo do mínimo." />
-          <Alerta severidade="err" mensagem="Falha ao emitir a nota fiscal." />
+        <Bloco titulo={t('paginas.alertas.secoes.comIcones')}>
+          <Alerta severidade="pri" mensagem={t('paginas.alertas.textos.umAlertaDeExemplo')} />
+          <Alerta severidade="ok" mensagem={t('paginas.alertas.textos.pagamentoConfirmado')} />
+          <Alerta severidade="warn" mensagem={t('paginas.alertas.textos.estoqueDeCafeAbaixo')} />
+          <Alerta severidade="err" mensagem={t('paginas.alertas.textos.falhaAoEmitirA')} />
         </Bloco>
 
-        <Bloco titulo="Destaque (borda lateral)">
-          <Alerta severidade="pri" aparencia="destaque" sombra="pequena" dispensavel mensagem="Um alerta principal com ícone." />
-          <Alerta severidade="ok" aparencia="destaque" sombra="pequena" dispensavel mensagem="Um alerta de sucesso com ícone." />
-          <Alerta severidade="warn" aparencia="destaque" sombra="pequena" dispensavel mensagem="Um alerta de atenção com ícone." />
-          <Alerta severidade="err" aparencia="destaque" sombra="pequena" dispensavel mensagem="Um alerta de erro com ícone." />
+        <Bloco titulo={t('paginas.alertas.secoes.destaqueBordaLateral')}>
+          <Alerta severidade="pri" aparencia="destaque" sombra="pequena" dispensavel mensagem={t('paginas.alertas.textos.umAlertaPrincipalCom')} />
+          <Alerta severidade="ok" aparencia="destaque" sombra="pequena" dispensavel mensagem={t('paginas.alertas.textos.umAlertaDeSucesso')} />
+          <Alerta severidade="warn" aparencia="destaque" sombra="pequena" dispensavel mensagem={t('paginas.alertas.textos.umAlertaDeAtencao')} />
+          <Alerta severidade="err" aparencia="destaque" sombra="pequena" dispensavel mensagem={t('paginas.alertas.textos.umAlertaDeErro')} />
         </Bloco>
 
-        <Bloco titulo="Com imagem">
-          {PESSOAS.map((p, i) => (
+        <Bloco titulo={t('paginas.alertas.secoes.comImagem')}>
+          {PESSOAS(t).map((p, i) => (
             <Alerta
               key={p.nome}
               severidade={PRINCIPAIS[i].cor}
               formato="pilula"
               dispensavel
-              midia={<Avatar nome={p.nome} foto={retrato(p.cor, p.nome[0])} tamanho="1.75rem" />}
-              mensagem={`${p.nome} comentou no pedido PED-2026-00${42 + i}.`}
+              midia={<Avatar nome={tc(p.nome)} foto={retrato(p.cor, p.nome[0])} tamanho="1.75rem" />}
+              mensagem={t('paginas.alertas.textos.nomeComentouNoPedido', { nome: p.nome, v: 42 + i })}
             />
           ))}
         </Bloco>
 
-        <Bloco titulo="Com imagens de tamanhos diferentes">
-          {PESSOAS.map((p, i) => (
+        <Bloco titulo={t('paginas.alertas.secoes.comImagensDeTamanhos')}>
+          {PESSOAS(t).map((p, i) => (
             <Alerta
               key={p.nome}
               severidade={PRINCIPAIS[i].cor}
               dispensavel
-              midia={<Avatar nome={p.nome} foto={retrato(p.cor, p.nome[0])} formato="quadrado" tamanho={`${1.5 + i * 0.5}rem`} />}
-              mensagem={`${p.nome} atualizou o cadastro do cliente.`}
+              midia={<Avatar nome={tc(p.nome)} foto={retrato(p.cor, p.nome[0])} formato="quadrado" tamanho={`${1.5 + i * 0.5}rem`} />}
+              mensagem={t('paginas.alertas.textos.nomeAtualizouOCadastro', { nome: p.nome })}
             />
           ))}
         </Bloco>
@@ -168,91 +167,89 @@ export function PaginaAlertas() {
         <Alerta
           severidade="pri"
           aparencia="solido"
-          titulo="Alerta informativo"
-          mensagem="Há uma nova versão da tabela de preços."
+          titulo={t('paginas.alertas.textos.alertaInformativo')}
+          mensagem={t('paginas.alertas.textos.haUmaNovaVersao')}
           dispensavel
           acoes={
             <>
-              <a href="#/ui/alertas">Agora não</a>
-              <a href="#/ui/alertas">Abrir</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.agoraNao')}</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.abrir')}</a>
             </>
           }
         />
-        <Alerta severidade="destaque" aparencia="solido" titulo="Alerta de destaque" mensagem="Meta do mês atingida em 92%." dispensavel acoes={<a href="#/ui/alertas">Fechar</a>} />
+        <Alerta severidade="destaque" aparencia="solido" titulo={t('paginas.alertas.textos.alertaDeDestaque')} mensagem={t('paginas.alertas.textos.metaDoMesAtingida')} dispensavel acoes={<a href="#/ui/alertas">{t('paginas.alertas.textos.fechar')}</a>} />
         <Alerta
           severidade="warn"
           aparencia="solido"
-          titulo="Alerta de atenção"
-          mensagem="3 pedidos sem confirmação de pagamento."
+          titulo={t('paginas.alertas.textos.alertaDeAtencao')}
+          mensagem={t('paginas.alertas.textos.t3PedidosSemConfirmacao')}
           dispensavel
           acoes={
             <>
-              <a href="#/ui/alertas">Ignorar</a>
-              <a href="#/pedidos">Ver</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.ignorar')}</a>
+              <a href="#/pedidos">{t('paginas.alertas.textos.ver')}</a>
             </>
           }
         />
         <Alerta
           severidade="err"
           aparencia="solido"
-          titulo="Alerta de erro"
-          mensagem="A integração com o banco falhou."
+          titulo={t('paginas.alertas.textos.alertaDeErro')}
+          mensagem={t('paginas.alertas.textos.aIntegracaoComO')}
           dispensavel
           acoes={
             <>
-              <a href="#/ui/alertas">Fechar</a>
-              <a href="#/ui/alertas">Tentar de novo</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.fechar')}</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.tentarDeNovo')}</a>
             </>
           }
         />
         <Alerta
           severidade="pri"
           aparencia="contorno"
-          titulo="Alerta informativo"
-          mensagem="Há uma nova versão da tabela de preços."
+          titulo={t('paginas.alertas.textos.alertaInformativo')}
+          mensagem={t('paginas.alertas.textos.haUmaNovaVersao')}
           dispensavel
           acoes={
             <>
-              <a href="#/ui/alertas">Agora não</a>
-              <a href="#/ui/alertas">Abrir</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.agoraNao')}</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.abrir')}</a>
             </>
           }
         />
-        <Alerta severidade="ok" aparencia="contorno" titulo="Alerta de sucesso" mensagem="Backup diário concluído." dispensavel acoes={<a href="#/ui/alertas">Fechar</a>} />
+        <Alerta severidade="ok" aparencia="contorno" titulo={t('paginas.alertas.textos.alertaDeSucesso')} mensagem={t('paginas.alertas.textos.backupDiarioConcluido')} dispensavel acoes={<a href="#/ui/alertas">{t('paginas.alertas.textos.fechar')}</a>} />
         <Alerta
           severidade="warn"
           aparencia="contorno"
-          titulo="Alerta de atenção"
-          mensagem="O certificado digital vence em 10 dias."
+          titulo={t('paginas.alertas.textos.alertaDeAtencao')}
+          mensagem={t('paginas.alertas.textos.oCertificadoDigitalVence')}
           dispensavel
           acoes={
             <>
-              <a href="#/ui/alertas">Depois</a>
-              <a href="#/ui/alertas">Renovar</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.depois')}</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.renovar')}</a>
             </>
           }
         />
         <Alerta
           severidade="err"
           aparencia="contorno"
-          titulo="Alerta de erro"
-          mensagem="Não foi possível enviar o e-mail ao cliente."
+          titulo={t('paginas.alertas.textos.alertaDeErro')}
+          mensagem={t('paginas.alertas.textos.naoFoiPossivelEnviar')}
           dispensavel
           acoes={
             <>
-              <a href="#/ui/alertas">Fechar</a>
-              <a href="#/ui/alertas">Reenviar</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.fechar')}</a>
+              <a href="#/ui/alertas">{t('paginas.alertas.textos.reenviar')}</a>
             </>
           }
         />
       </div>
 
-      <Bloco titulo="Conteúdo adicional">
+      <Bloco titulo={t('paginas.alertas.secoes.conteudoAdicional')}>
         <div className="demo-colunas">
           {(['pri', 'destaque', 'ok', 'warn'] as const).map((cor) => (
-            <Alerta key={cor} severidade={cor} aparencia="faixa" icone={false} titulo="Obrigado por avisar." dispensavel>
-              Recebemos o relato do problema na emissão do pedido e já estamos analisando.{' '}
-              <a href="#/ui/alertas">Acompanhe pelo suporte</a>.
+            <Alerta key={cor} severidade={cor} aparencia="faixa" icone={false} titulo={t('paginas.alertas.textos.obrigadoPorAvisar')} dispensavel>{t('paginas.alertas.textos.recebemosORelatoDo')}<a href="#/ui/alertas">{t('paginas.alertas.textos.acompanhePeloSuporte')}</a>.
             </Alerta>
           ))}
         </div>
@@ -263,34 +260,34 @@ export function PaginaAlertas() {
           severidade="pri"
           aparencia="cartao"
           icone="info"
-          titulo="Informação"
-          mensagem="Este alerta mostra uma informação relacionada à tela."
+          titulo={t('paginas.alertas.textos.informacao')}
+          mensagem={t('paginas.alertas.textos.esteAlertaMostraUma')}
           dispensavel
           acoes={
             <>
-              <Botao rotulo="Recusar" severidade="err" aparencia="contorno" />
-              <Botao rotulo="Aceitar" />
+              <Botao rotulo={t('paginas.alertas.textos.recusar')} severidade="err" aparencia="contorno" />
+              <Botao rotulo={t('paginas.alertas.textos.aceitar')} />
             </>
           }
         />
         <Alerta
           severidade="ok"
           aparencia="cartao"
-          titulo="Confirmado"
-          mensagem="Este alerta confirma que a operação foi concluída."
+          titulo={t('paginas.alertas.textos.confirmado')}
+          mensagem={t('paginas.alertas.textos.esteAlertaConfirmaQue')}
           dispensavel
-          acoes={<Botao rotulo="Fechar" severidade="ok" />}
+          acoes={<Botao rotulo={t('paginas.alertas.textos.fechar')} severidade="ok" />}
         />
         <Alerta
           severidade="warn"
           aparencia="cartao"
-          titulo="Atenção"
-          mensagem="Este alerta avisa sobre algo que precisa de cuidado."
+          titulo={t('paginas.alertas.textos.atencao')}
+          mensagem={t('paginas.alertas.textos.esteAlertaAvisaSobre')}
           dispensavel
           acoes={
             <>
-              <Botao rotulo="Voltar" severidade="secundario" aparencia="contorno" />
-              <Botao rotulo="Continuar" severidade="warn" />
+              <Botao rotulo={t('paginas.alertas.textos.voltar')} severidade="secundario" aparencia="contorno" />
+              <Botao rotulo={t('paginas.alertas.textos.continuar')} severidade="warn" />
             </>
           }
         />
@@ -298,10 +295,10 @@ export function PaginaAlertas() {
           severidade="err"
           aparencia="cartao"
           icone="circle-alert"
-          titulo="Erro"
-          mensagem="Este alerta avisa sobre uma ação que não pode ser desfeita."
+          titulo={t('paginas.alertas.textos.erro')}
+          mensagem={t('paginas.alertas.textos.esteAlertaAvisaSobre2')}
           dispensavel
-          acoes={<Botao rotulo="Excluir" icone="trash-2" severidade="err" />}
+          acoes={<Botao rotulo={t('paginas.alertas.textos.excluir')} icone="trash-2" severidade="err" />}
         />
       </div>
     </div>

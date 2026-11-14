@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { BarraBotoes, Botao, CabecalhoPagina, CampoTexto, GrupoAlternancia, GrupoBotoes, MenuSuspenso, useToast } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 export function PaginaGrupoBotoes() {
+  const { t: tx } = useT();
+  const { t } = useT();
   const toast = useToast();
   const [aba, setAba] = useState<string | null>('ativos');
   const [colunas, setColunas] = useState<string[]>(['cliente', 'total']);
@@ -13,65 +16,65 @@ export function PaginaGrupoBotoes() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Grupo de botões" icone="layout-grid" trilha />
+      <CabecalhoPagina titulo={t('paginas.grupoBotoes.titulo')} icone="layout-grid" trilha />
 
       <div className="demo-colunas-4">
-        <Bloco titulo="Básico">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.basico')}>
           <div>
-            <GrupoBotoes rotulo="Controles do player" severidade="info" formato="retangulo">
-              <Botao icone="chevrons-left" dica="Anterior" aria-label="Anterior" />
-              <Botao icone={tocando ? 'circle' : 'arrow-right'} dica={tocando ? 'Pausar' : 'Tocar'} aria-label={tocando ? 'Pausar' : 'Tocar'} onClick={() => setTocando((x) => !x)} />
-              <Botao icone="chevrons-right" dica="Próxima" aria-label="Próxima" />
+            <GrupoBotoes rotulo={t('paginas.grupoBotoes.textos.controlesDoPlayer')} severidade="info" formato="retangulo">
+              <Botao icone="chevrons-left" dica={t('paginas.grupoBotoes.textos.anterior')} aria-label={t('paginas.grupoBotoes.textos.anterior')} />
+              <Botao icone={tocando ? 'circle' : 'arrow-right'} dica={tocando ? t('paginas.grupoBotoes.textos.pausar') : t('paginas.grupoBotoes.textos.tocar')} aria-label={tocando ? t('paginas.grupoBotoes.textos.pausar') : t('paginas.grupoBotoes.textos.tocar')} onClick={() => setTocando((x) => !x)} />
+              <Botao icone="chevrons-right" dica={t('paginas.grupoBotoes.textos.proxima')} aria-label={t('paginas.grupoBotoes.textos.proxima')} />
             </GrupoBotoes>
           </div>
         </Bloco>
-        <Bloco titulo="Navegação" descricao="O selecionado fica pressionado.">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.navegacao')} descricao={t('paginas.grupoBotoes.textos.oSelecionadoFicaPressionado')}>
           <div>
             <GrupoAlternancia
-              rotulo="Filtro rápido"
+              rotulo={t('paginas.grupoBotoes.textos.filtroRapido')}
               aparencia="solido"
               formato="retangulo"
               opcoes={[
-                { valor: 'ativos', rotulo: 'Ativos' },
-                { valor: 'pagos', rotulo: 'Pagos' },
-                { valor: 'todos', rotulo: 'Todos' },
+                { valor: 'ativos', rotulo: t('paginas.grupoBotoes.textos.ativos') },
+                { valor: 'pagos', rotulo: t('paginas.grupoBotoes.textos.pagos') },
+                { valor: 'todos', rotulo: t('paginas.grupoBotoes.textos.todos') },
               ]}
               valor={aba}
               aoMudar={setAba}
             />
           </div>
         </Bloco>
-        <Bloco titulo="Estilos misturados">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.estilosMisturados')}>
           <div>
-            <GrupoBotoes rotulo="Decisão" formato="retangulo">
-              <Botao rotulo="Recusar" severidade="err" />
-              <Botao rotulo="Adiar" severidade="warn" />
-              <Botao rotulo="Aprovar" severidade="ok" />
+            <GrupoBotoes rotulo={t('paginas.grupoBotoes.textos.decisao')} formato="retangulo">
+              <Botao rotulo={t('paginas.grupoBotoes.textos.recusar')} severidade="err" />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.adiar')} severidade="warn" />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.aprovar')} severidade="ok" />
             </GrupoBotoes>
           </div>
         </Bloco>
-        <Bloco titulo="Contorno">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.contorno')}>
           <div>
-            <GrupoBotoes rotulo="Alinhamento" aparencia="contorno" formato="retangulo">
-              <Botao rotulo="Esquerda" />
-              <Botao rotulo="Centro" />
-              <Botao rotulo="Direita" />
+            <GrupoBotoes rotulo={t('paginas.grupoBotoes.textos.alinhamento')} aparencia="contorno" formato="retangulo">
+              <Botao rotulo={t('paginas.grupoBotoes.textos.esquerda')} />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.centro')} />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.direita')} />
             </GrupoBotoes>
           </div>
         </Bloco>
       </div>
 
       <div className="demo-colunas">
-        <Bloco titulo="Seleção múltipla" descricao="Como caixas de marcação: cada botão liga/desliga.">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.selecaoMultipla')} descricao={t('paginas.grupoBotoes.textos.comoCaixasDeMarcacao')}>
           <div>
             <GrupoAlternancia
               multiplo
-              rotulo="Colunas visíveis"
+              rotulo={t('paginas.grupoBotoes.textos.colunasVisiveis')}
               formato="retangulo"
               opcoes={[
-                { valor: 'cliente', rotulo: 'Cliente' },
-                { valor: 'total', rotulo: 'Total' },
-                { valor: 'entrega', rotulo: 'Entrega' },
+                { valor: 'cliente', rotulo: t('paginas.grupoBotoes.textos.cliente') },
+                { valor: 'total', rotulo: t('paginas.grupoBotoes.textos.total') },
+                { valor: 'entrega', rotulo: t('paginas.grupoBotoes.textos.entrega') },
               ]}
               valor={colunas}
               aoMudar={setColunas}
@@ -79,15 +82,15 @@ export function PaginaGrupoBotoes() {
           </div>
           <code className="demo-util-res">valor: {JSON.stringify(colunas)}</code>
         </Bloco>
-        <Bloco titulo="Seleção única" descricao="Como rádio: só um fica marcado.">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.selecaoUnica')} descricao={t('paginas.grupoBotoes.textos.comoRadioSoUm')}>
           <div>
             <GrupoAlternancia
-              rotulo="Período"
+              rotulo={t('paginas.grupoBotoes.textos.periodo')}
               formato="retangulo"
               opcoes={[
-                { valor: 'dia', rotulo: 'Hoje' },
-                { valor: 'semana', rotulo: 'Semana' },
-                { valor: 'mes', rotulo: 'Mês' },
+                { valor: 'dia', rotulo: t('paginas.grupoBotoes.textos.hoje') },
+                { valor: 'semana', rotulo: t('paginas.grupoBotoes.textos.semana') },
+                { valor: 'mes', rotulo: t('paginas.grupoBotoes.textos.mes') },
               ]}
               valor={periodo}
               aoMudar={setPeriodo}
@@ -96,39 +99,39 @@ export function PaginaGrupoBotoes() {
           <code className="demo-util-res">valor: {JSON.stringify(periodo)}</code>
         </Bloco>
 
-        <Bloco titulo="Tamanhos">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.tamanhos')}>
           <div className="demo-linha demo-linha--centro">
             {(['grande', 'medio', 'pequeno'] as const).map((t) => (
-              <GrupoBotoes key={t} rotulo={`Grupo ${t}`} severidade="ok" aparencia="contorno" formato="retangulo" tamanho={t}>
-                <Botao rotulo="Esquerda" />
-                <Botao rotulo="Centro" />
-                <Botao rotulo="Direita" />
+              <GrupoBotoes key={t} rotulo={tx('paginas.grupoBotoes.textos.grupoT', { t })} severidade="ok" aparencia="contorno" formato="retangulo" tamanho={t}>
+                <Botao rotulo={tx('paginas.grupoBotoes.textos.esquerda')} />
+                <Botao rotulo={tx('paginas.grupoBotoes.textos.centro')} />
+                <Botao rotulo={tx('paginas.grupoBotoes.textos.direita')} />
               </GrupoBotoes>
             ))}
           </div>
         </Bloco>
 
-        <Bloco titulo="Vertical">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.vertical')}>
           <div className="demo-linha" style={{ alignItems: 'flex-start', gap: '1.5rem' }}>
-            <GrupoBotoes orientacao="vertical" rotulo="Ações do pedido">
-              <Botao rotulo="Editar" icone="pencil" />
-              <Botao rotulo="Duplicar" icone="copy" />
-              <Botao rotulo="Imprimir" icone="printer" />
-              <Botao rotulo="Enviar" icone="send" />
+            <GrupoBotoes orientacao="vertical" rotulo={t('paginas.grupoBotoes.textos.acoesDoPedido')}>
+              <Botao rotulo={t('paginas.grupoBotoes.textos.editar')} icone="pencil" />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.duplicar')} icone="copy" />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.imprimir')} icone="printer" />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.enviar')} icone="send" />
             </GrupoBotoes>
-            <GrupoBotoes orientacao="vertical" rotulo="Exportar" severidade="info">
-              <Botao rotulo="PDF" />
-              <Botao rotulo="Excel" />
-              <Botao rotulo="CSV" />
+            <GrupoBotoes orientacao="vertical" rotulo={t('paginas.grupoBotoes.textos.exportar')} severidade="info">
+              <Botao rotulo={t('paginas.grupoBotoes.textos.pdf')} />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.excel')} />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.csv')} />
             </GrupoBotoes>
             <GrupoAlternancia
               orientacao="vertical"
-              rotulo="Alinhamento do texto"
+              rotulo={t('paginas.grupoBotoes.textos.alinhamentoDoTexto')}
               severidade="err"
               opcoes={[
-                { valor: 'esq', rotulo: 'Esquerda' },
-                { valor: 'cen', rotulo: 'Centro' },
-                { valor: 'dir', rotulo: 'Direita' },
+                { valor: 'esq', rotulo: t('paginas.grupoBotoes.textos.esquerda') },
+                { valor: 'cen', rotulo: t('paginas.grupoBotoes.textos.centro') },
+                { valor: 'dir', rotulo: t('paginas.grupoBotoes.textos.direita') },
               ]}
               valor={alinhamento}
               aoMudar={setAlinhamento}
@@ -136,48 +139,48 @@ export function PaginaGrupoBotoes() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Barra de ferramentas" descricao="BarraBotoes agrupa vários grupos (e campos) lado a lado.">
-          <BarraBotoes rotulo="Paginação e ações">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.barraDeFerramentas')} descricao={t('paginas.grupoBotoes.textos.barrabotoesAgrupaVariosGrupos')}>
+          <BarraBotoes rotulo={t('paginas.grupoBotoes.textos.paginacaoEAcoes')}>
             <GrupoAlternancia
-              rotulo="Páginas"
+              rotulo={t('paginas.grupoBotoes.textos.paginas')}
               aparencia="suave"
               formato="retangulo"
               opcoes={[1, 2, 3, 4].map((n) => ({ valor: n, rotulo: String(n) }))}
               valor={pagina}
               aoMudar={setPagina}
             />
-            <GrupoBotoes rotulo="Mais páginas" severidade="destaque" formato="retangulo">
+            <GrupoBotoes rotulo={t('paginas.grupoBotoes.textos.maisPaginas')} severidade="destaque" formato="retangulo">
               <Botao rotulo="5" />
               <Botao rotulo="6" />
               <Botao rotulo="7" />
             </GrupoBotoes>
             <Botao rotulo="8" severidade="info" formato="retangulo" />
           </BarraBotoes>
-          <BarraBotoes rotulo="Busca e ações" distribuicao="entre">
-            <GrupoBotoes rotulo="Ações" severidade="err" aparencia="contorno" formato="retangulo">
-              <Botao icone="pencil" dica="Editar" aria-label="Editar" />
-              <Botao icone="copy" dica="Duplicar" aria-label="Duplicar" />
-              <Botao icone="trash-2" dica="Excluir" aria-label="Excluir" onClick={() => toast.warn('Excluir')} />
+          <BarraBotoes rotulo={t('paginas.grupoBotoes.textos.buscaEAcoes')} distribuicao="entre">
+            <GrupoBotoes rotulo={t('paginas.grupoBotoes.textos.acoes')} severidade="err" aparencia="contorno" formato="retangulo">
+              <Botao icone="pencil" dica={t('paginas.grupoBotoes.textos.editar')} aria-label={t('paginas.grupoBotoes.textos.editar')} />
+              <Botao icone="copy" dica={t('paginas.grupoBotoes.textos.duplicar')} aria-label={t('paginas.grupoBotoes.textos.duplicar')} />
+              <Botao icone="trash-2" dica={t('paginas.grupoBotoes.textos.excluir')} aria-label={t('paginas.grupoBotoes.textos.excluir')} onClick={() => toast.warn(t('paginas.grupoBotoes.textos.excluir'))} />
             </GrupoBotoes>
-            <CampoTexto rotulo="Buscar" variante="inline" prefixo="@" placeholder="cliente ou pedido" />
+            <CampoTexto rotulo={t('paginas.grupoBotoes.textos.buscar')} variante="inline" prefixo="@" placeholder={t('paginas.grupoBotoes.textos.clienteOuPedido')} />
           </BarraBotoes>
         </Bloco>
 
-        <Bloco titulo="Aninhado" descricao="Um grupo dentro do outro; o último vira o botão de mais opções.">
+        <Bloco titulo={t('paginas.grupoBotoes.secoes.aninhado')} descricao={t('paginas.grupoBotoes.textos.umGrupoDentroDo')}>
           <div>
-            <GrupoBotoes rotulo="Ações com mais opções" formato="retangulo">
-              <Botao rotulo="Salvar" icone="save" />
-              <Botao rotulo="Salvar e enviar" icone="send" />
+            <GrupoBotoes rotulo={t('paginas.grupoBotoes.textos.acoesComMaisOpcoes')} formato="retangulo">
+              <Botao rotulo={t('paginas.grupoBotoes.textos.salvar')} icone="save" />
+              <Botao rotulo={t('paginas.grupoBotoes.textos.salvarEEnviar')} icone="send" />
               <MenuSuspenso
                 icone="chevron-down"
                 semSeta
-                aria-label="Mais opções"
+                aria-label={t('paginas.grupoBotoes.textos.maisOpcoes')}
                 alinhamento="fim"
                 itens={[
-                  { id: 'rascunho', rotulo: 'Salvar como rascunho', icone: 'file-pen' },
-                  { id: 'modelo', rotulo: 'Salvar como modelo', icone: 'copy' },
+                  { id: 'rascunho', rotulo: t('paginas.grupoBotoes.textos.salvarComoRascunho'), icone: 'file-pen' },
+                  { id: 'modelo', rotulo: t('paginas.grupoBotoes.textos.salvarComoModelo'), icone: 'copy' },
                 ]}
-                aoEscolher={(id) => toast.info('Mais opções', id)}
+                aoEscolher={(id) => toast.info(t('paginas.grupoBotoes.textos.maisOpcoes'), id)}
               />
             </GrupoBotoes>
           </div>

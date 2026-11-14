@@ -1,71 +1,67 @@
 import { Avatar, Botao, CabecalhoPagina, Dica, Icone, type CorDica, type PosicaoDica, type SeveridadeBotao } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const DIRECOES: Array<{ posicao: PosicaoDica; rotulo: string }> = [
-  { posicao: 'cima', rotulo: 'Dica em cima' },
-  { posicao: 'direita', rotulo: 'Dica à direita' },
-  { posicao: 'baixo', rotulo: 'Dica embaixo' },
-  { posicao: 'esquerda', rotulo: 'Dica à esquerda' },
-];
+const DIRECOES = (t: TradutorDemo['t']): Array<{ posicao: PosicaoDica; rotulo: string }> => ([
+  { posicao: 'cima', rotulo: t('paginas.dicas.textos.dicaEmCima') },
+  { posicao: 'direita', rotulo: t('paginas.dicas.textos.dicaADireita') },
+  { posicao: 'baixo', rotulo: t('paginas.dicas.textos.dicaEmbaixo') },
+  { posicao: 'esquerda', rotulo: t('paginas.dicas.textos.dicaAEsquerda') },
+]);
 
-const CORES: Array<{ cor: CorDica; rotulo: string; posicao: PosicaoDica; botao: SeveridadeBotao; aparencia?: 'contorno' }> = [
-  { cor: 'pri', rotulo: 'Primária', posicao: 'cima', botao: 'pri' },
-  { cor: 'secundario', rotulo: 'Secundária', posicao: 'direita', botao: 'secundario' },
-  { cor: 'warn', rotulo: 'Aviso', posicao: 'baixo', botao: 'warn' },
-  { cor: 'info', rotulo: 'Info', posicao: 'esquerda', botao: 'info' },
-  { cor: 'ok', rotulo: 'Sucesso', posicao: 'cima', botao: 'ok' },
-  { cor: 'err', rotulo: 'Perigo', posicao: 'baixo', botao: 'err' },
-  { cor: 'destaque', rotulo: 'Destaque', posicao: 'cima', botao: 'destaque' },
-  { cor: 'claro', rotulo: 'Clara', posicao: 'cima', botao: 'secundario', aparencia: 'contorno' },
-  { cor: 'padrao', rotulo: 'Padrão', posicao: 'cima', botao: 'escuro' },
-];
+const CORES = (t: TradutorDemo['t']): Array<{ cor: CorDica; rotulo: string; posicao: PosicaoDica; botao: SeveridadeBotao; aparencia?: 'contorno' }> => ([
+  { cor: 'pri', rotulo: t('paginas.dicas.textos.primaria'), posicao: 'cima', botao: 'pri' },
+  { cor: 'secundario', rotulo: t('paginas.dicas.textos.secundaria'), posicao: 'direita', botao: 'secundario' },
+  { cor: 'warn', rotulo: t('paginas.dicas.textos.aviso'), posicao: 'baixo', botao: 'warn' },
+  { cor: 'info', rotulo: t('paginas.dicas.textos.info'), posicao: 'esquerda', botao: 'info' },
+  { cor: 'ok', rotulo: t('paginas.dicas.textos.sucesso'), posicao: 'cima', botao: 'ok' },
+  { cor: 'err', rotulo: t('paginas.dicas.textos.perigo'), posicao: 'baixo', botao: 'err' },
+  { cor: 'destaque', rotulo: t('paginas.dicas.textos.destaque'), posicao: 'cima', botao: 'destaque' },
+  { cor: 'claro', rotulo: t('paginas.dicas.textos.clara'), posicao: 'cima', botao: 'secundario', aparencia: 'contorno' },
+  { cor: 'padrao', rotulo: t('paginas.dicas.textos.padrao'), posicao: 'cima', botao: 'escuro' },
+]);
 
 export function PaginaDicas() {
+  const { t, tc } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Dicas" icone="message-square" trilha />
+      <CabecalhoPagina titulo={t('paginas.dicas.titulo')} icone="message-square" trilha />
 
-      <Bloco titulo="Direções" descricao="Passe o mouse ou foque com o teclado. Se não couber, a dica vira para o outro lado.">
+      <Bloco titulo={t('paginas.dicas.secoes.direcoes')} descricao={t('paginas.dicas.textos.passeOMouseOu')}>
         <div className="demo-linha">
-          {DIRECOES.map((d) => (
-            <Dica key={d.posicao} texto={d.rotulo} posicao={d.posicao}>
-              <Botao rotulo={d.rotulo} formato="retangulo" />
+          {DIRECOES(t).map((d) => (
+            <Dica key={d.posicao} texto={tc(d.rotulo)} posicao={d.posicao}>
+              <Botao rotulo={tc(d.rotulo)} formato="retangulo" />
             </Dica>
           ))}
         </div>
       </Bloco>
 
-      <Bloco titulo="Cores">
+      <Bloco titulo={t('paginas.dicas.secoes.cores')}>
         <div className="demo-linha">
-          {CORES.map((c) => (
-            <Dica key={c.cor} texto={`Dica ${c.rotulo.toLowerCase()}`} cor={c.cor} posicao={c.posicao}>
-              <Botao rotulo={c.rotulo} severidade={c.botao} aparencia={c.aparencia} formato="retangulo" />
+          {CORES(t).map((c) => (
+            <Dica key={c.cor} texto={t('paginas.dicas.textos.dicaValor', { valor: c.rotulo.toLowerCase() })} cor={c.cor} posicao={c.posicao}>
+              <Botao rotulo={tc(c.rotulo)} severidade={c.botao} aparencia={c.aparencia} formato="retangulo" />
             </Dica>
           ))}
         </div>
       </Bloco>
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Em links">
-          <p className="demo-dicas-texto">
-            Passe o mouse sobre o{' '}
-            <Dica texto="Abre a política de entregas" cor="pri">
-              <a href="#/ui/dicas" onClick={(e) => e.preventDefault()}>
-                link
-              </a>
-            </Dica>{' '}
-            para ver a dica.
-          </p>
+        <Bloco titulo={t('paginas.dicas.secoes.emLinks')}>
+          <p className="demo-dicas-texto">{t('paginas.dicas.textos.passeOMouseSobre')}<Dica texto={t('paginas.dicas.textos.abreAPoliticaDe')} cor="pri">
+              <a href="#/ui/dicas" onClick={(e) => e.preventDefault()}>{t('paginas.dicas.textos.link')}</a>
+            </Dica>{t('paginas.dicas.textos.paraVerADica')}</p>
         </Bloco>
-        <Bloco titulo="Em ícones" descricao="Botões só com ícone: a dica explica a ação.">
+        <Bloco titulo={t('paginas.dicas.secoes.emIcones')} descricao={t('paginas.dicas.textos.botoesSoComIcone')}>
           <div className="demo-linha demo-linha--centro">
             {(
               [
-                ['house', 'Início', 'pri'],
-                ['mail', 'Mensagens', 'secundario'],
-                ['user-plus', 'Convidar pessoa', 'warn'],
-                ['send', 'Enviar', 'info'],
-                ['ellipsis', 'Mais opções', 'ok'],
+                ['house', tc('Início'), 'pri'],
+                ['mail', tc('Mensagens'), 'secundario'],
+                ['user-plus', tc('Convidar pessoa'), 'warn'],
+                ['send', tc('Enviar'), 'info'],
+                ['ellipsis', tc('Mais opções'), 'ok'],
               ] as const
             ).map(([icone, rotulo, cor]) => (
               <Dica key={icone} texto={rotulo} cor={cor}>
@@ -76,15 +72,15 @@ export function PaginaDicas() {
             ))}
           </div>
         </Bloco>
-        <Bloco titulo="Elemento desabilitado" descricao="A dica abre mesmo com o botão desabilitado, no mouse e no teclado.">
+        <Bloco titulo={t('paginas.dicas.secoes.elementoDesabilitado')} descricao={t('paginas.dicas.textos.aDicaAbreMesmo')}>
           <div>
-            <Dica texto="Dica do botão desabilitado">
-              <Botao rotulo="Botão desabilitado" formato="retangulo" disabled />
+            <Dica texto={t('paginas.dicas.textos.dicaDoBotaoDesabilitado')}>
+              <Botao rotulo={t('paginas.dicas.textos.botaoDesabilitado')} formato="retangulo" disabled />
             </Dica>
           </div>
         </Bloco>
 
-        <Bloco titulo="Em imagens">
+        <Bloco titulo={t('paginas.dicas.secoes.emImagens')}>
           <div className="demo-linha demo-linha--centro">
             {(
               [
@@ -101,27 +97,27 @@ export function PaginaDicas() {
             ))}
           </div>
         </Bloco>
-        <Bloco titulo="Conteúdo formatado" descricao="O texto pode ter negrito, itálico, quebras.">
+        <Bloco titulo={t('paginas.dicas.secoes.conteudoFormatado')} descricao={t('paginas.dicas.textos.oTextoPodeTer')}>
           <div>
             <Dica
               texto={
                 <>
-                  <strong>Atalho:</strong> Ctrl + S
+                  <strong>{tc('Atalho:')}</strong> Ctrl + S
                   <br />
-                  <em>Salva sem sair da tela.</em>
+                  <em>{tc('Salva sem sair da tela.')}</em>
                 </>
               }
               posicao="direita"
             >
-              <Botao rotulo="Salvar" icone="save" aparencia="contorno" formato="retangulo" />
+              <Botao rotulo={t('paginas.dicas.textos.salvar')} icone="save" aparencia="contorno" formato="retangulo" />
             </Dica>
           </div>
         </Bloco>
-        <Bloco titulo="Pelo próprio botão" descricao={<>O Botao aceita a prop dica (útil nos que têm só ícone).</>}>
+        <Bloco titulo={t('paginas.dicas.secoes.peloProprioBotao')} descricao={<>{tc('O Botao aceita a prop dica (útil nos que têm só ícone).')}</>}>
           <div className="demo-linha">
-            <Botao icone="pencil" dica="Editar" aria-label="Editar" aparencia="suave" formato="retangulo" />
-            <Botao icone="copy" dica="Duplicar" aria-label="Duplicar" aparencia="suave" formato="retangulo" />
-            <Botao icone="trash-2" dica="Excluir" aria-label="Excluir" severidade="err" aparencia="suave" formato="retangulo" />
+            <Botao icone="pencil" dica={t('paginas.dicas.textos.editar')} aria-label={t('paginas.dicas.textos.editar')} aparencia="suave" formato="retangulo" />
+            <Botao icone="copy" dica={t('paginas.dicas.textos.duplicar')} aria-label={t('paginas.dicas.textos.duplicar')} aparencia="suave" formato="retangulo" />
+            <Botao icone="trash-2" dica={t('paginas.dicas.textos.excluir')} aria-label={t('paginas.dicas.textos.excluir')} severidade="err" aparencia="suave" formato="retangulo" />
           </div>
         </Bloco>
       </div>

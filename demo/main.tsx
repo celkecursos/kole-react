@@ -1,7 +1,11 @@
-import { StrictMode, useEffect, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
 import './demo.css';
+// tokens e base direto, como o app importa o estilos.css: o `sideEffects` do package.json deixa o
+// bundler pular o src/index.ts (e os imports de CSS dele) no build da demo
+import '../src/styles/tokens.css';
+import '../src/styles/base.css';
 import { Estrutura, ProvedorUi, useToast } from '../src';
 import { PaginaCadastro } from './paginas/Cadastro';
 import { PaginaListagem } from './paginas/Listagem';
@@ -48,13 +52,18 @@ import { PaginaErro } from './paginas/Erro';
 import { PaginaSite } from './paginas/site/Site';
 import { version } from '../package.json';
 import { NAV } from './nav';
+import { traduzirNav } from './i18n/menu';
+import { useT } from './i18n/useT';
 import { paginaDocs } from './docs/rotas';
+import { rico } from './i18n/rico';
 
 function rotaDoHash() {
   return window.location.hash.replace(/^#/, '') || '/';
 }
 
 function App() {
+  const { t } = useT();
+  const { t: tx } = useT();
   const [rota, setRota] = useState(rotaDoHash);
   const [perfil, setPerfil] = useState<DadosPerfil>(PERFIL_INICIAL);
   // modelo de trilha escolhido na página "Trilha de navegação" (lembrado no navegador)
@@ -74,6 +83,9 @@ function App() {
     }
   };
   const toast = useToast();
+  // o menu no idioma do seletor da topbar: a trilha e a busca Ctrl K saem dele
+  const { idioma, tc } = useT();
+  const nav = useMemo(() => traduzirNav(NAV, idioma), [idioma]);
 
   useEffect(() => {
     const h = () => setRota(rotaDoHash());
@@ -141,20 +153,20 @@ function App() {
 
   return (
     <Estrutura
-      marca={{ nome: 'Gestor', subtitulo: 'Gestão comercial' }}
-      nav={NAV}
+      marca={{ nome: 'Gestor', subtitulo: t('paginas.moldura.textos.gestaoComercial') }}
+      nav={nav}
       rotaAtual={rota}
-      // seletor de idioma na topbar (os textos da biblioteca; o conteúdo da demo continua em português)
+      // seletor de idioma na topbar: os textos da biblioteca e o menu da demo (demo/i18n)
       idiomas={['pt-BR', 'en', 'es']}
       // nas finanças, o topo troca entre o pessoal e a empresa
       contexto={ehFinancas(rota) ? <SeletorEspaco /> : undefined}
       aoNavegar={navegar}
       modeloTrilha={MODELOS_TRILHA.find((m) => m.id === modeloTrilha)?.modelo}
-      usuario={{ nome: perfil.nome, cargo: perfil.cargo, foto: perfil.foto }}
+      usuario={{ nome: perfil.nome, cargo: tc(perfil.cargo), foto: perfil.foto }}
       menuUsuario={[
-        { id: 'perfil', rotulo: 'Meu perfil', icone: 'user' },
-        { id: 'senha', rotulo: 'Alterar senha', icone: 'key' },
-        { id: 'sair', rotulo: 'Sair', icone: 'log-out', destrutivo: true, divisorAntes: true },
+        { id: 'perfil', rotulo: t('paginas.moldura.textos.meuPerfil'), icone: 'user' },
+        { id: 'senha', rotulo: t('paginas.moldura.textos.alterarSenha'), icone: 'key' },
+        { id: 'sair', rotulo: t('paginas.moldura.textos.sair'), icone: 'log-out', destrutivo: true, divisorAntes: true },
       ]}
       aoEscolherMenuUsuario={(id) => {
         if (id === 'perfil') navegar('/perfil');
@@ -162,25 +174,23 @@ function App() {
         else if (id === 'sair') navegar('/login');
       }}
       notificacoes={[
-        { id: '1', titulo: 'Pagamento confirmado', descricao: 'Pedido PED-2026-0042 — Mercado Bom Preço.', tempo: 'há 5 min', naoLida: true, icone: 'wallet' },
-        { id: '2', titulo: 'Novo cliente cadastrado', tempo: 'há 1 h', icone: 'user-plus' },
+        { id: '1', titulo: t('paginas.moldura.textos.pagamentoConfirmado'), descricao: t('paginas.moldura.textos.pedidoPed20260042'), tempo: 'há 5 min', naoLida: true, icone: 'wallet' },
+        { id: '2', titulo: t('paginas.moldura.textos.novoClienteCadastrado'), tempo: 'há 1 h', icone: 'user-plus' },
       ]}
-      aoEscolherNotificacao={(id) => toast.info(`Notificação ${id}`)}
-      menuDesenvolvimento={[{ id: 'cache', rotulo: 'Limpar cache', icone: 'refresh-cw' }]}
-      aoEscolherMenuDesenvolvimento={() => toast.ok('Cache limpo')}
-      ambiente={{ rotulo: 'Homologação', severidade: 'warn' }}
+      aoEscolherNotificacao={(id) => toast.info(t('paginas.moldura.textos.notificacaoId', { id }))}
+      menuDesenvolvimento={[{ id: 'cache', rotulo: t('paginas.moldura.textos.limparCache'), icone: 'refresh-cw' }]}
+      aoEscolherMenuDesenvolvimento={() => toast.ok(t('paginas.moldura.textos.cacheLimpo'))}
+      ambiente={{ rotulo: t('paginas.moldura.textos.homologacao'), severidade: 'warn' }}
       // a versão do pacote, lida do package.json: acompanha cada release
       versao={`v${version}`}
       rodape={
         <>
-          <span>© 2026 Celke · Licença MIT</span>
-          <span>
-            Criado por <strong>Cesar Szpak</strong>
-          </span>
+          <span>{t('paginas.moldura.textos.t2026CelkeLicencaMit')}</span>
+          <span>{rico(t('paginas.moldura.textos.criadoPorCesarSzpak'))}</span>
         </>
       }
-      rodapeSidebar={<span className="lp-ocultar-recolhido">Celke Kole</span>}
-      aoBuscar={(t) => toast.info('Busca', t || '(vazia)')}
+      rodapeSidebar={<span className="lp-ocultar-recolhido">{t('paginas.moldura.textos.celkeKole')}</span>}
+      aoBuscar={(t) => toast.info(tx('paginas.moldura.textos.busca'), t || tx('paginas.moldura.textos.vazia'))}
     >
       {pagina}
     </Estrutura>

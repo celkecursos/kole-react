@@ -37,6 +37,8 @@ import {
   vencePorSi,
 } from './estado';
 import { ROTAS } from './rotas';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 const MES_CURTO = new Intl.DateTimeFormat('pt-BR', { month: 'short' });
 
@@ -51,6 +53,7 @@ function fimDosMeses(ate: string, n: number): string[] {
 }
 
 export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
+  const { t, idioma, tc } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -60,7 +63,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
   const todos = doEspaco(lancamentos, espaco);
   const doPeriodo = noIntervalo(todos, periodo);
   const meses = mesesDoPeriodo(periodo).length;
-  const t = totais(doPeriodo);
+  const soma = totais(doPeriodo);
   const ta = totais(noIntervalo(todos, intervaloDeslocado(periodo, -meses)));
 
   const contas = contasDo(espaco);
@@ -95,9 +98,9 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
     .sort((a, b) => b.parte - a.parte)
     .slice(0, 5);
 
-  const margem = t.receitas ? (t.saldo / t.receitas) * 100 : 0;
-  const varRec = variacaoPercentual(t.receitas, ta.receitas);
-  const varDesp = variacaoPercentual(t.despesas, ta.despesas);
+  const margem = soma.receitas ? (soma.saldo / soma.receitas) * 100 : 0;
+  const varRec = variacaoPercentual(soma.receitas, ta.receitas);
+  const varDesp = variacaoPercentual(soma.despesas, ta.despesas);
   const eixoMoeda = { formatar: (v: number) => moeda(v, { compacto: true }) };
 
   const abrirCategoria = (id: string) => {
@@ -106,63 +109,63 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
   };
   const pagar = (l: Lancamento) => {
     acoes.marcarPago([l.id]);
-    toast.ok(l.tipo === 'receita' ? 'Recebimento registrado' : 'Pagamento registrado', `${l.descricao} · ${formatarMoeda(l.valor)}`);
+    toast.ok(l.tipo === 'receita' ? t('paginas.finVisaoGeral.textos.recebimentoRegistrado') : t('paginas.finVisaoGeral.textos.pagamentoRegistrado'), `${tc(l.descricao)} · ${formatarMoeda(l.valor, { idioma })}`);
   };
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Visão geral" icone="house" />
+      <CabecalhoFinancas titulo={t('paginas.finVisaoGeral.titulo')} icone="house" />
 
       <Indicadores>
         <Indicador
-          rotulo="Saldo em contas"
+          rotulo={t('paginas.finVisaoGeral.textos.saldoEmContas')}
           icone="landmark"
           cor="var(--graf-1)"
           valor={moeda(saldoTotal)}
           tendencia={fins.map(saldoEm)}
-          descricao={`Hoje, somando ${bancarias.length} contas`}
+          descricao={t('paginas.finVisaoGeral.textos.hojeSomandoNContas', { n: bancarias.length })}
           aoClicar={() => navegar(ROTAS.contas)}
         />
-        <Indicador rotulo={empresa ? 'Faturamento' : 'Receitas'} icone="trending-up" cor="var(--ok-solid)" valor={moeda(t.receitas)} variacao={varRec ?? undefined} descricao="Comparado ao período anterior" />
-        <Indicador rotulo="Despesas" icone="trending-down" cor="var(--err-solid)" valor={moeda(t.despesas)} variacao={varDesp ?? undefined} variacaoBoa="baixa" descricao="Comparado ao período anterior" />
+        <Indicador rotulo={empresa ? t('paginas.finVisaoGeral.textos.faturamento') : t('paginas.finVisaoGeral.textos.receitas')} icone="trending-up" cor="var(--ok-solid)" valor={moeda(soma.receitas)} variacao={varRec ?? undefined} descricao={t('paginas.finVisaoGeral.textos.comparadoAoPeriodoAnterior')} />
+        <Indicador rotulo={t('paginas.finVisaoGeral.textos.despesas')} icone="trending-down" cor="var(--err-solid)" valor={moeda(soma.despesas)} variacao={varDesp ?? undefined} variacaoBoa="baixa" descricao={t('paginas.finVisaoGeral.textos.comparadoAoPeriodoAnterior')} />
         <Indicador
-          rotulo={empresa ? 'Resultado' : 'Economia'}
+          rotulo={empresa ? t('paginas.finVisaoGeral.textos.resultado') : t('paginas.finVisaoGeral.textos.economia')}
           icone={empresa ? 'chart-column' : 'piggy-bank'}
-          cor={t.saldo >= 0 ? 'var(--graf-3)' : 'var(--err-solid)'}
-          valor={moeda(t.saldo, { sinal: true })}
-          descricao={t.receitas ? `${formatarPercentual(margem)} ${empresa ? 'de margem' : 'das receitas'}` : 'Sem receitas no período'}
+          cor={soma.saldo >= 0 ? 'var(--graf-3)' : 'var(--err-solid)'}
+          valor={moeda(soma.saldo, { sinal: true })}
+          descricao={soma.receitas ? `${formatarPercentual(margem, { idioma })} ${empresa ? tc('de margem') : tc('das receitas')}` : t('paginas.finVisaoGeral.textos.semReceitasNoPeriodo')}
         />
       </Indicadores>
 
       <div className="fin-grade fin-grade--graficos">
         <Card>
           <GraficoCombinado
-            titulo="Entradas e saídas nos últimos 6 meses"
-            descricao={`Receitas, despesas e resultado de cada mês até ${MES_CURTO.format(paraData(periodo.ate))}`}
+            titulo={t('paginas.finVisaoGeral.textos.entradasESaidasNos')}
+            descricao={t('paginas.finVisaoGeral.textos.receitasDespesasEResultado', { valor: MES_CURTO.format(paraData(periodo.ate)) })}
             dados={serie}
-            eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
+            eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.finVisaoGeral.textos.mes') }}
             eixoY={eixoMoeda}
             barras={[
-              { chave: 'receitas', rotulo: 'Receitas', cor: 'var(--graf-pos)' },
-              { chave: 'despesas', rotulo: 'Despesas', cor: 'var(--graf-neg)' },
+              { chave: 'receitas', rotulo: t('paginas.finVisaoGeral.textos.receitas'), cor: 'var(--graf-pos)' },
+              { chave: 'despesas', rotulo: t('paginas.finVisaoGeral.textos.despesas'), cor: 'var(--graf-neg)' },
             ]}
-            linhas={[{ chave: 'resultado', rotulo: 'Resultado', cor: 'var(--graf-1)', eixo: 'esquerdo' }]}
+            linhas={[{ chave: 'resultado', rotulo: t('paginas.finVisaoGeral.textos.resultado'), cor: 'var(--graf-1)', eixo: 'esquerdo' }]}
             altura={260}
           />
         </Card>
         <Card>
           <GraficoRosca
-            titulo="Despesas por categoria"
-            descricao="Clique numa fatia para ver os lançamentos"
-            dados={despesasCat.map((d) => ({ rotulo: d.categoria.nome, valor: d.valor, cor: d.categoria.cor, id: d.categoria.id }))}
+            titulo={t('paginas.finVisaoGeral.textos.despesasPorCategoria')}
+            descricao={t('paginas.finVisaoGeral.textos.cliqueNumaFatiaPara')}
+            dados={despesasCat.map((d) => ({ rotulo: tc(d.categoria.nome), valor: d.valor, cor: d.categoria.cor, id: d.categoria.id }))}
             chaveRotulo="rotulo"
             chaveValor="valor"
             chaveCor="cor"
             maxFatias={7}
             formatar={(v) => moeda(v)}
-            centro={{ rotulo: 'Total gasto', valor: moeda(t.despesas) }}
+            centro={{ rotulo: t('paginas.finVisaoGeral.textos.totalGasto'), valor: moeda(soma.despesas) }}
             aoEscolher={(d) => abrirCategoria(d.id as string)}
-            textoVazio="Nenhuma despesa no período."
+            textoVazio={t('paginas.finVisaoGeral.textos.nenhumaDespesaNoPeriodo')}
             posicaoLegenda="abaixo"
             altura={210}
           />
@@ -171,24 +174,24 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
 
       <div className="fin-grade fin-grade--2">
         <Card
-          titulo="Próximos vencimentos"
-          subtitulo="Atrasados e dos próximos 15 dias"
+          titulo={t('paginas.finVisaoGeral.secoes.proximosVencimentos')}
+          subtitulo={t('paginas.finVisaoGeral.textos.atrasadosEDosProximos')}
           corpoSemEspaco
-          rodape={<Botao rotulo="Ver contas a pagar e receber" aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.pagarReceber)} />}
+          rodape={<Botao rotulo={t('paginas.finVisaoGeral.textos.verContasAPagar')} aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.pagarReceber)} />}
         >
           {pendentes.length === 0 ? (
-            <Vazio titulo="Tudo em dia" descricao="Nada vence nos próximos 15 dias." icone="circle-check" />
+            <Vazio titulo={t('paginas.finVisaoGeral.textos.tudoEmDia')} descricao={t('paginas.finVisaoGeral.textos.nadaVenceNosProximos')} icone="circle-check" />
           ) : (
             <ul className="fin-linhas">
               {pendentes.map((l) => (
                 <li key={l.id} className="fin-linha">
                   <IconeCategoria categoria={categoria(l.categoria)} transferencia={l.tipo === 'transferencia'} />
                   <button type="button" className="fin-linha-texto" onClick={() => abrir(l)}>
-                    <strong>{l.descricao}</strong>
+                    <strong>{tc(l.descricao)}</strong>
                     <SeloPrazo vencimento={l.data} agora={hoje()} emBreve={3} />
                   </button>
                   <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'despesa' : l.tipo} forte />
-                  <AcaoLinha icone="check" rotulo={l.tipo === 'receita' ? 'Marcar como recebido' : 'Marcar como pago'} severidade="pri" onClick={() => pagar(l)} />
+                  <AcaoLinha icone="check" rotulo={l.tipo === 'receita' ? t('paginas.finVisaoGeral.textos.marcarComoRecebido') : t('paginas.finVisaoGeral.textos.marcarComoPago')} severidade="pri" onClick={() => pagar(l)} />
                 </li>
               ))}
             </ul>
@@ -196,12 +199,12 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
         </Card>
 
         <Card
-          titulo="Contas"
-          subtitulo="Saldo hoje"
+          titulo={t('paginas.finVisaoGeral.secoes.contas')}
+          subtitulo={t('paginas.finVisaoGeral.textos.saldoHoje')}
           corpoSemEspaco
           rodape={
             <div className="fin-rodape-total">
-              <span>Total disponível</span>
+              <span>{t('paginas.finVisaoGeral.textos.totalDisponivel')}</span>
               <Valor valor={saldoTotal} forte />
             </div>
           }
@@ -220,15 +223,13 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
                       navegar(ROTAS.lancamentos);
                     }}
                   >
-                    <strong>{c.nome}</strong>
+                    <strong>{tc(c.nome)}</strong>
                     <small>
-                      {c.instituicao} · {TIPO_CONTA[c.tipo]}
+                      {tc(c.instituicao)} · {tc(TIPO_CONTA[c.tipo])}
                     </small>
                   </button>
                   {c.tipo === 'cartao' ? (
-                    <span className="fin-linha-valor">
-                      <small>Fatura</small>
-                      <Valor valor={Math.max(0, -saldo)} forte />
+                    <span className="fin-linha-valor">{rico(t('paginas.finVisaoGeral.textos.fatura'))}<Valor valor={Math.max(0, -saldo)} forte />
                     </span>
                   ) : (
                     <Valor valor={saldo} colorir={saldo < 0} forte />
@@ -240,30 +241,30 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
         </Card>
 
         <Card
-          titulo={meses === 1 ? 'Orçamento do mês' : 'Orçamento do período'}
-          subtitulo="As categorias mais perto do limite"
-          rodape={<Botao rotulo="Ver orçamento" aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.orcamento)} />}
+          titulo={meses === 1 ? t('paginas.finVisaoGeral.secoes.orcamentoMes') : t('paginas.finVisaoGeral.secoes.orcamentoPeriodo')}
+          subtitulo={t('paginas.finVisaoGeral.textos.asCategoriasMaisPerto')}
+          rodape={<Botao rotulo={t('paginas.finVisaoGeral.textos.verOrcamento')} aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.orcamento)} />}
         >
           <div className="fin-orc-lista">
             {orcadas.map(({ c, gasto, limite, parte }) => (
               <div key={c.id} className="fin-orc-item">
                 <div className="fin-orc-topo">
                   <IconeCategoria categoria={c} tamanho="pequeno" />
-                  <span>{c.nome}</span>
+                  <span>{tc(c.nome)}</span>
                   <small>
-                    <Valor valor={gasto} /> de <Valor valor={limite} centavos={false} />
+                    <Valor valor={gasto} />{t('paginas.finVisaoGeral.textos.de')}<Valor valor={limite} centavos={false} />
                   </small>
                 </div>
-                <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={parte > 1 ? 'err' : parte > 0.85 ? 'warn' : 'ok'} rotulo={`${c.nome}: ${formatarPercentual(parte * 100, { casas: 0 })} do orçamento`} />
+                <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={parte > 1 ? 'err' : parte > 0.85 ? 'warn' : 'ok'} rotulo={t('paginas.finVisaoGeral.textos.nomeValorDoOrcamento', { nome: c.nome, valor: formatarPercentual(parte * 100, { casas: 0 , idioma }) })} />
               </div>
             ))}
           </div>
         </Card>
 
         <Card
-          titulo="Últimos lançamentos"
+          titulo={t('paginas.finVisaoGeral.secoes.ultimosLancamentos')}
           corpoSemEspaco
-          rodape={<Botao rotulo="Ver todos" aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.lancamentos)} />}
+          rodape={<Botao rotulo={t('paginas.finVisaoGeral.textos.verTodos')} aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.lancamentos)} />}
         >
           <ul className="fin-linhas">
             {todos
@@ -274,9 +275,9 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
                 <li key={l.id} className="fin-linha">
                   <IconeCategoria categoria={categoria(l.categoria)} transferencia={l.tipo === 'transferencia'} />
                   <button type="button" className="fin-linha-texto" onClick={() => abrir(l)}>
-                    <strong>{l.descricao}</strong>
+                    <strong>{tc(l.descricao)}</strong>
                     <small>
-                      {dataBr(l.data)} · {l.tipo === 'transferencia' ? 'Transferência' : categoria(l.categoria)?.nome}
+                      {dataBr(l.data)} · {l.tipo === 'transferencia' ? tc('Transferência') : tc(categoria(l.categoria)?.nome)}
                     </small>
                   </button>
                   <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'neutro' : l.tipo} forte />

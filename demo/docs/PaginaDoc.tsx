@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 import { CabecalhoPagina, type IconeProp } from '../../src';
+import type { ChaveTexto, TextosDemo } from '../i18n/tipos';
+import { useT } from '../i18n/useT';
 import { Codigo } from './Codigo';
 import { TabelaProps } from './TabelaProps';
 
@@ -20,12 +22,31 @@ export function Secao({ id, titulo, children }: { id: string; titulo: string; ch
   );
 }
 
+/** Página da documentação no dicionário: `docs.<pagina>` (demo/i18n/pt-BR/docs). `comum` são os textos de PaginaDoc/TabelaProps/Exemplo. */
+export type PaginaDocChave = Exclude<keyof TextosDemo['docs'], 'comum'>;
+
+/**
+ * Título e resumo da página no idioma ativo: `docs.<pagina>.titulo` e
+ * `docs.<pagina>.textos.resumo` (o resumo, por enquanto, só em pt-BR). Um
+ * `resumo` passado na prop vale mais que o do dicionário (ex.: com contagem).
+ */
+function useCabecalhoDoc(pagina: PaginaDocChave, resumo?: ReactNode) {
+  const { t } = useT();
+  return {
+    t,
+    titulo: t(`docs.${pagina}.titulo`),
+    // nem toda página tem um resumo de texto simples (o índice usa plural): a chave é conferida aqui, não no tipo
+    resumo: resumo ?? t(`docs.${pagina}.textos.resumo` as ChaveTexto),
+  };
+}
+
 /** Página-guia (Instalação, Tema): cabeçalho + texto. */
-export function PaginaGuia({ titulo, icone, resumo, children }: { titulo: string; icone: IconeProp; resumo: ReactNode; children: ReactNode }) {
+export function PaginaGuia({ pagina, icone, resumo, children }: { pagina: PaginaDocChave; icone: IconeProp; resumo?: ReactNode; children: ReactNode }) {
+  const cab = useCabecalhoDoc(pagina, resumo);
   return (
     <article className="doc">
-      <CabecalhoPagina titulo={titulo} icone={icone} categoria="Documentação" trilha>
-        {resumo}
+      <CabecalhoPagina titulo={cab.titulo} icone={icone} categoria={cab.t('menu.secoes.documentacao')} trilha>
+        {cab.resumo}
       </CabecalhoPagina>
       {children}
     </article>
@@ -33,7 +54,8 @@ export function PaginaGuia({ titulo, icone, resumo, children }: { titulo: string
 }
 
 interface PaginaComponenteProps {
-  titulo: string;
+  /** Chave da página no dicionário (`docs.<pagina>`): dá o título e o resumo. */
+  pagina: PaginaDocChave;
   icone: IconeProp;
   /** Nome exportado pelo pacote (também a chave em props.gerado.json). */
   componente: string;
@@ -45,7 +67,8 @@ interface PaginaComponenteProps {
   semPropsProprias?: boolean;
   /** Outros nomes que o import do exemplo mostra (tipos, hooks). */
   importar?: string[];
-  resumo: ReactNode;
+  /** Só quando o resumo do dicionário não serve (ex.: tem contagem ou marcação). */
+  resumo?: ReactNode;
   /** Padrões que não saem da desestruturação (ver TabelaProps). */
   padroes?: Record<string, string>;
   /** Exemplos e seções de uso. */
@@ -56,7 +79,7 @@ interface PaginaComponenteProps {
 
 /** Página de um componente: resumo, import, exemplos, props e notas. */
 export function PaginaComponente({
-  titulo,
+  pagina,
   icone,
   componente,
   outros = [],
@@ -68,19 +91,21 @@ export function PaginaComponente({
   children,
   notas,
 }: PaginaComponenteProps) {
+  const { t } = useT();
+  const cab = useCabecalhoDoc(pagina, resumo);
   const tabelas = [...(semPropsProprias ? [] : [componente]), ...outros, ...tipos];
   return (
     <article className="doc">
-      <CabecalhoPagina titulo={titulo} icone={icone} categoria="Componentes" trilha>
-        {resumo}
+      <CabecalhoPagina titulo={cab.titulo} icone={icone} categoria={cab.t('menu.docs.componentes')} trilha>
+        {cab.resumo}
       </CabecalhoPagina>
-      <Secao id="importar" titulo="Importar">
+      <Secao id="importar" titulo={t('docs.comum.secoes.importar')}>
         <Codigo codigo={linhaImport([componente, ...outros, ...importar])} />
       </Secao>
-      <Secao id="exemplos" titulo="Exemplos">
+      <Secao id="exemplos" titulo={t('docs.comum.secoes.exemplos')}>
         {children}
       </Secao>
-      <Secao id="props" titulo="Props">
+      <Secao id="props" titulo={t('docs.comum.secoes.props')}>
         {tabelas.length > 1 ? (
           tabelas.map((c) => (
             <div key={c} className="doc-props-bloco">
@@ -93,7 +118,7 @@ export function PaginaComponente({
         )}
       </Secao>
       {notas && (
-        <Secao id="notas" titulo="Boas práticas">
+        <Secao id="notas" titulo={t('docs.comum.secoes.notas')}>
           {notas}
         </Secao>
       )}

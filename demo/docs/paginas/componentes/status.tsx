@@ -1,27 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Status"
+      pagina="status"
       icone="circle-check"
       componente="Status"
-      resumo="Selo da situação de um registro: pago, em análise, cancelado. Cor e ícone vêm da severidade."
       notas={
         <ul className="doc-lista">
-          <li>
-            Na <C>Tabela</C>, a prop <C>severidade</C> da coluna desenha este selo sem precisar de <C>render</C>.
-          </li>
-          <li>
-            Status é situação (estado do registro); <C>Badge</C> é etiqueta (categoria, contagem, novidade).
-          </li>
-          <li>Mantenha a mesma severidade para a mesma situação em todo o sistema.</li>
+          <li>{rico(t('docs.status.textos.naTabelaAProp'))}</li>
+          <li>{rico(t('docs.status.textos.statusESituacaoEstado'))}</li>
+          <li>{t('docs.status.textos.mantenhaAMesmaSeveridade')}</li>
         </ul>
       }
     >
-      <Exemplo id="status/Basico" titulo="Severidades" />
+      <Exemplo id="status/Basico" titulo={t('docs.status.secoes.severidades')} />
     </PaginaComponente>
   );
 }

@@ -1,31 +1,27 @@
 import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Lista"
+      pagina="lista"
       icone="list"
       componente="Lista"
       outros={['ItemLista']}
-      resumo="Lista de itens com ícone, título, conteúdo no início e no fim, item ativo, links e marcação (caixa ou rádio)."
       notas={
         <ul className="doc-lista">
-          <li>
-            Item com <C>onClick</C> vira botão, e com <C>href</C>, link: os dois entram no Tab.
-          </li>
-          <li>
-            Com <C>marcacao</C>, o item inteiro é o rótulo do input. No rádio, passe o mesmo <C>nome</C> em todos os itens.
-          </li>
-          <li>
-            <C>numerada</C> usa <C>{'<ol>'}</C>; <C>horizontal</C> deita a lista a partir de uma largura (<C>sm</C> a <C>xl</C>).
-          </li>
+          <li>{rico(t('docs.lista.textos.itemComOnclickVira'))}</li>
+          <li>{rico(t('docs.lista.textos.comMarcacaoOItem'))}</li>
+          <li>{rico(t('docs.lista.textos.numeradaUsa'))}<C>{'<ol>'}</C>{rico(t('docs.lista.textos.horizontalDeitaALista'))}</li>
         </ul>
       }
     >
-      <Exemplo id="lista/Basico" titulo="Itens, ativo e desabilitado" />
-      <Exemplo id="lista/Marcacao" titulo="Com caixa e rádio" />
+      <Exemplo id="lista/Basico" titulo={t('docs.lista.secoes.itensAtivoEDesabilitado')} />
+      <Exemplo id="lista/Marcacao" titulo={t('docs.lista.secoes.comCaixaERadio')} />
     </PaginaComponente>
   );
 }

@@ -1,5 +1,6 @@
 import { CabecalhoPagina, Carrossel, type SlideCarrossel } from '../../../src';
 import { Bloco, cena } from '../Bloco';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 const IMAGENS = [
   { imagem: cena('#1f5fe0', '#0b1a36'), alt: 'Paisagem azul ao anoitecer' },
@@ -8,11 +9,11 @@ const IMAGENS = [
 ];
 
 /** Imagens claras, para a variante escura. */
-const CLARAS = [
-  { imagem: cena('#dbeafe', '#93c5fd', '#fde68a'), alt: 'Paisagem azul-clara' },
-  { imagem: cena('#fef3c7', '#fcd34d', '#fb923c'), alt: 'Paisagem amarela' },
-  { imagem: cena('#dcfce7', '#86efac', '#fde68a'), alt: 'Paisagem verde-clara' },
-];
+const CLARAS = (t: TradutorDemo['t']) => ([
+  { imagem: cena('#dbeafe', '#93c5fd', '#fde68a'), alt: t('paginas.carrossel.textos.paisagemAzulClara') },
+  { imagem: cena('#fef3c7', '#fcd34d', '#fb923c'), alt: t('paginas.carrossel.textos.paisagemAmarela') },
+  { imagem: cena('#dcfce7', '#86efac', '#fde68a'), alt: t('paginas.carrossel.textos.paisagemVerdeClara') },
+]);
 
 const LEGENDAS = [
   { titulo: 'Primeiro slide', descricao: 'Um conteúdo de exemplo para o primeiro slide.' },
@@ -20,39 +21,42 @@ const LEGENDAS = [
   { titulo: 'Terceiro slide', descricao: 'Um conteúdo de exemplo para o terceiro slide.' },
 ];
 
-const comLegendas = (base: typeof IMAGENS): SlideCarrossel[] => base.map((s, i) => ({ ...s, ...LEGENDAS[i] }));
+const comLegendas = (base: typeof IMAGENS, tc: TradutorDemo['tc']): SlideCarrossel[] =>
+  base.map((s, i) => ({ ...s, alt: tc(s.alt), titulo: tc(LEGENDAS[i].titulo), descricao: tc(LEGENDAS[i].descricao) }));
 
 export function PaginaCarrosseis() {
+  const { t, tc } = useT();
+  const imagens = IMAGENS.map((s) => ({ ...s, alt: tc(s.alt) }));
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Carrossel" icone="image" trilha />
+      <CabecalhoPagina titulo={t('paginas.carrossel.titulo')} icone="image" trilha />
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Só os slides" descricao="Avança sozinho; o botão no canto pausa.">
-          <Carrossel rotulo="Só os slides" slides={IMAGENS} />
+        <Bloco titulo={t('paginas.carrossel.secoes.soOsSlides')} descricao={t('paginas.carrossel.textos.avancaSozinhoOBotao')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.soOsSlides')} slides={imagens} />
         </Bloco>
-        <Bloco titulo="Com controles" descricao="Setas de anterior e próximo.">
-          <Carrossel rotulo="Com controles" slides={IMAGENS} controles />
+        <Bloco titulo={t('paginas.carrossel.secoes.comControles')} descricao={t('paginas.carrossel.textos.setasDeAnteriorE')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.comControles')} slides={imagens} controles />
         </Bloco>
-        <Bloco titulo="Com indicadores" descricao="Tracinhos que levam a cada slide.">
-          <Carrossel rotulo="Com indicadores" slides={IMAGENS} controles indicadores />
-        </Bloco>
-
-        <Bloco titulo="Com legendas">
-          <Carrossel rotulo="Com legendas" slides={comLegendas(IMAGENS)} controles indicadores />
-        </Bloco>
-        <Bloco titulo="Esmaecer" descricao="Troca com esmaecimento em vez de deslizar.">
-          <Carrossel rotulo="Esmaecer" slides={IMAGENS} controles transicao="esmaecer" />
-        </Bloco>
-        <Bloco titulo="Intervalo por slide" descricao="O primeiro fica 10 s, o segundo 2 s, o terceiro o padrão (5 s).">
-          <Carrossel rotulo="Intervalo por slide" slides={IMAGENS.map((s, i) => ({ ...s, intervalo: [10000, 2000, undefined][i] }))} controles />
+        <Bloco titulo={t('paginas.carrossel.secoes.comIndicadores')} descricao={t('paginas.carrossel.textos.tracinhosQueLevamA')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.comIndicadores')} slides={imagens} controles indicadores />
         </Bloco>
 
-        <Bloco titulo="Sem arrastar" descricao="Desliga a troca por arraste; só pelos controles, sem avanço automático.">
-          <Carrossel rotulo="Sem arrastar" slides={IMAGENS} controles arrastar={false} automatico={false} />
+        <Bloco titulo={t('paginas.carrossel.secoes.comLegendas')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.comLegendas')} slides={comLegendas(IMAGENS, tc)} controles indicadores />
         </Bloco>
-        <Bloco titulo="Variante escura" descricao="Controles e legendas escuros, para imagens claras.">
-          <Carrossel rotulo="Variante escura" slides={comLegendas(CLARAS)} controles indicadores escuro />
+        <Bloco titulo={t('paginas.carrossel.secoes.esmaecer')} descricao={t('paginas.carrossel.textos.trocaComEsmaecimentoEm')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.esmaecer')} slides={imagens} controles transicao="esmaecer" />
+        </Bloco>
+        <Bloco titulo={t('paginas.carrossel.secoes.intervaloPorSlide')} descricao={t('paginas.carrossel.textos.oPrimeiroFica10')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.intervaloPorSlide')} slides={imagens.map((s, i) => ({ ...s, intervalo: [10000, 2000, undefined][i] }))} controles />
+        </Bloco>
+
+        <Bloco titulo={t('paginas.carrossel.secoes.semArrastar')} descricao={t('paginas.carrossel.textos.desligaATrocaPor')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.semArrastar')} slides={imagens} controles arrastar={false} automatico={false} />
+        </Bloco>
+        <Bloco titulo={t('paginas.carrossel.secoes.varianteEscura')} descricao={t('paginas.carrossel.textos.controlesELegendasEscuros')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.varianteEscura')} slides={comLegendas(CLARAS(t), tc)} controles indicadores escuro />
         </Bloco>
       </div>
     </div>

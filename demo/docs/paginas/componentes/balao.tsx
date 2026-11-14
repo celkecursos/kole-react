@@ -1,29 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Balão"
+      pagina="balao"
       icone="message-square"
       componente="Balao"
-      resumo="Conteúdo flutuante preso a um elemento: explicação mais longa, detalhes de um item. Abre no clique (padrão), no foco ou ao passar o mouse."
       notas={
         <ul className="doc-lista">
-          <li>
-            Com o gatilho padrão (<C>clique</C>), o balão fica aberto até clicar fora ou apertar Esc.
-          </li>
-          <li>
-            Frase curta que só nomeia o botão é <C>Dica</C>; ações e formulários pedem <C>MenuSuspenso</C> ou <C>Dialogo</C>.
-          </li>
-          <li>
-            O balão troca de lado sozinho quando não cabe na <C>posicao</C> pedida.
-          </li>
+          <li>{rico(t('docs.balao.textos.comOGatilhoPadrao'))}</li>
+          <li>{rico(t('docs.balao.textos.fraseCurtaQueSo'))}</li>
+          <li>{rico(t('docs.balao.textos.oBalaoTrocaDe'))}</li>
         </ul>
       }
     >
-      <Exemplo id="balao/Basico" titulo="Clique e passar" />
+      <Exemplo id="balao/Basico" titulo={t('docs.balao.secoes.cliqueEPassar')} />
     </PaginaComponente>
   );
 }

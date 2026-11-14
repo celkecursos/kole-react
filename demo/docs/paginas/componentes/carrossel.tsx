@@ -1,30 +1,25 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Carrossel"
+      pagina="carrossel"
       icone="image"
       componente="Carrossel"
       importar={['type SlideCarrossel']}
-      resumo="Slides de imagens com título e descrição, setas, indicadores, troca automática e arrastar no celular."
       notas={
         <ul className="doc-lista">
-          <li>
-            A troca automática pausa com o mouse ou o foco em cima e respeita a preferência de movimento reduzido do sistema.
-          </li>
-          <li>
-            Informação importante não deve ficar só num slide: muita gente não espera a troca.
-          </li>
-          <li>
-            Cada slide precisa de <C>alt</C>; o <C>rotulo</C> dá nome ao carrossel inteiro.
-          </li>
+          <li>{t('docs.carrossel.textos.aTrocaAutomaticaPausa')}</li>
+          <li>{t('docs.carrossel.textos.informacaoImportanteNaoDeve')}</li>
+          <li>{rico(t('docs.carrossel.textos.cadaSlidePrecisaDe'))}</li>
         </ul>
       }
     >
-      <Exemplo id="carrossel/Basico" titulo="Com controles e indicadores" />
+      <Exemplo id="carrossel/Basico" titulo={t('docs.carrossel.secoes.comControlesEIndicadores')} />
     </PaginaComponente>
   );
 }

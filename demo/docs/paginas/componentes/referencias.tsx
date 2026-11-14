@@ -1,28 +1,24 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Referências"
+      pagina="referencias"
       icone="link"
       componente="Referencias"
       importar={['type ItemReferencia']}
-      resumo="Lista recolhível das fontes de uma resposta (assistente, busca): título, detalhe, trecho e link."
       notas={
         <ul className="doc-lista">
-          <li>
-            Combina com a <C>Mensagem</C> da <C>Conversa</C>: passe no <C>rodape</C> da mensagem do assistente.
-          </li>
-          <li>
-            O trecho longo fica cortado, com "Mostrar trecho completo". Troque os textos com <C>rotulo</C>, <C>rotuloMostrarMais</C> e{' '}
-            <C>rotuloMostrarMenos</C>.
-          </li>
+          <li>{rico(t('docs.referencias.textos.combinaComAMensagem'))}</li>
+          <li>{rico(t('docs.referencias.textos.oTrechoLongoFica'))}</li>
         </ul>
       }
     >
-      <Exemplo id="referencias/Basico" titulo="Básico" />
+      <Exemplo id="referencias/Basico" titulo={t('docs.referencias.secoes.basico')} />
     </PaginaComponente>
   );
 }

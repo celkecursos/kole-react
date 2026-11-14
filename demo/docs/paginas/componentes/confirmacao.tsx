@@ -1,33 +1,28 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Confirmação"
+      pagina="confirmacao"
       icone="circle-question-mark"
       componente="useConfirmacao"
       semPropsProprias
       tipos={['OpcoesConfirmacao']}
       importar={['type OpcoesConfirmacao']}
-      resumo="O diálogo de 'tem certeza?' como uma função: await confirmar(...) devolve true ou false. Inclui o atalho de remoção e o aviso de um botão só."
       notas={
         <ul className="doc-lista">
-          <li>
-            O <C>ProvedorUi</C> já inclui o <C>ProvedorConfirmacao</C>: no app, basta <C>useConfirmacao()</C>.
-          </li>
-          <li>
-            <C>confirmar.remover</C> é sempre vermelho e com lixeira, para a exclusão parecer igual em todo o sistema.
-          </li>
-          <li>
-            <C>confirmar.avisar</C> tem um botão só (OK) e devolve uma Promise que resolve ao fechar.
-          </li>
-          <li>Esc e clique fora contam como recusar.</li>
+          <li>{rico(t('docs.confirmacao.textos.oProvedoruiJaInclui'))}</li>
+          <li>{rico(t('docs.confirmacao.textos.confirmarRemoverESempre'))}</li>
+          <li>{rico(t('docs.confirmacao.textos.confirmarAvisarTemUm'))}</li>
+          <li>{t('docs.confirmacao.textos.escECliqueFora')}</li>
         </ul>
       }
     >
-      <Exemplo id="confirmacao/Basico" titulo="Confirmar, remover e avisar" />
+      <Exemplo id="confirmacao/Basico" titulo={t('docs.confirmacao.secoes.confirmarRemoverEAvisar')} />
     </PaginaComponente>
   );
 }

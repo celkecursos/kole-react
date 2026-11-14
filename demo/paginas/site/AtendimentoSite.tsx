@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Botao, CampoMensagem, ChatFlutuante, Conversa, InicioConversa, Mensagem, type EstadoMensagem, type SugestaoConversa } from '../../../src';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 /*
  * Chat de atendimento do site modelo: respostas prontas para as perguntas frequentes
@@ -15,11 +16,11 @@ interface MsgSite {
   humano?: boolean;
 }
 
-const PERGUNTAS: SugestaoConversa[] = [
-  { titulo: 'Quais são os planos?' },
-  { titulo: 'Como falar com o suporte?' },
-  { titulo: 'Vocês emitem nota fiscal?' },
-];
+const PERGUNTAS = (t: TradutorDemo['t']): SugestaoConversa[] => ([
+  { titulo: t('paginas.site.textos.quaisSaoOsPlanos') },
+  { titulo: t('paginas.site.textos.comoFalarComO') },
+  { titulo: t('paginas.site.textos.vocesEmitemNotaFiscal') },
+]);
 
 function responder(texto: string): { texto: string; humano?: boolean } {
   const t = texto.toLowerCase();
@@ -34,6 +35,7 @@ function responder(texto: string): { texto: string; humano?: boolean } {
 let seq = 0;
 
 export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }) {
+  const { t, tc } = useT();
   const [aberto, setAberto] = useState(false);
   const [lido, setLido] = useState(false);
   const [mensagens, setMensagens] = useState<MsgSite[]>([]);
@@ -60,9 +62,9 @@ export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }
 
   return (
     <ChatFlutuante
-      titulo="Fale com a gente"
-      subtitulo="Respondemos em poucos minutos"
-      rotuloBotao="Fale com a gente"
+      titulo={t('paginas.site.textos.faleComAGente')}
+      subtitulo={t('paginas.site.textos.respondemosEmPoucosMinutos')}
+      rotuloBotao={t('paginas.site.textos.faleComAGente')}
       naoLidas={lido ? 0 : 1}
       aberto={aberto}
       aoMudarAberto={(v) => {
@@ -71,30 +73,30 @@ export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }
       }}
     >
       <Conversa
-        rotulo="Atendimento"
+        rotulo={t('paginas.site.textos.atendimento')}
         vazio={
           <InicioConversa
             aparencia="pilulas"
             icone="message-circle"
-            titulo="Olá! 👋 Como podemos ajudar?"
-            descricao="Escolha uma das perguntas frequentes ou escreva a sua."
-            sugestoes={PERGUNTAS}
+            titulo={t('paginas.site.textos.olaComoPodemosAjudar')}
+            descricao={t('paginas.site.textos.escolhaUmaDasPerguntas')}
+            sugestoes={PERGUNTAS(t)}
             aoEscolher={(s) => enviar(s.titulo)}
           />
         }
-        campo={<CampoMensagem valor={texto} aoMudar={setTexto} aoEnviar={enviar} gerando={gerando} placeholder="Escreva sua mensagem" linhasMaximas={4} />}
+        campo={<CampoMensagem valor={texto} aoMudar={setTexto} aoEnviar={enviar} gerando={gerando} placeholder={t('paginas.site.textos.escrevaSuaMensagem')} linhasMaximas={4} />}
       >
         {mensagens.map((m) => (
           <Mensagem
             key={m.id}
             autor={m.autor}
-            nome={m.autor === 'assistente' ? 'Sua Marca' : undefined}
+            nome={m.autor === 'assistente' ? tc('Sua Marca') : undefined}
             hora={m.hora}
             estado={m.estado}
             acoes={
               m.humano && (
                 <Botao
-                  rotulo="Ir para o Contato"
+                  rotulo={t('paginas.site.textos.irParaOContato')}
                   icone="mail"
                   severidade="secundario"
                   aparencia="contorno"
@@ -107,7 +109,7 @@ export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }
               )
             }
           >
-            {m.texto || undefined}
+            {tc(m.texto) || undefined}
           </Mensagem>
         ))}
       </Conversa>

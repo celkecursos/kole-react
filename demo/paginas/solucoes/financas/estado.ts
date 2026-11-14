@@ -111,7 +111,8 @@ export const aReceber = (l: Lancamento) => l.tipo === 'receita';
 export const vencePorSi = (l: Lancamento) => !(l.tipo === 'despesa' && conta(l.conta)?.tipo === 'cartao');
 
 /** "1 lançamento" · "3 lançamentos". */
-export const qtdLancamentos = (n: number) => `${n} ${n === 1 ? 'lançamento' : 'lançamentos'}`;
+/** `3 lançamentos`; o `tc` (do `useT()`) traduz a palavra. */
+export const qtdLancamentos = (n: number, tc: <T>(texto: T) => T = (texto) => texto) => `${n} ${n === 1 ? tc('lançamento') : tc('lançamentos')}`;
 
 export const doEspaco = (lancamentos: Lancamento[], espaco: Espaco) => lancamentos.filter((l) => l.espaco === espaco);
 export const noIntervalo = (lancamentos: Lancamento[], p: { de: string; ate: string }) => lancamentos.filter((l) => l.data >= p.de && l.data <= p.ate);

@@ -1,35 +1,25 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Busca com sugestões"
+      pagina="campoBusca"
       icone="search"
       componente="CampoBusca"
-      resumo="Autocompletar com dados do servidor: espera a digitação parar, busca e mostra as sugestões. O valor é o registro escolhido, não o texto."
       notas={
         <ul className="doc-lista">
-          <li>
-            <C>buscar</C> devolve uma Promise. O campo espera a digitação parar (<C>atraso</C>) e descarta respostas que chegam fora de
-            ordem.
-          </li>
-          <li>
-            <C>paraRotulo</C> é o texto do item escolhido; <C>paraDetalhe</C>, a linha menor de cada sugestão.
-          </li>
-          <li>
-            Texto digitado sem escolher uma sugestão não vira valor: o campo continua <C>null</C>.
-          </li>
-          <li>
-            Para opções fixas e poucas, o <C>CampoSelect</C> com <C>comBusca</C> é mais simples.
-          </li>
+          <li>{rico(t('docs.campoBusca.textos.buscarDevolveUmaPromise'))}</li>
+          <li>{rico(t('docs.campoBusca.textos.pararotuloEOTexto'))}</li>
+          <li>{rico(t('docs.campoBusca.textos.textoDigitadoSemEscolher'))}</li>
+          <li>{rico(t('docs.campoBusca.textos.paraOpcoesFixasE'))}</li>
         </ul>
       }
     >
-      <Exemplo id="campo-busca/Basico" titulo="Básico">
-        Digite "mer" para ver as sugestões. A resposta do servidor é simulada com 400 ms de atraso.
-      </Exemplo>
+      <Exemplo id="campo-busca/Basico" titulo={t('docs.campoBusca.secoes.basico')}>{t('docs.campoBusca.textos.digiteMerParaVer')}</Exemplo>
     </PaginaComponente>
   );
 }

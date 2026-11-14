@@ -1,6 +1,7 @@
 import { Component, useState, type ComponentType, type ReactNode } from 'react';
 import { Alerta, Botao } from '../../src';
 import { Codigo } from './Codigo';
+import { useT } from '../i18n/useT';
 
 // Cada arquivo em exemplos/ é ao mesmo tempo o exemplo que roda e o código que a página mostra.
 const MODULOS = import.meta.glob<{ default: ComponentType }>('./exemplos/**/*.tsx', { eager: true });
@@ -27,11 +28,12 @@ function comoNoApp(fonte: string) {
  * (ex.: `botao/Cores` → exemplos/botao/Cores.tsx).
  */
 export function Exemplo({ id, titulo, children }: { id: string; titulo: string; children?: ReactNode }) {
+  const { t } = useT();
   const [verCodigo, setVerCodigo] = useState(false);
   const chave = `./exemplos/${id}.tsx`;
   const Componente = MODULOS[chave]?.default;
   const fonte = FONTES[chave];
-  if (!Componente || fonte === undefined) return <Alerta severidade="err" mensagem={`Exemplo não encontrado: ${chave}`} />;
+  if (!Componente || fonte === undefined) return <Alerta severidade="err" mensagem={t('docs.comum.textos.exemploNaoEncontradoChave', { chave })} />;
 
   return (
     <section className="doc-exemplo" id={id.split('/').pop()?.toLowerCase()}>
@@ -45,7 +47,7 @@ export function Exemplo({ id, titulo, children }: { id: string; titulo: string; 
         </div>
         <div className="doc-exemplo-rodape">
           <Botao
-            rotulo={verCodigo ? 'Ocultar código' : 'Ver código'}
+            rotulo={verCodigo ? t('docs.comum.textos.ocultarCodigo') : t('docs.comum.textos.verCodigo')}
             icone="code"
             aparencia="texto"
             tamanho="pequeno"

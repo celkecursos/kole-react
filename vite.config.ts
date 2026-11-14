@@ -30,7 +30,25 @@ function cssKole(): Plugin {
 // `vite build --mode demo` → demo estática em dist-demo/
 export default defineConfig(({ mode }) => {
   if (mode === 'demo') {
-    return { plugins: [react(), cssKole()], base: './', build: { outDir: 'dist-demo' } };
+    return {
+      plugins: [
+        react(),
+        cssKole(),
+        {
+          name: 'conferir-tokens-demo',
+          // a demo estática já saiu sem os tokens de cor (o CSS usava var(--acento) sem definir)
+          generateBundle(_, bundle) {
+            const css = Object.values(bundle)
+              .filter((a) => a.type === 'asset' && a.fileName.endsWith('.css'))
+              .map((a) => (a.type === 'asset' ? String(a.source) : ''))
+              .join('');
+            if (!css.includes('--acento:')) this.error('build da demo: o CSS saiu sem os tokens (--acento:)');
+          },
+        },
+      ],
+      base: './',
+      build: { outDir: 'dist-demo' },
+    };
   }
   return {
     plugins: [

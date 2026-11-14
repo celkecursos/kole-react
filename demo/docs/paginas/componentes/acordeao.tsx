@@ -1,31 +1,26 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Acordeão"
+      pagina="acordeao"
       icone="list"
       componente="Acordeao"
       outros={['ItemAcordeao']}
-      resumo="Seções que abrem e fecham: perguntas frequentes, grupos de configurações, detalhes opcionais."
       notas={
         <ul className="doc-lista">
-          <li>
-            Por padrão, abrir um item fecha o outro; com <C>multiplo</C>, cada um abre sozinho.
-          </li>
-          <li>
-            <C>padraoAbertos</C> define os abertos no início; <C>abertos</C> + <C>aoMudar</C> deixam o app controlar.
-          </li>
-          <li>
-            O título é um botão com <C>aria-expanded</C>, e o conteúdo fechado sai da ordem de foco.
-          </li>
+          <li>{rico(t('docs.acordeao.textos.porPadraoAbrirUm'))}</li>
+          <li>{rico(t('docs.acordeao.textos.padraoabertosDefineOsAbertos'))}</li>
+          <li>{rico(t('docs.acordeao.textos.oTituloEUm'))}</li>
         </ul>
       }
     >
-      <Exemplo id="acordeao/Basico" titulo="Básico" />
-      <Exemplo id="acordeao/Variantes" titulo="Variantes" />
+      <Exemplo id="acordeao/Basico" titulo={t('docs.acordeao.secoes.basico')} />
+      <Exemplo id="acordeao/Variantes" titulo={t('docs.acordeao.secoes.variantes')} />
     </PaginaComponente>
   );
 }

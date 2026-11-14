@@ -1,6 +1,8 @@
 import { Botao } from '../../../../src';
-import { C, Codigo } from '../../Codigo';
+import { Codigo } from '../../Codigo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 const USO = `import { TelaLogin, isCpf, type ApresentacaoLogin } from '@celke/kole-react';
 
@@ -37,38 +39,28 @@ export function Login({ entrar }: { entrar: () => void }) {
 }`;
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Tela de login"
+      pagina="telaLogin"
       icone="log-in"
       componente="TelaLogin"
       importar={['type ApresentacaoLogin', 'type CredenciaisLogin', 'type ResultadoLogin']}
-      resumo="Tela de entrada completa: apresentação do sistema, formulário com CPF, e-mail ou usuário, senha, e a etapa do código de verificação em duas etapas."
       notas={
         <ul className="doc-lista">
-          <li>
-            Todo o fluxo vem do retorno do <C>aoEntrar</C>: nada = entrou, <C>'codigo'</C> = mostra a etapa do código,{' '}
-            <C>{'{ erro }'}</C> = mostra a mensagem no formulário.
-          </li>
-          <li>
-            <C>identificador</C> escolhe o campo de usuário (<C>cpf</C>, <C>email</C> ou <C>usuario</C>), com máscara e validação.
-          </li>
-          <li>
-            <C>modelo="formulario"</C> tira a apresentação e deixa só o cartão centralizado.
-          </li>
-          <li>Ocupa a janela inteira, fora da Estrutura. Os campos já trazem o autocomplete certo para gerenciadores de senha.</li>
+          <li>{rico(t('docs.telaLogin.textos.todoOFluxoVem'))}</li>
+          <li>{rico(t('docs.telaLogin.textos.identificadorEscolheOCampo'))}</li>
+          <li>{rico(t('docs.telaLogin.textos.modeloFormularioTiraA'))}</li>
+          <li>{t('docs.telaLogin.textos.ocupaAJanelaInteira')}</li>
         </ul>
       }
     >
-      <p className="doc-p">
-        A tela ocupa a janela inteira, então o exemplo abre numa página própria da demo. Teste com qualquer CPF válido; a senha{' '}
-        <C>123456</C> pede o código (também <C>123456</C>).
-      </p>
+      <p className="doc-p">{rico(t('docs.telaLogin.textos.aTelaOcupaA'))}</p>
       <div className="demo-linha">
-        <Botao rotulo="Abrir com apresentação" icone="log-in" onClick={() => (window.location.hash = '/login')} />
-        <Botao rotulo="Abrir só o formulário" icone="lock" aparencia="contorno" onClick={() => (window.location.hash = '/login/simples')} />
+        <Botao rotulo={t('docs.telaLogin.textos.abrirComApresentacao')} icone="log-in" onClick={() => (window.location.hash = '/login')} />
+        <Botao rotulo={t('docs.telaLogin.textos.abrirSoOFormulario')} icone="lock" aparencia="contorno" onClick={() => (window.location.hash = '/login/simples')} />
       </div>
-      <h3 className="doc-exemplo-titulo">Código</h3>
+      <h3 className="doc-exemplo-titulo">{t('docs.telaLogin.textos.codigo')}</h3>
       <Codigo codigo={USO} />
     </PaginaComponente>
   );

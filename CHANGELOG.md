@@ -1,8 +1,6 @@
 # Changelog
 
-## Não publicado
-
-Versão alvo: 0.6.0.
+## 0.6.0
 
 Novidades:
 
@@ -34,9 +32,47 @@ Novidades:
   extenso) não mudam; a moeda continua vindo de `moeda`.
 - Demo: seletor de idioma na topbar e página Idioma na documentação (como ligar,
   o que muda, sincronização com react-i18next e com Laravel `users.locale`).
+- Demo: menu, títulos, legendas e cards em pt-BR, inglês e espanhol. Dicionário
+  próprio da demo em `demo/i18n` (pt-BR é a fonte; `en` e `es` parciais, com
+  o que faltar em português), hook `useT()` sobre o `useIdioma()` e o
+  `interpolar`/`pluralizar` da biblioteca, e teste de tipos que acusa chave
+  usada sem texto em pt-BR. Trocar o idioma traduz o menu, a trilha, a busca
+  Ctrl K, os títulos das páginas e da documentação, as legendas de `FormSecao`
+  e os títulos de `Card`, sem recarregar; o português não muda.
+- Demo: textos corridos em inglês e espanhol, página por página: blocos de
+  exemplo, parágrafos, rótulos, mensagens e toasts das telas da demo, do site
+  público e das telas de erro, e os textos da documentação (resumos, notas,
+  descrições dos exemplos e o cabeçalho da tabela de props). O dicionário fica
+  dividido por área (`demo/i18n/<idioma>/menu`, `paginas/<grupo>`,
+  `docs/<categoria>`), e os parágrafos com destaque usam `rico()` (crases e
+  `<strong>`/`<em>`/`<code>` na própria string). Fica em português o código
+  dos exemplos.
+- Demo: os textos de interface guardados em listas e constantes das páginas
+  (opções, colunas de tabela, nomes de cores e posições, cards, FAQ, planos e
+  posts do site, tabelas do guia de Tema e de Carregamento) também saem no
+  idioma escolhido: cada constante virou uma função que recebe o `t`. Datas
+  relativas, porcentagens, valores e saudações da demo passam o idioma aos
+  utilitários da biblioteca (`tempoRelativo`, `formatarMoeda`,
+  `formatarPercentual`, `rotuloPeriodo`…).
+- Demo: os dados de exemplo também saem no idioma escolhido (produtos,
+  categorias, formas de pagamento, tarefas e quadros, agenda do calendário,
+  lançamentos das finanças, respostas do assistente e do chat, textos de cards
+  e listas). A tradução sai de uma tabela pelo próprio texto em pt-BR
+  (`demo/i18n/<idioma>/conteudo.ts`), com o `tc()` do `useT()` na hora de
+  mostrar: os dados continuam em pt-BR e com os mesmos tipos. Nomes de pessoas,
+  empresas, cidades e estados ficam como estão.
+- Demo: o CHANGELOG também em inglês e espanhol (`CHANGELOG.en.md` e
+  `CHANGELOG.es.md`); a página Changelog mostra o do idioma escolhido.
+- Documentação: as descrições das props (JSDoc) em inglês e espanhol, em
+  `demo/docs/props.en.json` e `props.es.json`, com o texto pt-BR do JSDoc como
+  chave. `npm run docs:conferir` falha se uma descrição ficar sem tradução ou
+  se sobrar tradução de texto que saiu do JSDoc (`npm run docs:props` limpa as
+  que sobram); sem tradução, a descrição aparece em pt-BR. A conferência deixa
+  de acusar o `props.gerado.json` como desatualizado só por fim de linha CRLF.
 - Teste visual: projeto `en` com as telas de texto da biblioteca (tabela vazia,
-  paginação, calendário e o seletor aberto); nas referências antigas, o seletor
-  fica escondido.
+  paginação, calendário e o seletor aberto) e com a moldura traduzida da demo
+  (documentação, formulário e cards); nas referências antigas, o seletor fica
+  escondido.
 
 - Finanças: `Valor` (dinheiro com sinal e cor de entrada e saída, tamanhos,
   riscado, compacto), `ProvedorValores` e `BotaoOcultarValores` (o "ocultar
@@ -152,6 +188,10 @@ Correções:
   próprio quadro.
 - `Dialogo` (e o `Form` em modal): ao fechar, o foco volta a quem abriu também
   quando um campo do diálogo tem `autoFocus`; antes, ficava perdido na página.
+- Demo estática (`npm run build:demo`): o CSS saía sem os tokens de cor, sem o
+  `base.css` e sem os seletores de tema, porque o `sideEffects` do pacote fazia
+  o bundler pular os imports de CSS do `src/index.ts`. A demo importa os dois
+  arquivos direto, e o build falha se o CSS sair sem os tokens.
 
 ## 0.5.0
 

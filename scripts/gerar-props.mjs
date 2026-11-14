@@ -170,19 +170,65 @@ for (let simbolo of checker.getExportsOfModule(modulo)) {
 const ordenado = Object.fromEntries(Object.entries(resultado).sort(([a], [b]) => a.localeCompare(b)));
 const json = JSON.stringify(ordenado, null, 2) + '\n';
 
+// Traduções das descrições (demo/docs/props.<idioma>.json): a chave é o texto pt-BR do JSDoc.
+// JSDoc novo ou alterado fica sem tradução (aparece em pt-BR na documentação) até alguém traduzir.
+const IDIOMAS_TRADUCAO = ['en', 'es'];
+const arquivoTraducao = (idioma) => resolve(RAIZ, `demo/docs/props.${idioma}.json`);
+const descricoes = [...new Set(Object.values(ordenado).flatMap((e) => e.props.map((p) => p.descricao).filter(Boolean)))];
+function situacaoTraducoes() {
+  return IDIOMAS_TRADUCAO.map((idioma) => {
+    let dic = {};
+    try {
+      dic = JSON.parse(readFileSync(arquivoTraducao(idioma), 'utf8'));
+    } catch {
+      /* ainda não existe */
+    }
+    const vigentes = new Set(descricoes);
+    return {
+      idioma,
+      dic,
+      faltando: descricoes.filter((pt) => !dic[pt]),
+      sobrando: Object.keys(dic).filter((pt) => !vigentes.has(pt)),
+    };
+  });
+}
+const amostra = (lista) => lista.slice(0, 5).map((s) => `    · ${s.slice(0, 90)}`).join('\n') + (lista.length > 5 ? `\n    … e mais ${lista.length - 5}` : '');
+
 if (process.argv.includes('--conferir')) {
   let atual = '';
   try {
-    atual = readFileSync(SAIDA, 'utf8');
+    // CRLF do checkout no Windows não conta como diferença
+    atual = readFileSync(SAIDA, 'utf8').replace(/\r\n/g, '\n');
   } catch {
     /* ainda não existe */
   }
+  let falhou = false;
   if (atual !== json) {
     console.error('demo/docs/props.gerado.json está desatualizado: rode `npm run docs:props`.');
-    process.exit(1);
+    falhou = true;
   }
-  console.log(`props.gerado.json em dia (${Object.keys(ordenado).length} componentes).`);
+  for (const { idioma, faltando, sobrando } of situacaoTraducoes()) {
+    if (faltando.length) {
+      console.error(`props.${idioma}.json: ${faltando.length} descrição(ões) sem tradução:\n${amostra(faltando)}`);
+      falhou = true;
+    }
+    if (sobrando.length) {
+      console.error(`props.${idioma}.json: ${sobrando.length} tradução(ões) de texto que não existe mais (rode \`npm run docs:props\` para limpar):\n${amostra(sobrando)}`);
+      falhou = true;
+    }
+  }
+  if (falhou) process.exit(1);
+  console.log(`props.gerado.json em dia (${Object.keys(ordenado).length} componentes); traduções en e es completas (${descricoes.length} descrições).`);
 } else {
   writeFileSync(SAIDA, json);
   console.log(`props.gerado.json: ${Object.keys(ordenado).length} componentes.`);
+  // limpa as traduções de textos que saíram do JSDoc e avisa o que falta traduzir
+  for (const { idioma, dic, faltando, sobrando } of situacaoTraducoes()) {
+    if (sobrando.length) {
+      const limpo = Object.fromEntries(descricoes.filter((pt) => dic[pt]).map((pt) => [pt, dic[pt]]));
+      writeFileSync(arquivoTraducao(idioma), JSON.stringify(limpo, null, 2) + '\n');
+      console.log(`props.${idioma}.json: ${sobrando.length} tradução(ões) antiga(s) removida(s).`);
+    }
+    if (faltando.length) console.log(`props.${idioma}.json: ${faltando.length} descrição(ões) sem tradução (saem em pt-BR):\n${amostra(faltando)}`);
+  }
 }

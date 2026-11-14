@@ -1,45 +1,48 @@
 import { useState } from 'react';
 import { Avatar, Badge, CabecalhoPagina, Icone, ItemLista, Lista, useToast, type CorBadge, type CorItemLista } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
-const PESSOAS: Array<[string, string]> = [
-  ['Alícia Serra', '#1f5fe0'],
-  ['Samanta Melo', '#e8590c'],
-  ['Juliana Pena', '#15803d'],
-  ['Adão Silva', '#7c3aed'],
-  ['Farid Amaral', '#0b72aa'],
-];
+const PESSOAS = (t: TradutorDemo['t']): Array<[string, string]> => ([
+  [t('paginas.listas.textos.aliciaSerra'), '#1f5fe0'],
+  [t('paginas.listas.textos.samantaMelo'), '#e8590c'],
+  [t('paginas.listas.textos.julianaPena'), '#15803d'],
+  [t('paginas.listas.textos.adaoSilva'), '#7c3aed'],
+  [t('paginas.listas.textos.faridAmaral'), '#0b72aa'],
+]);
 
-const CORES: Array<{ cor?: CorItemLista; nome: string }> = [
-  { nome: 'padrão' },
-  { cor: 'pri', nome: 'primária' },
-  { cor: 'secundario', nome: 'secundária' },
-  { cor: 'ok', nome: 'de sucesso' },
-  { cor: 'err', nome: 'de perigo' },
-  { cor: 'warn', nome: 'de aviso' },
+const CORES = (t: TradutorDemo['t']): Array<{ cor?: CorItemLista; nome: string }> => ([
+  { nome: t('paginas.listas.textos.padrao') },
+  { cor: 'pri', nome: t('paginas.listas.textos.primaria') },
+  { cor: 'secundario', nome: t('paginas.listas.textos.secundaria') },
+  { cor: 'ok', nome: t('paginas.listas.textos.deSucesso') },
+  { cor: 'err', nome: t('paginas.listas.textos.dePerigo') },
+  { cor: 'warn', nome: t('paginas.listas.textos.deAviso') },
   { cor: 'info', nome: 'informativa' },
-  { cor: 'destaque', nome: 'de destaque' },
+  { cor: 'destaque', nome: t('paginas.listas.textos.deDestaque') },
   { cor: 'escuro', nome: 'escura' },
-];
+]);
 
-const FRASES = [
-  'Pedido separado e pronto para envio.',
-  'Há muitas variações de entrega disponíveis.',
-  'Todos os geradores de etiqueta estão ativos.',
-  'Todos os relatórios foram processados.',
-  'Fechamento do mês concluído sem pendências.',
-];
+const FRASES = (t: TradutorDemo['t']) => ([
+  t('paginas.listas.textos.pedidoSeparadoEPronto'),
+  t('paginas.listas.textos.haMuitasVariacoesDe'),
+  t('paginas.listas.textos.todosOsGeradoresDe'),
+  t('paginas.listas.textos.todosOsRelatoriosForam'),
+  t('paginas.listas.textos.fechamentoDoMesConcluido'),
+]);
 
-const TAREFAS = [
-  'Conferir o estoque do dia.',
-  'Responder os clientes da manhã.',
-  'Configurar a própria meta de vendas.',
-  'Revisar os pedidos atrasados.',
-  'Emitir as notas pendentes.',
-  'Enviar o relatório semanal.',
-];
+const TAREFAS = (t: TradutorDemo['t']) => ([
+  t('paginas.listas.textos.conferirOEstoqueDo'),
+  t('paginas.listas.textos.responderOsClientesDa'),
+  t('paginas.listas.textos.configurarAPropriaMeta'),
+  t('paginas.listas.textos.revisarOsPedidosAtrasados'),
+  t('paginas.listas.textos.emitirAsNotasPendentes'),
+  t('paginas.listas.textos.enviarORelatorioSemanal'),
+]);
 
 export function PaginaListas() {
+  const { t: tx, tc } = useT();
+  const { t } = useT();
   const toast = useToast();
   const [cidade, setCidade] = useState('sp');
   const [botao, setBotao] = useState(0);
@@ -48,26 +51,26 @@ export function PaginaListas() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Listas" icone="list" trilha />
+      <CabecalhoPagina titulo={t('paginas.listas.titulo')} icone="list" trilha />
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Lista básica">
-          <Lista rotulo="Equipe">
-            {PESSOAS.map(([nome, cor]) => (
+        <Bloco titulo={t('paginas.listas.secoes.listaBasica')}>
+          <Lista rotulo={t('paginas.listas.textos.equipe')}>
+            {PESSOAS(t).map(([nome, cor]) => (
               <ItemLista key={nome} inicio={<Avatar nome={nome} foto={retrato(cor, nome[0])} tamanho="1.75rem" />}>
                 {nome}
               </ItemLista>
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Item ativo">
-          <Lista rotulo="Seções">
+        <Bloco titulo={t('paginas.listas.secoes.itemAtivo')}>
+          <Lista rotulo={t('paginas.listas.textos.secoes')}>
             {[
-              ['house', 'Início'],
-              ['bell', 'Notificações'],
-              ['send', 'Mensagens enviadas'],
-              ['user-plus', 'Novas solicitações'],
-              ['trash-2', 'Mensagens excluídas'],
+              ['house', tc('Início')],
+              ['bell', tc('Notificações')],
+              ['send', tc('Mensagens enviadas')],
+              ['user-plus', tc('Novas solicitações')],
+              ['trash-2', tc('Mensagens excluídas')],
             ].map(([icone, rotulo], i) => (
               <ItemLista key={rotulo} ativo={i === 0} inicio={
                   <span className="demo-lista-caixa">
@@ -79,17 +82,17 @@ export function PaginaListas() {
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Item desabilitado">
+        <Bloco titulo={t('paginas.listas.secoes.itemDesabilitado')}>
           <Lista>
-            <ItemLista desabilitado>Um item desabilitado de propósito</ItemLista>
-            {FRASES.map((f) => (
+            <ItemLista desabilitado>{t('paginas.listas.textos.umItemDesabilitadoDe')}</ItemLista>
+            {FRASES(t).map((f) => (
               <ItemLista key={f}>{f}</ItemLista>
             ))}
           </Lista>
         </Bloco>
 
-        <Bloco titulo="Sem borda" descricao="Encostada no container, para usar dentro de cards.">
-          <Lista variante="sem-borda" rotulo="Contatos">
+        <Bloco titulo={t('paginas.listas.secoes.semBorda')} descricao={t('paginas.listas.textos.encostadaNoContainerPara')}>
+          <Lista variante="sem-borda" rotulo={t('paginas.listas.textos.contatos')}>
             {[
               ['mail', 'Ana Trindade', '(11) 91023-8453'],
               ['phone', 'Alexandre Russo', '(21) 97546-1234'],
@@ -103,8 +106,8 @@ export function PaginaListas() {
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Links" descricao="Cada item é um link; o ativo leva aria-current.">
-          <Lista rotulo="Cidades">
+        <Bloco titulo={t('paginas.listas.secoes.links')} descricao={t('paginas.listas.textos.cadaItemEUm')}>
+          <Lista rotulo={t('paginas.listas.textos.cidades')}>
             {[
               ['sp', 'São Paulo'],
               ['rj', 'Rio de Janeiro'],
@@ -128,10 +131,10 @@ export function PaginaListas() {
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Botões" descricao="Itens clicáveis que não navegam.">
+        <Bloco titulo={t('paginas.listas.secoes.botoes')} descricao={t('paginas.listas.textos.itensClicaveisQueNao')}>
           <Lista>
-            {FRASES.map((f, i) => (
-              <ItemLista key={f} ativo={botao === i} desabilitado={i === FRASES.length - 1} onClick={() => setBotao(i)}>
+            {FRASES(t).map((f, i) => (
+              <ItemLista key={f} ativo={botao === i} desabilitado={i === FRASES(t).length - 1} onClick={() => setBotao(i)}>
                 {f}
               </ItemLista>
             ))}
@@ -140,40 +143,34 @@ export function PaginaListas() {
       </div>
 
       <div className="demo-colunas">
-        <Bloco titulo="Cores">
+        <Bloco titulo={t('paginas.listas.secoes.cores')}>
           <Lista>
-            {CORES.map((c) => (
-              <ItemLista key={c.nome} cor={c.cor}>
-                Um item simples na cor {c.nome}
-              </ItemLista>
+            {CORES(t).map((c) => (
+              <ItemLista key={c.nome} cor={c.cor}>{t('paginas.listas.textos.umItemSimplesNa', { nome: c.nome })}</ItemLista>
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Cores com hover" descricao="Em links e botões, o hover reforça o tom.">
+        <Bloco titulo={t('paginas.listas.secoes.coresComHover')} descricao={t('paginas.listas.textos.emLinksEBotoes')}>
           <Lista>
-            {CORES.map((c) => (
-              <ItemLista key={c.nome} cor={c.cor} onClick={() => toast.info('Item', c.nome)}>
-                Um item clicável na cor {c.nome}
-              </ItemLista>
+            {CORES(t).map((c) => (
+              <ItemLista key={c.nome} cor={c.cor} onClick={() => toast.info(t('paginas.listas.textos.item'), tc(c.nome))}>{t('paginas.listas.textos.umItemClicavelNa', { nome: c.nome })}</ItemLista>
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Cores sólidas">
+        <Bloco titulo={t('paginas.listas.secoes.coresSolidas')}>
           <Lista>
-            {CORES.map((c) => (
-              <ItemLista key={c.nome} cor={c.cor} solido>
-                Um item sólido na cor {c.nome}
-              </ItemLista>
+            {CORES(t).map((c) => (
+              <ItemLista key={c.nome} cor={c.cor} solido>{t('paginas.listas.textos.umItemSolidoNa', { nome: c.nome })}</ItemLista>
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Conteúdo personalizado" descricao="Título, texto e informação à direita.">
+        <Bloco titulo={t('paginas.listas.secoes.conteudoPersonalizado')} descricao={t('paginas.listas.textos.tituloTextoEInformacao')}>
           <Lista>
             {[
-              ['Como os editores de página usam texto de exemplo?', 'há 3 dias', 'Existem muitas variações de passagens disponíveis, mas a maioria sofreu alterações.'],
-              ['Quem foi o professor que achou a origem?', 'há 4 h', 'Ao contrário da crença popular, o texto de exemplo não é aleatório.'],
-              ['Ele usa um dicionário com mais de 200 palavras?', 'há 15 h', 'O texto de exemplo é o padrão da indústria desde o século XVI.'],
-              ['Por que usamos texto de exemplo?', 'há 2 dias', 'Um leitor se distrai com o conteúdo legível ao olhar o layout.'],
+              [tc('Como os editores de página usam texto de exemplo?'), tc('há 3 dias'), tc('Existem muitas variações de passagens disponíveis, mas a maioria sofreu alterações.')],
+              [tc('Quem foi o professor que achou a origem?'), tc('há 4 h'), tc('Ao contrário da crença popular, o texto de exemplo não é aleatório.')],
+              [tc('Ele usa um dicionário com mais de 200 palavras?'), tc('há 15 h'), tc('O texto de exemplo é o padrão da indústria desde o século XVI.')],
+              [tc('Por que usamos texto de exemplo?'), tc('há 2 dias'), tc('Um leitor se distrai com o conteúdo legível ao olhar o layout.')],
             ].map(([titulo, tempo, texto], i) => (
               <ItemLista key={titulo} titulo={titulo} fim={tempo} ativo={i === 0} href="#/ui/listas" onClick={(e) => e.preventDefault()}>
                 {texto}
@@ -184,14 +181,14 @@ export function PaginaListas() {
       </div>
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Subtítulos" descricao="Numerada, com título, descrição e badge.">
+        <Bloco titulo={t('paginas.listas.secoes.subtitulos')} descricao={t('paginas.listas.textos.numeradaComTituloDescricao')}>
           <Lista numerada>
             {(
               [
-                ['O que aconteceu?', 'Especialistas sugerem que pode existir.', '32 visitas', 'pri'],
-                ['Foi incrível!', 'A ideia envolvia pegar o vermelho.', '52 visitas', 'info'],
-                ['Notícia é uma grande arma.', 'Notícias influenciam de muitas formas.', '1.204 visitas', 'ok'],
-                ['Uma pessoa feliz', 'Bem-estar começa com bons hábitos.', '24 visitas', 'err'],
+                [tc('O que aconteceu?'), tc('Especialistas sugerem que pode existir.'), tc('32 visitas'), 'pri'],
+                [tc('Foi incrível!'), tc('A ideia envolvia pegar o vermelho.'), tc('52 visitas'), 'info'],
+                [tc('Notícia é uma grande arma.'), tc('Notícias influenciam de muitas formas.'), tc('1.204 visitas'), 'ok'],
+                [tc('Uma pessoa feliz'), tc('Bem-estar começa com bons hábitos.'), tc('24 visitas'), 'err'],
               ] as Array<[string, string, string, CorBadge]>
             ).map(([titulo, desc, visitas, cor]) => (
               <ItemLista key={titulo} titulo={titulo} fim={<Badge cor={cor} aparencia="suave" rotulo={visitas} />}>
@@ -200,21 +197,21 @@ export function PaginaListas() {
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Lista numerada">
+        <Bloco titulo={t('paginas.listas.secoes.listaNumerada')}>
           <Lista numerada>
-            {FRASES.concat('Escrito em 45 a.C., um tratado sobre a teoria.').map((f) => (
+            {FRASES(t).concat(tc('Escrito em 45 a.C., um tratado sobre a teoria.')).map((f) => (
               <ItemLista key={f}>{f}</ItemLista>
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Com caixas de marcação">
-          <Lista rotulo="Tarefas">
-            {TAREFAS.map((t, i) => (
+        <Bloco titulo={t('paginas.listas.secoes.comCaixasDeMarcacao')}>
+          <Lista rotulo={t('paginas.listas.textos.tarefas')}>
+            {TAREFAS(t).map((t, i) => (
               <ItemLista
                 key={t}
                 marcacao="caixa"
                 marcado={marcadas.includes(i)}
-                desabilitado={i === TAREFAS.length - 1}
+                desabilitado={i === TAREFAS(tx).length - 1}
                 aoMarcar={(m) => setMarcadas((xs) => (m ? [...xs, i] : xs.filter((x) => x !== i)))}
               >
                 {t}
@@ -224,36 +221,36 @@ export function PaginaListas() {
           <code className="demo-util-res">marcadas: {JSON.stringify([...marcadas].sort())}</code>
         </Bloco>
 
-        <Bloco titulo="Com rádios">
-          <Lista rotulo="Plano">
-            {TAREFAS.map((t, i) => (
-              <ItemLista key={t} marcacao="radio" nome="demo-lista-radio" marcado={plano === i} desabilitado={i === TAREFAS.length - 1} aoMarcar={() => setPlano(i)}>
+        <Bloco titulo={t('paginas.listas.secoes.comRadios')}>
+          <Lista rotulo={t('paginas.listas.textos.plano')}>
+            {TAREFAS(t).map((t, i) => (
+              <ItemLista key={t} marcacao="radio" nome="demo-lista-radio" marcado={plano === i} desabilitado={i === TAREFAS(tx).length - 1} aoMarcar={() => setPlano(i)}>
                 {t}
               </ItemLista>
             ))}
           </Lista>
         </Bloco>
-        <Bloco titulo="Com badges">
+        <Bloco titulo={t('paginas.listas.secoes.comBadges')}>
           <Lista>
-            <ItemLista fim={<Badge cor="pri" rotulo="Disponível" />}>Mercearia</ItemLista>
-            <ItemLista fim={<Badge cor="destaque" rotulo="Comprar" />}>Móveis</ItemLista>
-            <ItemLista fim={<Badge cor="err" formato="pilula" rotulo="32" />}>Beleza</ItemLista>
-            <ItemLista fim={<Badge cor="ok" aparencia="suave" rotulo="Novo" />}>Livros</ItemLista>
-            <ItemLista fim={<Badge cor="info" aparencia="contorno" rotulo="Em alta" />}>Esportes</ItemLista>
-            <ItemLista fim={<Badge cor="warn" formato="pilula" rotulo="5" />}>Brinquedos</ItemLista>
+            <ItemLista fim={<Badge cor="pri" rotulo={t('paginas.listas.textos.disponivel')} />}>{t('paginas.listas.textos.mercearia')}</ItemLista>
+            <ItemLista fim={<Badge cor="destaque" rotulo={t('paginas.listas.textos.comprar')} />}>{t('paginas.listas.textos.moveis')}</ItemLista>
+            <ItemLista fim={<Badge cor="err" formato="pilula" rotulo="32" />}>{t('paginas.listas.textos.beleza')}</ItemLista>
+            <ItemLista fim={<Badge cor="ok" aparencia="suave" rotulo={t('paginas.listas.textos.novo')} />}>{t('paginas.listas.textos.livros')}</ItemLista>
+            <ItemLista fim={<Badge cor="info" aparencia="contorno" rotulo={t('paginas.listas.textos.emAlta')} />}>{t('paginas.listas.textos.esportes')}</ItemLista>
+            <ItemLista fim={<Badge cor="warn" formato="pilula" rotulo="5" />}>{t('paginas.listas.textos.brinquedos')}</ItemLista>
           </Lista>
         </Bloco>
-        <Bloco titulo="Horizontal" descricao="Sempre, ou só a partir de um tamanho de tela.">
+        <Bloco titulo={t('paginas.listas.secoes.horizontal')} descricao={t('paginas.listas.textos.sempreOuSoA')}>
           <div className="demo-pilha-p">
             <Lista horizontal>
-              <ItemLista>Um item</ItemLista>
-              <ItemLista>Segundo</ItemLista>
-              <ItemLista>Terceiro</ItemLista>
+              <ItemLista>{t('paginas.listas.textos.umItem')}</ItemLista>
+              <ItemLista>{t('paginas.listas.textos.segundo')}</ItemLista>
+              <ItemLista>{t('paginas.listas.textos.terceiro')}</ItemLista>
             </Lista>
             {(['sm', 'md', 'lg', 'xl'] as const).map((bp) => (
               <Lista key={bp} horizontal={bp}>
-                <ItemLista>Um item</ItemLista>
-                <ItemLista>Segundo</ItemLista>
+                <ItemLista>{t('paginas.listas.textos.umItem')}</ItemLista>
+                <ItemLista>{t('paginas.listas.textos.segundo')}</ItemLista>
                 <ItemLista>{bp}</ItemLista>
               </Lista>
             ))}

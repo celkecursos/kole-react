@@ -1,26 +1,23 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
-      titulo="Botão fechar"
+      pagina="botaoFechar"
       icone="x"
       componente="BotaoFechar"
-      resumo="O × padrão de diálogos, cards, alertas e painéis, com nome acessível e área de toque adequada."
       notas={
         <ul className="doc-lista">
-          <li>
-            O <C>rotulo</C> (padrão "Fechar") vira o <C>aria-label</C>; troque quando houver mais de um na tela ("Fechar aviso").
-          </li>
-          <li>
-            <C>Dialogo</C>, <C>Card</C> e <C>Alerta</C> já trazem o próprio botão: use este só em componentes do app.
-          </li>
+          <li>{rico(t('docs.botaoFechar.textos.oRotuloPadraoFechar'))}</li>
+          <li>{rico(t('docs.botaoFechar.textos.dialogoCardEAlerta'))}</li>
         </ul>
       }
     >
-      <Exemplo id="botao-fechar/Basico" titulo="Variantes" />
+      <Exemplo id="botao-fechar/Basico" titulo={t('docs.botaoFechar.secoes.variantes')} />
     </PaginaComponente>
   );
 }

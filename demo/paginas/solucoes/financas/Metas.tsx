@@ -24,56 +24,58 @@ import {
 import { dia, hoje, novoId, type Meta } from './dados';
 import { CabecalhoFinancas, dataBr, useMoeda } from './comum';
 import { acoes, useFinancas } from './estado';
+import { useT, type TradutorDemo } from '../../../i18n/useT';
 
-const CORES: { valor: CorProgresso; rotulo: string }[] = [
-  { valor: 'ok', rotulo: 'Verde' },
-  { valor: 'info', rotulo: 'Azul' },
-  { valor: 'destaque', rotulo: 'Roxo' },
-  { valor: 'warn', rotulo: 'Laranja' },
-  { valor: 'pri', rotulo: 'Cor principal' },
-];
-const ICONES = [
-  { valor: 'piggy-bank', rotulo: 'Cofrinho' },
-  { valor: 'shield-check', rotulo: 'Proteção' },
-  { valor: 'plane', rotulo: 'Viagem' },
-  { valor: 'car', rotulo: 'Carro' },
-  { valor: 'house', rotulo: 'Casa' },
-  { valor: 'graduation-cap', rotulo: 'Estudos' },
-  { valor: 'camera', rotulo: 'Equipamento' },
-  { valor: 'target', rotulo: 'Alvo' },
-];
+const CORES = (t: TradutorDemo['t']): { valor: CorProgresso; rotulo: string }[] => ([
+  { valor: 'ok', rotulo: t('paginas.finMetas.textos.verde') },
+  { valor: 'info', rotulo: t('paginas.finMetas.textos.azul') },
+  { valor: 'destaque', rotulo: t('paginas.finMetas.textos.roxo') },
+  { valor: 'warn', rotulo: t('paginas.finMetas.textos.laranja') },
+  { valor: 'pri', rotulo: t('paginas.finMetas.textos.corPrincipal') },
+]);
+const ICONES = (t: TradutorDemo['t']) => ([
+  { valor: 'piggy-bank', rotulo: t('paginas.finMetas.textos.cofrinho') },
+  { valor: 'shield-check', rotulo: t('paginas.finMetas.textos.protecao') },
+  { valor: 'plane', rotulo: t('paginas.finMetas.textos.viagem') },
+  { valor: 'car', rotulo: t('paginas.finMetas.textos.carro') },
+  { valor: 'house', rotulo: t('paginas.finMetas.textos.casa') },
+  { valor: 'graduation-cap', rotulo: t('paginas.finMetas.textos.estudos') },
+  { valor: 'camera', rotulo: t('paginas.finMetas.textos.equipamento') },
+  { valor: 'target', rotulo: t('paginas.finMetas.textos.alvo') },
+]);
 
 /** Meses inteiros até o prazo (no mínimo 1). */
 const mesesAte = (prazo: string) => Math.max(1, Math.ceil(diasEntre(hoje(), prazo) / 30.44));
 
 function DialogoMeta({ inicial, aoFechar }: { inicial: Meta; aoFechar: () => void }) {
+  const { t, tc } = useT();
   const toast = useToast();
   const [m, setM] = useState(inicial);
   const [tentou, setTentou] = useState(false);
   const nova = !inicial.nome;
   const erros = {
-    nome: !m.nome.trim() ? 'Dê um nome à meta' : undefined,
-    alvo: !(m.alvo > 0) ? 'Informe o valor' : undefined,
-    prazo: !m.prazo || m.prazo <= dia(0) ? 'Escolha uma data futura' : undefined,
+    nome: !m.nome.trim() ? tc('Dê um nome à meta') : undefined,
+    alvo: !(m.alvo > 0) ? tc('Informe o valor') : undefined,
+    prazo: !m.prazo || m.prazo <= dia(0) ? tc('Escolha uma data futura') : undefined,
   };
   const salvar = () => {
     setTentou(true);
     if (Object.values(erros).some(Boolean)) return;
     acoes.salvarMeta({ ...m, nome: m.nome.trim() });
-    toast.ok(nova ? 'Meta criada' : 'Meta salva', m.nome);
+    toast.ok(nova ? t('paginas.finMetas.textos.metaCriada') : t('paginas.finMetas.textos.metaSalva'), tc(m.nome));
     aoFechar();
   };
   return (
     <Dialogo
       aberto
       aoFechar={aoFechar}
-      titulo={nova ? 'Nova meta' : 'Editar meta'}
+      titulo={nova ? t('paginas.finMetas.textos.novaMeta') : t('paginas.finMetas.textos.editarMeta')}
       icone="target"
       tamanho="pequeno"
       rodape={
         <>
-          <Botao rotulo="Cancelar" severidade="secundario" aparencia="contorno" onClick={aoFechar} />
-          <Botao rotulo="Salvar" icone="check" onClick={salvar} />
+          <Botao rotulo={t('paginas.finMetas.textos.cancelar')} severidade="secundario" aparencia="contorno" onClick={aoFechar} />
+          <Botao rotulo={t('paginas.finMetas.textos.salvar')} icone="check" onClick={salvar} />
         </>
       }
     >
@@ -84,12 +86,12 @@ function DialogoMeta({ inicial, aoFechar }: { inicial: Meta; aoFechar: () => voi
           salvar();
         }}
       >
-        <CampoTexto className="fin-form-inteiro" rotulo="Nome" obrigatorio valor={m.nome} aoMudar={(nome) => setM({ ...m, nome })} erro={tentou ? erros.nome : undefined} autoFocus />
-        <CampoMoeda rotulo="Quanto quer juntar" obrigatorio valor={m.alvo || null} aoMudar={(v) => setM({ ...m, alvo: v ?? 0 })} erro={tentou ? erros.alvo : undefined} />
-        <CampoMoeda rotulo="Já guardado" valor={m.guardado || null} aoMudar={(v) => setM({ ...m, guardado: v ?? 0 })} />
-        <CampoData rotulo="Até quando" obrigatorio valor={m.prazo} aoMudar={(prazo) => setM({ ...m, prazo })} erro={tentou ? erros.prazo : undefined} />
-        <CampoSelect rotulo="Ícone" opcoes={ICONES} valor={m.icone} aoMudar={(icone) => icone && setM({ ...m, icone })} />
-        <CampoSelect rotulo="Cor" opcoes={CORES} valor={m.cor as CorProgresso} aoMudar={(cor) => cor && setM({ ...m, cor })} />
+        <CampoTexto className="fin-form-inteiro" rotulo={t('paginas.finMetas.textos.nome')} obrigatorio valor={m.nome} aoMudar={(nome) => setM({ ...m, nome })} erro={tentou ? erros.nome : undefined} autoFocus />
+        <CampoMoeda rotulo={t('paginas.finMetas.textos.quantoQuerJuntar')} obrigatorio valor={m.alvo || null} aoMudar={(v) => setM({ ...m, alvo: v ?? 0 })} erro={tentou ? erros.alvo : undefined} />
+        <CampoMoeda rotulo={t('paginas.finMetas.textos.jaGuardado')} valor={m.guardado || null} aoMudar={(v) => setM({ ...m, guardado: v ?? 0 })} />
+        <CampoData rotulo={t('paginas.finMetas.textos.ateQuando')} obrigatorio valor={m.prazo} aoMudar={(prazo) => setM({ ...m, prazo })} erro={tentou ? erros.prazo : undefined} />
+        <CampoSelect rotulo={t('paginas.finMetas.textos.icone')} opcoes={ICONES(t)} valor={m.icone} aoMudar={(icone) => icone && setM({ ...m, icone })} />
+        <CampoSelect rotulo={t('paginas.finMetas.textos.cor')} opcoes={CORES(t)} valor={m.cor as CorProgresso} aoMudar={(cor) => cor && setM({ ...m, cor })} />
         <button type="submit" hidden />
       </form>
     </Dialogo>
@@ -97,10 +99,11 @@ function DialogoMeta({ inicial, aoFechar }: { inicial: Meta; aoFechar: () => voi
 }
 
 function Guardar({ meta }: { meta: Meta }) {
+  const { t, idioma } = useT();
   const toast = useToast();
   const [valor, setValor] = useState<number | null>(null);
   return (
-    <MenuSuspenso rotulo="Guardar" icone="plus" tamanho="pequeno" aparencia="suave" semSeta fechamento="fora" alinhamento="inicio">
+    <MenuSuspenso rotulo={t('paginas.finMetas.textos.guardar')} icone="plus" tamanho="pequeno" aparencia="suave" semSeta fechamento="fora" alinhamento="inicio">
       {(fechar) => (
         <form
           className="fin-orc-editar"
@@ -108,13 +111,13 @@ function Guardar({ meta }: { meta: Meta }) {
             e.preventDefault();
             if (!valor) return;
             acoes.salvarMeta({ ...meta, guardado: somarMoeda([meta.guardado, valor]) });
-            toast.ok('Valor guardado', `${formatarMoeda(valor)} em ${meta.nome}`);
+            toast.ok(t('paginas.finMetas.textos.valorGuardado'), t('paginas.finMetas.textos.valorEmNome', { valor: formatarMoeda(valor, { idioma }), nome: meta.nome }));
             setValor(null);
             fechar();
           }}
         >
-          <CampoMoeda rotulo={`Guardar em ${meta.nome}`} valor={valor} aoMudar={setValor} autoFocus />
-          <Botao type="submit" rotulo="Guardar" tamanho="pequeno" disabled={!valor} />
+          <CampoMoeda rotulo={t('paginas.finMetas.textos.guardarEmNome', { nome: meta.nome })} valor={valor} aoMudar={setValor} autoFocus />
+          <Botao type="submit" rotulo={t('paginas.finMetas.textos.guardar')} tamanho="pequeno" disabled={!valor} />
         </form>
       )}
     </MenuSuspenso>
@@ -122,6 +125,7 @@ function Guardar({ meta }: { meta: Meta }) {
 }
 
 export function Metas() {
+  const { t, idioma, tc } = useT();
   const { espaco, metas } = useFinancas();
   const moeda = useMoeda();
   const confirmar = useConfirmacao();
@@ -133,27 +137,26 @@ export function Metas() {
   const porMes = somarMoeda(lista.filter((m) => m.guardado < m.alvo).map((m) => (m.alvo - m.guardado) / mesesAte(m.prazo)));
 
   const excluir = async (m: Meta) => {
-    if (!(await confirmar.remover({ titulo: 'Excluir meta?', mensagem: `"${m.nome}" sai da lista. O dinheiro guardado continua nas contas.`, rotuloAceitar: 'Excluir' }))) return;
+    if (!(await confirmar.remover({ titulo: t('paginas.finMetas.textos.excluirMeta'), mensagem: t('paginas.finMetas.textos.nomeSaiDaLista', { nome: m.nome }), rotuloAceitar: tc('Excluir') }))) return;
     acoes.excluirMeta(m.id);
-    toast.ok('Meta excluída', m.nome);
+    toast.ok(t('paginas.finMetas.textos.metaExcluida'), tc(m.nome));
   };
   const nova = () => setEditando({ id: novoId(), espaco, nome: '', icone: 'piggy-bank', cor: 'ok', alvo: 0, guardado: 0, prazo: dia(365) });
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Metas" icone="target" semPeriodo acoes={<Botao rotulo="Nova meta" icone="plus" onClick={nova} />}>
+      <CabecalhoFinancas titulo={t('paginas.finMetas.titulo')} icone="target" semPeriodo acoes={<Botao rotulo={t('paginas.finMetas.textos.novaMeta')} icone="plus" onClick={nova} />}>
         {lista.length > 0 && (
           <p className="fin-metas-resumo">
-            <Valor valor={guardado} forte /> guardados de <Valor valor={alvo} centavos={false} /> ({formatarPercentual(alvo ? (guardado / alvo) * 100 : 0, { casas: 0 })}). Para cumprir os prazos,
-            guarde cerca de <strong>{moeda(porMes, { centavos: false })} por mês</strong>.
+            <Valor valor={guardado} forte />{t('paginas.finMetas.textos.guardadosDe')}<Valor valor={alvo} centavos={false} /> ({formatarPercentual(alvo ? (guardado / alvo) * 100 : 0, { casas: 0 , idioma })}{t('paginas.finMetas.textos.paraCumprirOsPrazos')}<strong>{moeda(porMes, { centavos: false })}{t('paginas.finMetas.textos.porMes')}</strong>.
           </p>
         )}
       </CabecalhoFinancas>
 
       {lista.length === 0 ? (
         <Card>
-          <Vazio titulo="Nenhuma meta ainda" descricao="Uma meta ajuda a juntar dinheiro para um objetivo: reserva, viagem, equipamento." icone="target">
-            <Botao rotulo="Criar a primeira meta" icone="plus" onClick={nova} />
+          <Vazio titulo={t('paginas.finMetas.textos.nenhumaMetaAinda')} descricao={t('paginas.finMetas.textos.umaMetaAjudaA')} icone="target">
+            <Botao rotulo={t('paginas.finMetas.textos.criarAPrimeiraMeta')} icone="plus" onClick={nova} />
           </Vazio>
         </Card>
       ) : (
@@ -170,15 +173,15 @@ export function Metas() {
                 ferramentas={
                   <MenuSuspenso
                     icone="ellipsis"
-                    aria-label={`Ações de ${m.nome}`}
+                    aria-label={t('paginas.finMetas.textos.acoesDeNome', { nome: m.nome })}
                     semSeta
                     aparencia="texto"
                     severidade="secundario"
                     tamanho="pequeno"
                     alinhamento="fim"
                     itens={[
-                      { id: 'editar', rotulo: 'Editar', icone: 'pencil' },
-                      { id: 'excluir', rotulo: 'Excluir', icone: 'trash-2', destrutivo: true },
+                      { id: 'editar', rotulo: t('paginas.finMetas.textos.editar'), icone: 'pencil' },
+                      { id: 'excluir', rotulo: t('paginas.finMetas.textos.excluir'), icone: 'trash-2', destrutivo: true },
                     ]}
                     aoEscolher={(id) => (id === 'editar' ? setEditando(m) : excluir(m))}
                   />
@@ -188,27 +191,26 @@ export function Metas() {
                     <span className={`fin-meta-ic fin-meta-ic--${m.cor}`} aria-hidden="true">
                       <Icone icone={m.icone} />
                     </span>
-                    {m.nome}
+                    {tc(m.nome)}
                   </span>
                 }
               >
                 <div className="fin-meta-valores">
                   <Valor valor={m.guardado} tamanho="destaque" />
-                  <span>
-                    de <Valor valor={m.alvo} centavos={false} />
+                  <span>{t('paginas.finMetas.textos.de')}<Valor valor={m.alvo} centavos={false} />
                   </span>
                 </div>
-                <Progresso valor={parte * 100} cor={m.cor as CorProgresso} altura="md" mostrarValor="fim" rotulo={`${m.nome}: ${formatarPercentual(parte * 100, { casas: 0 })}`} />
+                <Progresso valor={parte * 100} cor={m.cor as CorProgresso} altura="md" mostrarValor="fim" rotulo={`${tc(m.nome)}: ${formatarPercentual(parte * 100, { casas: 0 , idioma })}`} />
                 <dl className="fin-meta-dados">
                   <div>
-                    <dt>Prazo</dt>
+                    <dt>{t('paginas.finMetas.textos.prazo')}</dt>
                     <dd>
-                      {dataBr(m.prazo)} <small>({tempoRelativo(m.prazo, hoje())})</small>
+                      {dataBr(m.prazo)} <small>({tempoRelativo(m.prazo, hoje(), idioma)})</small>
                     </dd>
                   </div>
                   <div>
-                    <dt>{pronta ? 'Situação' : 'Guardar por mês'}</dt>
-                    <dd>{pronta ? <strong className="fin-ok">Meta cumprida</strong> : <Valor valor={falta / meses} forte />}</dd>
+                    <dt>{pronta ? tc('Situação') : tc('Guardar por mês')}</dt>
+                    <dd>{pronta ? <strong className="fin-ok">{t('paginas.finMetas.textos.metaCumprida')}</strong> : <Valor valor={falta / meses} forte />}</dd>
                   </div>
                 </dl>
                 {!pronta && <Guardar meta={m} />}
