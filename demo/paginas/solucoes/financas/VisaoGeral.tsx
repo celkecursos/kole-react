@@ -53,7 +53,7 @@ function fimDosMeses(ate: string, n: number): string[] {
 }
 
 export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -109,7 +109,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
   };
   const pagar = (l: Lancamento) => {
     acoes.marcarPago([l.id]);
-    toast.ok(l.tipo === 'receita' ? t('paginas.finVisaoGeral.textos.recebimentoRegistrado') : t('paginas.finVisaoGeral.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor, { idioma })}`);
+    toast.ok(l.tipo === 'receita' ? t('paginas.finVisaoGeral.textos.recebimentoRegistrado') : t('paginas.finVisaoGeral.textos.pagamentoRegistrado'), `${tc(l.descricao)} · ${formatarMoeda(l.valor, { idioma })}`);
   };
 
   return (
@@ -133,7 +133,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
           icone={empresa ? 'chart-column' : 'piggy-bank'}
           cor={soma.saldo >= 0 ? 'var(--graf-3)' : 'var(--err-solid)'}
           valor={moeda(soma.saldo, { sinal: true })}
-          descricao={soma.receitas ? `${formatarPercentual(margem, { idioma })} ${empresa ? 'de margem' : 'das receitas'}` : t('paginas.finVisaoGeral.textos.semReceitasNoPeriodo')}
+          descricao={soma.receitas ? `${formatarPercentual(margem, { idioma })} ${empresa ? tc('de margem') : tc('das receitas')}` : t('paginas.finVisaoGeral.textos.semReceitasNoPeriodo')}
         />
       </Indicadores>
 
@@ -157,7 +157,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
           <GraficoRosca
             titulo={t('paginas.finVisaoGeral.textos.despesasPorCategoria')}
             descricao={t('paginas.finVisaoGeral.textos.cliqueNumaFatiaPara')}
-            dados={despesasCat.map((d) => ({ rotulo: d.categoria.nome, valor: d.valor, cor: d.categoria.cor, id: d.categoria.id }))}
+            dados={despesasCat.map((d) => ({ rotulo: tc(d.categoria.nome), valor: d.valor, cor: d.categoria.cor, id: d.categoria.id }))}
             chaveRotulo="rotulo"
             chaveValor="valor"
             chaveCor="cor"
@@ -187,7 +187,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
                 <li key={l.id} className="fin-linha">
                   <IconeCategoria categoria={categoria(l.categoria)} transferencia={l.tipo === 'transferencia'} />
                   <button type="button" className="fin-linha-texto" onClick={() => abrir(l)}>
-                    <strong>{l.descricao}</strong>
+                    <strong>{tc(l.descricao)}</strong>
                     <SeloPrazo vencimento={l.data} agora={hoje()} emBreve={3} />
                   </button>
                   <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'despesa' : l.tipo} forte />
@@ -223,9 +223,9 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
                       navegar(ROTAS.lancamentos);
                     }}
                   >
-                    <strong>{c.nome}</strong>
+                    <strong>{tc(c.nome)}</strong>
                     <small>
-                      {c.instituicao} · {TIPO_CONTA[c.tipo]}
+                      {tc(c.instituicao)} · {tc(TIPO_CONTA[c.tipo])}
                     </small>
                   </button>
                   {c.tipo === 'cartao' ? (
@@ -250,7 +250,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
               <div key={c.id} className="fin-orc-item">
                 <div className="fin-orc-topo">
                   <IconeCategoria categoria={c} tamanho="pequeno" />
-                  <span>{c.nome}</span>
+                  <span>{tc(c.nome)}</span>
                   <small>
                     <Valor valor={gasto} />{t('paginas.finVisaoGeral.textos.de')}<Valor valor={limite} centavos={false} />
                   </small>
@@ -275,9 +275,9 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
                 <li key={l.id} className="fin-linha">
                   <IconeCategoria categoria={categoria(l.categoria)} transferencia={l.tipo === 'transferencia'} />
                   <button type="button" className="fin-linha-texto" onClick={() => abrir(l)}>
-                    <strong>{l.descricao}</strong>
+                    <strong>{tc(l.descricao)}</strong>
                     <small>
-                      {dataBr(l.data)} · {l.tipo === 'transferencia' ? 'Transferência' : categoria(l.categoria)?.nome}
+                      {dataBr(l.data)} · {l.tipo === 'transferencia' ? tc('Transferência') : tc(categoria(l.categoria)?.nome)}
                     </small>
                   </button>
                   <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'neutro' : l.tipo} forte />

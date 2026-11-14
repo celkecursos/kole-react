@@ -69,9 +69,14 @@
  * 4. Confira: `npm run typecheck`, e a página nos três idiomas pelo seletor
  *    da topbar. Em pt-BR o texto tem que sair igual ao de antes.
  *
+ * Dados de exemplo (produtos, tarefas, lançamentos, respostas do assistente)
+ * ficam em pt-BR no código e se traduzem pelo próprio texto, na tabela
+ * `<idioma>/conteudo.ts`, com o `tc()` do `useT()` (ver conteudo.ts). Nomes
+ * próprios (pessoas, empresas, cidades) não entram na tabela.
+ *
  * Fica em pt-BR de propósito: o código dos exemplos (demo/docs/exemplos, que
- * a página mostra como código), o CHANGELOG, as respostas simuladas do
- * assistente e os dados de exemplo das listas (nomes, clientes, produtos).
+ * a página mostra como código). O CHANGELOG tem as traduções em
+ * CHANGELOG.en.md e CHANGELOG.es.md, na raiz.
  *
  * Só dados: o teste visual importa o menu no Node, sem React nem CSS.
  */

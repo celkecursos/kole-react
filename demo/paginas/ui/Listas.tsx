@@ -41,7 +41,7 @@ const TAREFAS = (t: TradutorDemo['t']) => ([
 ]);
 
 export function PaginaListas() {
-  const { t: tx } = useT();
+  const { t: tx, tc } = useT();
   const { t } = useT();
   const toast = useToast();
   const [cidade, setCidade] = useState('sp');
@@ -66,11 +66,11 @@ export function PaginaListas() {
         <Bloco titulo={t('paginas.listas.secoes.itemAtivo')}>
           <Lista rotulo={t('paginas.listas.textos.secoes')}>
             {[
-              ['house', 'Início'],
-              ['bell', 'Notificações'],
-              ['send', 'Mensagens enviadas'],
-              ['user-plus', 'Novas solicitações'],
-              ['trash-2', 'Mensagens excluídas'],
+              ['house', tc('Início')],
+              ['bell', tc('Notificações')],
+              ['send', tc('Mensagens enviadas')],
+              ['user-plus', tc('Novas solicitações')],
+              ['trash-2', tc('Mensagens excluídas')],
             ].map(([icone, rotulo], i) => (
               <ItemLista key={rotulo} ativo={i === 0} inicio={
                   <span className="demo-lista-caixa">
@@ -153,7 +153,7 @@ export function PaginaListas() {
         <Bloco titulo={t('paginas.listas.secoes.coresComHover')} descricao={t('paginas.listas.textos.emLinksEBotoes')}>
           <Lista>
             {CORES(t).map((c) => (
-              <ItemLista key={c.nome} cor={c.cor} onClick={() => toast.info(t('paginas.listas.textos.item'), c.nome)}>{t('paginas.listas.textos.umItemClicavelNa', { nome: c.nome })}</ItemLista>
+              <ItemLista key={c.nome} cor={c.cor} onClick={() => toast.info(t('paginas.listas.textos.item'), tc(c.nome))}>{t('paginas.listas.textos.umItemClicavelNa', { nome: c.nome })}</ItemLista>
             ))}
           </Lista>
         </Bloco>
@@ -167,10 +167,10 @@ export function PaginaListas() {
         <Bloco titulo={t('paginas.listas.secoes.conteudoPersonalizado')} descricao={t('paginas.listas.textos.tituloTextoEInformacao')}>
           <Lista>
             {[
-              ['Como os editores de página usam texto de exemplo?', 'há 3 dias', 'Existem muitas variações de passagens disponíveis, mas a maioria sofreu alterações.'],
-              ['Quem foi o professor que achou a origem?', 'há 4 h', 'Ao contrário da crença popular, o texto de exemplo não é aleatório.'],
-              ['Ele usa um dicionário com mais de 200 palavras?', 'há 15 h', 'O texto de exemplo é o padrão da indústria desde o século XVI.'],
-              ['Por que usamos texto de exemplo?', 'há 2 dias', 'Um leitor se distrai com o conteúdo legível ao olhar o layout.'],
+              [tc('Como os editores de página usam texto de exemplo?'), tc('há 3 dias'), tc('Existem muitas variações de passagens disponíveis, mas a maioria sofreu alterações.')],
+              [tc('Quem foi o professor que achou a origem?'), tc('há 4 h'), tc('Ao contrário da crença popular, o texto de exemplo não é aleatório.')],
+              [tc('Ele usa um dicionário com mais de 200 palavras?'), tc('há 15 h'), tc('O texto de exemplo é o padrão da indústria desde o século XVI.')],
+              [tc('Por que usamos texto de exemplo?'), tc('há 2 dias'), tc('Um leitor se distrai com o conteúdo legível ao olhar o layout.')],
             ].map(([titulo, tempo, texto], i) => (
               <ItemLista key={titulo} titulo={titulo} fim={tempo} ativo={i === 0} href="#/ui/listas" onClick={(e) => e.preventDefault()}>
                 {texto}
@@ -185,10 +185,10 @@ export function PaginaListas() {
           <Lista numerada>
             {(
               [
-                ['O que aconteceu?', 'Especialistas sugerem que pode existir.', '32 visitas', 'pri'],
-                ['Foi incrível!', 'A ideia envolvia pegar o vermelho.', '52 visitas', 'info'],
-                ['Notícia é uma grande arma.', 'Notícias influenciam de muitas formas.', '1.204 visitas', 'ok'],
-                ['Uma pessoa feliz', 'Bem-estar começa com bons hábitos.', '24 visitas', 'err'],
+                [tc('O que aconteceu?'), tc('Especialistas sugerem que pode existir.'), tc('32 visitas'), 'pri'],
+                [tc('Foi incrível!'), tc('A ideia envolvia pegar o vermelho.'), tc('52 visitas'), 'info'],
+                [tc('Notícia é uma grande arma.'), tc('Notícias influenciam de muitas formas.'), tc('1.204 visitas'), 'ok'],
+                [tc('Uma pessoa feliz'), tc('Bem-estar começa com bons hábitos.'), tc('24 visitas'), 'err'],
               ] as Array<[string, string, string, CorBadge]>
             ).map(([titulo, desc, visitas, cor]) => (
               <ItemLista key={titulo} titulo={titulo} fim={<Badge cor={cor} aparencia="suave" rotulo={visitas} />}>
@@ -199,7 +199,7 @@ export function PaginaListas() {
         </Bloco>
         <Bloco titulo={t('paginas.listas.secoes.listaNumerada')}>
           <Lista numerada>
-            {FRASES(t).concat('Escrito em 45 a.C., um tratado sobre a teoria.').map((f) => (
+            {FRASES(t).concat(tc('Escrito em 45 a.C., um tratado sobre a teoria.')).map((f) => (
               <ItemLista key={f}>{f}</ItemLista>
             ))}
           </Lista>

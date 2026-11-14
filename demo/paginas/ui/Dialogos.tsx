@@ -26,7 +26,7 @@ const TAMANHOS_DIALOGO = (t: TradutorDemo['t']): { valor: TamanhoDialogo; rotulo
 ]);
 
 export function PaginaDialogos() {
-  const { t: tx } = useT();
+  const { t: tx, tc } = useT();
   const { t } = useT();
   const toast = useToast();
   const [detalhes, setDetalhes] = useState(false);
@@ -56,7 +56,7 @@ export function PaginaDialogos() {
         </div>
         <div className="demo-linha">
           {TAMANHOS_DIALOGO(t).map((t) => (
-            <Botao key={t.valor} rotulo={t.rotulo} icone="app-window" severidade="secundario" onClick={() => setDlgTamanho(t.valor)} />
+            <Botao key={t.valor} rotulo={tc(t.rotulo)} icone="app-window" severidade="secundario" onClick={() => setDlgTamanho(t.valor)} />
           ))}
         </div>
       </Bloco>
@@ -141,7 +141,7 @@ export function PaginaDialogos() {
         rodape={<Botao rotulo={t('paginas.dialogos.textos.marcarTodasComoLidas')} severidade="secundario" onClick={() => setLateral(false)} />}
       >
         <div className="demo-pilha-p">
-          {['Pagamento confirmado — PED-2026-0042', 'Novo cliente cadastrado', 'Estoque baixo — Café 500 g', 'Entrega concluída — PED-2026-0038'].map((t, i) => (
+          {[tc('Pagamento confirmado — PED-2026-0042'), tc('Novo cliente cadastrado'), tc('Estoque baixo — Café 500 g'), tc('Entrega concluída — PED-2026-0038')].map((t, i) => (
             <Card key={t}>
               <div className="demo-card-titulo" style={{ marginBottom: 0 }}>
                 {t}
@@ -174,8 +174,8 @@ export function PaginaDialogos() {
           <div className="demo-grade">
             <Detalhes rotulo={t('paginas.dialogos.textos.tamanho')} valor={dlgAtual?.rotulo} />
             <Detalhes rotulo={t('paginas.dialogos.textos.larguraMaxima')} valor={dlgAtual?.largura} />
-            <Detalhes rotulo={t('paginas.dialogos.textos.tom')} valor={dlgTom === 'escuro' ? 'Escuro' : 'Claro'} />
-            <Detalhes rotulo={t('paginas.dialogos.textos.escCliqueFora')} valor={dlgDispensavel ? 'Fecha' : 'Não fecha'} />
+            <Detalhes rotulo={t('paginas.dialogos.textos.tom')} valor={dlgTom === 'escuro' ? tc('Escuro') : tc('Claro')} />
+            <Detalhes rotulo={t('paginas.dialogos.textos.escCliqueFora')} valor={dlgDispensavel ? tc('Fecha') : tc('Não fecha')} />
           </div>
         </div>
       </Dialogo>

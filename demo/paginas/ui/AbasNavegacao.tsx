@@ -35,7 +35,7 @@ function abasPadrao(icones = false, paragrafos = 1) {
 }
 
 export function PaginaAbasNavegacao() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.abas.titulo')} icone="panel-right" trilha />
@@ -230,18 +230,18 @@ export function PaginaAbasNavegacao() {
           <Abas variante="pilulas" rotulo={t('paginas.abas.textos.catalogo')}>
             {(
               [
-                ['produtos', 'Produtos', 'package'],
-                ['vendas', 'Vendas', 'chart-line'],
-                ['lucro', 'Lucro', 'wallet'],
-                ['despesas', 'Despesas', 'credit-card'],
+                ['produtos', tc('Produtos'), 'package'],
+                ['vendas', tc('Vendas'), 'chart-line'],
+                ['lucro', tc('Lucro'), 'wallet'],
+                ['despesas', tc('Despesas'), 'credit-card'],
               ] as const
             ).map(([valor, rotulo, icone], i) => (
               <Aba key={valor} valor={valor} rotulo={rotulo} icone={icone}>
                 <Lista>
                   {[
-                    ['Relógio de parede', 'Decoração', 'R$ 129,00'],
-                    ['Câmera compacta', 'Eletrônicos', 'R$ 1.249,00'],
-                    ['Tênis de corrida', 'Calçados', 'R$ 399,00'],
+                    [tc('Relógio de parede'), tc('Decoração'), 'R$ 129,00'],
+                    [tc('Câmera compacta'), tc('Eletrônicos'), 'R$ 1.249,00'],
+                    [tc('Tênis de corrida'), tc('Calçados'), 'R$ 399,00'],
                   ]
                     .slice(i % 2)
                     .map(([nome, cat, preco]) => (
@@ -262,7 +262,7 @@ export function PaginaAbasNavegacao() {
                   <Avatar nome="Adão Silva" foto={retrato('#1f5fe0', 'A')} formato="quadrado" tamanho="5rem" />
                   <div>
                     <h3>{t('paginas.abas.textos.adaoSilva')}</h3>
-                    <Detalhes rotulo={t('paginas.abas.textos.cargo')} valor="Designer de interfaces" disposicao="linha" />
+                    <Detalhes rotulo={t('paginas.abas.textos.cargo')} valor={tc('Designer de interfaces')} disposicao="linha" />
                     <Detalhes rotulo={t('paginas.abas.textos.telefone')} valor="(11) 91234-5678" disposicao="linha" />
                     <Detalhes rotulo={t('paginas.abas.textos.eMail')} valor="adao@exemplo.com" disposicao="linha" />
                   </div>
@@ -302,10 +302,10 @@ export function PaginaAbasNavegacao() {
             <Aba valor="inicio" rotulo={t('paginas.abas.textos.inicio')}>
               <Texto n={0} />
             </Aba>
-            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobreNos')} grupo="Empresa">
+            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobreNos')} grupo={tc("Empresa")}>
               <Texto n={1} />
             </Aba>
-            <Aba valor="equipe" rotulo={t('paginas.abas.textos.equipe')} grupo="Empresa">
+            <Aba valor="equipe" rotulo={t('paginas.abas.textos.equipe')} grupo={tc("Empresa")}>
               <Texto n={2} />
             </Aba>
             <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')}>
@@ -319,10 +319,10 @@ export function PaginaAbasNavegacao() {
             <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')}>
               <Texto n={3} />
             </Aba>
-            <Aba valor="carrinho" rotulo={t('paginas.abas.textos.itens')} grupo="Carrinho">
+            <Aba valor="carrinho" rotulo={t('paginas.abas.textos.itens')} grupo={tc("Carrinho")}>
               <Texto n={0} />
             </Aba>
-            <Aba valor="frete" rotulo={t('paginas.abas.textos.frete')} grupo="Carrinho">
+            <Aba valor="frete" rotulo={t('paginas.abas.textos.frete')} grupo={tc("Carrinho")}>
               <Texto n={1} />
             </Aba>
             <Aba valor="pedidos" rotulo={t('paginas.abas.textos.pedidos')}>

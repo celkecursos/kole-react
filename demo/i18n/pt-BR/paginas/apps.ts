@@ -94,6 +94,7 @@ export const paginasApps = {
     titulo: 'Todas as tarefas',
     textos: {
       meuDia: 'Meu dia',
+      diaOQueVocePlanejou: '{dia} · o que você planejou para hoje.',
       concluidas: 'Concluídas',
       etiqueta: 'Etiqueta: {nome}',
       tarefaCriada: 'Tarefa criada',

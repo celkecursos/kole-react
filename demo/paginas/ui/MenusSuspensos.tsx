@@ -31,7 +31,7 @@ const CORES = (t: TradutorDemo['t']): Array<{ cor: SeveridadeBotao; rotulo: stri
 ]);
 
 export function PaginaMenusSuspensos() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const escolher = (id: string) => toast.info(t('paginas.menus.textos.itemEscolhido'), id);
   const [email, setEmail] = useState('');
@@ -54,28 +54,28 @@ export function PaginaMenusSuspensos() {
         <Bloco titulo={t('paginas.menus.secoes.botoesSolidos')}>
           <div className="demo-linha">
             {CORES(t).map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+              <MenuSuspenso key={c.cor} rotulo={tc(c.rotulo)} severidade={c.cor} formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.pilula')} descricao={t('paginas.menus.textos.formatoPadraoDoBotao')}>
           <div className="demo-linha">
             {CORES(t).map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+              <MenuSuspenso key={c.cor} rotulo={tc(c.rotulo)} severidade={c.cor} itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.contorno')}>
           <div className="demo-linha">
             {CORES(t).map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="contorno" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+              <MenuSuspenso key={c.cor} rotulo={tc(c.rotulo)} severidade={c.cor} aparencia="contorno" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.contornoEmPilula')}>
           <div className="demo-linha">
             {CORES(t).map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="contorno" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+              <MenuSuspenso key={c.cor} rotulo={tc(c.rotulo)} severidade={c.cor} aparencia="contorno" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
@@ -85,12 +85,12 @@ export function PaginaMenusSuspensos() {
               <MenuSuspenso
                 key={c.cor}
                 dividido
-                rotulo={c.rotulo}
+                rotulo={tc(c.rotulo)}
                 severidade={c.cor}
                 formato="retangulo"
                 itens={ACOES_SEPARADAS(t)}
                 aoEscolher={escolher}
-                aoClicarPrincipal={() => toast.ok(c.rotulo, t('paginas.menus.textos.acaoPrincipal'))}
+                aoClicarPrincipal={() => toast.ok(tc(c.rotulo), t('paginas.menus.textos.acaoPrincipal'))}
               />
             ))}
           </div>
@@ -285,14 +285,14 @@ export function PaginaMenusSuspensos() {
         <Bloco titulo={t('paginas.menus.secoes.paineisColoridos')} descricao={t('paginas.menus.textos.oItemEmFoco')}>
           <div className="demo-linha">
             {CORES(t).map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} cor={c.cor} formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+              <MenuSuspenso key={c.cor} rotulo={tc(c.rotulo)} severidade={c.cor} cor={c.cor} formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>
         <Bloco titulo={t('paginas.menus.secoes.fantasma')} descricao={t('paginas.menus.textos.contornoDiscretoQueSe')}>
           <div className="demo-linha">
             {CORES(t).map((c) => (
-              <MenuSuspenso key={c.cor} rotulo={c.rotulo} severidade={c.cor} aparencia="fantasma" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
+              <MenuSuspenso key={c.cor} rotulo={tc(c.rotulo)} severidade={c.cor} aparencia="fantasma" formato="retangulo" itens={ACOES_SEPARADAS(t)} aoEscolher={escolher} />
             ))}
           </div>
         </Bloco>

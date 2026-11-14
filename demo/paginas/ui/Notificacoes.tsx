@@ -4,7 +4,7 @@ import { Bloco } from '../Bloco';
 import { useT } from '../../i18n/useT';
 
 export function PaginaNotificacoes() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [bloqueio, setBloqueio] = useState(false);
@@ -34,7 +34,7 @@ export function PaginaNotificacoes() {
             rotulo={t('paginas.notificacoes.textos.confirmar')}
             severidade="secundario"
             onClick={async () => {
-              const ok = await confirmar({ titulo: t('paginas.notificacoes.textos.enviarPedidoAoCliente'), mensagem: t('paginas.notificacoes.textos.oClienteRecebeO'), rotuloAceitar: 'Enviar' });
+              const ok = await confirmar({ titulo: t('paginas.notificacoes.textos.enviarPedidoAoCliente'), mensagem: t('paginas.notificacoes.textos.oClienteRecebeO'), rotuloAceitar: tc('Enviar') });
               toast.info(ok ? t('paginas.notificacoes.textos.confirmado') : t('paginas.notificacoes.textos.cancelado'));
             }}
           />

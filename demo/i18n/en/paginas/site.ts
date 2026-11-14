@@ -34,6 +34,8 @@ export const paginasSite: TextosDemoParciais<typeof Pt> = {
       clientesAtendidos: 'customers served',
       avaliacaoMedia: 'average rating',
       deMercado: 'in the market',
+      seteDicasSimples: '7 simple tips to make better use of your time',
+      umUsuario: '1 user',
       clientes: 'Customers',
       quemJaConfiaNa: 'Who already trusts us',
       diferenciais: 'Differentiators',

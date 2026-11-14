@@ -36,7 +36,6 @@ const OPCOES_PRIORIDADE = (['baixa', 'media', 'alta'] as Prioridade[]).map((p) =
 const OPCOES_SITUACAO = (Object.keys(SITUACOES_TAREFA) as SituacaoTarefa[]).map((s) => ({ valor: s, rotulo: SITUACOES_TAREFA[s].rotulo }));
 const feita = (t: TarefaDemo) => t.situacao === 'concluida';
 const novoId = () => `t-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
-const DATA_LONGA = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
 const naVisao = (v: Visao) => (t: TarefaDemo) => {
   if (v.tipo === 'meu-dia') return !!t.meuDia;
@@ -58,7 +57,7 @@ const noPrazo = (p: Prazo) => (t: TarefaDemo) => {
 };
 
 export function PaginaTarefas() {
-  const { t: tx } = useT();
+  const { t: tx, tc, idioma } = useT();
   const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
@@ -118,7 +117,7 @@ export function PaginaTarefas() {
     toast.ok(t('paginas.tarefas.textos.tarefaCriada'));
   };
   const excluir = async (t: TarefaDemo) => {
-    if (!(await confirmar.remover({ titulo: tx('paginas.tarefas.textos.excluirATarefa'), mensagem: tx('paginas.tarefas.textos.tituloSeraExcluida', { titulo: t.titulo }), rotuloAceitar: 'Excluir' }))) return;
+    if (!(await confirmar.remover({ titulo: tx('paginas.tarefas.textos.excluirATarefa'), mensagem: tx('paginas.tarefas.textos.tituloSeraExcluida', { titulo: t.titulo }), rotuloAceitar: tc('Excluir') }))) return;
     setTarefas((ts) => ts.filter((x) => x.id !== t.id));
     setAberta(null);
     toast.ok(tx('paginas.tarefas.textos.tarefaExcluida'));
@@ -138,7 +137,7 @@ export function PaginaTarefas() {
   };
 
   const tarefaAberta = aberta && aberta !== 'nova' ? tarefas.find((t) => t.id === aberta) : undefined;
-  const hoje = DATA_LONGA.format(new Date());
+  const hoje = new Intl.DateTimeFormat(idioma, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
 
   return (
     <div className="demo-tarefas">
@@ -162,7 +161,7 @@ export function PaginaTarefas() {
                 aria-pressed={ativo}
                 onClick={() => setVisao(ativo ? { tipo: 'todas' } : { tipo: 'etiqueta', id: e.id })}
               >
-                <Etiqueta rotulo={e.rotulo} cor={e.cor} />
+                <Etiqueta rotulo={tc(e.rotulo)} cor={e.cor} />
               </button>
             );
           })}
@@ -176,7 +175,7 @@ export function PaginaTarefas() {
           trilha
           acoes={<Botao rotulo={t('paginas.tarefas.textos.novaTarefa')} icone="plus" onClick={() => setAberta('nova')} />}
         >
-          {visao.tipo === 'meu-dia' ? `${hoje.charAt(0).toUpperCase()}${hoje.slice(1)} · o que você planejou para hoje.` : 'Arraste pela alça para mudar a ordem.'}
+          {visao.tipo === 'meu-dia' ? t('paginas.tarefas.textos.diaOQueVocePlanejou', { dia: `${hoje.charAt(0).toUpperCase()}${hoje.slice(1)}` }) : tc('Arraste pela alça para mudar a ordem.')}
         </CabecalhoPagina>
 
         <form
@@ -254,7 +253,7 @@ function PainelTarefa({
   aoSalvar: (t: TarefaDemo) => void;
   aoExcluir: (t: TarefaDemo) => void;
 }) {
-  const { t: tx, idioma } = useT();
+  const { t: tx, idioma, tc } = useT();
   const [t, setT] = useState<TarefaDemo>(
     () => tarefa ?? { id: novoId(), titulo: '', situacao: 'aberta', prioridade: 'media', idsEtiquetas: [], idResponsavel: 'ana', criadaEm: new Date() },
   );
@@ -262,7 +261,7 @@ function PainelTarefa({
   const mudar = (p: Partial<TarefaDemo>) => setT((x) => ({ ...x, ...p }));
   const s = SITUACOES_TAREFA[t.situacao];
   const salvar = (extra: Partial<TarefaDemo> = {}) => {
-    if (!t.titulo.trim()) return setErro('Informe o título da tarefa.');
+    if (!t.titulo.trim()) return setErro(tc('Informe o título da tarefa.'));
     aoSalvar({ ...t, ...extra, titulo: t.titulo.trim() });
   };
 
@@ -286,7 +285,7 @@ function PainelTarefa({
       <div className="demo-apps-form">
         {tarefa && (
           <div className="demo-tarefa-situacao">
-            <Status rotulo={s.rotulo} severidade={s.severidade} icone={s.icone} />
+            <Status rotulo={tc(s.rotulo)} severidade={s.severidade} icone={s.icone} />
             <div className="demo-apps-linha">
               {t.situacao !== 'andamento' && t.situacao !== 'concluida' && (
                 <Botao rotulo={tx('paginas.tarefas.textos.iniciar')} icone="play" aparencia="contorno" tamanho="pequeno" onClick={() => salvar({ situacao: 'andamento' })} />
@@ -310,14 +309,14 @@ function PainelTarefa({
           <CampoData rotulo={tx('paginas.tarefas.textos.vencimento')} valor={typeof t.vencimento === 'string' ? t.vencimento : ''} aoMudar={(v) => mudar({ vencimento: v || undefined })} />
           <CampoSelect
             rotulo={tx('paginas.tarefas.textos.responsavel')}
-            opcoes={PESSOAS.map((p) => ({ valor: p.id, rotulo: p.nome }))}
+            opcoes={PESSOAS.map((p) => ({ valor: p.id, rotulo: tc(p.nome) }))}
             valor={t.idResponsavel ?? null}
             aoMudar={(v) => mudar({ idResponsavel: v ?? undefined })}
             botaoLimpar
             placeholder={tx('paginas.tarefas.textos.ninguem')}
           />
-          <CampoSelect rotulo={tx('paginas.tarefas.textos.lista')} opcoes={LISTAS.map((l) => ({ valor: l.id, rotulo: l.rotulo }))} valor={t.lista ?? null} aoMudar={(v) => mudar({ lista: v ?? undefined })} botaoLimpar placeholder={tx('paginas.tarefas.textos.semLista')} />
-          <CampoSelectMultiplo rotulo={tx('paginas.tarefas.textos.etiquetas')} opcoes={ETIQUETAS.map((e) => ({ valor: e.id, rotulo: e.rotulo }))} valor={t.idsEtiquetas} aoMudar={(v) => mudar({ idsEtiquetas: v })} />
+          <CampoSelect rotulo={tx('paginas.tarefas.textos.lista')} opcoes={LISTAS.map((l) => ({ valor: l.id, rotulo: tc(l.rotulo) }))} valor={t.lista ?? null} aoMudar={(v) => mudar({ lista: v ?? undefined })} botaoLimpar placeholder={tx('paginas.tarefas.textos.semLista')} />
+          <CampoSelectMultiplo rotulo={tx('paginas.tarefas.textos.etiquetas')} opcoes={ETIQUETAS.map((e) => ({ valor: e.id, rotulo: tc(e.rotulo) }))} valor={t.idsEtiquetas} aoMudar={(v) => mudar({ idsEtiquetas: v })} />
         </div>
         <div className="demo-apps-linha">
           <Botao rotulo={tx('paginas.tarefas.textos.hoje')} aparencia="texto" tamanho="pequeno" onClick={() => mudar({ vencimento: dia(0) })} />

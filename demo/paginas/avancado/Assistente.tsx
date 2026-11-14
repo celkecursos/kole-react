@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   BlocoCodigo,
   Botao,
@@ -33,9 +33,9 @@ import { rico } from '../../i18n/rico';
  */
 
 type BlocoResposta =
-  | { tipo: 'p'; texto: ReactNode }
+  | { tipo: 'p'; texto: string }
   | { tipo: 'titulo'; texto: string }
-  | { tipo: 'lista'; itens: ReactNode[]; ordenada?: boolean }
+  | { tipo: 'lista'; itens: string[]; ordenada?: boolean }
   | { tipo: 'tabela'; colunas: string[]; linhas: string[][]; numericas?: number[] }
   | { tipo: 'codigo'; linguagem: string; codigo: string };
 
@@ -75,7 +75,7 @@ const FONTE_VENDAS: ItemReferencia[] = [
 
 const VENDAS: Resposta = {
   blocos: [
-    { tipo: 'p', texto: <>O faturamento de outubro foi de <strong>R$ 1,28 milhão</strong>, 8% acima de setembro e 3% acima da meta.</> },
+    { tipo: 'p', texto: 'O faturamento de outubro foi de <strong>R$ 1,28 milhão</strong>, 8% acima de setembro e 3% acima da meta.' },
     {
       tipo: 'tabela',
       colunas: ['Região', 'Faturamento', 'Pedidos', 'Meta'],
@@ -91,9 +91,9 @@ const VENDAS: Resposta = {
     {
       tipo: 'lista',
       itens: [
-        <>O <strong>Sul</strong> teve o melhor resultado sobre a meta, puxado pela promoção de Pix.</>,
-        <>Norte e Centro-Oeste ficaram abaixo da meta; o frete subiu 12% nessas regiões.</>,
-        <>O ticket médio ficou em <code>R$ 459,90</code>.</>,
+        'O <strong>Sul</strong> teve o melhor resultado sobre a meta, puxado pela promoção de Pix.',
+        'Norte e Centro-Oeste ficaram abaixo da meta; o frete subiu 12% nessas regiões.',
+        'O ticket médio ficou em <code>R$ 459,90</code>.',
       ],
     },
   ],
@@ -159,33 +159,37 @@ const GENERICA: Resposta = {
   ],
 };
 
-function responderA(texto: string, anexos: AnexoMensagem[]): Resposta {
+function responderA(texto: string, anexos: AnexoMensagem[], tx: TradutorDemo['t']): Resposta {
   const t = texto.toLowerCase();
   if (anexos.length) {
     return {
       blocos: [
-        { tipo: 'p', texto: <>Li {anexos.length === 1 ? <>o arquivo <strong>{anexos[0].nome}</strong></> : `os ${anexos.length} arquivos`}. Os pontos principais:</> },
+        {
+          tipo: 'p',
+          texto: anexos.length === 1
+            ? tx('paginas.assistente.textos.liOArquivo', { nome: anexos[0].nome })
+            : tx('paginas.assistente.textos.liOsArquivos', { n: anexos.length }),
+        },
         { tipo: 'lista', itens: ['O documento trata de prazos e condições de entrega.', 'Há uma tabela de valores por região na página 2.', 'Nenhuma cláusula conflita com a política atual.'] },
       ],
     };
   }
   if (t.includes('sql') || t.includes('consulta')) return SQL;
-  if (t.includes('atras')) return ATRASADOS;
-  if (t.includes('venda')) return VENDAS;
+  if (t.includes('atras') || t.includes('overdue') || t.includes('late')) return ATRASADOS;
+  if (t.includes('venda') || t.includes('sale')) return VENDAS;
   if (t.includes('mail') || t.includes('cobran')) return EMAIL;
   return GENERICA;
 }
 
 /** Texto puro da resposta, para o botão de copiar. */
-function textoDe(r: Resposta): string {
-  const tx = (n: ReactNode): string =>
-    typeof n === 'string' || typeof n === 'number' ? String(n) : Array.isArray(n) ? n.map(tx).join('') : n && typeof n === 'object' && 'props' in n ? tx((n.props as { children?: ReactNode }).children) : '';
+function textoDe(r: Resposta, tc: TradutorDemo['tc']): string {
+  const tx = (n: string): string => tc(n).replace(/<[^>]+>/g, '');
   return r.blocos
     .map((b) =>
       b.tipo === 'codigo'
         ? b.codigo
         : b.tipo === 'tabela'
-          ? [b.colunas, ...b.linhas].map((l) => l.join(' | ')).join('\n')
+          ? [b.colunas, ...b.linhas].map((l) => l.map(tx).join(' | ')).join('\n')
           : b.tipo === 'lista'
             ? b.itens.map((i, n) => `${b.ordenada ? `${n + 1}.` : '-'} ${tx(i)}`).join('\n')
             : tx(b.texto),
@@ -195,18 +199,19 @@ function textoDe(r: Resposta): string {
 
 /** "Markdown renderizado": no app, viria do renderizador de Markdown. */
 function ConteudoResposta({ resposta, visiveis }: { resposta: Resposta; visiveis: number }) {
+  const { tc } = useT();
   return (
     <>
       {resposta.blocos.slice(0, visiveis).map((b, i) => {
-        if (b.tipo === 'p') return <p key={i}>{b.texto}</p>;
-        if (b.tipo === 'titulo') return <h3 key={i}>{b.texto}</h3>;
+        if (b.tipo === 'p') return <p key={i}>{rico(tc(b.texto))}</p>;
+        if (b.tipo === 'titulo') return <h3 key={i}>{tc(b.texto)}</h3>;
         if (b.tipo === 'codigo') return <BlocoCodigo key={i} linguagem={b.linguagem} codigo={b.codigo} />;
         if (b.tipo === 'lista') {
           const L = b.ordenada ? 'ol' : 'ul';
           return (
             <L key={i}>
               {b.itens.map((it, n) => (
-                <li key={n}>{it}</li>
+                <li key={n}>{rico(tc(it))}</li>
               ))}
             </L>
           );
@@ -217,7 +222,7 @@ function ConteudoResposta({ resposta, visiveis }: { resposta: Resposta; visiveis
               <tr>
                 {b.colunas.map((c, n) => (
                   <th key={c} className={b.numericas?.includes(n) ? 'is-num' : undefined}>
-                    {c}
+                    {tc(c)}
                   </th>
                 ))}
               </tr>
@@ -227,7 +232,7 @@ function ConteudoResposta({ resposta, visiveis }: { resposta: Resposta; visiveis
                 <tr key={l[0]}>
                   {l.map((c, n) => (
                     <td key={n} className={b.numericas?.includes(n) ? 'is-num' : undefined}>
-                      {c}
+                      {tc(c)}
                     </td>
                   ))}
                 </tr>
@@ -288,7 +293,7 @@ let seq = 1000;
 /* ---------- a página ---------- */
 
 export function PaginaAssistente() {
-  const { t: tx, idioma } = useT();
+  const { t: tx, idioma, tc } = useT();
   const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
@@ -338,7 +343,7 @@ export function PaginaAssistente() {
     if (!idConv) {
       // conversa nova: o título vem da primeira pergunta (o app pode pedir um título à IA)
       idConv = `c${++seq}`;
-      const titulo = t ? (t.length > 42 ? `${t.slice(0, 40)}…` : t) : (anexosProntos[0]?.nome ?? 'Nova conversa');
+      const titulo = t ? (t.length > 42 ? `${t.slice(0, 40)}…` : t) : (anexosProntos[0]?.nome ?? tc('Nova conversa'));
       setConversas((l) => [{ id: idConv!, titulo, data: agora, mensagens: novas }, ...l]);
       setAtiva(idConv);
     } else {
@@ -346,7 +351,7 @@ export function PaginaAssistente() {
     }
     setTexto('');
     setAnexos([]);
-    transmitir(idConv, idR, responderA(t, anexosProntos));
+    transmitir(idConv, idR, responderA(t, anexosProntos, tx));
   };
 
   const parar = () => {
@@ -361,7 +366,7 @@ export function PaginaAssistente() {
     const i = conversa.mensagens.findIndex((x) => x.id === m.id);
     const pergunta = conversa.mensagens[i - 1];
     mudarMsg(conversa.id, m.id, { estado: 'gerando', visiveis: 0, avaliacao: undefined });
-    transmitir(conversa.id, m.id, responderA(pergunta?.texto ?? '', pergunta?.anexos ?? []));
+    transmitir(conversa.id, m.id, responderA(pergunta?.texto ?? '', pergunta?.anexos ?? [], tx));
   };
 
   const avaliar = (m: MsgIA, avaliacao: 'boa' | 'ruim') => {
@@ -398,7 +403,7 @@ export function PaginaAssistente() {
 
   const historico = (
     <ListaConversas
-      itens={conversas}
+      itens={conversas.map((c) => ({ ...c, titulo: tc(c.titulo) }))}
       ativa={ativa}
       aoEscolher={escolher}
       aoNova={nova}
@@ -447,7 +452,7 @@ export function PaginaAssistente() {
             <Chip key={f} rotulo={FERRAMENTAS(t)[f]} aoRemover={() => setFerramentas((l) => l.filter((x) => x !== f))} />
           ))}
           <MenuSuspenso
-            rotulo={modoAtual.rotulo}
+            rotulo={tc(modoAtual.rotulo)}
             icone="sparkles"
             aria-label={t('paginas.assistente.textos.modoRotulo', { rotulo: modoAtual.rotulo })}
             severidade="secundario"
@@ -496,11 +501,11 @@ export function PaginaAssistente() {
               tamanho="pequeno"
               onClick={() => setHistoricoAberto(true)}
             />
-            <h2 className="demo-ia-titulo">{conversa?.titulo ?? 'Nova conversa'}</h2>
+            <h2 className="demo-ia-titulo">{tc(conversa?.titulo) ?? tc('Nova conversa')}</h2>
             {conversa && <Botao icone="square-pen" aria-label={t('paginas.assistente.textos.novaConversa')} dica={t('paginas.assistente.textos.novaConversa')} severidade="secundario" aparencia="texto" tamanho="pequeno" onClick={nova} />}
           </div>
           <Conversa
-            rotulo={conversa?.titulo ?? t('paginas.assistente.textos.novaConversa')}
+            rotulo={tc(conversa?.titulo) ?? t('paginas.assistente.textos.novaConversa')}
             larguraMaxima="46rem"
             campo={campo}
             vazio={
@@ -520,30 +525,30 @@ export function PaginaAssistente() {
                 <Mensagem
                   key={m.id}
                   autor="usuario"
-                  nome="Você"
+                  nome={tc("Você")}
                   hora={m.hora}
                   rodape={
                     !!(m.anexos?.length || m.ferramentas?.length) && (
                       <div className="demo-ia-anexos">
-                        {m.anexos?.map((a) => <Chip key={a.id} rotulo={a.nome} />)}
-                        {m.ferramentas?.map((f) => <Chip key={f} campo="Com" rotulo={f} />)}
+                        {m.anexos?.map((a) => <Chip key={a.id} rotulo={tc(a.nome)} />)}
+                        {m.ferramentas?.map((f) => <Chip key={f} campo={tc("Com")} rotulo={f} />)}
                       </div>
                     )
                   }
                 >
-                  {m.texto || undefined}
+                  {tc(m.texto) || undefined}
                 </Mensagem>
               ) : (
                 <Mensagem
                   key={m.id}
                   autor="assistente"
-                  nome="Assistente"
+                  nome={tc("Assistente")}
                   avatar={avatarIA}
                   hora={m.hora}
                   estado={m.estado}
                   copiavel={m.estado === 'concluida'}
-                  textoCopia={m.resposta && textoDe(m.resposta)}
-                  rodape={m.estado === 'concluida' && m.resposta?.referencias && <Referencias itens={m.resposta.referencias} />}
+                  textoCopia={m.resposta && textoDe(m.resposta, tc)}
+                  rodape={m.estado === 'concluida' && m.resposta?.referencias && <Referencias itens={m.resposta.referencias.map((r) => ({ ...r, titulo: tc(r.titulo), detalhe: tc(r.detalhe), trecho: tc(r.trecho) }))} />}
                   acoes={
                     m.estado === 'concluida' && (
                       <>

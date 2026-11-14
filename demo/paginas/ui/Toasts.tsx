@@ -25,7 +25,7 @@ const CORES = (t: TradutorDemo['t']): Array<{ cor: CorToast; rotulo: string }> =
 ]);
 
 export function PaginaToasts() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   // toasts fixos da página que podem ser fechados
   const [fechados, setFechados] = useState<string[]>([]);
@@ -41,7 +41,7 @@ export function PaginaToasts() {
           {POSICOES(t).map((p) => (
             <Botao
               key={p.posicao}
-              rotulo={p.rotulo}
+              rotulo={tc(p.rotulo)}
               aparencia="contorno"
               formato="retangulo"
               onClick={() => toast.mostrar({ titulo: t('paginas.toasts.textos.celkeKole'), detalhe: t('paginas.toasts.textos.avisoEmValor', { valor: p.rotulo.toLowerCase() }), posicao: p.posicao, aparencia: 'padrao', icone: 'bell' })}
@@ -56,11 +56,11 @@ export function PaginaToasts() {
             {CORES(t).map((c) => (
               <Botao
                 key={c.cor}
-                rotulo={c.rotulo}
+                rotulo={tc(c.rotulo)}
                 severidade={c.cor as SeveridadeBotao}
                 aparencia="suave"
                 formato="retangulo"
-                onClick={() => toast.mostrar({ titulo: c.rotulo, detalhe: t('paginas.toasts.textos.seuAvisoApareceAqui'), cor: c.cor, icone: 'bell' })}
+                onClick={() => toast.mostrar({ titulo: tc(c.rotulo), detalhe: t('paginas.toasts.textos.seuAvisoApareceAqui'), cor: c.cor, icone: 'bell' })}
               />
             ))}
           </div>
@@ -70,10 +70,10 @@ export function PaginaToasts() {
             {CORES(t).map((c) => (
               <Botao
                 key={c.cor}
-                rotulo={c.rotulo}
+                rotulo={tc(c.rotulo)}
                 severidade={c.cor as SeveridadeBotao}
                 formato="retangulo"
-                onClick={() => toast.mostrar({ titulo: c.rotulo, detalhe: t('paginas.toasts.textos.seuAvisoApareceAqui'), cor: c.cor, aparencia: 'solido', icone: 'bell' })}
+                onClick={() => toast.mostrar({ titulo: tc(c.rotulo), detalhe: t('paginas.toasts.textos.seuAvisoApareceAqui'), cor: c.cor, aparencia: 'solido', icone: 'bell' })}
               />
             ))}
           </div>
@@ -92,9 +92,9 @@ export function PaginaToasts() {
             <div className="demo-toasts-pilha">
               {(
                 [
-                  ['pri', 'primária'],
-                  ['destaque', 'de destaque'],
-                  ['ok', 'de sucesso'],
+                  ['pri', tc('primária')],
+                  ['destaque', tc('de destaque')],
+                  ['ok', tc('de sucesso')],
                   ['info', 'informativa'],
                 ] as const
               ).map(
@@ -110,7 +110,7 @@ export function PaginaToasts() {
         <div className="demo-pilha">
           <Bloco titulo={t('paginas.toasts.secoes.basico')} descricao={t('paginas.toasts.textos.modeloComCabecalhoIcone')}>
             {aberto('basico') && (
-              <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 11 min" detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={fechar('basico')} />
+              <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo={tc("há 11 min")} detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={fechar('basico')} />
             )}
           </Bloco>
           <Bloco titulo={t('paginas.toasts.secoes.empilhados')} descricao={t('paginas.toasts.textos.variosAvisosUmEmbaixo')}>
@@ -119,7 +119,7 @@ export function PaginaToasts() {
                 <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="agora" detalhe={t('paginas.toasts.textos.viuAssimMesmo')} aoFechar={fechar('pilha1')} />
               )}
               {aberto('pilha2') && (
-                <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 2 s" detalhe={t('paginas.toasts.textos.atencaoOsAvisosSe')} aoFechar={fechar('pilha2')} />
+                <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo={tc("há 2 s")} detalhe={t('paginas.toasts.textos.atencaoOsAvisosSe')} aoFechar={fechar('pilha2')} />
               )}
             </div>
           </Bloco>
@@ -128,7 +128,7 @@ export function PaginaToasts() {
         <div className="demo-pilha">
           <Bloco titulo={t('paginas.toasts.secoes.translucido')} descricao={t('paginas.toasts.textos.vidroFoscoDeixaO')}>
             <div className="demo-toasts-fundo">
-              <Toast modelo="cabecalho" aparencia="translucido" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 11 min" detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={() => toast.info(t('paginas.toasts.textos.eSoUmExemplo'), t('paginas.toasts.textos.esteFicaFixo'))} />
+              <Toast modelo="cabecalho" aparencia="translucido" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo={tc("há 11 min")} detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={() => toast.info(t('paginas.toasts.textos.eSoUmExemplo'), t('paginas.toasts.textos.esteFicaFixo'))} />
             </div>
           </Bloco>
           <Bloco titulo={t('paginas.toasts.secoes.conteudoProprio')} descricao={t('paginas.toasts.textos.botoesELinksDentro')}>
@@ -151,7 +151,7 @@ export function PaginaToasts() {
 
       <Bloco titulo={t('paginas.toasts.secoes.centralizadoComFlex')} descricao={t('paginas.toasts.textos.umToastEUm')}>
         <div className="demo-toasts-centro">
-          <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 11 min" detalhe={t('paginas.toasts.textos.olaEstaEUma')} />
+          <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo={tc("há 11 min")} detalhe={t('paginas.toasts.textos.olaEstaEUma')} />
         </div>
       </Bloco>
 

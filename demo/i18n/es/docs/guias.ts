@@ -187,7 +187,7 @@ export const docsGuias: TextosDemoParciais<typeof Pt> = {
   },
   changelog: {
     titulo: 'Changelog',
-    textos: { resumo: 'Lo que cambió en cada versión, leído del CHANGELOG.md del paquete.' },
+    textos: { resumo: 'Lo que cambió en cada versión, leído del CHANGELOG.es.md del paquete (traducción del CHANGELOG.md).' },
   },
   indice: {
     titulo: 'Componentes',

@@ -39,13 +39,13 @@ const APRESENTACAO = (t: TradutorDemo['t']): ApresentacaoLogin => ({
 
 /** Tela de login de exemplo. Senha "123456" pede o código; código "123456" entra. */
 export function PaginaLogin({ navegar, modelo }: { navegar: (r: string) => void; modelo: 'conteudo' | 'formulario' }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   return (
     <TelaLogin
       modelo={modelo}
       apresentacao={APRESENTACAO(t)}
-      marca={{ nome: 'Gestor', subtitulo: t('paginas.login.textos.gestaoComercial') }}
+      marca={{ nome: tc('Gestor'), subtitulo: t('paginas.login.textos.gestaoComercial') }}
       ambiente={{ rotulo: t('paginas.login.textos.homologacao'), severidade: 'warn' }}
       descricao={t('paginas.login.textos.useQualquerCpfValido')}
       aoEntrar={async ({ usuario, senha }) => {
@@ -68,7 +68,7 @@ export function PaginaLogin({ navegar, modelo }: { navegar: (r: string) => void;
       acoes={
         <>
           <a href={modelo === 'conteudo' ? '#/login/simples' : '#/login'}>
-            {modelo === 'conteudo' ? 'Ver modelo só com formulário' : 'Ver modelo com conteúdo'}
+            {modelo === 'conteudo' ? tc('Ver modelo só com formulário') : tc('Ver modelo com conteúdo')}
           </a>
           <a href="#/">{t('paginas.login.textos.voltarAoPainel')}</a>
         </>

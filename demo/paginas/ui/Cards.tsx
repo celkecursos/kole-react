@@ -85,7 +85,7 @@ const rotuloSituacao = (t: TradutorDemo['t'], s: Veiculo['situacao']) =>
 const SEV_VEICULO = { Regular: 'ok', 'Licenciamento vencido': 'err', 'Em manutenção': 'warn' } as const;
 
 export function PaginaCards() {
-  const { t: tx } = useT();
+  const { t: tx, tc } = useT();
   const { t } = useT();
   const toast = useToast();
   const [estadoLista, setEstadoLista] = useState('normal');
@@ -98,13 +98,13 @@ export function PaginaCards() {
       <div className="demo-cards-4">
         <Card midia={<Imagem src={IMG.mar} />} rodape={<span className="demo-cards-mudo">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>}>
           <div className="demo-card-titulo">{t('paginas.cards.textos.tituloDoCard')}</div>
-          <p className="demo-cards-texto">{LOREM}</p>
+          <p className="demo-cards-texto">{tc(LOREM)}</p>
           <Botao rotulo={t('paginas.cards.textos.verMais')} formato="retangulo" />
         </Card>
         <div className="demo-pilha">
           <Card titulo={t('paginas.cards.secoes.destaque')}>
             <div className="demo-card-titulo">{t('paginas.cards.textos.tratamentoEspecialDoTitulo')}</div>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
             <Botao rotulo={t('paginas.cards.textos.verMais')} formato="retangulo" />
           </Card>
           <Card
@@ -117,7 +117,7 @@ export function PaginaCards() {
           >
             <div className="demo-card-titulo" style={{ marginBottom: 0 }}>{t('paginas.cards.textos.tituloDoCard')}</div>
             <div className="demo-cards-mudo" style={{ marginBottom: '0.5rem' }}>{t('paginas.cards.textos.subtituloDoCard')}</div>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
         </div>
         <div className="demo-pilha">
@@ -158,8 +158,8 @@ export function PaginaCards() {
                 <div className="demo-cards-avatar" style={{ justifyContent: a === 'centro' ? 'center' : a === 'direita' ? 'flex-end' : 'flex-start' }}>
                   <Avatar nome={PESSOAS(t)[i][0]} foto={retrato(PESSOAS(t)[i][1], PESSOAS(t)[i][0][0])} formato="quadrado" tamanho="2rem" />
                 </div>
-                <div className="demo-card-titulo">{['De onde vem', 'Por que usar?', 'O que tem de especial?'][i]}</div>
-                <p className="demo-cards-texto">{LOREM}</p>
+                <div className="demo-card-titulo">{[tc('De onde vem'), tc('Por que usar?'), tc('O que tem de especial?')][i]}</div>
+                <p className="demo-cards-texto">{tc(LOREM)}</p>
                 <Botao rotulo={t('paginas.cards.textos.abrir')} formato="retangulo" />
               </Card>
             ))}
@@ -169,7 +169,7 @@ export function PaginaCards() {
           <Card borda="ok" titulo={t('paginas.cards.secoes.cabecalho')} rodape={<span className="demo-cards-mudo">{t('paginas.cards.textos.rodape')}</span>}>
             <div className="demo-card-titulo" style={{ color: 'var(--ok-fg)' }}>{t('paginas.cards.textos.procurandoResultado')}</div>
             <p className="demo-cards-texto" style={{ color: 'var(--ok-fg)' }}>
-              {LOREM}
+              {tc(LOREM)}
             </p>
           </Card>
         </Secao>
@@ -216,9 +216,9 @@ export function PaginaCards() {
           <div className="demo-cards-3">
             {(
               [
-                ['Produto A', IMG.noite, 'pri'],
-                ['Produto B', IMG.deserto, 'destaque'],
-                ['Produto C', IMG.campo, 'secundario'],
+                [tc('Produto A'), IMG.noite, 'pri'],
+                [tc('Produto B'), IMG.deserto, 'destaque'],
+                [tc('Produto C'), IMG.campo, 'secundario'],
               ] as const
             ).map(([nome, img, cor]) => (
               <Card key={nome}>
@@ -242,7 +242,7 @@ export function PaginaCards() {
                 <Avatar nome="Ana Pereira" foto={retrato('#1f5fe0', 'A')} tamanho="2.25rem" />
                 <span>
                   Ana Pereira
-                  <span className="demo-cards-mudo">Gerente comercial</span>
+                  <span className="demo-cards-mudo">{tc('Gerente comercial')}</span>
                 </span>
               </span>
             }
@@ -254,7 +254,7 @@ export function PaginaCards() {
               </div>
             }
           >
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
           <Card
             rodape={
@@ -296,9 +296,9 @@ export function PaginaCards() {
       <div className="demo-cards-5">
         {(
           [
-            ['Montanhas', IMG.rosa, 'Novo', 'pri'],
-            ['Morros', IMG.tarde, 'Promoção', 'destaque'],
-            ['Natureza', IMG.campo, 'Oferta', 'neutral'],
+            [tc('Montanhas'), IMG.rosa, tc('Novo'), 'pri'],
+            [tc('Morros'), IMG.tarde, tc('Promoção'), 'destaque'],
+            [tc('Natureza'), IMG.campo, tc('Oferta'), 'neutral'],
           ] as const
         ).map(([nome, img, selo, cor]) => (
           <Card key={nome}>
@@ -352,11 +352,11 @@ export function PaginaCards() {
       <div className="demo-cards-3">
         <Card titulo={t('paginas.cards.secoes.comRecolher')} recolhivel rodape={<Botao rotulo={t('paginas.cards.textos.verMais')} formato="retangulo" />}>
           <div className="demo-card-titulo">{t('paginas.cards.textos.cardRecolhivel')}</div>
-          <p className="demo-cards-texto">{LOREM}</p>
+          <p className="demo-cards-texto">{tc(LOREM)}</p>
         </Card>
         <Card titulo={t('paginas.cards.secoes.comFechar')} dispensavel aoFechar={() => toast.info(t('paginas.cards.textos.cardFechado'))} rodape={<Botao rotulo={t('paginas.cards.textos.verMais')} formato="retangulo" />}>
           <div className="demo-card-titulo">{t('paginas.cards.textos.cardQueFecha')}</div>
-          <p className="demo-cards-texto">{LOREM}</p>
+          <p className="demo-cards-texto">{tc(LOREM)}</p>
         </Card>
         <Card titulo={t('paginas.cards.secoes.comTelaCheia')} telaCheia rodape={<Botao rotulo={t('paginas.cards.textos.verMais')} formato="retangulo" />}>
           <div className="demo-card-titulo">{t('paginas.cards.textos.cardEmTelaCheia')}</div>
@@ -368,15 +368,15 @@ export function PaginaCards() {
         <div className="demo-cards-3">
           <Card midia={<Imagem src={IMG.deserto} altura="12rem" />} rodape={<span className="demo-cards-mudo">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>}>
             <div className="demo-card-titulo">{t('paginas.cards.textos.imagemNoTopo')}</div>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
           <Card midia={<Imagem src={IMG.campo} altura="12rem" />} posicaoMidia="base">
             <div className="demo-card-titulo">{t('paginas.cards.textos.imagemEmbaixo')}</div>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
             <span className="demo-cards-mudo">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>
           </Card>
           <Card titulo={t('paginas.cards.secoes.comCabecalho')} midia={<Imagem src={IMG.mar} altura="12rem" />} posicaoMidia="base" rodape={<span className="demo-cards-mudo">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>}>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
         </div>
       </Secao>
@@ -384,15 +384,15 @@ export function PaginaCards() {
       <Secao titulo={t('paginas.cards.secoes.textoSobreAImagem')}>
         <div className="demo-cards-3">
           <Card midia={<img src={IMG.mar} alt="" />} posicaoMidia="fundo" titulo={t('paginas.cards.secoes.imagensSobrepostas')}>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
             <span className="demo-cards-mudo-claro">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>
           </Card>
           <Card midia={<img src={IMG.campo} alt="" />} posicaoMidia="fundo" rodape={<span className="demo-cards-mudo-claro">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>}>
             <div className="demo-card-titulo">{t('paginas.cards.textos.imagensSobrepostasSaoOtimas')}</div>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
           <Card midia={<img src={IMG.noite} alt="" />} posicaoMidia="fundo" titulo={t('paginas.cards.secoes.comCabecalhoRodape')} rodape={<span className="demo-cards-mudo-claro">{t('paginas.cards.textos.atualizadoHa3Minutos')}</span>}>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
         </div>
       </Secao>
@@ -416,15 +416,15 @@ export function PaginaCards() {
                 alinhamento="centro"
                 titulo={
                   <GrupoAlternancia
-                    rotulo="Abas do card"
+                    rotulo={tc("Abas do card")}
                     severidade={cor}
                     aparencia="texto"
                     tamanho="pequeno"
                     formato="retangulo"
                     opcoes={[
-                      { valor: 'ativo', rotulo: 'Ativo' },
-                      { valor: 'link', rotulo: 'Link' },
-                      { valor: 'off', rotulo: 'Desativado', desabilitada: true },
+                      { valor: 'ativo', rotulo: tc('Ativo') },
+                      { valor: 'link', rotulo: tc('Link') },
+                      { valor: 'off', rotulo: tc('Desativado'), desabilitada: true },
                     ]}
                     valor={aba}
                     aoMudar={setAba}
@@ -462,14 +462,14 @@ export function PaginaCards() {
         <GrupoCards>
           {(
             [
-              ['Comida boa é uma bênção!', IMG.rosa],
-              ['O escritório é o melhor lugar para aprender?', IMG.deserto],
-              ['Escrever é uma arte.', IMG.noite],
+              [tc('Comida boa é uma bênção!'), IMG.rosa],
+              [tc('O escritório é o melhor lugar para aprender?'), IMG.deserto],
+              [tc('Escrever é uma arte.'), IMG.noite],
             ] as const
           ).map(([t, img]) => (
             <Card key={t} midia={<Imagem src={img} altura="11rem" />} rodape={<span className="demo-cards-mudo">{tx('paginas.cards.textos.atualizadoHa3Minutos')}</span>}>
               <div className="demo-card-titulo">{t}</div>
-              <p className="demo-cards-texto">{LOREM}</p>
+              <p className="demo-cards-texto">{tc(LOREM)}</p>
             </Card>
           ))}
         </GrupoCards>
@@ -496,14 +496,14 @@ export function PaginaCards() {
         <div className="demo-cards-4">
           {(
             [
-              ['Página inicial', ['React', 'Vite', 'TypeScript'], 'pri'],
-              ['Página de vendas', ['Laravel', 'MySQL'], 'destaque'],
-              ['Atualizar projeto', ['HTML', 'CSS', 'React'], 'warn'],
-              ['Discussão de projeto', ['React', 'TypeScript'], 'info'],
-              ['Testes recentes', ['UI', 'Vitest'], 'err'],
-              ['Página institucional', ['HTML', 'PHP'], 'ok'],
-              ['Novos colaboradores', ['RH', 'Treinamento'], 'neutral'],
-              ['Colaboradores desligados', ['RH'], 'neutral'],
+              [tc('Página inicial'), ['React', 'Vite', 'TypeScript'], 'pri'],
+              [tc('Página de vendas'), ['Laravel', 'MySQL'], 'destaque'],
+              [tc('Atualizar projeto'), ['HTML', 'CSS', 'React'], 'warn'],
+              [tc('Discussão de projeto'), ['React', 'TypeScript'], 'info'],
+              [tc('Testes recentes'), ['UI', 'Vitest'], 'err'],
+              [tc('Página institucional'), ['HTML', 'PHP'], 'ok'],
+              [tc('Novos colaboradores'), ['RH', tc('Treinamento')], 'neutral'],
+              [tc('Colaboradores desligados'), ['RH'], 'neutral'],
             ] as const
           ).map(([titulo, tags, cor], i) => (
             <Card key={titulo} borda={i === 6 ? undefined : cor}>
@@ -532,15 +532,15 @@ export function PaginaCards() {
         <div className="demo-cards-4">
           {(
             [
-              ['Morfologia de uma fruta típica.', IMG.tarde],
-              ['Pesquisa melhora a agilidade!', IMG.deserto],
-              ['Áreas tropicais são adequadas', IMG.campo],
-              ['São frutas da estação?', IMG.rosa],
+              [tc('Morfologia de uma fruta típica.'), IMG.tarde],
+              [tc('Pesquisa melhora a agilidade!'), IMG.deserto],
+              [tc('Áreas tropicais são adequadas'), IMG.campo],
+              [tc('São frutas da estação?'), IMG.rosa],
             ] as const
           ).map(([t, img]) => (
             <Card key={t} midia={<Imagem src={img} altura="9rem" />}>
               <div className="demo-card-titulo">{t}</div>
-              <p className="demo-cards-texto">{LOREM}</p>
+              <p className="demo-cards-texto">{tc(LOREM)}</p>
             </Card>
           ))}
         </div>
@@ -585,7 +585,7 @@ export function PaginaCards() {
           </div>
           <Card midia={<Imagem src={IMG.mar} altura="8rem" />} aoClicar={() => toast.info(t('paginas.cards.textos.abrirAreasTropicais'))}>
             <div className="demo-card-titulo">{t('paginas.cards.textos.areasTropicaisSaoAdequadas')}</div>
-            <p className="demo-cards-texto">{LOREM}</p>
+            <p className="demo-cards-texto">{tc(LOREM)}</p>
           </Card>
         </div>
       </Secao>
@@ -645,7 +645,7 @@ export function PaginaCards() {
               detalhes={
                 <>
                   <Detalhes rotulo={t('paginas.cards.textos.proprietario')} valor={v.proprietario} disposicao="linha" />
-                  <Detalhes rotulo={t('paginas.cards.textos.cor')} valor={v.cor} disposicao="linha" />
+                  <Detalhes rotulo={t('paginas.cards.textos.cor')} valor={tc(v.cor)} disposicao="linha" />
                   <Detalhes rotulo={t('paginas.cards.textos.ano')} valor={v.ano} disposicao="linha" />
                 </>
               }

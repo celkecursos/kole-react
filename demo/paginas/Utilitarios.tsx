@@ -62,7 +62,7 @@ const JWT_EXEMPLO = (t: TradutorDemo['t']) => ([
 ].join('.'));
 
 export function PaginaUtilitarios() {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const [tipo, setTipo] = useState<TipoDeCampo | null>('cpf');
   const [valorTipo, setValorTipo] = useState('529.982.247-25');
   const [numero, setNumero] = useState('1234567');
@@ -179,7 +179,7 @@ export function PaginaUtilitarios() {
         </div>
         <div className="demo-util">
           <Linha codigo={`tituloDeEntidade('${entidade}', '${modo}')`}>{tituloDeEntidade(entidade, modo)}</Linha>
-          <Linha codigo={`tituloDeEntidade({ nome: 'contrato', novo: 'Firmar contrato' }, '${modo}')`}>{tituloDeEntidade({ nome: 'contrato', novo: 'Firmar contrato' }, modo)}</Linha>
+          <Linha codigo={`tituloDeEntidade({ nome: 'contrato', novo: 'Firmar contrato' }, '${modo}')`}>{tituloDeEntidade({ nome: 'contrato', novo: tc('Firmar contrato') }, modo)}</Linha>
           <Linha codigo={`nomeDeArquivo('Ficha: Cliente/Fornecedor "X"')`}>{nomeDeArquivo('Ficha: Cliente/Fornecedor "X"')}</Linha>
         </div>
       </Bloco>

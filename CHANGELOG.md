@@ -47,9 +47,8 @@ Novidades:
   descrições dos exemplos e o cabeçalho da tabela de props). O dicionário fica
   dividido por área (`demo/i18n/<idioma>/menu`, `paginas/<grupo>`,
   `docs/<categoria>`), e os parágrafos com destaque usam `rico()` (crases e
-  `<strong>`/`<em>`/`<code>` na própria string). Ficam em português o código
-  dos exemplos, o CHANGELOG, as respostas simuladas do assistente e os dados de
-  exemplo das listas.
+  `<strong>`/`<em>`/`<code>` na própria string). Fica em português o código
+  dos exemplos.
 - Demo: os textos de interface guardados em listas e constantes das páginas
   (opções, colunas de tabela, nomes de cores e posições, cards, FAQ, planos e
   posts do site, tabelas do guia de Tema e de Carregamento) também saem no
@@ -57,6 +56,15 @@ Novidades:
   relativas, porcentagens, valores e saudações da demo passam o idioma aos
   utilitários da biblioteca (`tempoRelativo`, `formatarMoeda`,
   `formatarPercentual`, `rotuloPeriodo`…).
+- Demo: os dados de exemplo também saem no idioma escolhido (produtos,
+  categorias, formas de pagamento, tarefas e quadros, agenda do calendário,
+  lançamentos das finanças, respostas do assistente e do chat, textos de cards
+  e listas). A tradução sai de uma tabela pelo próprio texto em pt-BR
+  (`demo/i18n/<idioma>/conteudo.ts`), com o `tc()` do `useT()` na hora de
+  mostrar: os dados continuam em pt-BR e com os mesmos tipos. Nomes de pessoas,
+  empresas, cidades e estados ficam como estão.
+- Demo: o CHANGELOG também em inglês e espanhol (`CHANGELOG.en.md` e
+  `CHANGELOG.es.md`); a página Changelog mostra o do idioma escolhido.
 - Documentação: as descrições das props (JSDoc) em inglês e espanhol, em
   `demo/docs/props.en.json` e `props.es.json`, com o texto pt-BR do JSDoc como
   chave. `npm run docs:conferir` falha se uma descrição ficar sem tradução ou

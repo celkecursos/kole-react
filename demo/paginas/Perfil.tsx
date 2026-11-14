@@ -93,7 +93,7 @@ export function PaginaPerfil(props: PaginaPerfilProps) {
 /* ---------------- visualizar ---------------- */
 
 function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const atendidos = 1248;
   return (
     <div className="demo-pilha">
@@ -109,16 +109,16 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
           <Card>
             <div className="demo-perfil-id">
               <div className="demo-perfil-foto">
-                {perfil.foto ? <Foto nome={perfil.nome} fotos={perfil.foto} tamanho="md" ampliavel /> : <Avatar nome={perfil.nome} tom="escuro" tamanho="7.5rem" />}
+                {perfil.foto ? <Foto nome={tc(perfil.nome)} fotos={perfil.foto} tamanho="md" ampliavel /> : <Avatar nome={tc(perfil.nome)} tom="escuro" tamanho="7.5rem" />}
                 <button type="button" className="demo-perfil-camera" aria-label={t('paginas.perfil.textos.editarFoto')} title={t('paginas.perfil.textos.editarFoto')} onClick={() => navegar('/perfil/foto')}>
                   <Icone icone="camera" />
                 </button>
               </div>
               <div className="demo-perfil-nome">
-                <h2>{perfil.nome}</h2>
+                <h2>{tc(perfil.nome)}</h2>
                 {perfil.verificado && <Status rotulo={t('paginas.perfil.textos.verificado')} severidade="ok" icone="circle-check" />}
               </div>
-              <span className="demo-perfil-cargo">{perfil.cargo}</span>
+              <span className="demo-perfil-cargo">{tc(perfil.cargo)}</span>
               <div className="demo-perfil-stat">
                 <strong title={String(atendidos)}>{formatarNumero(atendidos, { idioma })}</strong>
                 <span>{t('paginas.perfil.textos.pedidosAtendidos')}</span>
@@ -130,10 +130,10 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
             <div className="demo-perfil-secao-titulo">
               <Icone icone="user" />{t('paginas.perfil.textos.sobreMim')}</div>
             <div className="demo-pilha-p">
-              <Detalhes rotulo={t('paginas.perfil.textos.apelido')} valor={perfil.apelido || 'Não informado'} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.apelido')} valor={perfil.apelido || tc('Não informado')} disposicao="linha" />
               <Detalhes rotulo={t('paginas.perfil.textos.eMail')} valor={perfil.email} disposicao="linha" />
-              <Detalhes rotulo={t('paginas.perfil.textos.cpf')} valor={perfil.cpf || 'Não informado'} disposicao="linha" />
-              <Detalhes rotulo={t('paginas.perfil.textos.fotoParaAEquipe')} valor={perfil.fotoVisivel ? 'Visível' : 'Oculta'} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.cpf')} valor={perfil.cpf || tc('Não informado')} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.fotoParaAEquipe')} valor={perfil.fotoVisivel ? tc('Visível') : tc('Oculta')} disposicao="linha" />
             </div>
           </Card>
         </div>
@@ -172,7 +172,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
                 <li key={a.texto}>
                   <Icone icone={a.icone} />
                   <span>
-                    <span className="demo-perfil-lista-tit">{a.texto}</span>
+                    <span className="demo-perfil-lista-tit">{tc(a.texto)}</span>
                     <span className="demo-perfil-lista-sub">{a.tempo}</span>
                   </span>
                 </li>
@@ -188,7 +188,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
 /* ---------------- editar (3 formulários com menu lateral) ---------------- */
 
 function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & { atual: IdFormulario }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const [salvando, setSalvando] = useState(false);
   const [dados, setDados] = useState({ nome: perfil.nome, email: perfil.email, cpf: perfil.cpf, apelido: perfil.apelido });
@@ -300,7 +300,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
             placeholder={t('paginas.perfil.textos.repitaANovaSenha')}
             valor={senha.confirmar}
             aoMudar={(v) => setSenha((s) => ({ ...s, confirmar: v }))}
-            validar={(v) => (v === senha.nova ? '' : 'As senhas não conferem')}
+            validar={(v) => (v === senha.nova ? '' : tc('As senhas não conferem'))}
           />
         </FormSecao>
       )}
@@ -309,8 +309,8 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
         <>
           <FormSecao legenda={t('paginas.perfil.secoes.foto')} icone="image">
             <div className="demo-perfil-foto-atual">
-              <Foto nome={perfil.nome} fotos={novaFoto[0]?.url ?? perfil.foto} tamanho="md" />
-              <span>{novaFoto.length ? 'Pré-visualização' : 'Foto atual'}</span>
+              <Foto nome={tc(perfil.nome)} fotos={novaFoto[0]?.url ?? perfil.foto} tamanho="md" />
+              <span>{novaFoto.length ? tc('Pré-visualização') : tc('Foto atual')}</span>
             </div>
             <CampoAnexo
               className="lp-col-3"

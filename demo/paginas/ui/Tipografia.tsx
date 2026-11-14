@@ -27,7 +27,7 @@ const CITACOES = (t: TradutorDemo['t']): Array<[CorCitacao, string]> => ([
 ]);
 
 export function PaginaTipografia() {
-  const { t: tx } = useT();
+  const { t: tx, tc } = useT();
   const { t } = useT();
   return (
     <div className="demo-pilha">
@@ -199,12 +199,12 @@ export function PaginaTipografia() {
         <Bloco titulo={t('paginas.tipografia.secoes.pesoEItalico')}>
           <div className="demo-tipo-texto">
             {[
-              [800, 'Texto extranegrito.'],
-              [700, 'Texto em negrito.'],
-              [600, 'Texto seminegrito.'],
-              [500, 'Texto médio.'],
-              [400, 'Texto normal.'],
-              [300, 'Texto leve.'],
+              [800, tc('Texto extranegrito.')],
+              [700, tc('Texto em negrito.')],
+              [600, tc('Texto seminegrito.')],
+              [500, tc('Texto médio.')],
+              [400, tc('Texto normal.')],
+              [300, tc('Texto leve.')],
             ].map(([peso, txt]) => (
               <p key={peso} style={{ fontWeight: peso }}>
                 {txt} <code>{peso}</code>

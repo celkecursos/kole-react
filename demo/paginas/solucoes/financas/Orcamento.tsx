@@ -51,7 +51,7 @@ function EditarOrcamento({ categoria, valor }: { categoria: Categoria; valor: nu
 }
 
 export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const meses = mesesDoPeriodo(periodo).length;
@@ -86,7 +86,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
           icone="circle-alert"
           cor={passaram.length ? 'var(--err-solid)' : 'var(--ok-solid)'}
           valor={String(passaram.length)}
-          descricao={passaram.length ? passaram.map((l) => l.c.nome).join(', ') : t('paginas.finOrcamento.textos.nenhumaCategoriaEstourou')}
+          descricao={passaram.length ? passaram.map((l) => tc(l.c.nome)).join(', ') : t('paginas.finOrcamento.textos.nenhumaCategoriaEstourou')}
         />
       </Indicadores>
 
@@ -105,7 +105,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
                       acoes.pedirFiltro({ categoria: c.id });
                       navegar(ROTAS.lancamentos);
                     }}>
-                      {c.nome}
+                      {tc(c.nome)}
                     </button>
                     <small>
                       <Valor valor={g} forte />{t('paginas.finOrcamento.textos.de')}<Valor valor={limite} centavos={false} />
@@ -113,7 +113,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
                   </div>
                   <Progresso valor={Math.min(100, parte * 100)} altura="sm" cor={cor} marcos={emAndamento ? [ritmo] : undefined} rotulo={t('paginas.finOrcamento.textos.nomeValorDoOrcamento', { nome: c.nome, valor: formatarPercentual(parte * 100, { casas: 0 , idioma }) })} />
                   <small className={`fin-orc-resta${resta < 0 ? ' is-passou' : ''}`}>
-                    {limite === 0 ? 'Sem orçamento' : resta >= 0 ? <>{t('paginas.finOrcamento.textos.restam')}<Valor valor={resta} /></> : <>{t('paginas.finOrcamento.textos.passou')}<Valor valor={-resta} /></>}
+                    {limite === 0 ? tc('Sem orçamento') : resta >= 0 ? <>{t('paginas.finOrcamento.textos.restam')}<Valor valor={resta} /></> : <>{t('paginas.finOrcamento.textos.passou')}<Valor valor={-resta} /></>}
                   </small>
                 </div>
                 <EditarOrcamento categoria={c} valor={mensal} />

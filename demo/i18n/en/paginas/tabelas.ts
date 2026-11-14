@@ -69,6 +69,7 @@ export const paginasTabelas: TextosDemoParciais<typeof Pt> = {
       taxa: 'Fee',
       recebimento: 'Settlement',
       naHora: 'Instant',
+      vDias: '{v} day(s)',
       estados: 'States',
       uf: 'State',
       nome: 'Name',

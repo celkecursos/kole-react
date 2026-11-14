@@ -179,6 +179,7 @@ export const paginasFinancas: TextosDemoParciais<typeof Pt> = {
       recebimentoRegistrado: 'Receipt recorded',
       pagamentoRegistrado: 'Payment recorded',
       aPagarValor: 'Payable · {valor}',
+      parcelaN: 'installment {numero}/{total}',
       aReceberValor: 'Receivable · {valor}',
       atrasados: 'Overdue',
       vencemHoje: 'Due today',

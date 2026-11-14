@@ -176,6 +176,7 @@ export const paginasFinancas = {
       recebimentoRegistrado: 'Recebimento registrado',
       pagamentoRegistrado: 'Pagamento registrado',
       aPagarValor: 'A pagar · {valor}',
+      parcelaN: 'parcela {numero}/{total}',
       aReceberValor: 'A receber · {valor}',
       atrasados: 'Atrasados',
       vencemHoje: 'Vencem hoje',

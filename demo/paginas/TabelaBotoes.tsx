@@ -16,7 +16,7 @@ import { useT } from '../i18n/useT';
 
 /** Modelo de tabela com BOTÕES (texto + ícone) nas ações, em vez de só ícones. */
 export function PaginaTabelaBotoes() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [registros, setRegistros] = useState(TABELA_CATEGORIAS);
@@ -36,10 +36,10 @@ export function PaginaTabelaBotoes() {
   }, [registros, ordem]);
 
   const apagar = async (c: Categoria) => {
-    const ok = await confirmar.remover({ titulo: t('paginas.tabelaBotoes.textos.apagarCategoria'), mensagem: t('paginas.tabelaBotoes.textos.nomeSeraApagadaDefinitivamente', { nome: c.nome }), rotuloAceitar: 'Apagar' });
+    const ok = await confirmar.remover({ titulo: t('paginas.tabelaBotoes.textos.apagarCategoria'), mensagem: t('paginas.tabelaBotoes.textos.nomeSeraApagadaDefinitivamente', { nome: c.nome }), rotuloAceitar: tc('Apagar') });
     if (!ok) return;
     setRegistros((l) => l.filter((x) => x.id !== c.id));
-    toast.ok(t('paginas.tabelaBotoes.textos.categoriaApagada'), c.nome);
+    toast.ok(t('paginas.tabelaBotoes.textos.categoriaApagada'), tc(c.nome));
   };
 
   return (
@@ -68,17 +68,17 @@ export function PaginaTabelaBotoes() {
               aparencia="suave"
               tamanho="pequeno"
               formato="retangulo"
-              onClick={() => toast.info(t('paginas.tabelaBotoes.textos.editar'), c.nome)}
+              onClick={() => toast.info(t('paginas.tabelaBotoes.textos.editar'), tc(c.nome))}
             />
             <Botao rotulo={t('paginas.tabelaBotoes.textos.apagar')} icone="trash-2" severidade="err" aparencia="suave" tamanho="pequeno" formato="retangulo" onClick={() => apagar(c)} />
           </>
         )}
         colunas={[
           { campo: 'codigo', rotulo: t('paginas.tabelaBotoes.textos.codigo'), ordenavel: true, largura: '6rem' },
-          { campo: 'nome', rotulo: t('paginas.tabelaBotoes.textos.categoria'), ordenavel: true, destaque: true },
-          { campo: 'descricao', rotulo: t('paginas.tabelaBotoes.textos.descricao') },
+          { campo: 'nome', rotulo: t('paginas.tabelaBotoes.textos.categoria'), ordenavel: true, destaque: true, formato: (v) => tc(v as string) },
+          { campo: 'descricao', rotulo: t('paginas.tabelaBotoes.textos.descricao'), formato: (v) => tc(v as string) },
           { campo: 'produtos', rotulo: t('paginas.tabelaBotoes.textos.produtos'), ordenavel: true, alinhamento: 'direita' },
-          { campo: 'ativa', rotulo: t('paginas.tabelaBotoes.textos.situacao'), formato: (v) => (v ? 'Ativa' : 'Inativa'), severidade: (c) => (c.ativa ? 'ok' : 'neutral') },
+          { campo: 'ativa', rotulo: t('paginas.tabelaBotoes.textos.situacao'), formato: (v) => (v ? tc('Ativa') : tc('Inativa')), severidade: (c) => (c.ativa ? 'ok' : 'neutral') },
         ]}
         vazioTitulo={t('paginas.tabelaBotoes.textos.nenhumaCategoria')}
         vazioAcoes={<Botao rotulo={t('paginas.tabelaBotoes.textos.restaurarCategorias')} severidade="secundario" onClick={() => setRegistros(TABELA_CATEGORIAS)} />}
@@ -109,7 +109,7 @@ export function PaginaTabelaBotoes() {
               icone="pencil"
               severidade="destaque"
               onClick={() => {
-                toast.info(t('paginas.tabelaBotoes.textos.editar'), vendo?.nome);
+                toast.info(t('paginas.tabelaBotoes.textos.editar'), tc(vendo?.nome));
                 setVendo(null);
               }}
             />

@@ -48,21 +48,21 @@ const ICONES = (t: TradutorDemo['t']) => ([
 const mesesAte = (prazo: string) => Math.max(1, Math.ceil(diasEntre(hoje(), prazo) / 30.44));
 
 function DialogoMeta({ inicial, aoFechar }: { inicial: Meta; aoFechar: () => void }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const [m, setM] = useState(inicial);
   const [tentou, setTentou] = useState(false);
   const nova = !inicial.nome;
   const erros = {
-    nome: !m.nome.trim() ? 'Dê um nome à meta' : undefined,
-    alvo: !(m.alvo > 0) ? 'Informe o valor' : undefined,
-    prazo: !m.prazo || m.prazo <= dia(0) ? 'Escolha uma data futura' : undefined,
+    nome: !m.nome.trim() ? tc('Dê um nome à meta') : undefined,
+    alvo: !(m.alvo > 0) ? tc('Informe o valor') : undefined,
+    prazo: !m.prazo || m.prazo <= dia(0) ? tc('Escolha uma data futura') : undefined,
   };
   const salvar = () => {
     setTentou(true);
     if (Object.values(erros).some(Boolean)) return;
     acoes.salvarMeta({ ...m, nome: m.nome.trim() });
-    toast.ok(nova ? t('paginas.finMetas.textos.metaCriada') : t('paginas.finMetas.textos.metaSalva'), m.nome);
+    toast.ok(nova ? t('paginas.finMetas.textos.metaCriada') : t('paginas.finMetas.textos.metaSalva'), tc(m.nome));
     aoFechar();
   };
   return (
@@ -125,7 +125,7 @@ function Guardar({ meta }: { meta: Meta }) {
 }
 
 export function Metas() {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const { espaco, metas } = useFinancas();
   const moeda = useMoeda();
   const confirmar = useConfirmacao();
@@ -137,9 +137,9 @@ export function Metas() {
   const porMes = somarMoeda(lista.filter((m) => m.guardado < m.alvo).map((m) => (m.alvo - m.guardado) / mesesAte(m.prazo)));
 
   const excluir = async (m: Meta) => {
-    if (!(await confirmar.remover({ titulo: t('paginas.finMetas.textos.excluirMeta'), mensagem: t('paginas.finMetas.textos.nomeSaiDaLista', { nome: m.nome }), rotuloAceitar: 'Excluir' }))) return;
+    if (!(await confirmar.remover({ titulo: t('paginas.finMetas.textos.excluirMeta'), mensagem: t('paginas.finMetas.textos.nomeSaiDaLista', { nome: m.nome }), rotuloAceitar: tc('Excluir') }))) return;
     acoes.excluirMeta(m.id);
-    toast.ok(t('paginas.finMetas.textos.metaExcluida'), m.nome);
+    toast.ok(t('paginas.finMetas.textos.metaExcluida'), tc(m.nome));
   };
   const nova = () => setEditando({ id: novoId(), espaco, nome: '', icone: 'piggy-bank', cor: 'ok', alvo: 0, guardado: 0, prazo: dia(365) });
 
@@ -191,7 +191,7 @@ export function Metas() {
                     <span className={`fin-meta-ic fin-meta-ic--${m.cor}`} aria-hidden="true">
                       <Icone icone={m.icone} />
                     </span>
-                    {m.nome}
+                    {tc(m.nome)}
                   </span>
                 }
               >
@@ -200,7 +200,7 @@ export function Metas() {
                   <span>{t('paginas.finMetas.textos.de')}<Valor valor={m.alvo} centavos={false} />
                   </span>
                 </div>
-                <Progresso valor={parte * 100} cor={m.cor as CorProgresso} altura="md" mostrarValor="fim" rotulo={`${m.nome}: ${formatarPercentual(parte * 100, { casas: 0 , idioma })}`} />
+                <Progresso valor={parte * 100} cor={m.cor as CorProgresso} altura="md" mostrarValor="fim" rotulo={`${tc(m.nome)}: ${formatarPercentual(parte * 100, { casas: 0 , idioma })}`} />
                 <dl className="fin-meta-dados">
                   <div>
                     <dt>{t('paginas.finMetas.textos.prazo')}</dt>
@@ -209,7 +209,7 @@ export function Metas() {
                     </dd>
                   </div>
                   <div>
-                    <dt>{pronta ? 'Situação' : 'Guardar por mês'}</dt>
+                    <dt>{pronta ? tc('Situação') : tc('Guardar por mês')}</dt>
                     <dd>{pronta ? <strong className="fin-ok">{t('paginas.finMetas.textos.metaCumprida')}</strong> : <Valor valor={falta / meses} forte />}</dd>
                   </div>
                 </dl>

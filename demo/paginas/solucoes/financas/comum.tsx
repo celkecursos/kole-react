@@ -131,7 +131,7 @@ const TIPOS = (t: TradutorDemo['t']): { valor: TipoLancamento; rotulo: string }[
 type Repetir = 'nao' | 'parcelado' | 'fixo';
 
 function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; novo: boolean; aoFechar: () => void }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [l, setL] = useState(inicial);
@@ -147,11 +147,11 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
 
   const erros = {
     descricao: !l.descricao.trim() ? t('paginas.financas.textos.informeADescricao') : undefined,
-    valor: !(l.valor > 0) ? 'Informe o valor' : undefined,
-    data: !l.data ? 'Informe a data' : undefined,
-    categoria: l.tipo !== 'transferencia' && !l.categoria ? 'Escolha a categoria' : undefined,
-    contaDestino: l.tipo === 'transferencia' && (!l.contaDestino || l.contaDestino === l.conta) ? 'Escolha outra conta' : undefined,
-    vezes: repetir !== 'nao' && (Number(vezes) < 2 || Number(vezes) > 60) ? 'De 2 a 60' : undefined,
+    valor: !(l.valor > 0) ? tc('Informe o valor') : undefined,
+    data: !l.data ? tc('Informe a data') : undefined,
+    categoria: l.tipo !== 'transferencia' && !l.categoria ? tc('Escolha a categoria') : undefined,
+    contaDestino: l.tipo === 'transferencia' && (!l.contaDestino || l.contaDestino === l.conta) ? tc('Escolha outra conta') : undefined,
+    vezes: repetir !== 'nao' && (Number(vezes) < 2 || Number(vezes) > 60) ? tc('De 2 a 60') : undefined,
   };
   const ok = Object.values(erros).every((e) => !e);
   const mostrar = (e?: string) => (tentou ? e : undefined);
@@ -183,26 +183,26 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
       }));
     }
     acoes.salvar(lista);
-    toast.ok(novo ? (lista.length > 1 ? t('paginas.financas.textos.nLancamentosCriados', { n: lista.length }) : t('paginas.financas.textos.lancamentoCriado')) : t('paginas.financas.textos.lancamentoSalvo'), base.descricao);
+    toast.ok(novo ? (lista.length > 1 ? t('paginas.financas.textos.nLancamentosCriados', { n: lista.length }) : t('paginas.financas.textos.lancamentoCriado')) : t('paginas.financas.textos.lancamentoSalvo'), tc(base.descricao));
     aoFechar();
   };
 
   const excluir = async () => {
-    const sim = await confirmar.remover({ titulo: t('paginas.financas.textos.excluirLancamento'), mensagem: t('paginas.financas.textos.descricaoSaiDosSaldos', { descricao: l.descricao }), rotuloAceitar: 'Excluir' });
+    const sim = await confirmar.remover({ titulo: t('paginas.financas.textos.excluirLancamento'), mensagem: t('paginas.financas.textos.descricaoSaiDosSaldos', { descricao: l.descricao }), rotuloAceitar: tc('Excluir') });
     if (!sim) return;
     acoes.excluir([l.id]);
-    toast.ok(t('paginas.financas.textos.lancamentoExcluido'), l.descricao);
+    toast.ok(t('paginas.financas.textos.lancamentoExcluido'), tc(l.descricao));
     aoFechar();
   };
 
-  const rotuloPago = l.tipo === 'receita' ? 'Já recebi' : l.tipo === 'transferencia' ? 'Já transferi' : 'Já paguei';
+  const rotuloPago = l.tipo === 'receita' ? tc('Já recebi') : l.tipo === 'transferencia' ? tc('Já transferi') : tc('Já paguei');
 
   return (
     <Dialogo
       aberto
       aoFechar={aoFechar}
       titulo={novo ? t('paginas.financas.textos.novoLancamento') : t('paginas.financas.textos.editarLancamento')}
-      subtitulo={ESPACOS.find((e) => e.id === l.espaco)?.nome}
+      subtitulo={tc(ESPACOS.find((e) => e.id === l.espaco)?.nome)}
       icone={l.tipo === 'transferencia' ? 'arrow-left-right' : l.tipo === 'receita' ? 'trending-up' : 'trending-down'}
       tamanho="medio"
       telaCheiaAbaixo="sm"
@@ -222,7 +222,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         }}
       >
         <Escolha
-          ariaLabel="Tipo"
+          ariaLabel={tc("Tipo")}
           className="fin-form-inteiro"
           opcoes={TIPOS(t)}
           valor={l.tipo}
@@ -235,7 +235,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         <CampoSelect
           rotulo={l.tipo === 'transferencia' ? t('paginas.financas.textos.de') : l.tipo === 'receita' ? t('paginas.financas.textos.recebeNaConta') : t('paginas.financas.textos.pagaCom')}
           obrigatorio
-          opcoes={contas.filter((c) => l.tipo === 'despesa' || c.tipo !== 'cartao').map((c) => ({ valor: c.id, rotulo: `${c.nome} · ${c.instituicao}` }))}
+          opcoes={contas.filter((c) => l.tipo === 'despesa' || c.tipo !== 'cartao').map((c) => ({ valor: c.id, rotulo: `${tc(c.nome)} · ${tc(c.instituicao)}` }))}
           valor={l.conta}
           aoMudar={(conta) => conta && mudar({ conta })}
         />
@@ -243,7 +243,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
           <CampoSelect
             rotulo={t('paginas.financas.textos.para')}
             obrigatorio
-            opcoes={contas.filter((c) => c.id !== l.conta).map((c) => ({ valor: c.id, rotulo: `${c.nome} · ${c.instituicao}` }))}
+            opcoes={contas.filter((c) => c.id !== l.conta).map((c) => ({ valor: c.id, rotulo: `${tc(c.nome)} · ${tc(c.instituicao)}` }))}
             valor={l.contaDestino ?? null}
             aoMudar={(contaDestino) => mudar({ contaDestino: contaDestino ?? undefined })}
             erro={mostrar(erros.contaDestino)}
@@ -253,7 +253,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
             rotulo={t('paginas.financas.textos.categoria')}
             obrigatorio
             comBusca
-            opcoes={categorias.map((c) => ({ valor: c.id, rotulo: c.nome }))}
+            opcoes={categorias.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))}
             valor={l.categoria ?? null}
             aoMudar={(categoria) => mudar({ categoria: categoria ?? undefined })}
             erro={mostrar(erros.categoria)}
@@ -266,7 +266,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
               placeholder={t('paginas.financas.textos.nenhum')}
               botaoLimpar
               comBusca
-              opcoes={contatos.map((c) => ({ valor: c.id, rotulo: c.nome }))}
+              opcoes={contatos.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))}
               valor={l.contato ?? null}
               aoMudar={(contato) => mudar({ contato: contato ?? undefined })}
             />
@@ -274,7 +274,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
               rotulo={t('paginas.financas.textos.centroDeCusto')}
               placeholder={t('paginas.financas.textos.nenhum')}
               botaoLimpar
-              opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: c.nome }))}
+              opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))}
               valor={l.centroCusto ?? null}
               aoMudar={(centroCusto) => mudar({ centroCusto: centroCusto ?? undefined })}
             />

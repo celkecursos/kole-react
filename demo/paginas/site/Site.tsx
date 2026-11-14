@@ -71,7 +71,7 @@ const POSTS = (t: TradutorDemo['t']): Post[] => ((
   [
     [t('paginas.site.textos.guias'), t('paginas.site.textos.comoDarOPrimeiro'), '05/11/2026'],
     [t('paginas.site.textos.novidades'), t('paginas.site.textos.oQueMudouNa'), '03/11/2026'],
-    [t('paginas.site.textos.dicas'), '7 dicas simples para aproveitar melhor o seu tempo', '30/10/2026'],
+    [t('paginas.site.textos.dicas'), t('paginas.site.textos.seteDicasSimples'), '30/10/2026'],
     [t('paginas.site.textos.cases'), t('paginas.site.textos.comoUmClienteReduziu'), '27/10/2026'],
     [t('paginas.site.textos.guias'), t('paginas.site.textos.checklistCompletoAntesDe'), '22/10/2026'],
     [t('paginas.site.textos.dicas'), t('paginas.site.textos.errosComunsEComo'), '18/10/2026'],
@@ -103,7 +103,7 @@ function LinkDemo({ rota, children }: { rota: string; children: ReactNode }) {
 }
 
 export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: string) => void }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   // página nova começa do topo (o site rola a janela, não um painel)
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -134,7 +134,7 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
       )}
       aviso={
         <>
-          <b>Novidade:</b> conheça a nova versão do nosso serviço. <a href="#/site/blog">Saiba mais →</a>
+          <b>{tc('Novidade:')}</b> {tc('conheça a nova versão do nosso serviço.')} <a href="#/site/blog">{tc('Saiba mais →')}</a>
         </>
       }
       avisoLateral={
@@ -151,7 +151,7 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
       }
       rodape={
         <RodapeSite
-          nome={MARCA}
+          nome={tc(MARCA)}
           descricao={t('paginas.site.textos.umaFraseQueResume')}
           extra={<Newsletter aparencia="linha" rotuloBotao={t('paginas.site.textos.assinar')} aoInscrever={() => undefined} />}
           colunas={[
@@ -165,7 +165,7 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
               ],
             },
           ]}
-          copyright={`© 2026 ${MARCA}. Todos os direitos reservados.`}
+          copyright={`© 2026 ${tc(MARCA)}. Todos os direitos reservados.`}
           redes={[
             { rotulo: t('paginas.site.textos.instagram'), rota: '/site' },
             { rotulo: t('paginas.site.textos.linkedin'), rota: '/site' },
@@ -202,7 +202,7 @@ const FAQ = (t: TradutorDemo['t']) => ([
 ]);
 
 function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'escuro' | 'claro' }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const botoes = (
     <div className="demo-linha">
       <Botao rotulo={t('paginas.site.textos.comecarAgora')} tamanho="grande" severidade={faixa === 'escuro' ? 'destaque' : 'pri'} onClick={() => navegar('/site/contato')} />
@@ -215,7 +215,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         <DestaqueSite
           selo={t('paginas.site.textos.seuSloganOuNovidade')}
           titulo={TITULO_HOME(t)}
-          realce="negócio"
+          realce={tc("negócio")}
           descricao={TEXTO_HOME(t)}
           lateral={
             <div className="demo-site-hero-midia">
@@ -238,7 +238,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
             itens={[
               { valor: '+1.200', rotulo: t('paginas.site.textos.clientesAtendidos') },
               { valor: '4,9/5', rotulo: t('paginas.site.textos.avaliacaoMedia') },
-              { valor: '10 anos', rotulo: t('paginas.site.textos.deMercado') },
+              { valor: tc('10 anos'), rotulo: t('paginas.site.textos.deMercado') },
             ]}
           />
         </DestaqueSite>
@@ -247,7 +247,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
           aparencia="claro"
           selo={t('paginas.site.textos.seuSloganOuNovidade')}
           titulo={TITULO_HOME(t)}
-          realce="negócio"
+          realce={tc("negócio")}
           descricao={TEXTO_HOME(t)}
           midia={<Imagem legenda={t('paginas.site.textos.imagemPrincipalMockupDo')} proporcao="16 / 7" />}
         >
@@ -274,8 +274,8 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         />
         <div className="demo-site-grade demo-site-grade--300">
           {DIFERENCIAIS(t).map((d) => (
-            <CardRecurso key={d.titulo} icone={d.icone} titulo={d.titulo}>
-              {d.texto}
+            <CardRecurso key={d.titulo} icone={d.icone} titulo={tc(d.titulo)}>
+              {tc(d.texto)}
             </CardRecurso>
           ))}
         </div>
@@ -313,9 +313,9 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
       <SecaoSite rotulo={t('paginas.site.textos.depoimentos')}>
         <CabecalhoSecao sobretitulo={t('paginas.site.textos.depoimentos')} titulo={t('paginas.site.textos.oQueDizemOs')} />
         <div className="demo-site-grade demo-site-grade--320">
-          <CardDepoimento texto={t('paginas.site.textos.espacoParaUmDepoimento')} nome="Nome do Cliente" cargo="Cargo · Empresa" />
-          <CardDepoimento texto={t('paginas.site.textos.outroDepoimentoCurtoDestacando')} nome="Nome do Cliente" cargo="Cargo · Empresa" />
-          <CardDepoimento texto={t('paginas.site.textos.umTerceiroDepoimentoReforcando')} nome="Nome do Cliente" cargo="Cargo · Empresa" nota={4} />
+          <CardDepoimento texto={t('paginas.site.textos.espacoParaUmDepoimento')} nome={tc("Nome do Cliente")} cargo={tc("Cargo · Empresa")} />
+          <CardDepoimento texto={t('paginas.site.textos.outroDepoimentoCurtoDestacando')} nome={tc("Nome do Cliente")} cargo={tc("Cargo · Empresa")} />
+          <CardDepoimento texto={t('paginas.site.textos.umTerceiroDepoimentoReforcando')} nome={tc("Nome do Cliente")} cargo={tc("Cargo · Empresa")} nota={4} />
         </div>
       </SecaoSite>
 
@@ -333,7 +333,7 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
                   <span>{p.data}</span>
                 </>
               }
-              titulo={p.titulo}
+              titulo={tc(p.titulo)}
             />
           ))}
         </div>
@@ -379,7 +379,7 @@ function CabecalhoPaginaSite({ atual, titulo, descricao }: { atual: string; titu
 }
 
 function Sobre() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <>
       <CabecalhoPaginaSite
@@ -410,10 +410,10 @@ function Sobre() {
         <CabecalhoSecao titulo={t('paginas.site.textos.nossosValores')} />
         <div className="demo-site-grade demo-site-grade--260">
           {[
-            ['Transparência', 'Comunicação clara em todas as etapas.'],
-            ['Qualidade', 'Cuidado com cada detalhe da entrega.'],
-            ['Proximidade', 'Atendimento humano e acessível.'],
-            ['Evolução', 'Melhoria contínua do que fazemos.'],
+            [tc('Transparência'), tc('Comunicação clara em todas as etapas.')],
+            [tc('Qualidade'), tc('Cuidado com cada detalhe da entrega.')],
+            [tc('Proximidade'), tc('Atendimento humano e acessível.')],
+            [tc('Evolução'), tc('Melhoria contínua do que fazemos.')],
           ].map(([t, d], i) => (
             <CardRecurso key={t} numero={String(i + 1).padStart(2, '0')} titulo={t}>
               {d}
@@ -424,7 +424,7 @@ function Sobre() {
       <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.equipe')}>
         <CabecalhoSecao titulo={t('paginas.site.textos.equipe')} />
         <div className="demo-site-grade demo-site-grade--220">
-          {['Fundador(a)', 'Diretor(a) de Operações', 'Atendimento', 'Marketing'].map((cargo) => (
+          {[tc('Fundador(a)'), tc('Diretor(a) de Operações'), tc('Atendimento'), tc('Marketing')].map((cargo) => (
             <CardConteudo key={cargo} className="demo-site-pessoa" midia={<Imagem legenda={t('paginas.site.textos.foto')} />} titulo={t('paginas.site.textos.nomeSobrenome')} resumo={cargo} />
           ))}
         </div>
@@ -436,7 +436,7 @@ function Sobre() {
 /* ---------------- Serviços e planos ---------------- */
 
 const PLANOS = (t: TradutorDemo['t']) => ([
-  { nome: t('paginas.site.textos.basico'), descricao: t('paginas.site.textos.paraQuemEstaComecando'), mensal: '49', anual: '39', itens: [t('paginas.site.textos.recursoEssencial1'), t('paginas.site.textos.recursoEssencial2'), t('paginas.site.textos.suportePorEMail'), '1 usuário'] },
+  { nome: t('paginas.site.textos.basico'), descricao: t('paginas.site.textos.paraQuemEstaComecando'), mensal: '49', anual: '39', itens: [t('paginas.site.textos.recursoEssencial1'), t('paginas.site.textos.recursoEssencial2'), t('paginas.site.textos.suportePorEMail'), t('paginas.site.textos.umUsuario')] },
   {
     nome: t('paginas.site.textos.profissional'),
     descricao: t('paginas.site.textos.paraNegociosEmCrescimento'),
@@ -449,7 +449,7 @@ const PLANOS = (t: TradutorDemo['t']) => ([
 ]);
 
 function Servicos({ navegar }: { navegar: (rota: string) => void }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const [cobranca, setCobranca] = useState('mensal');
   const anual = cobranca === 'anual';
   return (
@@ -463,10 +463,10 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
         <div className="demo-site-grade demo-site-grade--340">
           {(
             [
-              ['package', 'Serviço ou produto 1'],
-              ['pencil', 'Serviço ou produto 2'],
-              ['chart-line', 'Serviço ou produto 3'],
-              ['message-square', 'Serviço ou produto 4'],
+              ['package', tc('Serviço ou produto 1')],
+              ['pencil', tc('Serviço ou produto 2')],
+              ['chart-line', tc('Serviço ou produto 3')],
+              ['message-square', tc('Serviço ou produto 4')],
             ] as const
           ).map(([icone, titulo]) => (
             <CardRecurso key={titulo} formato="horizontal" icone={icone} titulo={titulo} acao={<LinkDemo rota="/site/contato">{t('paginas.site.textos.saibaMais')}</LinkDemo>}>{t('paginas.site.textos.descricaoCurtaDoQue')}</CardRecurso>
@@ -485,8 +485,8 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
           {PLANOS(t).map((p) => (
             <CardPlano
               key={p.nome}
-              nome={p.nome}
-              descricao={p.descricao}
+              nome={tc(p.nome)}
+              descricao={tc(p.descricao)}
               preco={anual ? p.anual : p.mensal}
               periodo={anual ? '/mês, cobrado anual' : '/mês'}
               itens={p.itens}
@@ -514,7 +514,7 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
 const POR_PAGINA = 6;
 
 function Blog() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const [termo, setTermo] = useState('');
   const [busca, setBusca] = useState('');
   const [cat, setCat] = useState('Todos');
@@ -549,7 +549,7 @@ function Blog() {
             setCat(c);
             setPagina(1);
           }}
-          opcoes={['Todos', 'Guias', 'Dicas', 'Novidades', 'Cases'].map((c) => ({ valor: c, rotulo: c }))}
+          opcoes={[tc('Todos'), tc('Guias'), tc('Dicas'), tc('Novidades'), tc('Cases')].map((c) => ({ valor: c, rotulo: c }))}
         />
       </SecaoSite>
       <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.posts')}>
@@ -568,7 +568,7 @@ function Blog() {
               }
               titulo={t('paginas.site.textos.tituloDoPostEm')}
               resumo={t('paginas.site.textos.resumoDoConteudoEm')}
-              rodape="Nome do autor · 05/11/2026 · 6 min de leitura"
+              rodape={tc("Nome do autor · 05/11/2026 · 6 min de leitura")}
             />
             {visiveis.length ? (
               <div className="demo-site-grade demo-site-grade--260">
@@ -583,7 +583,7 @@ function Blog() {
                         <span>{p.data}</span>
                       </>
                     }
-                    titulo={p.titulo}
+                    titulo={tc(p.titulo)}
                   />
                 ))}
               </div>
@@ -604,13 +604,13 @@ function Blog() {
 const TRILHA_POST = (t: TradutorDemo['t']) => ([{ rotulo: t('paginas.site.textos.home'), rota: '/site', icone: 'house' as const }, { rotulo: t('paginas.site.textos.blog'), rota: '/site/blog' }, { rotulo: t('paginas.site.textos.guias') }]);
 
 function CabecalhoPost() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <>
       <Trilha itens={TRILHA_POST(t)} />
       <CabecalhoSecao nivel={1} tamanho="pagina" titulo={t('paginas.site.textos.tituloDoPostEm')} descricao={t('paginas.site.textos.linhaFinaQueResume')} />
       <div className="demo-site-autor">
-        <Avatar nome="Nome do Autor" tamanho="2.5rem" />
+        <Avatar nome={tc("Nome do Autor")} tamanho="2.5rem" />
         <span>{rico(t('paginas.site.textos.nomeDoAutor'))}<span>{t('paginas.site.textos.t051120266')}</span>
         </span>
       </div>
@@ -619,7 +619,7 @@ function CabecalhoPost() {
 }
 
 function TextoPost({ className }: { className?: string }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <ConteudoArtigo className={className}>
       <p>{t('paginas.site.textos.primeiroParagrafoDoArtigo')}</p>
@@ -633,8 +633,8 @@ function TextoPost({ className }: { className?: string }) {
       <blockquote>{t('paginas.site.textos.umaCitacaoOuDestaque')}</blockquote>
       <p>{t('paginas.site.textos.paragrafoDeConclusaoCom')}</p>
       <div className="demo-site-tags">
-        {['guia', 'iniciantes', 'produtividade'].map((t) => (
-          <Badge key={t} cor="neutral" aparencia="suave" formato="pilula" rotulo={`#${t}`} />
+        {['guia', 'iniciantes', 'produtividade'].map((tag) => (
+          <Badge key={tag} cor="neutral" aparencia="suave" formato="pilula" rotulo={`#${tc(tag)}`} />
         ))}
       </div>
     </ConteudoArtigo>
@@ -642,13 +642,13 @@ function TextoPost({ className }: { className?: string }) {
 }
 
 function LeiaTambem() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.leiaTambem')}>
       <CabecalhoSecao titulo={t('paginas.site.textos.leiaTambem')} />
       <div className="demo-site-grade demo-site-grade--280">
         {POSTS(t).slice(0, 3).map((p) => (
-          <CardConteudo key={p.titulo} href="/site/blog/post" etiquetas={<span className="demo-site-cat-tx">{p.cat}</span>} titulo={p.titulo} />
+          <CardConteudo key={p.titulo} href="/site/blog/post" etiquetas={<span className="demo-site-cat-tx">{p.cat}</span>} titulo={tc(p.titulo)} />
         ))}
       </div>
     </SecaoSite>
@@ -657,12 +657,12 @@ function LeiaTambem() {
 
 /** Coluna da direita do blog: newsletter, mais lidos e banner (a mesma da listagem). */
 function LateralBlog() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <aside className="demo-site-lateral" aria-label={t('paginas.site.textos.maisDoBlog')}>
       <Newsletter descricao={t('paginas.site.textos.umEMailPor')} aoInscrever={() => undefined} />
       <Card titulo={t('paginas.site.secoes.maisLidos')}>
-        <ListaNumerada tamanho="compacto" rotulo={t('paginas.site.textos.maisLidos')} itens={POSTS(t).slice(1, 5).map((p) => ({ titulo: p.titulo, href: '/site/blog/post' }))} />
+        <ListaNumerada tamanho="compacto" rotulo={t('paginas.site.textos.maisLidos')} itens={POSTS(t).slice(1, 5).map((p) => ({ titulo: tc(p.titulo), href: '/site/blog/post' }))} />
       </Card>
       <Imagem legenda={t('paginas.site.textos.banner')} proporcao="4 / 3" className="demo-site-img--tracejada" />
     </aside>
@@ -776,8 +776,8 @@ interface SecaoLegal {
 
 /** Modelo das páginas legais: sumário ao lado, aviso de texto de exemplo e seções numeradas. */
 function PaginaLegal({ atual, titulo, atualizacao, introducao, secoes }: { atual: string; titulo: string; atualizacao: string; introducao: ReactNode; secoes: SecaoLegal[] }) {
-  const { t } = useT();
-  const numeradas = secoes.map((s, i) => ({ ...s, rotulo: `${i + 1}. ${s.titulo}` }));
+  const { t, tc } = useT();
+  const numeradas = secoes.map((s, i) => ({ ...s, rotulo: `${i + 1}. ${tc(s.titulo)}` }));
   return (
     <>
       <CabecalhoPaginaSite atual={atual} titulo={titulo} descricao={t('paginas.site.textos.ultimaAtualizacaoAtualizacaoEm', { atualizacao, atualizacao2: atualizacao })} />
@@ -795,7 +795,7 @@ function PaginaLegal({ atual, titulo, atualizacao, introducao, secoes }: { atual
             {introducao}
             {numeradas.map((s) => (
               <section key={s.id} className="demo-site-legal-secao" aria-labelledby={s.id}>
-                <h2 id={s.id}>{s.rotulo}</h2>
+                <h2 id={s.id}>{tc(s.rotulo)}</h2>
                 {s.conteudo}
               </section>
             ))}
@@ -812,14 +812,14 @@ const contatoLegal = (t: TradutorDemo['t']) => (
 );
 
 function Termos() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <PaginaLegal
       atual={t('paginas.site.textos.termosDeUso2')}
       titulo={t('paginas.site.textos.termosDeUso2')}
       atualizacao="05/11/2026"
       introducao={
-        <p>{t('paginas.site.textos.estesTermosDeUso')}<b>{MARCA}</b>{t('paginas.site.textos.leiaComAtencaoAo')}</p>
+        <p>{t('paginas.site.textos.estesTermosDeUso')}<b>{tc(MARCA)}</b>{t('paginas.site.textos.leiaComAtencaoAo')}</p>
       }
       secoes={[
         {
@@ -915,14 +915,14 @@ function Termos() {
 }
 
 function Privacidade() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <PaginaLegal
       atual={t('paginas.site.textos.politicaDePrivacidade')}
       titulo={t('paginas.site.textos.politicaDePrivacidade')}
       atualizacao="05/11/2026"
       introducao={
-        <p>{t('paginas.site.textos.estaPoliticaExplicaComo')}<b>{MARCA}</b>{t('paginas.site.textos.coletaUsaGuardaE')}</p>
+        <p>{t('paginas.site.textos.estaPoliticaExplicaComo')}<b>{tc(MARCA)}</b>{t('paginas.site.textos.coletaUsaGuardaE')}</p>
       }
       secoes={[
         {
@@ -1007,14 +1007,14 @@ function Privacidade() {
 }
 
 function Cookies() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <PaginaLegal
       atual={t('paginas.site.textos.politicaDeCookies')}
       titulo={t('paginas.site.textos.politicaDeCookies')}
       atualizacao="05/11/2026"
       introducao={
-        <p>{t('paginas.site.textos.estaPoliticaExplicaO')}<b>{MARCA}</b>{t('paginas.site.textos.usaEComoVoce')}<a href="#/site/privacidade">{t('paginas.site.textos.politicaDePrivacidade')}</a>.
+        <p>{t('paginas.site.textos.estaPoliticaExplicaO')}<b>{tc(MARCA)}</b>{t('paginas.site.textos.usaEComoVoce')}<a href="#/site/privacidade">{t('paginas.site.textos.politicaDePrivacidade')}</a>.
         </p>
       }
       secoes={[

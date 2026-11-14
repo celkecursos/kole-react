@@ -61,7 +61,7 @@ interface ItemPedido {
 }
 
 export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: string) => void }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const atual: IdFormulario = FORMULARIOS.find((x) => x.rota === rota)?.id ?? 'cliente';
   const toast = useToast();
   const [salvando, setSalvando] = useState(false);
@@ -104,10 +104,10 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
   const total = Math.max(0, subtotal - (f.desconto ?? 0) + (f.frete ?? 0));
 
   const erros = {
-    cliente: !f.cliente.trim() ? (f.tipoPessoa === 'J' ? 'Informe a razão social.' : 'Informe o nome do cliente.') : undefined,
-    documento: !isCpfCnpj(f.documento) ? 'Informe um CPF ou CNPJ válido.' : undefined,
-    itens: !itens.length ? 'Adicione pelo menos um item.' : undefined,
-    entrega: !f.entrega ? 'Informe a previsão de entrega.' : f.entrega < f.dataPedido ? 'A entrega deve ser depois da data do pedido.' : undefined,
+    cliente: !f.cliente.trim() ? (f.tipoPessoa === 'J' ? tc('Informe a razão social.') : tc('Informe o nome do cliente.')) : undefined,
+    documento: !isCpfCnpj(f.documento) ? tc('Informe um CPF ou CNPJ válido.') : undefined,
+    itens: !itens.length ? tc('Adicione pelo menos um item.') : undefined,
+    entrega: !f.entrega ? tc('Informe a previsão de entrega.') : f.entrega < f.dataPedido ? tc('A entrega deve ser depois da data do pedido.') : undefined,
   };
   const pendenciasPorForm: Record<IdFormulario, number> = {
     cliente: [erros.cliente, erros.documento].filter(Boolean).length,

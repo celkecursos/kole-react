@@ -71,11 +71,16 @@ const INICIAIS = (t: TradutorDemo['t']): Msg[] => ([
 
 let seq = 100;
 
+/** Fontes no idioma (os dados de exemplo ficam em pt-BR). */
+const fontesNoIdioma = (itens: ItemReferencia[], tc: TradutorDemo['tc']) =>
+  itens.map((r) => ({ ...r, titulo: tc(r.titulo), detalhe: tc(r.detalhe), trecho: tc(r.trecho) }));
+
 /**
  * Chat simulado, sem rede: a resposta chega em pedaços por `setInterval`.
  * `falhar` = a primeira resposta dá erro (para mostrar o "Tentar novamente").
  */
 function useChatSimulado(inicial: Msg[], falhar = false) {
+  const { tc } = useT();
   const [mensagens, setMensagens] = useState(inicial);
   const [gerando, setGerando] = useState(false);
   const timer = useRef<number | undefined>(undefined);
@@ -92,7 +97,8 @@ function useChatSimulado(inicial: Msg[], falhar = false) {
 
   const transmitir = (id: number, resposta: Resposta) => {
     setGerando(true);
-    const palavras = resposta.texto.split(/(?<=\s)/);
+    const final = tc(resposta.texto);
+    const palavras = final.split(/(?<=\s)/);
     let i = 0;
     // os três pontos aparecem um instante antes do texto
     timer.current = window.setTimeout(() => {
@@ -104,7 +110,7 @@ function useChatSimulado(inicial: Msg[], falhar = false) {
           return;
         }
         limpar();
-        mudar(id, { texto: resposta.texto, estado: 'concluida', referencias: resposta.referencias });
+        mudar(id, { texto: final, estado: 'concluida', referencias: resposta.referencias });
         setGerando(false);
       }, 60);
     }, 700);
@@ -115,7 +121,7 @@ function useChatSimulado(inicial: Msg[], falhar = false) {
       falhou.current = true;
       setGerando(true);
       timer.current = window.setTimeout(() => {
-        mudar(id, { estado: 'erro', erro: 'A resposta não chegou. Verifique a conexão e tente de novo.' });
+        mudar(id, { estado: 'erro', erro: tc('A resposta não chegou. Verifique a conexão e tente de novo.') });
         setGerando(false);
       }, 1200);
       return;
@@ -140,7 +146,7 @@ function useChatSimulado(inicial: Msg[], falhar = false) {
     setGerando(false);
     setMensagens((l) => [
       ...l.map((x): Msg => (x.estado === 'gerando' ? { ...x, estado: 'concluida' } : x)),
-      { id: ++seq, autor: 'sistema', texto: 'Resposta interrompida', estado: 'concluida', hora: new Date() },
+      { id: ++seq, autor: 'sistema', texto: tc('Resposta interrompida'), estado: 'concluida', hora: new Date() },
     ]);
   };
 
@@ -154,7 +160,7 @@ function useChatSimulado(inicial: Msg[], falhar = false) {
 
 /** Conversa + campo ligados ao chat simulado. */
 function ChatDemo({ inicial, falhar, larguraMaxima, vazio }: { inicial: Msg[]; falhar?: boolean; larguraMaxima?: string; vazio?: ReactNode }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const chat = useChatSimulado(inicial, falhar);
   const [texto, setTexto] = useState('');
 
@@ -181,16 +187,16 @@ function ChatDemo({ inicial, falhar, larguraMaxima, vazio }: { inicial: Msg[]; f
         <Mensagem
           key={m.id}
           autor={m.autor}
-          nome={m.autor === 'usuario' ? 'Você' : m.autor === 'assistente' ? 'Assistente' : undefined}
+          nome={m.autor === 'usuario' ? tc('Você') : m.autor === 'assistente' ? tc('Assistente') : undefined}
           avatar={m.autor === 'assistente' ? true : undefined}
           hora={m.autor === 'sistema' ? undefined : m.hora}
           estado={m.estado}
           erro={m.erro}
           aoTentarNovamente={() => chat.tentarNovamente(m.id)}
           copiavel={m.autor === 'assistente'}
-          rodape={m.referencias && <Referencias itens={m.referencias} />}
+          rodape={m.referencias && <Referencias itens={fontesNoIdioma(m.referencias, tc)} />}
         >
-          {m.texto}
+          {tc(m.texto)}
         </Mensagem>
       ))}
     </Conversa>
@@ -198,7 +204,7 @@ function ChatDemo({ inicial, falhar, larguraMaxima, vazio }: { inicial: Msg[]; f
 }
 
 export function PaginaConversas() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.conversas.titulo')} icone="message-square" trilha />
@@ -226,11 +232,11 @@ export function PaginaConversas() {
       </div>
 
       <Bloco titulo={t('paginas.conversas.secoes.mensagensSoltas')} descricao={t('paginas.conversas.textos.todosOsEstadosSem')}>
-        <Mensagem autor="usuario" nome="Você" hora={new Date()} estado="enviando">{t('paginas.conversas.textos.mensagemAindaSendoEnviada')}</Mensagem>
-        <Mensagem autor="assistente" nome="Assistente" avatar estado="gerando" />
-        <Mensagem autor="assistente" nome="Assistente" avatar estado="gerando">{t('paginas.conversas.textos.textoParcialComO')}</Mensagem>
-        <Mensagem autor="assistente" nome="Assistente" avatar estado="erro" erro={t('paginas.conversas.textos.oServicoDemorouDemais')} aoTentarNovamente={() => undefined}>{t('paginas.conversas.textos.comecoDeRespostaQue')}</Mensagem>
-        <Mensagem autor="assistente" nome="Assistente" avatar copiavel rodape={<Referencias itens={FONTES_FRETE} abertoInicial />}>{t('paginas.conversas.textos.respostaConcluidaComAs')}</Mensagem>
+        <Mensagem autor="usuario" nome={tc("Você")} hora={new Date()} estado="enviando">{t('paginas.conversas.textos.mensagemAindaSendoEnviada')}</Mensagem>
+        <Mensagem autor="assistente" nome={tc("Assistente")} avatar estado="gerando" />
+        <Mensagem autor="assistente" nome={tc("Assistente")} avatar estado="gerando">{t('paginas.conversas.textos.textoParcialComO')}</Mensagem>
+        <Mensagem autor="assistente" nome={tc("Assistente")} avatar estado="erro" erro={t('paginas.conversas.textos.oServicoDemorouDemais')} aoTentarNovamente={() => undefined}>{t('paginas.conversas.textos.comecoDeRespostaQue')}</Mensagem>
+        <Mensagem autor="assistente" nome={tc("Assistente")} avatar copiavel rodape={<Referencias itens={fontesNoIdioma(FONTES_FRETE, tc)} abertoInicial />}>{t('paginas.conversas.textos.respostaConcluidaComAs')}</Mensagem>
         <Mensagem autor="sistema">{t('paginas.conversas.textos.anaPereiraEntrouNa')}</Mensagem>
       </Bloco>
     </div>

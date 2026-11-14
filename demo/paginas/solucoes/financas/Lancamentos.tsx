@@ -42,7 +42,7 @@ const POR_PAGINA = 15;
 const naSituacao = (f: FiltroSituacao, s: Situacao) => (f === 'pagos' ? s === 'pago' || s === 'recebido' : f === 'atrasados' ? s === 'atrasado' : s === 'pendente' || s === 'hoje' || s === 'atrasado');
 
 export function Lancamentos() {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const { espaco, periodo, lancamentos, filtroInicial } = useFinancas();
   const toast = useToast();
   const confirmar = useConfirmacao();
@@ -82,7 +82,7 @@ export function Lancamentos() {
         (!f.situacao || naSituacao(f.situacao, situacao(x))) &&
         (!f.centro || x.centroCusto === f.centro) &&
         (!f.contato || x.contato === f.contato) &&
-        (!termo || normalizar(`${x.descricao} ${categoria(x.categoria)?.nome ?? ''} ${x.observacao ?? ''}`).includes(termo)),
+        (!termo || normalizar(`${tc(x.descricao)} ${tc(categoria(x.categoria)?.nome) ?? ''} ${x.observacao ?? ''}`).includes(termo)),
     );
     if (ordem) {
       const dir = ordem.direcao === 'asc' ? 1 : -1;
@@ -104,15 +104,15 @@ export function Lancamentos() {
   const pagarSelecionados = () => {
     const ids = selecionadosL.filter((x) => !x.pago).map((x) => x.id);
     acoes.marcarPago(ids);
-    toast.ok(`${ids.length} ${ids.length === 1 ? 'lançamento baixado' : 'lançamentos baixados'}`);
+    toast.ok(`${ids.length} ${ids.length === 1 ? tc('lançamento baixado') : tc('lançamentos baixados')}`);
     setSelecionados([]);
   };
   const excluirSelecionados = async () => {
     const n = selecionadosL.length;
-    const sim = await confirmar.remover({ titulo: t('paginas.finLancamentos.textos.excluirNV', { n, v: n === 1 ? 'lançamento' : 'lançamentos' }), mensagem: t('paginas.finLancamentos.textos.elesSaemDosSaldos'), rotuloAceitar: 'Excluir' });
+    const sim = await confirmar.remover({ titulo: t('paginas.finLancamentos.textos.excluirNV', { n, v: n === 1 ? 'lançamento' : 'lançamentos' }), mensagem: t('paginas.finLancamentos.textos.elesSaemDosSaldos'), rotuloAceitar: tc('Excluir') });
     if (!sim) return;
     acoes.excluir(selecionadosL.map((x) => x.id));
-    toast.ok(`${n} ${n === 1 ? 'lançamento excluído' : 'lançamentos excluídos'}`);
+    toast.ok(`${n} ${n === 1 ? tc('lançamento excluído') : tc('lançamentos excluídos')}`);
     setSelecionados([]);
   };
 
@@ -145,9 +145,9 @@ export function Lancamentos() {
         />
         <div className="fin-filtros-campos">
           <CampoTexto icone="search" aria-label={t('paginas.finLancamentos.textos.buscarLancamento')} placeholder={t('paginas.finLancamentos.textos.buscarDescricao')} valor={f.busca} aoMudar={(busca) => mudar({ busca })} />
-          <CampoSelect aria-label={t('paginas.finLancamentos.textos.conta')} placeholder={t('paginas.finLancamentos.textos.todasAsContas')} botaoLimpar opcoes={contas.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.conta} aoMudar={(v) => mudar({ conta: v })} />
+          <CampoSelect aria-label={t('paginas.finLancamentos.textos.conta')} placeholder={t('paginas.finLancamentos.textos.todasAsContas')} botaoLimpar opcoes={contas.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))} valor={f.conta} aoMudar={(v) => mudar({ conta: v })} />
           {f.tipo !== 'transferencia' && (
-            <CampoSelect aria-label={t('paginas.finLancamentos.textos.categoria')} placeholder={t('paginas.finLancamentos.textos.todasAsCategorias')} botaoLimpar comBusca opcoes={categorias.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.categoria} aoMudar={(v) => mudar({ categoria: v })} />
+            <CampoSelect aria-label={t('paginas.finLancamentos.textos.categoria')} placeholder={t('paginas.finLancamentos.textos.todasAsCategorias')} botaoLimpar comBusca opcoes={categorias.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))} valor={f.categoria} aoMudar={(v) => mudar({ categoria: v })} />
           )}
           <CampoSelect<FiltroSituacao>
             aria-label={t('paginas.finLancamentos.textos.situacao')}
@@ -163,8 +163,8 @@ export function Lancamentos() {
           />
           {empresa && (
             <>
-              <CampoSelect aria-label={t('paginas.finLancamentos.textos.centroDeCusto')} placeholder={t('paginas.finLancamentos.textos.todosOsCentros')} botaoLimpar opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.centro} aoMudar={(v) => mudar({ centro: v })} />
-              <CampoSelect aria-label={t('paginas.finLancamentos.textos.clienteOuFornecedor')} placeholder={t('paginas.finLancamentos.textos.clientesEFornecedores')} botaoLimpar comBusca opcoes={CONTATOS.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.contato} aoMudar={(v) => mudar({ contato: v })} />
+              <CampoSelect aria-label={t('paginas.finLancamentos.textos.centroDeCusto')} placeholder={t('paginas.finLancamentos.textos.todosOsCentros')} botaoLimpar opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))} valor={f.centro} aoMudar={(v) => mudar({ centro: v })} />
+              <CampoSelect aria-label={t('paginas.finLancamentos.textos.clienteOuFornecedor')} placeholder={t('paginas.finLancamentos.textos.clientesEFornecedores')} botaoLimpar comBusca opcoes={CONTATOS.map((c) => ({ valor: c.id, rotulo: tc(c.nome) }))} valor={f.contato} aoMudar={(v) => mudar({ contato: v })} />
             </>
           )}
           {filtrando && <Botao rotulo={t('paginas.finLancamentos.textos.limpar')} icone="funnel-x" aparencia="texto" severidade="secundario" onClick={() => mudar(VAZIO)} />}
@@ -205,10 +205,10 @@ export function Lancamentos() {
                 <span className="fin-cel-desc">
                   <IconeCategoria categoria={cat} transferencia={l.tipo === 'transferencia'} />
                   <span>
-                    <strong>{l.descricao}</strong>
+                    <strong>{tc(l.descricao)}</strong>
                     <small>
-                      {l.tipo === 'transferencia' ? `${conta(l.conta)?.nome} → ${conta(l.contaDestino)?.nome}` : cat?.nome}
-                      {contato && ` · ${contato.nome}`}
+                      {l.tipo === 'transferencia' ? `${tc(conta(l.conta)?.nome)} → ${tc(conta(l.contaDestino)?.nome)}` : tc(cat?.nome)}
+                      {contato && ` · ${tc(contato.nome)}`}
                       {l.parcela && (
                         <Badge cor="neutral" aparencia="suave">
                           {l.parcela.numero}/{l.parcela.total}
@@ -221,13 +221,13 @@ export function Lancamentos() {
               );
             },
           },
-          { campo: 'conta', rotulo: t('paginas.finLancamentos.textos.conta'), formato: (_v, l) => (l.tipo === 'transferencia' ? '—' : conta(l.conta)?.nome) },
+          { campo: 'conta', rotulo: t('paginas.finLancamentos.textos.conta'), formato: (_v, l) => (l.tipo === 'transferencia' ? '—' : tc(conta(l.conta)?.nome)) },
           {
             campo: 'pago',
             rotulo: t('paginas.finLancamentos.textos.situacao'),
             render: (l) => {
               const s = SITUACOES[situacao(l)];
-              return <Status rotulo={s.rotulo} severidade={s.severidade} icone={s.icone} />;
+              return <Status rotulo={tc(s.rotulo)} severidade={s.severidade} icone={s.icone} />;
             },
           },
           { campo: 'valor', rotulo: t('paginas.finLancamentos.textos.valor'), ordenavel: true, alinhamento: 'direita', render: (l) => <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'neutro' : l.tipo} forte /> },
@@ -241,7 +241,7 @@ export function Lancamentos() {
               onClick={(e) => {
                 e.stopPropagation();
                 acoes.marcarPago([l.id]);
-                toast.ok(l.tipo === 'receita' ? t('paginas.finLancamentos.textos.recebimentoRegistrado') : t('paginas.finLancamentos.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor, { idioma })}`);
+                toast.ok(l.tipo === 'receita' ? t('paginas.finLancamentos.textos.recebimentoRegistrado') : t('paginas.finLancamentos.textos.pagamentoRegistrado'), `${tc(l.descricao)} · ${formatarMoeda(l.valor, { idioma })}`);
               }}
             />
           ) : (

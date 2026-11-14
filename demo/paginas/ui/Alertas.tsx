@@ -24,7 +24,7 @@ const PESSOAS = (t: TradutorDemo['t']) => ([
 ]);
 
 export function PaginaAlertas() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const [vivos, setVivos] = useState<number[]>([]);
 
   return (
@@ -144,7 +144,7 @@ export function PaginaAlertas() {
               severidade={PRINCIPAIS[i].cor}
               formato="pilula"
               dispensavel
-              midia={<Avatar nome={p.nome} foto={retrato(p.cor, p.nome[0])} tamanho="1.75rem" />}
+              midia={<Avatar nome={tc(p.nome)} foto={retrato(p.cor, p.nome[0])} tamanho="1.75rem" />}
               mensagem={t('paginas.alertas.textos.nomeComentouNoPedido', { nome: p.nome, v: 42 + i })}
             />
           ))}
@@ -156,7 +156,7 @@ export function PaginaAlertas() {
               key={p.nome}
               severidade={PRINCIPAIS[i].cor}
               dispensavel
-              midia={<Avatar nome={p.nome} foto={retrato(p.cor, p.nome[0])} formato="quadrado" tamanho={`${1.5 + i * 0.5}rem`} />}
+              midia={<Avatar nome={tc(p.nome)} foto={retrato(p.cor, p.nome[0])} formato="quadrado" tamanho={`${1.5 + i * 0.5}rem`} />}
               mensagem={t('paginas.alertas.textos.nomeAtualizouOCadastro', { nome: p.nome })}
             />
           ))}

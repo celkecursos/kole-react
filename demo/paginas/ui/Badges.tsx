@@ -15,11 +15,11 @@ const CORES = (t: TradutorDemo['t']): { cor: CorBadge; nome: string }[] => ([
 
 /** Uma linha com o badge em todas as cores. */
 function Todas(props: Omit<BadgeProps, 'cor' | 'rotulo'>) {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <div className="demo-linha demo-linha--centro">
       {CORES(t).map((c) => (
-        <Badge key={c.cor} cor={c.cor} rotulo={c.nome} {...props} />
+        <Badge key={c.cor} cor={c.cor} rotulo={tc(c.nome)} {...props} />
       ))}
     </div>
   );
@@ -38,7 +38,7 @@ const titulosDe = (t: TradutorDemo['t']): [string, ReactNode][] => [
 const CHIPS = (t: TradutorDemo['t']) => ([t('paginas.badges.textos.pix'), 'PR', t('paginas.badges.textos.pago')]);
 
 export function PaginaBadges() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const [chips, setChips] = useState(CHIPS(t));
 
   return (
@@ -170,7 +170,7 @@ export function PaginaBadges() {
         <Bloco titulo={t('paginas.badges.secoes.chipsDeFiltro')} descricao={t('paginas.badges.textos.filtrosAplicadosORemove')}>
           <div className="demo-linha demo-linha--centro">
             {chips.map((c) => (
-              <Chip key={c} campo="Filtro" rotulo={c} aoRemover={() => setChips((l) => l.filter((x) => x !== c))} />
+              <Chip key={c} campo={tc("Filtro")} rotulo={c} aoRemover={() => setChips((l) => l.filter((x) => x !== c))} />
             ))}
             {chips.length === 0 && <Botao rotulo={t('paginas.badges.textos.restaurarFiltros')} severidade="secundario" aparencia="texto" onClick={() => setChips(CHIPS(t))} />}
           </div>

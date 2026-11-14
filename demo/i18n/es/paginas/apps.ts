@@ -97,6 +97,7 @@ export const paginasApps: TextosDemoParciais<typeof Pt> = {
     titulo: 'Todas las tareas',
     textos: {
       meuDia: 'Mi día',
+      diaOQueVocePlanejou: '{dia} · lo que planificó para hoy.',
       concluidas: 'Completadas',
       etiqueta: 'Etiqueta: {nome}',
       tarefaCriada: 'Tarea creada',

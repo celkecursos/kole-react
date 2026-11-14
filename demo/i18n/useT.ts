@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useIdioma } from '../../src/i18n/contexto';
 import type { Idioma } from '../../src/i18n/idiomas';
+import { traduzirConteudo } from './conteudo';
 import { traduzir, traduzirPlural } from './traduzir';
 import type { ChavePlural, ChaveTexto } from './tipos';
 
@@ -13,6 +14,8 @@ export interface TradutorDemo {
   t: (chave: ChaveTexto, valores?: Valores) => string;
   /** `tp('docs.indice.textos.resumo', 12)` → `12 páginas, cada uma…`. */
   tp: (chave: ChavePlural, n: number, valores?: Valores) => string;
+  /** Dado de exemplo pelo texto em pt-BR: `tc(cliente.nome)`, `tc('Arroz tipo 1 — 5 kg')` (ver conteudo.ts). */
+  tc: <T>(texto: T) => T;
 }
 
 /**
@@ -26,6 +29,7 @@ export function useT(): TradutorDemo {
       idioma,
       t: (chave, valores) => traduzir(idioma, chave, valores),
       tp: (chave, n, valores) => traduzirPlural(idioma, chave, n, valores),
+      tc: (texto) => traduzirConteudo(idioma, texto),
     }),
     [idioma],
   );

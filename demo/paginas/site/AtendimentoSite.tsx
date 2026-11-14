@@ -35,7 +35,7 @@ function responder(texto: string): { texto: string; humano?: boolean } {
 let seq = 0;
 
 export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const [aberto, setAberto] = useState(false);
   const [lido, setLido] = useState(false);
   const [mensagens, setMensagens] = useState<MsgSite[]>([]);
@@ -90,7 +90,7 @@ export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }
           <Mensagem
             key={m.id}
             autor={m.autor}
-            nome={m.autor === 'assistente' ? 'Sua Marca' : undefined}
+            nome={m.autor === 'assistente' ? tc('Sua Marca') : undefined}
             hora={m.hora}
             estado={m.estado}
             acoes={
@@ -109,7 +109,7 @@ export function AtendimentoSite({ navegar }: { navegar: (rota: string) => void }
               )
             }
           >
-            {m.texto || undefined}
+            {tc(m.texto) || undefined}
           </Mensagem>
         ))}
       </Conversa>

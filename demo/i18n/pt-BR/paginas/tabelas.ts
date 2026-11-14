@@ -66,6 +66,7 @@ export const paginasTabelas = {
       taxa: 'Taxa',
       recebimento: 'Recebimento',
       naHora: 'Na hora',
+      vDias: '{v} dia(s)',
       estados: 'Estados',
       uf: 'UF',
       nome: 'Nome',

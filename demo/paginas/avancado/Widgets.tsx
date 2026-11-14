@@ -86,7 +86,7 @@ function Barras({ dados, rotulos }: { dados: Array<[number, number]>; rotulos: s
 }
 
 export function PaginaWidgets() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const [tarefasFeitas, setTarefasFeitas] = useState<number[]>([1]);
   const [destino, setDestino] = useState(2);
@@ -94,11 +94,11 @@ export function PaginaWidgets() {
   const [valor, setValor] = useState<number | null>(2000);
 
   const TAREFAS: Array<[string, string, string, CorBadge]> = [
-    ['Página de tarefas do novo modelo', '12h43', 'Hoje', 'pri'],
-    ['Corrigir a interface do novo modelo', '11h25', 'Amanhã', 'destaque'],
-    ['Preparar os requisitos', '09h56', 'Hoje', 'pri'],
-    ['Trocar o estilo do painel', '08h15', 'Hoje', 'pri'],
-    ['Atualizar o tema de cores', '16h20', 'Amanhã', 'destaque'],
+    [tc('Página de tarefas do novo modelo'), '12h43', tc('Hoje'), 'pri'],
+    [tc('Corrigir a interface do novo modelo'), '11h25', tc('Amanhã'), 'destaque'],
+    [tc('Preparar os requisitos'), '09h56', tc('Hoje'), 'pri'],
+    [tc('Trocar o estilo do painel'), '08h15', tc('Hoje'), 'pri'],
+    [tc('Atualizar o tema de cores'), '16h20', tc('Amanhã'), 'destaque'],
   ];
 
   return (
@@ -124,12 +124,12 @@ export function PaginaWidgets() {
       <div className="demo-wid-grade-6">
         {(
           [
-            ['Candidaturas', 1123, 'users', 'var(--pri)', 1.26, 'alta'],
-            ['Pré-selecionados', 7123, 'user-plus', 'var(--err-solid)', 4.26, 'alta'],
-            ['Contratados', 8123, 'circle-check', 'var(--ok-solid)', 6.26, 'alta'],
-            ['Recusados', 8123, 'circle-x', 'var(--err-solid)', 9.26, 'baixa'],
-            ['Localidades', 5123, 'map-pin', 'var(--acento)', 0.86, 'alta'],
-            ['Currículos enviados', 5123, 'file-text', 'var(--info-solid)', 9.68, 'alta'],
+            [tc('Candidaturas'), 1123, 'users', 'var(--pri)', 1.26, 'alta'],
+            [tc('Pré-selecionados'), 7123, 'user-plus', 'var(--err-solid)', 4.26, 'alta'],
+            [tc('Contratados'), 8123, 'circle-check', 'var(--ok-solid)', 6.26, 'alta'],
+            [tc('Recusados'), 8123, 'circle-x', 'var(--err-solid)', 9.26, 'baixa'],
+            [tc('Localidades'), 5123, 'map-pin', 'var(--acento)', 0.86, 'alta'],
+            [tc('Currículos enviados'), 5123, 'file-text', 'var(--info-solid)', 9.68, 'alta'],
           ] as const
         ).map(([rotulo, v, icone, cor, variacao, boa]) => (
           <Indicador key={rotulo} rotulo={rotulo} valor={v} icone={icone} cor={cor} variacao={variacao} variacaoBoa={boa} />
@@ -140,10 +140,10 @@ export function PaginaWidgets() {
       <div className="demo-wid-grade-4">
         {(
           [
-            ['candidatos', 'Total no processo seletivo.', 2460, 2.5, 14, 'pri'],
-            ['recrutadores', 'Equipe ativa neste mês.', 7539, 3.1, 55, 'destaque'],
-            ['visualizacoes', 'Páginas de vagas abertas.', 13693, 5.4, 24, 'ok'],
-            ['assinaturas', 'Planos pagos ativos.', 1116, -3.2, 67, 'info'],
+            ['candidatos', tc('Total no processo seletivo.'), 2460, 2.5, 14, 'pri'],
+            ['recrutadores', tc('Equipe ativa neste mês.'), 7539, 3.1, 55, 'destaque'],
+            ['visualizacoes', tc('Páginas de vagas abertas.'), 13693, 5.4, 24, 'ok'],
+            ['assinaturas', tc('Planos pagos ativos.'), 1116, -3.2, 67, 'info'],
           ] as const
         ).map(([id, desc, v, variacao, meta, cor]) => (
           <Card key={id} ferramentas={<MaisOpcoes rotulo={t(`paginas.widgets.secoes.${id}`)} />} titulo={t(`paginas.widgets.secoes.${id}`)} subtitulo={desc}>
@@ -163,10 +163,10 @@ export function PaginaWidgets() {
           <div className="demo-wid-faixa">
             {(
               [
-                ['Produtos', 45280, 'package', 1.31],
-                ['Vendas', 10500, 'chart-line', -1.14],
-                ['Receita', BRL.format(69270), 'wallet', 2.58],
-                ['Pedidos', 12088, 'shopping-cart', 12.05],
+                [tc('Produtos'), 45280, 'package', 1.31],
+                [tc('Vendas'), 10500, 'chart-line', -1.14],
+                [tc('Receita'), BRL.format(69270), 'wallet', 2.58],
+                [tc('Pedidos'), 12088, 'shopping-cart', 12.05],
               ] as const
             ).map(([rotulo, v, icone, variacao]) => (
               <div key={rotulo} className="demo-wid-faixa-item">
@@ -197,12 +197,12 @@ export function PaginaWidgets() {
           <div className="demo-wid-mini-grade">
             {(
               [
-                ['Funcionários', 256, 'users', -1.05],
-                ['Candidatos', 4026, 'user-plus', 0.4],
-                ['Localidades', 48, 'map-pin', 0.82],
-                ['Recrutadores', 1116, 'briefcase', 0.21],
-                ['Assinaturas', 1468, 'bell', -0.153],
-                ['Currículos/proporção', '34%', 'file-text', 0.165],
+                [tc('Funcionários'), 256, 'users', -1.05],
+                [tc('Candidatos'), 4026, 'user-plus', 0.4],
+                [tc('Localidades'), 48, 'map-pin', 0.82],
+                [tc('Recrutadores'), 1116, 'briefcase', 0.21],
+                [tc('Assinaturas'), 1468, 'bell', -0.153],
+                [tc('Currículos/proporção'), '34%', 'file-text', 0.165],
               ] as const
             ).map(([rotulo, v, icone, variacao]) => (
               <div key={rotulo} className="demo-wid-mini">
@@ -246,8 +246,8 @@ export function PaginaWidgets() {
         <Card titulo={t('paginas.widgets.secoes.desempenhoEquipe')} rodape={<Botao rotulo={t('paginas.widgets.textos.verODesempenhoDe')} icone="arrow-right" posicaoIcone="direita" aparencia="texto" formato="retangulo" />}>
           <div className="demo-wid-equipe">
             <div>
-              <Avatar nome={PESSOAS[0].nome} foto={foto(0)} tamanho="3.5rem" />
-              <strong>{PESSOAS[0].nome}</strong>
+              <Avatar nome={tc(PESSOAS[0].nome)} foto={foto(0)} tamanho="3.5rem" />
+              <strong>{tc(PESSOAS[0].nome)}</strong>
               <span>{t('paginas.widgets.textos.melhorVendedora')}</span>
             </div>
             <div>
@@ -370,11 +370,11 @@ export function PaginaWidgets() {
           <Lista variante="sem-borda">
             {(
               [
-                ['Compras', 'Cartão', -256.99, '12/03/2026', 'shopping-cart'],
-                ['Bolsa de valores', 'Transferência', 18587, '10/03/2026', 'chart-line'],
-                ['Mercado', 'Cartão', -256.99, '23/04/2026', 'package'],
-                ['Livros', 'Cartão', -256.99, '18/03/2026', 'file-text'],
-                ['Empresa', 'Transferência', 5746, '02/05/2026', 'briefcase'],
+                [tc('Compras'), tc('Cartão'), -256.99, '12/03/2026', 'shopping-cart'],
+                [tc('Bolsa de valores'), tc('Transferência'), 18587, '10/03/2026', 'chart-line'],
+                [tc('Mercado'), tc('Cartão'), -256.99, '23/04/2026', 'package'],
+                [tc('Livros'), tc('Cartão'), -256.99, '18/03/2026', 'file-text'],
+                [tc('Empresa'), tc('Transferência'), 5746, '02/05/2026', 'briefcase'],
               ] as const
             ).map(([t, tipo, v, data, icone]) => (
               <ItemLista
@@ -419,14 +419,14 @@ export function PaginaWidgets() {
           <Lista variante="sem-borda">
             {(
               [
-                [0, 'Novo design do site', 90, 'pri'],
-                [1, 'Novo projeto de anúncios', 65, 'destaque'],
-                [2, 'Novo design do site', 45, 'ok'],
-                [3, 'Relatório de vendas', 75, 'info'],
-                [4, 'Novo design do site', 55, 'warn'],
+                [0, tc('Novo design do site'), 90, 'pri'],
+                [1, tc('Novo projeto de anúncios'), 65, 'destaque'],
+                [2, tc('Novo design do site'), 45, 'ok'],
+                [3, tc('Relatório de vendas'), 75, 'info'],
+                [4, tc('Novo design do site'), 55, 'warn'],
               ] as const
             ).map(([i, t, pct, cor]) => (
-              <ItemLista key={i} titulo={PESSOAS[i].nome} inicio={<Avatar nome={PESSOAS[i].nome} foto={foto(i)} tamanho="2rem" />} fim={<span className="demo-wid-status">{pct}%</span>}>
+              <ItemLista key={i} titulo={tc(PESSOAS[i].nome)} inicio={<Avatar nome={tc(PESSOAS[i].nome)} foto={foto(i)} tamanho="2rem" />} fim={<span className="demo-wid-status">{pct}%</span>}>
                 <span className="demo-wid-status-linha">
                   {t}
                   <Progresso valor={pct} cor={cor} altura="xs" rotulo={`${t}: ${pct}%`} />
@@ -440,8 +440,8 @@ export function PaginaWidgets() {
             {PESSOAS.map((p, i) => (
               <ItemLista
                 key={p.nome}
-                titulo={p.nome}
-                inicio={<Avatar nome={p.nome} foto={foto(i)} tamanho="2rem" />}
+                titulo={tc(p.nome)}
+                inicio={<Avatar nome={tc(p.nome)} foto={foto(i)} tamanho="2rem" />}
                 fim={
                   <span className="demo-wid-membro">
                     <Badge cor="ok" aparencia="suave" icone="map-pin" rotulo={p.cidade} />
@@ -454,8 +454,8 @@ export function PaginaWidgets() {
         </Card>
         <Card titulo={t('paginas.widgets.secoes.novosCandidatos')} ferramentas={<Badge cor="pri" aparencia="suave" rotulo={t('paginas.widgets.textos.hoje')} />}>
           <Lista variante="sem-borda">
-            {['Desenvolvedor full-stack', 'Designer de interface', 'Líder de equipe', 'Gerente de produto', 'Desenvolvedor web'].map((vaga, i) => (
-              <ItemLista key={vaga} titulo={PESSOAS[i].nome} inicio={<Avatar nome={PESSOAS[i].nome} foto={foto(i)} tamanho="2rem" />}>{t('paginas.widgets.textos.candidatouSeAVaga', { vaga })}</ItemLista>
+            {[tc('Desenvolvedor full-stack'), tc('Designer de interface'), tc('Líder de equipe'), tc('Gerente de produto'), tc('Desenvolvedor web')].map((vaga, i) => (
+              <ItemLista key={vaga} titulo={tc(PESSOAS[i].nome)} inicio={<Avatar nome={tc(PESSOAS[i].nome)} foto={foto(i)} tamanho="2rem" />}>{t('paginas.widgets.textos.candidatouSeAVaga', { vaga })}</ItemLista>
             ))}
           </Lista>
         </Card>
@@ -471,11 +471,11 @@ export function PaginaWidgets() {
                   type="button"
                   role="radio"
                   aria-checked={destino === i}
-                  aria-label={p.nome}
+                  aria-label={tc(p.nome)}
                   className={destino === i ? 'is-atual' : undefined}
                   onClick={() => setDestino(i)}
                 >
-                  <Avatar nome={p.nome} foto={foto(i)} tamanho="2.25rem" />
+                  <Avatar nome={tc(p.nome)} foto={foto(i)} tamanho="2.25rem" />
                 </button>
               ))}
             </div>
@@ -514,10 +514,10 @@ export function PaginaWidgets() {
           <Lista variante="sem-borda">
             {(
               [
-                ['phone', 'Telefone', '(11) 3123-5678', 'pri'],
-                ['mail', 'E-mail', 'contato@exemplo.com', 'err'],
-                ['clock', 'Horário', 'Seg a sex, 9h às 18h', 'ok'],
-                ['map-pin', 'Endereço', 'Av. Paulista, 1000 · São Paulo', 'destaque'],
+                ['phone', tc('Telefone'), '(11) 3123-5678', 'pri'],
+                ['mail', tc('E-mail'), 'contato@exemplo.com', 'err'],
+                ['clock', tc('Horário'), tc('Seg a sex, 9h às 18h'), 'ok'],
+                ['map-pin', tc('Endereço'), 'Av. Paulista, 1000 · São Paulo', 'destaque'],
               ] as const
             ).map(([icone, titulo, texto, cor]) => (
               <ItemLista

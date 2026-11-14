@@ -22,7 +22,7 @@ const CORES = (t: TradutorDemo['t']): Array<{ cor: CorDica; rotulo: string; posi
 ]);
 
 export function PaginaDicas() {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.dicas.titulo')} icone="message-square" trilha />
@@ -30,8 +30,8 @@ export function PaginaDicas() {
       <Bloco titulo={t('paginas.dicas.secoes.direcoes')} descricao={t('paginas.dicas.textos.passeOMouseOu')}>
         <div className="demo-linha">
           {DIRECOES(t).map((d) => (
-            <Dica key={d.posicao} texto={d.rotulo} posicao={d.posicao}>
-              <Botao rotulo={d.rotulo} formato="retangulo" />
+            <Dica key={d.posicao} texto={tc(d.rotulo)} posicao={d.posicao}>
+              <Botao rotulo={tc(d.rotulo)} formato="retangulo" />
             </Dica>
           ))}
         </div>
@@ -41,7 +41,7 @@ export function PaginaDicas() {
         <div className="demo-linha">
           {CORES(t).map((c) => (
             <Dica key={c.cor} texto={t('paginas.dicas.textos.dicaValor', { valor: c.rotulo.toLowerCase() })} cor={c.cor} posicao={c.posicao}>
-              <Botao rotulo={c.rotulo} severidade={c.botao} aparencia={c.aparencia} formato="retangulo" />
+              <Botao rotulo={tc(c.rotulo)} severidade={c.botao} aparencia={c.aparencia} formato="retangulo" />
             </Dica>
           ))}
         </div>
@@ -57,11 +57,11 @@ export function PaginaDicas() {
           <div className="demo-linha demo-linha--centro">
             {(
               [
-                ['house', 'Início', 'pri'],
-                ['mail', 'Mensagens', 'secundario'],
-                ['user-plus', 'Convidar pessoa', 'warn'],
-                ['send', 'Enviar', 'info'],
-                ['ellipsis', 'Mais opções', 'ok'],
+                ['house', tc('Início'), 'pri'],
+                ['mail', tc('Mensagens'), 'secundario'],
+                ['user-plus', tc('Convidar pessoa'), 'warn'],
+                ['send', tc('Enviar'), 'info'],
+                ['ellipsis', tc('Mais opções'), 'ok'],
               ] as const
             ).map(([icone, rotulo, cor]) => (
               <Dica key={icone} texto={rotulo} cor={cor}>
@@ -102,9 +102,9 @@ export function PaginaDicas() {
             <Dica
               texto={
                 <>
-                  <strong>Atalho:</strong> Ctrl + S
+                  <strong>{tc('Atalho:')}</strong> Ctrl + S
                   <br />
-                  <em>Salva sem sair da tela.</em>
+                  <em>{tc('Salva sem sair da tela.')}</em>
                 </>
               }
               posicao="direita"
@@ -113,7 +113,7 @@ export function PaginaDicas() {
             </Dica>
           </div>
         </Bloco>
-        <Bloco titulo={t('paginas.dicas.secoes.peloProprioBotao')} descricao={<>O Botao aceita a prop dica (útil nos que têm só ícone).</>}>
+        <Bloco titulo={t('paginas.dicas.secoes.peloProprioBotao')} descricao={<>{tc('O Botao aceita a prop dica (útil nos que têm só ícone).')}</>}>
           <div className="demo-linha">
             <Botao icone="pencil" dica={t('paginas.dicas.textos.editar')} aria-label={t('paginas.dicas.textos.editar')} aparencia="suave" formato="retangulo" />
             <Botao icone="copy" dica={t('paginas.dicas.textos.duplicar')} aria-label={t('paginas.dicas.textos.duplicar')} aparencia="suave" formato="retangulo" />

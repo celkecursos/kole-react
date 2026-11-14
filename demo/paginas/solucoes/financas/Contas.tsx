@@ -16,10 +16,11 @@ function proximoDia(d: number): string {
 
 /** O cartão desenhado: banco, final do número e titular. Decorativo (as informações estão ao lado, em texto). */
 function CartaoCredito({ conta, titular }: { conta: Conta; titular: string }) {
+  const { tc } = useT();
   return (
     <div className="fin-cartao" style={{ '--fin-cor': conta.cor } as CSSProperties} aria-hidden="true">
       <div className="fin-cartao-topo">
-        <strong>{conta.instituicao}</strong>
+        <strong>{tc(conta.instituicao)}</strong>
         <span className="fin-cartao-chip" />
       </div>
       <div className="fin-cartao-numero">•••• •••• •••• {conta.final}</div>
@@ -35,7 +36,7 @@ function CartaoCredito({ conta, titular }: { conta: Conta; titular: string }) {
 }
 
 export function Contas({ navegar }: { navegar: (r: string) => void }) {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -68,7 +69,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
       <Indicadores>
         <Indicador rotulo={t('paginas.finContas.textos.disponivel')} icone="wallet" cor="var(--graf-1)" valor={moeda(disponivel)} descricao={t('paginas.finContas.textos.contasPoupancaEDinheiro')} />
         <Indicador rotulo={t('paginas.finContas.textos.investido')} icone="trending-up" cor="var(--graf-3)" valor={moeda(investido)} descricao={t('paginas.finContas.textos.aplicacoesComLiquidez')} />
-        <Indicador rotulo={t('paginas.finContas.textos.faturasAbertas')} icone="credit-card" cor="var(--warn-solid)" valor={moeda(faturas)} descricao={`${cartoes.length} ${cartoes.length === 1 ? 'cartão' : 'cartões'}`} />
+        <Indicador rotulo={t('paginas.finContas.textos.faturasAbertas')} icone="credit-card" cor="var(--warn-solid)" valor={moeda(faturas)} descricao={`${cartoes.length} ${cartoes.length === 1 ? tc('cartão') : tc('cartões')}`} />
         <Indicador rotulo={t('paginas.finContas.textos.limiteDisponivel')} icone="shield-check" cor="var(--ok-solid)" valor={moeda(Math.max(0, limite - faturas))} descricao={t('paginas.finContas.textos.deValor', { valor: moeda(limite, { centavos: false }) })} />
       </Indicadores>
 
@@ -84,9 +85,9 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
               <div className="fin-conta-topo">
                 <IconeConta conta={c} />
                 <div>
-                  <strong>{c.nome}</strong>
+                  <strong>{tc(c.nome)}</strong>
                   <small>
-                    {c.instituicao} · {TIPO_CONTA[c.tipo]}
+                    {tc(c.instituicao)} · {tc(TIPO_CONTA[c.tipo])}
                   </small>
                 </div>
               </div>
@@ -151,7 +152,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
                       tamanho="pequeno"
                       onClick={() => {
                         acoes.marcarPago([pendente.id]);
-                        toast.ok(t('paginas.finContas.textos.faturaPaga'), `${c.nome} · ${formatarMoeda(pendente.valor, { idioma })}`);
+                        toast.ok(t('paginas.finContas.textos.faturaPaga'), `${tc(c.nome)} · ${formatarMoeda(pendente.valor, { idioma })}`);
                       }}
                     />
                   ) : (

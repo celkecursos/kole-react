@@ -97,6 +97,7 @@ export const paginasApps: TextosDemoParciais<typeof Pt> = {
     titulo: 'All tasks',
     textos: {
       meuDia: 'My day',
+      diaOQueVocePlanejou: '{dia} · what you planned for today.',
       concluidas: 'Completed',
       etiqueta: 'Label: {nome}',
       tarefaCriada: 'Task created',

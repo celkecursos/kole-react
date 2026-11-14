@@ -87,7 +87,7 @@ const ANEXOS_INICIAIS: Anexo[] = [
 ];
 
 export function PaginaCampos() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
   const anexoRef = useRef<CampoAnexoRef>(null);
   const [doc, setDoc] = useState({ cpf: '529.982.247-24', cnpj: '', cpfCnpj: '', email: '', telefone: '', celular: '', placa: '', renavam: '', chassi: '', cnh: '', imei: '' });
@@ -123,11 +123,11 @@ export function PaginaCampos() {
           <CampoTexto rotulo={t('paginas.campos.textos.comAviso')} aviso={t('paginas.campos.textos.confiraSeOValor')} defaultValue="123" />
           <CampoTexto rotulo={t('paginas.campos.textos.desabilitado')} disabled defaultValue={t('paginas.campos.textos.naoEditavel')} />
           <CampoTexto rotulo={t('paginas.campos.textos.somenteLeitura')} readOnly defaultValue={t('paginas.campos.textos.somenteLeitura')} />
-          <CampoSelect rotulo={t('paginas.campos.textos.select')} opcoes={OPCOES_PAGAMENTO} placeholder={t('paginas.campos.textos.formaDePagamento')} />
+          <CampoSelect rotulo={t('paginas.campos.textos.select')} opcoes={OPCOES_PAGAMENTO.map((o) => ({ ...o, rotulo: tc(o.rotulo) }))} placeholder={t('paginas.campos.textos.formaDePagamento')} />
         </div>
         <div className="demo-linha">
           <CampoTexto variante="inline" rotulo={t('paginas.campos.textos.inline')} placeholder={t('paginas.campos.textos.valor')} />
-          <CampoSelect variante="inline" rotulo={t('paginas.campos.textos.pagamento')} opcoes={OPCOES_PAGAMENTO} placeholder={t('paginas.campos.textos.todos')} />
+          <CampoSelect variante="inline" rotulo={t('paginas.campos.textos.pagamento')} opcoes={OPCOES_PAGAMENTO.map((o) => ({ ...o, rotulo: tc(o.rotulo) }))} placeholder={t('paginas.campos.textos.todos')} />
         </div>
       </Bloco>
 
@@ -218,13 +218,13 @@ export function PaginaCampos() {
             autoComplete="new-password"
             valor={confirmar}
             aoMudar={setConfirmar}
-            validar={(v) => (v === novaSenha ? '' : 'As senhas não conferem')}
+            validar={(v) => (v === novaSenha ? '' : tc('As senhas não conferem'))}
           />
         </div>
       </Bloco>
 
       <Bloco titulo={t('paginas.campos.secoes.picklist')} descricao={t('paginas.campos.textos.cliqueCtrlParaVarios')}>
-        <Picklist rotulo={t('paginas.campos.textos.permissoesDoPerfil')} rotuloFonte={t('paginas.campos.textos.disponiveis')} rotuloAlvo="Concedidas" filtro valor={permissoes} aoMudar={setPermissoes} />
+        <Picklist rotulo={t('paginas.campos.textos.permissoesDoPerfil')} rotuloFonte={t('paginas.campos.textos.disponiveis')} rotuloAlvo={tc("Concedidas")} filtro valor={permissoes} aoMudar={setPermissoes} />
       </Bloco>
 
       <Bloco titulo={t('paginas.campos.secoes.anexos')} descricao={t('paginas.campos.textos.cliqueNumAnexoPara')}>
@@ -254,7 +254,7 @@ export function PaginaCampos() {
           ]}
         />
         <div style={{ height: '22rem', display: 'flex', border: 'var(--hairline) solid var(--border)', borderRadius: 'var(--r-card)', overflow: 'hidden' }}>
-          <VisualizadorArquivo arquivo={ARQUIVOS[arquivo]} aoFalhar={(a) => toast.err(t('paginas.campos.textos.falhaAoCarregar'), a.nome)} />
+          <VisualizadorArquivo arquivo={ARQUIVOS[arquivo]} aoFalhar={(a) => toast.err(t('paginas.campos.textos.falhaAoCarregar'), tc(a.nome))} />
         </div>
       </Bloco>
 

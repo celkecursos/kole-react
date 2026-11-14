@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Botao, Card, Escolha, FiltroPilulas, Indicador, Indicadores, Status, Valor, Vazio, diasEntre, formatarMoeda, paraData, somarMoeda, useToast } from '../../../../src';
 import { CONTATOS, hoje, type Lancamento } from './dados';
-import { CabecalhoFinancas, DIA_SEMANA, IconeCategoria, useEditorLancamento, useMoeda } from './comum';
+import { CabecalhoFinancas, IconeCategoria, useEditorLancamento, useMoeda } from './comum';
 import { SITUACOES, acoes, aReceber, categoria, conta, doEspaco, qtdLancamentos, situacao, useFinancas, vencePorSi } from './estado';
 import { useT } from '../../../i18n/useT';
 
@@ -22,7 +22,7 @@ const naJanela = (j: Janela, dias: number) => {
 };
 
 export function PagarReceber() {
-  const { t, idioma } = useT();
+  const { t, idioma, tc } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -46,7 +46,7 @@ export function PagarReceber() {
     let g = grupos.find((x) => x.chave === chave);
     if (!g) {
       const d = dias(l);
-      const nome = atrasado ? 'Atrasados' : d === 0 ? 'Hoje' : d === 1 ? 'Amanhã' : DIA_SEMANA.format(paraData(l.data));
+      const nome = atrasado ? tc('Atrasados') : d === 0 ? tc('Hoje') : d === 1 ? tc('Amanhã') : new Intl.DateTimeFormat(idioma, { weekday: 'long', day: 'numeric', month: 'long' }).format(paraData(l.data));
       g = { chave, titulo: nome[0].toUpperCase() + nome.slice(1), itens: [], atrasado };
       grupos.push(g);
     }
@@ -55,7 +55,7 @@ export function PagarReceber() {
 
   const baixar = (l: Lancamento) => {
     acoes.marcarPago([l.id]);
-    toast.ok(l.tipo === 'receita' ? t('paginas.finPagarReceber.textos.recebimentoRegistrado') : t('paginas.finPagarReceber.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor, { idioma })}`);
+    toast.ok(l.tipo === 'receita' ? t('paginas.finPagarReceber.textos.recebimentoRegistrado') : t('paginas.finPagarReceber.textos.pagamentoRegistrado'), `${tc(l.descricao)} · ${formatarMoeda(l.valor, { idioma })}`);
   };
 
   const totalPagar = soma(pendentes.filter((l) => !aReceber(l) && dias(l) <= 30));
@@ -66,7 +66,7 @@ export function PagarReceber() {
       <CabecalhoFinancas titulo={t('paginas.finPagarReceber.titulo')} icone="calendar-range" semPeriodo />
 
       <Escolha<Lado>
-        ariaLabel="Mostrar"
+        ariaLabel={tc("Mostrar")}
         className="fin-lado"
         opcoes={[
           { valor: 'pagar', rotulo: t('paginas.finPagarReceber.textos.aPagarValor', { valor: moeda(totalPagar, { centavos: false }) }) },
@@ -77,10 +77,10 @@ export function PagarReceber() {
       />
 
       <Indicadores>
-        <Indicador rotulo={t('paginas.finPagarReceber.textos.atrasados')} icone="circle-alert" cor="var(--err-solid)" valor={moeda(soma(contar('atrasados')))} descricao={qtdLancamentos(contar('atrasados').length)} aoClicar={() => setJanela('atrasados')} />
-        <Indicador rotulo={t('paginas.finPagarReceber.textos.vencemHoje')} icone="clock" cor="var(--warn-solid)" valor={moeda(soma(contar('hoje')))} descricao={qtdLancamentos(contar('hoje').length)} aoClicar={() => setJanela('hoje')} />
-        <Indicador rotulo={t('paginas.finPagarReceber.textos.proximos7Dias')} icone="calendar" cor="var(--info-solid)" valor={moeda(soma(contar('semana').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('semana').filter((l) => dias(l) >= 0).length)} aoClicar={() => setJanela('semana')} />
-        <Indicador rotulo={t('paginas.finPagarReceber.textos.proximos30Dias')} icone="calendar-range" cor="var(--graf-1)" valor={moeda(soma(contar('mes').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('mes').filter((l) => dias(l) >= 0).length)} aoClicar={() => setJanela('mes')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.atrasados')} icone="circle-alert" cor="var(--err-solid)" valor={moeda(soma(contar('atrasados')))} descricao={qtdLancamentos(contar('atrasados').length, tc)} aoClicar={() => setJanela('atrasados')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.vencemHoje')} icone="clock" cor="var(--warn-solid)" valor={moeda(soma(contar('hoje')))} descricao={qtdLancamentos(contar('hoje').length, tc)} aoClicar={() => setJanela('hoje')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.proximos7Dias')} icone="calendar" cor="var(--info-solid)" valor={moeda(soma(contar('semana').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('semana').filter((l) => dias(l) >= 0).length, tc)} aoClicar={() => setJanela('semana')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.proximos30Dias')} icone="calendar-range" cor="var(--graf-1)" valor={moeda(soma(contar('mes').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('mes').filter((l) => dias(l) >= 0).length, tc)} aoClicar={() => setJanela('mes')} />
       </Indicadores>
 
       <FiltroPilulas<Janela>
@@ -88,7 +88,7 @@ export function PagarReceber() {
         disposicao="rolar"
         valor={janela}
         aoMudar={setJanela}
-        opcoes={JANELAS.map((j) => ({ valor: j.valor, rotulo: `${j.rotulo} (${contar(j.valor).length})` }))}
+        opcoes={JANELAS.map((j) => ({ valor: j.valor, rotulo: `${tc(j.rotulo)} (${contar(j.valor).length})` }))}
       />
 
       <Card corpoSemEspaco>
@@ -104,7 +104,7 @@ export function PagarReceber() {
           grupos.map((g) => (
             <section key={g.chave} className="fin-grupo" aria-labelledby={`fin-g-${g.chave}`}>
               <header className={`fin-grupo-cab${g.atrasado ? ' is-atrasado' : ''}`}>
-                <h3 id={`fin-g-${g.chave}`}>{g.titulo}</h3>
+                <h3 id={`fin-g-${g.chave}`}>{tc(g.titulo)}</h3>
                 <span>
                   {g.itens.length} · <Valor valor={soma(g.itens)} forte />
                 </span>
@@ -118,15 +118,15 @@ export function PagarReceber() {
                     <li key={l.id} className="fin-linha">
                       <IconeCategoria categoria={categoria(l.categoria)} transferencia={l.tipo === 'transferencia'} />
                       <button type="button" className="fin-linha-texto" onClick={() => abrir(l)}>
-                        <strong>{l.descricao}</strong>
+                        <strong>{tc(l.descricao)}</strong>
                         <small>
-                          {[l.tipo === 'transferencia' ? 'Pagamento de fatura' : categoria(l.categoria)?.nome, contato?.nome, conta(l.conta)?.nome].filter(Boolean).join(' · ')}
-                          {l.parcela && ` · parcela ${l.parcela.numero}/${l.parcela.total}`}
+                          {[l.tipo === 'transferencia' ? tc('Pagamento de fatura') : categoria(l.categoria)?.nome, contato?.nome, conta(l.conta)?.nome].filter(Boolean).join(' · ')}
+                          {l.parcela && ` · ${t('paginas.finPagarReceber.textos.parcelaN', { numero: l.parcela.numero, total: l.parcela.total })}`}
                         </small>
                       </button>
                       {d < 0 && <Status rotulo={t('paginas.finPagarReceber.textos.rotuloHaVV2', { rotulo: s.rotulo, v: -d, v2: d === -1 ? 'dia' : 'dias' })} severidade={s.severidade} icone={s.icone} className="fin-linha-status" />}
                       <Valor valor={l.valor} tipo={lado === 'receber' ? 'receita' : 'despesa'} forte />
-                      <Botao rotulo={lado === 'receber' ? t('paginas.finPagarReceber.textos.receber') : t('paginas.finPagarReceber.textos.pagar')} icone="check" tamanho="pequeno" aparencia="suave" severidade="ok" onClick={() => baixar(l)} aria-label={`${lado === 'receber' ? 'Receber' : 'Pagar'} ${l.descricao}`} />
+                      <Botao rotulo={lado === 'receber' ? t('paginas.finPagarReceber.textos.receber') : t('paginas.finPagarReceber.textos.pagar')} icone="check" tamanho="pequeno" aparencia="suave" severidade="ok" onClick={() => baixar(l)} aria-label={`${lado === 'receber' ? tc('Receber') : tc('Pagar')} ${tc(l.descricao)}`} />
                     </li>
                   );
                 })}

@@ -42,7 +42,7 @@ export function PaginaTrilhas({
   aoMudarModelo: (id: string) => void;
   navegar: (r: string) => void;
 }) {
-  const { t } = useT();
+  const { t, tc } = useT();
   const escolhido = MODELOS_TRILHA.find((m) => m.id === modeloAtual) ?? MODELOS_TRILHA[0];
 
   return (
@@ -54,7 +54,7 @@ export function PaginaTrilhas({
         descricao={t('paginas.trilha.textos.oModeloEscolhidoVale')}
       >
         <div className="demo-linha demo-linha--centro">
-          <Escolha rotulo={t('paginas.trilha.textos.modelo')} opcoes={MODELOS_TRILHA.map((m) => ({ valor: m.id, rotulo: m.nome }))} valor={escolhido.id} aoMudar={aoMudarModelo} />
+          <Escolha rotulo={t('paginas.trilha.textos.modelo')} opcoes={MODELOS_TRILHA.map((m) => ({ valor: m.id, rotulo: tc(m.nome) }))} valor={escolhido.id} aoMudar={aoMudarModelo} />
           <Botao rotulo={t('paginas.trilha.textos.verEmPedidos')} icone="arrow-right" posicaoIcone="direita" severidade="secundario" onClick={() => navegar('/pedidos')} />
         </div>
         <code className="demo-util-res">{`<Estrutura modeloTrilha={${escolhido.codigo}} … />`}</code>

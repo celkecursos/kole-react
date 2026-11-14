@@ -31,6 +31,8 @@ export const paginasSite = {
       clientesAtendidos: 'clientes atendidos',
       avaliacaoMedia: 'avaliação média',
       deMercado: 'de mercado',
+      seteDicasSimples: '7 dicas simples para aproveitar melhor o seu tempo',
+      umUsuario: '1 usuário',
       clientes: 'Clientes',
       quemJaConfiaNa: 'Quem já confia na gente',
       diferenciais: 'Diferenciais',

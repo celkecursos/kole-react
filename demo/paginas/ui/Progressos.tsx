@@ -8,7 +8,7 @@ const CORES: CorProgresso[] = ['pri', 'destaque', 'ok', 'info', 'warn'];
 const CORES_2: CorProgresso[] = ['secundario', 'warn', 'info', 'ok', 'err'];
 
 export function PaginaProgressos() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const [rodada, setRodada] = useState(0);
   const [envio, setEnvio] = useState(40);
 
@@ -91,9 +91,9 @@ export function PaginaProgressos() {
           titulo={t('paginas.progresso.secoes.entradaAnimada')}
           descricao={
             <>
-              A barra cresce do zero ao aparecer.{' '}
+              {tc('A barra cresce do zero ao aparecer.')}{' '}
               <button type="button" className="demo-prog-repetir" onClick={() => setRodada((r) => r + 1)}>
-                Repetir
+                {tc('Repetir')}
               </button>
             </>
           }
@@ -108,9 +108,9 @@ export function PaginaProgressos() {
           <div className="demo-prog-pilha demo-prog-pilha--folga">
             {(
               [
-                ['Celulares', 50, 'pri'],
-                ['Relógios', 60, 'destaque'],
-                ['Camisetas', 70, 'ok'],
+                [tc('Celulares'), 50, 'pri'],
+                [tc('Relógios'), 60, 'destaque'],
+                [tc('Camisetas'), 70, 'ok'],
               ] as const
             ).map(([etiqueta, v, c]) => (
               <Progresso key={etiqueta} etiqueta={etiqueta} valor={v} cor={c} altura="sm" marcador mostrarValor="balao" />

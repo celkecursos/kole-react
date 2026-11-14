@@ -33,7 +33,7 @@ const NOME_COR = (t: TradutorDemo['t']): Record<CorBalao, string> => ({
 });
 
 export function PaginaBaloes() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const toast = useToast();
 
   return (
@@ -45,7 +45,7 @@ export function PaginaBaloes() {
           <div className="demo-linha">
             {DIRECOES(t).map((d) => (
               <Balao key={d.posicao} posicao={d.posicao} titulo={t('paginas.baloes.textos.balaoValor', { valor: d.rotulo.toLowerCase() })} conteudo={t('paginas.baloes.textos.eAquiUmConteudo')}>
-                <Botao rotulo={d.rotulo} formato="retangulo" />
+                <Botao rotulo={tc(d.rotulo)} formato="retangulo" />
               </Balao>
             ))}
           </div>
@@ -54,7 +54,7 @@ export function PaginaBaloes() {
           <div className="demo-linha">
             {CORES(t).map((c) => (
               <Balao key={c.cor} cor={c.cor} aparencia="cabecalho" posicao={c.posicao} titulo={t('paginas.baloes.textos.cabecalhoColorido')} conteudo={t('paginas.baloes.textos.balaoComCabecalhoNa', { v: NOME_COR(t)[c.cor] })}>
-                <Botao rotulo={c.rotulo} severidade={c.cor as SeveridadeBotao} aparencia="contorno" formato="retangulo" />
+                <Botao rotulo={tc(c.rotulo)} severidade={c.cor as SeveridadeBotao} aparencia="contorno" formato="retangulo" />
               </Balao>
             ))}
           </div>
@@ -65,7 +65,7 @@ export function PaginaBaloes() {
         <div className="demo-linha">
           {CORES(t).map((c) => (
             <Balao key={c.cor} cor={c.cor} aparencia="solido" posicao={c.posicao} titulo={t('paginas.baloes.textos.fundoColorido')} conteudo={t('paginas.baloes.textos.balaoComFundoNa', { v: NOME_COR(t)[c.cor] })}>
-              <Botao rotulo={c.rotulo} severidade={c.cor as SeveridadeBotao} formato="retangulo" />
+              <Botao rotulo={tc(c.rotulo)} severidade={c.cor as SeveridadeBotao} formato="retangulo" />
             </Balao>
           ))}
         </div>
@@ -75,7 +75,7 @@ export function PaginaBaloes() {
         <div className="demo-linha">
           {CORES(t).map((c) => (
             <Balao key={c.cor} cor={c.cor} aparencia="suave" posicao={c.posicao} titulo={t('paginas.baloes.textos.fundoClaro')} conteudo={t('paginas.baloes.textos.balaoComFundoClaro', { v: NOME_COR(t)[c.cor] })}>
-              <Botao rotulo={c.rotulo} severidade={c.cor as SeveridadeBotao} aparencia="suave" formato="retangulo" />
+              <Botao rotulo={tc(c.rotulo)} severidade={c.cor as SeveridadeBotao} aparencia="suave" formato="retangulo" />
             </Balao>
           ))}
         </div>
@@ -86,7 +86,7 @@ export function PaginaBaloes() {
           <div className="demo-linha">
             {DIRECOES(t).map((d, i) => (
               <Balao key={d.posicao} gatilho="foco" posicao={d.posicao} titulo={t('paginas.baloes.textos.balaoDescartavel')} conteudo={t('paginas.baloes.textos.eAquiUmConteudo')}>
-                <Botao rotulo={d.rotulo} severidade={(['pri', 'secundario', 'info', 'warn'] as const)[i]} formato="retangulo" />
+                <Botao rotulo={tc(d.rotulo)} severidade={(['pri', 'secundario', 'info', 'warn'] as const)[i]} formato="retangulo" />
               </Balao>
             ))}
           </div>
@@ -105,10 +105,10 @@ export function PaginaBaloes() {
           <div className="demo-linha demo-linha--centro">
             {(
               [
-                ['secundario', 'esquerda', 'info', 'Informações'],
-                ['info', 'cima', 'circle-question-mark', 'Ajuda'],
-                ['warn', 'baixo', 'triangle-alert', 'Atenção'],
-                ['ok', 'direita', 'circle-check', 'Tudo certo'],
+                ['secundario', 'esquerda', 'info', tc('Informações')],
+                ['info', 'cima', 'circle-question-mark', tc('Ajuda')],
+                ['warn', 'baixo', 'triangle-alert', tc('Atenção')],
+                ['ok', 'direita', 'circle-check', tc('Tudo certo')],
               ] as const
             ).map(([cor, posicao, icone, rotulo]) => (
               <Balao key={icone} gatilho="passar" cor={cor} aparencia="solido" posicao={posicao} conteudo={t('paginas.baloes.textos.esteBalaoExplicaO')}>
@@ -123,9 +123,9 @@ export function PaginaBaloes() {
           <div className="demo-linha demo-linha--centro">
             {(
               [
-                ['Ana Pereira', '#1f5fe0', 'pri', 'cima', 'Gerente comercial'],
-                ['Bruno Lima', '#e8590c', 'destaque', 'direita', 'Vendedor'],
-                ['Carla Dias', '#15803d', 'ok', 'baixo', 'Financeiro'],
+                ['Ana Pereira', '#1f5fe0', 'pri', 'cima', tc('Gerente comercial')],
+                ['Bruno Lima', '#e8590c', 'destaque', 'direita', tc('Vendedor')],
+                ['Carla Dias', '#15803d', 'ok', 'baixo', tc('Financeiro')],
               ] as const
             ).map(([nome, fundo, cor, posicao, cargo]) => (
               <Balao key={nome} cor={cor} aparencia="cabecalho" posicao={posicao} titulo={nome} conteudo={cargo}>
@@ -149,10 +149,10 @@ export function PaginaBaloes() {
                 <p>
                   Mercado Bom Preço · <strong>R$ 1.239,90</strong>
                 </p>
-                <p>Entrega prevista para amanhã, das 8h às 12h.</p>
+                <p>{tc('Entrega prevista para amanhã, das 8h às 12h.')}</p>
                 <div className="demo-linha">
-                  <Botao rotulo="Ver pedido" tamanho="pequeno" formato="retangulo" onClick={() => toast.info('Ver pedido', 'PED-2026-0042')} />
-                  <Botao rotulo="Copiar código" tamanho="pequeno" aparencia="contorno" formato="retangulo" onClick={() => toast.ok('Copiado', 'PED-2026-0042')} />
+                  <Botao rotulo={tc("Ver pedido")} tamanho="pequeno" formato="retangulo" onClick={() => toast.info(tc('Ver pedido'), 'PED-2026-0042')} />
+                  <Botao rotulo={tc("Copiar código")} tamanho="pequeno" aparencia="contorno" formato="retangulo" onClick={() => toast.ok(tc('Copiado'), 'PED-2026-0042')} />
                 </div>
               </div>
             }

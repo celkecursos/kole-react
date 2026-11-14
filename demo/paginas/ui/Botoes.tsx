@@ -16,11 +16,11 @@ const CORES = (t: TradutorDemo['t']): { cor: SeveridadeBotao; nome: string }[] =
 
 /** O botão em todas as cores. */
 function Todas(props: Omit<BotaoProps, 'severidade' | 'rotulo'>) {
-  const { t } = useT();
+  const { t, tc } = useT();
   return (
     <div className="demo-linha">
       {CORES(t).map((c) => (
-        <Botao key={c.cor} severidade={c.cor} rotulo={c.nome} {...props} />
+        <Botao key={c.cor} severidade={c.cor} rotulo={tc(c.nome)} {...props} />
       ))}
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Botao,
   CabecalhoPagina,
@@ -16,6 +16,7 @@ import {
 import { Bloco } from '../Bloco';
 import { PEDIDOS, TABELA_CATEGORIAS, TABELA_PAGAMENTOS } from '../dados';
 import { useT } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 /*
  * Dados FICTÍCIOS e fixos, no mesmo tema das páginas de pedidos e tabelas: um
@@ -153,7 +154,10 @@ const PENULTIMO = MENSAL[MENSAL.length - 2];
 const variacao = (atual: number, anterior: number) => arred(((atual - anterior) / anterior) * 100, 2);
 
 export function PaginaGraficos() {
-  const { t } = useT();
+  const { t, tc } = useT();
+  // nomes dos produtos e dias da semana no idioma (os dados ficam em pt-BR)
+  const dispersao = useMemo(() => DISPERSAO.map((d) => ({ ...d, produto: tc(d.produto) })), [tc]);
+  const calor = useMemo(() => CALOR.map((c) => ({ ...c, coluna: tc(c.coluna) })), [tc]);
   // trocar a key monta os gráficos de novo: é assim que a entrada animada se repete
   const [rodada, setRodada] = useState(0);
   return (
@@ -207,15 +211,15 @@ export function PaginaGraficos() {
         <Bloco titulo={t('paginas.graficos.secoes.variasSeriesETendencia')}>
           <GraficoLinha
             titulo={t('paginas.graficos.textos.pedidosPorFormaDe')}
-            descricao={t('paginas.graficos.textos.pedidosPorMesPagos', { PIX, CREDITO, BOLETO, PIX2: PIX })}
+            descricao={t('paginas.graficos.textos.pedidosPorMesPagos', { PIX: tc(PIX), CREDITO: tc(CREDITO), BOLETO: tc(BOLETO), PIX2: tc(PIX) })}
             dados={POR_PAGAMENTO}
             eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
             eixoY={{ rotulo: t('paginas.graficos.textos.pedidos') }}
             series={[
-              { chave: 'pix', rotulo: PIX },
-              { chave: 'credito', rotulo: CREDITO },
-              { chave: 'boleto', rotulo: BOLETO },
-              { chave: 'tendencia', rotulo: t('paginas.graficos.textos.tendenciaDoPix', { PIX }), tracejada: true, cor: 'var(--graf-texto)' },
+              { chave: 'pix', rotulo: tc(PIX) },
+              { chave: 'credito', rotulo: tc(CREDITO) },
+              { chave: 'boleto', rotulo: tc(BOLETO) },
+              { chave: 'tendencia', rotulo: t('paginas.graficos.textos.tendenciaDoPix', { PIX: tc(PIX) }), tracejada: true, cor: 'var(--graf-texto)' },
             ]}
           />
         </Bloco>
@@ -239,7 +243,7 @@ export function PaginaGraficos() {
             descricao={t('paginas.graficos.textos.vendasDasSeisCategorias')}
             dados={POR_CATEGORIA}
             eixoX={{ chave: 'categoria', tipo: 'categoria', rotulo: t('paginas.graficos.textos.categoria') }}
-            eixoY={{ rotulo: t('paginas.graficos.textos.vendas'), unidade: 'mil R$' }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.vendas'), unidade: tc('mil R$') }}
             series={[
               { chave: 'ano2025', rotulo: '2025' },
               { chave: 'ano2026', rotulo: '2026' },
@@ -253,7 +257,7 @@ export function PaginaGraficos() {
             descricao={t('paginas.graficos.textos.diferencaEntreOFaturamento')}
             dados={DESVIO_META}
             eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
-            eixoY={{ rotulo: t('paginas.graficos.textos.diferenca'), unidade: 'mil R$' }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.diferenca'), unidade: tc('mil R$') }}
             series={[{ chave: 'desvio', rotulo: t('paginas.graficos.textos.diferencaParaAMeta') }]}
             divergente
           />
@@ -293,17 +297,17 @@ export function PaginaGraficos() {
           <GraficoDispersao
             titulo={t('paginas.graficos.textos.precoUnidadesVendidas')}
             descricao={t('paginas.graficos.textos.umPontoPorProduto')}
-            dados={DISPERSAO}
+            dados={dispersao}
             eixoX={{ rotulo: t('paginas.graficos.textos.preco'), formatar: emCentavos }}
             eixoY={{ rotulo: t('paginas.graficos.textos.unidadesVendidas') }}
             chaveX="preco"
             chaveY="unidades"
             chaveRotulo="produto"
             chaveDestaque="promocao"
-            rotuloPontos="Produtos"
+            rotuloPontos={tc("Produtos")}
             rotuloDestaque={t('paginas.graficos.textos.emPromocao')}
             regressao
-            nota={`A cada R$ 1,00 a mais no preço, cerca de ${Math.abs(Math.round(retaPreco.inclinacao))} unidades a menos no mês. Outras estatísticas são calculadas pelo app e entram aqui, na nota.`}
+            nota={t('paginas.graficos.textos.aCadaR100', { n: Math.abs(Math.round(retaPreco.inclinacao)) })}
           />
         </Bloco>
         <Bloco titulo={t('paginas.graficos.secoes.estados')}>
@@ -323,10 +327,7 @@ export function PaginaGraficos() {
       <Bloco
         titulo={t('paginas.graficos.secoes.animacao')}
         descricao={
-          <>
-            Com <code>animacao</code>, as linhas se desenham, as barras crescem a partir do zero e os pontos surgem, só na
-            primeira vez que o gráfico aparece. Com "reduzir movimento" ligado no sistema, nada se mexe.
-          </>
+          rico(t('paginas.graficos.textos.comAnimacaoAsLinhas'))
         }
       >
         <div className="demo-linha">
@@ -368,7 +369,7 @@ export function PaginaGraficos() {
               titulo={t('paginas.graficos.textos.faturamentoAcimaOuAbaixo')}
               dados={DESVIO_META}
               eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
-              eixoY={{ rotulo: t('paginas.graficos.textos.diferenca'), unidade: 'mil R$' }}
+              eixoY={{ rotulo: t('paginas.graficos.textos.diferenca'), unidade: tc('mil R$') }}
               series={[{ chave: 'desvio', rotulo: t('paginas.graficos.textos.diferencaParaAMeta') }]}
               divergente
               animacao
@@ -386,14 +387,14 @@ export function PaginaGraficos() {
             />
             <GraficoDispersao
               titulo={t('paginas.graficos.textos.precoUnidadesVendidas')}
-              dados={DISPERSAO}
+              dados={dispersao}
               eixoX={{ rotulo: t('paginas.graficos.textos.preco'), formatar: emCentavos }}
               eixoY={{ rotulo: t('paginas.graficos.textos.unidadesVendidas') }}
               chaveX="preco"
               chaveY="unidades"
               chaveRotulo="produto"
               chaveDestaque="promocao"
-              rotuloPontos="Produtos"
+              rotuloPontos={tc("Produtos")}
               rotuloDestaque={t('paginas.graficos.textos.emPromocao')}
               regressao
               animacao
@@ -423,10 +424,10 @@ export function PaginaGraficos() {
           titulo={t('paginas.graficos.textos.pedidosPorHoraE2')}
           descricao={t('paginas.graficos.textos.gradeDeHorasPor')}
           linhas={HORAS}
-          colunas={DIAS}
-          valores={CALOR}
-          unidade="pedidos"
-          rotuloLinhas="Hora"
+          colunas={DIAS.map(tc)}
+          valores={calor}
+          unidade={tc('pedidos')}
+          rotuloLinhas={tc("Hora")}
           altura={360}
           animacao
         />

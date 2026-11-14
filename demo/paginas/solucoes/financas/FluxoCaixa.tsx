@@ -19,7 +19,7 @@ interface Semana {
 }
 
 export function FluxoCaixa() {
-  const { t } = useT();
+  const { t, tc } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const [horizonte, setHorizonte] = useState<Horizonte>('60');
@@ -80,7 +80,7 @@ export function FluxoCaixa() {
         semPeriodo
         acoes={
           <Escolha<Horizonte>
-            ariaLabel="Projetar"
+            ariaLabel={tc("Projetar")}
             opcoes={[
               { valor: '30', rotulo: t('paginas.finFluxoCaixa.textos.t30Dias') },
               { valor: '60', rotulo: t('paginas.finFluxoCaixa.textos.t60Dias') },
@@ -90,7 +90,7 @@ export function FluxoCaixa() {
             aoMudar={setHorizonte}
           />
         }
-      >{t('paginas.finFluxoCaixa.textos.saldoDasContasCom')}{caixa.map((c) => c.nome).join(', ')}{t('paginas.finFluxoCaixa.textos.nosUltimosPassadoDias', { PASSADO })}</CabecalhoFinancas>
+      >{t('paginas.finFluxoCaixa.textos.saldoDasContasCom')}{caixa.map((c) => tc(c.nome)).join(', ')}{t('paginas.finFluxoCaixa.textos.nosUltimosPassadoDias', { PASSADO })}</CabecalhoFinancas>
 
       {menor.saldo < 0 && (
         <Alerta severidade="err" titulo={t('paginas.finFluxoCaixa.textos.oCaixaFicaNegativo', { valor: dataBr(menor.dia) })}>{t('paginas.finFluxoCaixa.textos.aProjecaoChegaA')}{moeda(menor.saldo)}{t('paginas.finFluxoCaixa.textos.antecipeRecebimentosAdiePagamentos')}</Alerta>
