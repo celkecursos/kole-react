@@ -84,7 +84,7 @@ function App() {
   };
   const toast = useToast();
   // o menu no idioma do seletor da topbar: a trilha e a busca Ctrl K saem dele
-  const { idioma } = useT();
+  const { idioma, tc } = useT();
   const nav = useMemo(() => traduzirNav(NAV, idioma), [idioma]);
 
   useEffect(() => {
@@ -162,7 +162,7 @@ function App() {
       contexto={ehFinancas(rota) ? <SeletorEspaco /> : undefined}
       aoNavegar={navegar}
       modeloTrilha={MODELOS_TRILHA.find((m) => m.id === modeloTrilha)?.modelo}
-      usuario={{ nome: perfil.nome, cargo: perfil.cargo, foto: perfil.foto }}
+      usuario={{ nome: perfil.nome, cargo: tc(perfil.cargo), foto: perfil.foto }}
       menuUsuario={[
         { id: 'perfil', rotulo: t('paginas.moldura.textos.meuPerfil'), icone: 'user' },
         { id: 'senha', rotulo: t('paginas.moldura.textos.alterarSenha'), icone: 'key' },
