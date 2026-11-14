@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Botao, CabecalhoPagina, Carregando, Vazio, useConfirmacao, useToast } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 export function PaginaNotificacoes() {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [bloqueio, setBloqueio] = useState(false);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Notificações" icone="bell" trilha />
+      <CabecalhoPagina titulo={t('paginas.notificacoes.titulo')} icone="bell" trilha />
 
       <Bloco titulo="Toasts" descricao="Aparecem no canto e somem sozinhos; o × fecha antes.">
         <div className="demo-linha">

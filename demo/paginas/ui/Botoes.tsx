@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AcaoLinha, Botao, CabecalhoPagina, useToast, type BotaoProps, type SeveridadeBotao } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const CORES: { cor: SeveridadeBotao; nome: string }[] = [
   { cor: 'pri', nome: 'Principal' },
@@ -25,13 +26,14 @@ function Todas(props: Omit<BotaoProps, 'severidade' | 'rotulo'>) {
 }
 
 export function PaginaBotoes() {
+  const { t } = useT();
   const toast = useToast();
   const [alternado, setAlternado] = useState(false);
   const [carregandoDemo, setCarregandoDemo] = useState(false);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Botões" icone="square-mouse-pointer" trilha />
+      <CabecalhoPagina titulo={t('paginas.botoes.titulo')} icone="square-mouse-pointer" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Padrão" descricao={'formato="retangulo"'}>

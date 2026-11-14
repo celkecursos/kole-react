@@ -34,9 +34,18 @@ Novidades:
   extenso) não mudam; a moeda continua vindo de `moeda`.
 - Demo: seletor de idioma na topbar e página Idioma na documentação (como ligar,
   o que muda, sincronização com react-i18next e com Laravel `users.locale`).
+- Demo: menu, títulos, legendas e cards em pt-BR, inglês e espanhol. Dicionário
+  próprio da demo em `demo/i18n` (pt-BR é a fonte; `en` e `es` parciais, com
+  o que faltar em português), hook `useT()` sobre o `useIdioma()` e o
+  `interpolar`/`pluralizar` da biblioteca, e teste de tipos que acusa chave
+  usada sem texto em pt-BR. Trocar o idioma traduz o menu, a trilha, a busca
+  Ctrl K, os títulos das páginas e da documentação, as legendas de `FormSecao`
+  e os títulos de `Card`, sem recarregar; o português não muda. O guia de
+  Instalação está inteiro traduzido, como modelo para os textos corridos.
 - Teste visual: projeto `en` com as telas de texto da biblioteca (tabela vazia,
-  paginação, calendário e o seletor aberto); nas referências antigas, o seletor
-  fica escondido.
+  paginação, calendário e o seletor aberto) e com a moldura traduzida da demo
+  (documentação, formulário e cards); nas referências antigas, o seletor fica
+  escondido.
 
 - Finanças: `Valor` (dinheiro com sinal e cor de entrada e saída, tamanhos,
   riscado, compacto), `ProvedorValores` e `BotaoOcultarValores` (o "ocultar

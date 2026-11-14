@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Caixa e chave"
+      pagina="campoMarcacao"
       icone="check"
       componente="CampoMarcacao"
-      resumo="Sim ou não: caixa de marcação (checkbox) ou chave (switch), com rótulo clicável, dica e erro."
       notas={
         <ul className="doc-lista">
           <li>

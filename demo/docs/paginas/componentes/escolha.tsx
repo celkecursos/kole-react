@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Escolha"
+      pagina="escolha"
       icone="list"
       componente="Escolha"
-      resumo="Uma opção entre poucas, todas à vista: controle segmentado ou grupo de rádios."
       notas={
         <ul className="doc-lista">
           <li>Segmentado para duas a quatro opções curtas; rádio para textos maiores ou quando cada opção precisa de explicação.</li>

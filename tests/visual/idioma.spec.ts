@@ -1,7 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
 // Projeto `en`: as telas com texto da biblioteca, com o idioma inglês salvo.
-// O conteúdo da demo continua em português; muda o que vem da lib.
+// Da demo, saem em inglês o menu, a trilha, os títulos, as legendas e os cards
+// (demo/i18n); o resto do conteúdo continua em português.
 
 const preparar = async (page: Page, rota: string) => {
   await page.addInitScript(() => localStorage.setItem('lp-preferencias', JSON.stringify({ tema: 'claro', densidade: 'confortavel', idioma: 'en' })));
@@ -36,4 +37,20 @@ test('en: topbar com o seletor de idioma aberto', async ({ page }) => {
   await page.locator('.lp-topbar').getByRole('button', { name: 'Language: English' }).click();
   await expect(page.getByRole('menu')).toBeVisible();
   await expect(page).toHaveScreenshot('topbar-idioma.png', { clip: { x: 0, y: 0, width: 1440, height: 260 } });
+});
+
+// moldura traduzida da demo: menu, trilha e título (só a janela, sem rolar)
+test('en: documentação de componente', async ({ page }) => {
+  await preparar(page, '/docs/componentes/botao');
+  await expect(page).toHaveScreenshot('moldura-docs.png');
+});
+
+test('en: formulário com legendas', async ({ page }) => {
+  await preparar(page, '/pedidos/novo');
+  await expect(page).toHaveScreenshot('moldura-form.png');
+});
+
+test('en: tela com cards', async ({ page }) => {
+  await preparar(page, '/solucoes/financas');
+  await expect(page).toHaveScreenshot('moldura-cards.png');
 });

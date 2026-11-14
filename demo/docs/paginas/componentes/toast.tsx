@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Toast"
+      pagina="toast"
       icone="bell"
       componente="Toast"
       tipos={['OpcoesToast']}
       importar={['useToast', 'type OpcoesToast']}
-      resumo="Aviso passageiro no canto da tela: retorno de uma ação (salvou, excluiu, falhou). Sai sozinho depois de alguns segundos."
       notas={
         <ul className="doc-lista">
           <li>

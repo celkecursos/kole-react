@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Tabela"
+      pagina="tabela"
       icone="table"
       componente="Tabela"
       tipos={['Coluna']}
       importar={['type Coluna', 'type Ordenacao']}
-      resumo="Listagem de registros com colunas formatadas, selo de situação, ações por linha, ordenação, seleção, paginação e os estados de carregando, vazio e erro."
       notas={
         <ul className="doc-lista">
           <li>

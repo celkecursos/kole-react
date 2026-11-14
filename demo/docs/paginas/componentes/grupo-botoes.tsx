@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Grupo de botões"
+      pagina="grupoBotoes"
       icone="layout-grid"
       componente="GrupoBotoes"
       outros={['BarraBotoes']}
       importar={['GrupoAlternancia']}
-      resumo="Botões colados num bloco (GrupoBotoes), alinhados numa barra (BarraBotoes) ou funcionando como seletor (GrupoAlternancia)."
       notas={
         <ul className="doc-lista">
           <li>

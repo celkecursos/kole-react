@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Busca com sugestões"
+      pagina="campoBusca"
       icone="search"
       componente="CampoBusca"
-      resumo="Autocompletar com dados do servidor: espera a digitação parar, busca e mostra as sugestões. O valor é o registro escolhido, não o texto."
       notas={
         <ul className="doc-lista">
           <li>

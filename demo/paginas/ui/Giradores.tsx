@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Botao, CabecalhoPagina, Card, Carregando, Girador, Skeleton, type CorGirador, type SeveridadeBotao } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const CORES: CorGirador[] = ['pri', 'secundario', 'ok', 'err', 'warn', 'info', 'destaque', 'escuro'];
 
 export function PaginaGiradores() {
+  const { t } = useT();
   const [salvando, setSalvando] = useState(false);
 
   const salvar = () => {
@@ -14,7 +16,7 @@ export function PaginaGiradores() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Giradores" icone="loader-circle" trilha />
+      <CabecalhoPagina titulo={t('paginas.giradores.titulo')} icone="loader-circle" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Anel" descricao="Gira sem parar; o texto vai só para o leitor de tela.">

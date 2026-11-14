@@ -18,6 +18,7 @@ import {
   type CorCard,
 } from '../../../src';
 import { cena, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const IMG = {
   mar: cena('#1f5fe0', '#0b1a36'),
@@ -79,13 +80,14 @@ const VEICULOS: Veiculo[] = [
 const SEV_VEICULO = { Regular: 'ok', 'Licenciamento vencido': 'err', 'Em manutenção': 'warn' } as const;
 
 export function PaginaCards() {
+  const { t } = useT();
   const toast = useToast();
   const [estadoLista, setEstadoLista] = useState('normal');
   const [aba, setAba] = useState<string | null>('ativo');
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Cards" icone="layers" trilha />
+      <CabecalhoPagina titulo={t('paginas.cards.titulo')} icone="layers" trilha />
 
       <div className="demo-cards-4">
         <Card midia={<Imagem src={IMG.mar} />} rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
@@ -94,7 +96,7 @@ export function PaginaCards() {
           <Botao rotulo="Ver mais" formato="retangulo" />
         </Card>
         <div className="demo-pilha">
-          <Card titulo="Destaque">
+          <Card titulo={t('paginas.cards.secoes.destaque')}>
             <div className="demo-card-titulo">Tratamento especial do título</div>
             <p className="demo-cards-texto">{LOREM}</p>
             <Botao rotulo="Ver mais" formato="retangulo" />
@@ -170,7 +172,7 @@ export function PaginaCards() {
           </div>
         </Secao>
         <Secao titulo="Borda colorida:">
-          <Card borda="ok" titulo="Cabeçalho" rodape={<span className="demo-cards-mudo">Rodapé</span>}>
+          <Card borda="ok" titulo={t('paginas.cards.secoes.cabecalho')} rodape={<span className="demo-cards-mudo">Rodapé</span>}>
             <div className="demo-card-titulo" style={{ color: 'var(--ok-fg)' }}>
               Procurando resultado?
             </div>
@@ -201,7 +203,7 @@ export function PaginaCards() {
                   <li>Um quarto item</li>
                 </ul>
               </Card>
-              <Card titulo="Destaque" corpoSemEspaco>
+              <Card titulo={t('paginas.cards.secoes.destaque')} corpoSemEspaco>
                 <ul className="demo-cards-lista">
                   <li>Um item</li>
                   <li>Um segundo item</li>
@@ -328,7 +330,7 @@ export function PaginaCards() {
             <p className="demo-cards-texto">Texto de apoio, como introdução.</p>
           </Card>
         ))}
-        <Card titulo="Destaque" alinhamento="centro" rodape={<span className="demo-cards-mudo">11:32</span>}>
+        <Card titulo={t('paginas.cards.secoes.destaque')} alinhamento="centro" rodape={<span className="demo-cards-mudo">11:32</span>}>
           <div className="demo-card-titulo">Notícia urgente!</div>
           <p className="demo-cards-texto">Texto de apoio, como introdução ao conteúdo.</p>
           <div className="demo-linha" style={{ justifyContent: 'center' }}>
@@ -368,15 +370,15 @@ export function PaginaCards() {
       </div>
 
       <div className="demo-cards-3">
-        <Card titulo="Card com recolher" recolhivel rodape={<Botao rotulo="Ver mais" formato="retangulo" />}>
+        <Card titulo={t('paginas.cards.secoes.comRecolher')} recolhivel rodape={<Botao rotulo="Ver mais" formato="retangulo" />}>
           <div className="demo-card-titulo">Card recolhível</div>
           <p className="demo-cards-texto">{LOREM}</p>
         </Card>
-        <Card titulo="Card com fechar" dispensavel aoFechar={() => toast.info('Card fechado')} rodape={<Botao rotulo="Ver mais" formato="retangulo" />}>
+        <Card titulo={t('paginas.cards.secoes.comFechar')} dispensavel aoFechar={() => toast.info('Card fechado')} rodape={<Botao rotulo="Ver mais" formato="retangulo" />}>
           <div className="demo-card-titulo">Card que fecha</div>
           <p className="demo-cards-texto">{LOREM}</p>
         </Card>
-        <Card titulo="Card com tela cheia" telaCheia rodape={<Botao rotulo="Ver mais" formato="retangulo" />}>
+        <Card titulo={t('paginas.cards.secoes.comTelaCheia')} telaCheia rodape={<Botao rotulo="Ver mais" formato="retangulo" />}>
           <div className="demo-card-titulo">Card em tela cheia</div>
           <p className="demo-cards-texto">{LOREM} Pressione Esc para voltar.</p>
         </Card>
@@ -393,7 +395,7 @@ export function PaginaCards() {
             <p className="demo-cards-texto">{LOREM}</p>
             <span className="demo-cards-mudo">Atualizado há 3 minutos</span>
           </Card>
-          <Card titulo="Com cabeçalho" midia={<Imagem src={IMG.mar} altura="12rem" />} posicaoMidia="base" rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
+          <Card titulo={t('paginas.cards.secoes.comCabecalho')} midia={<Imagem src={IMG.mar} altura="12rem" />} posicaoMidia="base" rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
             <p className="demo-cards-texto">{LOREM}</p>
           </Card>
         </div>
@@ -401,7 +403,7 @@ export function PaginaCards() {
 
       <Secao titulo="Texto sobre a imagem:">
         <div className="demo-cards-3">
-          <Card midia={<img src={IMG.mar} alt="" />} posicaoMidia="fundo" titulo="Imagens sobrepostas são ótimas!">
+          <Card midia={<img src={IMG.mar} alt="" />} posicaoMidia="fundo" titulo={t('paginas.cards.secoes.imagensSobrepostas')}>
             <p className="demo-cards-texto">{LOREM}</p>
             <span className="demo-cards-mudo-claro">Atualizado há 3 minutos</span>
           </Card>
@@ -409,7 +411,7 @@ export function PaginaCards() {
             <div className="demo-card-titulo">Imagens sobrepostas são ótimas!</div>
             <p className="demo-cards-texto">{LOREM}</p>
           </Card>
-          <Card midia={<img src={IMG.noite} alt="" />} posicaoMidia="fundo" titulo="Com cabeçalho e rodapé" rodape={<span className="demo-cards-mudo-claro">Atualizado há 3 minutos</span>}>
+          <Card midia={<img src={IMG.noite} alt="" />} posicaoMidia="fundo" titulo={t('paginas.cards.secoes.comCabecalhoRodape')} rodape={<span className="demo-cards-mudo-claro">Atualizado há 3 minutos</span>}>
             <p className="demo-cards-texto">{LOREM}</p>
           </Card>
         </div>
@@ -418,10 +420,10 @@ export function PaginaCards() {
       <div className="demo-colunas">
         <Secao titulo="Larguras:">
           <div className="demo-linha" style={{ alignItems: 'stretch' }}>
-            <Card titulo="Largura de 75%" style={{ width: '38%' }} rodape={<Botao rotulo="Botão" bloco formato="retangulo" />}>
+            <Card titulo={t('paginas.cards.secoes.largura75')} style={{ width: '38%' }} rodape={<Botao rotulo="Botão" bloco formato="retangulo" />}>
               <p className="demo-cards-texto">Largura definida por style ou classe do app.</p>
             </Card>
-            <Card titulo="Largura de 50%" style={{ width: '26%' }} rodape={<Botao rotulo="Botão" formato="retangulo" />}>
+            <Card titulo={t('paginas.cards.secoes.largura50')} style={{ width: '26%' }} rodape={<Botao rotulo="Botão" formato="retangulo" />}>
               <p className="demo-cards-texto">Mais estreito.</p>
             </Card>
           </div>
@@ -460,11 +462,11 @@ export function PaginaCards() {
 
       <Secao titulo="Cards horizontais:">
         <div className="demo-cards-3">
-          <Card midia={<img src={IMG.tarde} alt="" />} posicaoMidia="esquerda" titulo="Cards horizontais" rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
+          <Card midia={<img src={IMG.tarde} alt="" />} posicaoMidia="esquerda" titulo={t('paginas.cards.secoes.horizontais')} rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
             <div className="demo-card-titulo">Cards horizontais são ótimos!</div>
             <p className="demo-cards-texto">Um card mais largo, com texto de apoio.</p>
           </Card>
-          <Card midia={<img src={IMG.mar} alt="" />} posicaoMidia="direita" titulo="Cards horizontais" rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
+          <Card midia={<img src={IMG.mar} alt="" />} posicaoMidia="direita" titulo={t('paginas.cards.secoes.horizontais')} rodape={<span className="demo-cards-mudo">Atualizado há 3 minutos</span>}>
             <div className="demo-card-titulo">Cards horizontais são ótimos!</div>
             <p className="demo-cards-texto">Um card mais largo, com texto de apoio um pouco maior.</p>
           </Card>

@@ -4,6 +4,7 @@ import { dia, hoje, type Conta } from './dados';
 import { CabecalhoFinancas, IconeConta, TIPO_CONTA, dataBr, useEditorLancamento, useMoeda } from './comum';
 import { acoes, contasDo, doEspaco, saldoConta, useFinancas } from './estado';
 import { ROTAS } from './rotas';
+import { useT } from '../../../i18n/useT';
 
 /** Próxima data com o dia `d` (hoje conta). */
 function proximoDia(d: number): string {
@@ -33,6 +34,7 @@ function CartaoCredito({ conta, titular }: { conta: Conta; titular: string }) {
 }
 
 export function Contas({ navegar }: { navegar: (r: string) => void }) {
+  const { t } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -56,7 +58,7 @@ export function Contas({ navegar }: { navegar: (r: string) => void }) {
   return (
     <div className="demo-pilha">
       <CabecalhoFinancas
-        titulo="Contas e cartões"
+        titulo={t('paginas.finContas.titulo')}
         icone="landmark"
         semPeriodo
         acoes={<Botao rotulo="Nova conta" icone="plus" onClick={() => toast.info('Nova conta', 'Aqui entraria o cadastro da conta ou do cartão.')} />}

@@ -60,7 +60,7 @@ const CONTEUDO = renderizar(CHANGELOG);
 
 export function DocChangelog() {
   return (
-    <PaginaGuia titulo="Changelog" icone="history" resumo="O que mudou em cada versão, lido do CHANGELOG.md do pacote.">
+    <PaginaGuia pagina="changelog" icone="history">
       <div className="doc-md">{CONTEUDO}</div>
     </PaginaGuia>
   );

@@ -16,6 +16,7 @@ import {
   type TamanhoDialogo,
 } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const TAMANHOS_DIALOGO: { valor: TamanhoDialogo; rotulo: string; largura: string }[] = [
   { valor: 'pequeno', rotulo: 'Pequeno', largura: '28rem (448px)' },
@@ -25,6 +26,7 @@ const TAMANHOS_DIALOGO: { valor: TamanhoDialogo; rotulo: string; largura: string
 ];
 
 export function PaginaDialogos() {
+  const { t } = useT();
   const toast = useToast();
   const [detalhes, setDetalhes] = useState(false);
   const [formModal, setFormModal] = useState(false);
@@ -36,7 +38,7 @@ export function PaginaDialogos() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Diálogos" icone="app-window" trilha />
+      <CabecalhoPagina titulo={t('paginas.dialogos.titulo')} icone="app-window" trilha />
 
       <Bloco titulo="Tamanhos, tom e fechamento" descricao="Escolha o tom do cabeçalho e se Esc ou o clique fora fecham; depois abra um dos tamanhos.">
         <div className="demo-linha">
@@ -112,7 +114,7 @@ export function PaginaDialogos() {
           toast.ok('Produto salvo');
         }}
       >
-        <FormSecao legenda="Dados do produto" icone="package">
+        <FormSecao legenda={t('paginas.dialogos.secoes.dadosProduto')} icone="package">
           <CampoTexto className="lp-col-2" rotulo="Nome do produto" obrigatorio />
           <CampoSelect
             rotulo="Categoria"
@@ -123,7 +125,7 @@ export function PaginaDialogos() {
             ]}
           />
         </FormSecao>
-        <FormSecao legenda="Variações" icone="list" acoes={<Botao rotulo="Adicionar" icone="plus" severidade="secundario" aparencia="texto" />}>
+        <FormSecao legenda={t('paginas.dialogos.secoes.variacoes')} icone="list" acoes={<Botao rotulo="Adicionar" icone="plus" severidade="secundario" aparencia="texto" />}>
           <CampoTexto className="lp-col-full" rotulo="Tamanho ou sabor" />
         </FormSecao>
       </Form>

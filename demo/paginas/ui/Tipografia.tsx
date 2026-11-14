@@ -1,5 +1,6 @@
 import { CabecalhoPagina, Citacao, type CorCitacao } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 /** A escala tipográfica do projeto (tokens.css), do maior para o menor. */
 const ESCALA = [
@@ -25,9 +26,10 @@ const CITACOES: Array<[CorCitacao, string]> = [
 ];
 
 export function PaginaTipografia() {
+  const { t } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Tipografia" icone="file-type" trilha />
+      <CabecalhoPagina titulo={t('paginas.tipografia.titulo')} icone="file-type" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Títulos h1 a h6">

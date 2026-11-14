@@ -30,12 +30,11 @@ const MOLDURA = `import { EstruturaSite, RodapeSite } from '@celke/kole-react';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Site público"
+      pagina="site"
       icone="app-window"
       componente="EstruturaSite"
       outros={['RodapeSite', 'SecaoSite', 'DestaqueSite', 'CabecalhoSecao', 'CardRecurso', 'CardPlano', 'CardConteudo', 'FaixaNumeros', 'FaixaChamada']}
       importar={['CardDepoimento', 'CampoPesquisa', 'FiltroPilulas', 'Newsletter', 'ListaNumerada', 'SumarioPagina', 'ConteudoArtigo']}
-      resumo="Componentes para o site da empresa, no mesmo pacote e com os mesmos tokens do sistema: moldura com menu e rodapé, faixa de abertura, seções, cards de recurso, plano, conteúdo e depoimento."
       notas={
         <ul className="doc-lista">
           <li>

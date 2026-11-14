@@ -15,6 +15,7 @@ import {
 } from '../../../src';
 import { Bloco } from '../Bloco';
 import { PEDIDOS, TABELA_CATEGORIAS, TABELA_PAGAMENTOS } from '../dados';
+import { useT } from '../../i18n/useT';
 
 /*
  * Dados FICTÍCIOS e fixos, no mesmo tema das páginas de pedidos e tabelas: um
@@ -152,11 +153,12 @@ const PENULTIMO = MENSAL[MENSAL.length - 2];
 const variacao = (atual: number, anterior: number) => arred(((atual - anterior) / anterior) * 100, 2);
 
 export function PaginaGraficos() {
+  const { t } = useT();
   // trocar a key monta os gráficos de novo: é assim que a entrada animada se repete
   const [rodada, setRodada] = useState(0);
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Gráficos" icone="chart-line" trilha>
+      <CabecalhoPagina titulo={t('paginas.graficos.titulo')} icone="chart-line" trilha>
         Linha, barras, combinado, dispersão, mapa de calor e minigráfico no indicador, em SVG próprio. Dados fictícios de
         vendas, no tema das páginas de pedidos e tabelas.
       </CabecalhoPagina>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Botao, CabecalhoPagina, Toast, useToast, type CorToast, type PosicaoToast, type SeveridadeBotao } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const POSICOES: Array<{ posicao: PosicaoToast; rotulo: string }> = [
   { posicao: 'topo-esquerda', rotulo: 'Topo à esquerda' },
@@ -24,6 +25,7 @@ const CORES: Array<{ cor: CorToast; rotulo: string }> = [
 ];
 
 export function PaginaToasts() {
+  const { t } = useT();
   const toast = useToast();
   // toasts fixos da página que podem ser fechados
   const [fechados, setFechados] = useState<string[]>([]);
@@ -32,7 +34,7 @@ export function PaginaToasts() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Toasts" icone="bell" trilha />
+      <CabecalhoPagina titulo={t('paginas.toasts.titulo')} icone="bell" trilha />
 
       <Bloco titulo="Posições" descricao="useToast().mostrar({ posicao }) — cada posição tem a sua pilha.">
         <div className="demo-linha">

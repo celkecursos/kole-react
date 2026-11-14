@@ -39,6 +39,7 @@ import {
   type QuadroDemo,
 } from './dados';
 import './apps.css';
+import { useT } from '../../i18n/useT';
 
 const OPCOES_PRIORIDADE = (Object.keys(PRIORIDADES) as Prioridade[]).map((p) => ({ valor: p, rotulo: PRIORIDADES[p].rotulo }));
 const OPCOES_PESSOAS = PESSOAS.map((p) => ({ valor: p.id, rotulo: p.nome }));
@@ -57,6 +58,7 @@ const novoId = (prefixo: string) => `${prefixo}-${Date.now().toString(36)}-${Mat
 
 /** Listagem (/apps/kanban) e quadro (/apps/kanban/<id>), com os quadros guardados aqui enquanto a demo está aberta. */
 export function PaginaKanban({ rota, navegar }: { rota: string; navegar: (rota: string) => void }) {
+  const { t } = useT();
   const [quadros, setQuadros] = useState(quadrosIniciais);
   const id = rota.startsWith('/apps/kanban/') ? rota.slice('/apps/kanban/'.length) : null;
   const alterar = (qid: string, f: (q: QuadroDemo) => QuadroDemo) => setQuadros((qs) => qs.map((q) => (q.id === qid ? { ...f(q), atualizado: new Date() } : q)));
@@ -79,7 +81,7 @@ export function PaginaKanban({ rota, navegar }: { rota: string; navegar: (rota: 
   if (!quadro)
     return (
       <div className="demo-pilha">
-        <CabecalhoPagina titulo="Quadro não encontrado" icone="square-kanban" />
+        <CabecalhoPagina titulo={t('paginas.kanban.textos.naoEncontrado')} icone="square-kanban" />
         <Vazio titulo="Quadro não encontrado" descricao="O quadro que você procura não existe ou foi excluído." icone="square-kanban">
           <Botao rotulo="Voltar para os quadros" icone="arrow-left" onClick={() => navegar('/apps/kanban')} />
         </Vazio>
@@ -102,6 +104,7 @@ function ListaQuadros({
   alternarFavorito: (id: string) => void;
   criar: (q: QuadroDemo) => void;
 }) {
+  const { t } = useT();
   const [busca, setBusca] = useState('');
   const [criando, setCriando] = useState(false);
   const termo = normalizar(busca);
@@ -156,7 +159,7 @@ function ListaQuadros({
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo="Quadros Kanban"
+        titulo={t('paginas.kanban.titulo')}
         icone="square-kanban"
         trilha
         acoes={<Botao rotulo="Criar quadro" icone="plus" onClick={() => setCriando(true)} />}

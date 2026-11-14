@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Senha"
+      pagina="campoSenha"
       icone="key"
       componente="CampoSenha"
       importar={['type PoliticaSenha']}
-      resumo="Campo de senha com botão de revelar, medidor de força e política de requisitos."
       notas={
         <ul className="doc-lista">
           <li>

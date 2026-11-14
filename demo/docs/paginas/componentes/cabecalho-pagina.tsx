@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Cabeçalho de página"
+      pagina="cabecalhoPagina"
       icone="panel-right"
       componente="CabecalhoPagina"
-      resumo="O topo de cada página: título com ícone, categoria, trilha de navegação, texto de apoio e as ações principais."
       notas={
         <ul className="doc-lista">
           <li>

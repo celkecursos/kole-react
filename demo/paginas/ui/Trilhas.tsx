@@ -1,5 +1,6 @@
 import { Botao, CabecalhoPagina, Escolha, Trilha, type ItemTrilha, type ModeloTrilha } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 /** Modelos prontos — os mesmos que o seletor "Usar no sistema" aplica. */
 export const MODELOS_TRILHA: { id: string; nome: string; modelo: ModeloTrilha; codigo: string }[] = [
@@ -37,11 +38,12 @@ export function PaginaTrilhas({
   aoMudarModelo: (id: string) => void;
   navegar: (r: string) => void;
 }) {
+  const { t } = useT();
   const escolhido = MODELOS_TRILHA.find((m) => m.id === modeloAtual) ?? MODELOS_TRILHA[0];
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Trilha de navegação" icone="list" trilha />
+      <CabecalhoPagina titulo={t('paginas.trilha.titulo')} icone="list" trilha />
 
       <Bloco
         titulo="Usar no sistema"

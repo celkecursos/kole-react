@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Avatar, Badge, Botao, CabecalhoPagina, Chip, ComBadge, Icone, Placa, Status, type BadgeProps, type CorBadge } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const CORES: { cor: CorBadge; nome: string }[] = [
   { cor: 'pri', nome: 'Principal' },
@@ -35,11 +36,12 @@ const TITULOS: [string, ReactNode][] = [
 const CHIPS = ['Pix', 'PR', 'Pago'];
 
 export function PaginaBadges() {
+  const { t } = useT();
   const [chips, setChips] = useState(CHIPS);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Badges" icone="tag" trilha />
+      <CabecalhoPagina titulo={t('paginas.badges.titulo')} icone="tag" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Padrão">

@@ -36,6 +36,7 @@ import {
 } from '../../src';
 import { Bloco, retrato } from './Bloco';
 import { OPCOES_PAGAMENTO } from './dados';
+import { useT } from '../i18n/useT';
 
 interface Servidor {
   id: number;
@@ -86,6 +87,7 @@ const ANEXOS_INICIAIS: Anexo[] = [
 ];
 
 export function PaginaCampos() {
+  const { t } = useT();
   const toast = useToast();
   const anexoRef = useRef<CampoAnexoRef>(null);
   const [doc, setDoc] = useState({ cpf: '529.982.247-24', cnpj: '', cpfCnpj: '', email: '', telefone: '', celular: '', placa: '', renavam: '', chassi: '', cnh: '', imei: '' });
@@ -111,7 +113,7 @@ export function PaginaCampos() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Campos e arquivos" icone="pencil" trilha />
+      <CabecalhoPagina titulo={t('paginas.campos.titulo')} icone="pencil" trilha />
 
       <Bloco titulo="Campos básicos" descricao="Texto, ícone, erro, aviso, desabilitado, somente leitura e select; a variante inline fica na mesma linha do rótulo.">
         <div className="demo-grade">
@@ -266,6 +268,7 @@ export function PaginaCampos() {
 const FORM_VAZIO = { email: '', cpf: '', responsavel: null as Servidor | null, anexos: [] as Anexo[] };
 
 function FormDemo() {
+  const { t } = useT();
   const toast = useToast();
   const [aberto, setAberto] = useState(false);
   const [obrig, setObrig] = useState(FORM_VAZIO);
@@ -296,7 +299,7 @@ function FormDemo() {
           }
         }}
       >
-        <FormSecao legenda="Identificação" icone="id-card">
+        <FormSecao legenda={t('paginas.campos.secoes.identificacao')} icone="id-card">
           <CampoCpf rotulo="CPF" obrigatorio valor={obrig.cpf} aoMudar={(cpf) => setObrig((o) => ({ ...o, cpf }))} />
           <CampoEmail className="lp-col-2" rotulo="E-mail" obrigatorio valor={obrig.email} aoMudar={(email) => setObrig((o) => ({ ...o, email }))} />
           <CampoBusca<Servidor>
@@ -309,7 +312,7 @@ function FormDemo() {
             aoMudar={(responsavel) => setObrig((o) => ({ ...o, responsavel }))}
           />
         </FormSecao>
-        <FormSecao legenda="Documentos" icone="paperclip">
+        <FormSecao legenda={t('paginas.campos.secoes.documentos')} icone="paperclip">
           <CampoAnexo className="lp-col-full" rotulo="Portaria de nomeação" minimo={1} multiple={false} valor={obrig.anexos} aoMudar={(anexos) => setObrig((o) => ({ ...o, anexos }))} />
         </FormSecao>
       </Form>

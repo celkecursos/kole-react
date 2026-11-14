@@ -5,13 +5,12 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Kanban"
+      pagina="kanban"
       icone="square-kanban"
       componente="Kanban"
       outros={['CartaoKanban', 'SeloPrioridade', 'SeloPrazo', 'Etiqueta']}
       tipos={['ColunaKanban', 'EtiquetaKanban', 'ContagemSubtarefas', 'SoltarItem']}
       importar={['CartaoKanban', 'type ColunaKanban']}
-      resumo="Quadro kanban pronto: colunas com cor, contagem, limite e menu (renomear, recolher, excluir), cartões que se arrastam entre colunas, adicionar cartão e coluna, rolagem horizontal e tela vazia. O app guarda os dados; o quadro mostra e avisa as mudanças."
       notas={
         <ul className="doc-lista">
           <li>

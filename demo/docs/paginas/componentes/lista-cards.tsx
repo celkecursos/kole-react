@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Lista de cards"
+      pagina="listaCards"
       icone="layout-grid"
       componente="ListaCards"
-      resumo="A mesma listagem da Tabela, em grade de cards: com paginação e os estados de carregando, vazio e erro."
       notas={
         <ul className="doc-lista">
           <li>

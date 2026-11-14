@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Seleção"
+      pagina="campoSelect"
       icone="chevron-down"
       componente="CampoSelect"
       outros={['CampoSelectMultiplo']}
       importar={['type Opcao']}
-      resumo="Escolha de uma opção (CampoSelect) ou de várias (CampoSelectMultiplo) numa lista, com busca e botão de limpar."
       notas={
         <ul className="doc-lista">
           <li>

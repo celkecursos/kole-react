@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Formulário"
+      pagina="form"
       icone="file-pen"
       componente="Form"
       outros={['FormSecao']}
-      resumo="Moldura de cadastro: em página (com menu lateral de etapas) ou em modal. Traz título, Salvar/Cancelar, pendências e a grade dos campos."
       notas={
         <ul className="doc-lista">
           <li>

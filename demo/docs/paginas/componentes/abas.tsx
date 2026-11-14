@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Abas"
+      pagina="abas"
       icone="panel-right"
       componente="Abas"
       outros={['Aba']}
-      resumo="Painéis alternados na mesma área, com nove variantes (sublinhado, pílulas, segmentado, passos…), ícones, pendências e orientação vertical."
       notas={
         <ul className="doc-lista">
           <li>

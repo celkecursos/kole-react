@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Badge"
+      pagina="badge"
       icone="tag"
       componente="Badge"
-      resumo="Etiqueta curta para contagem, categoria ou novidade."
       notas={
         <ul className="doc-lista">
           <li>

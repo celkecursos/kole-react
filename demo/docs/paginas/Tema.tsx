@@ -97,9 +97,8 @@ export function DocTema() {
 
   return (
     <PaginaGuia
-      titulo="Tema e tokens"
+      pagina="tema"
       icone="palette"
-      resumo="Toda cor e medida vem de variáveis CSS (os tokens). Trocar a marca é redefinir alguns tokens; o tema escuro e a densidade usam os mesmos nomes."
     >
       <Secao id="experimente" titulo="Experimente">
         <p className="doc-p">As amostras abaixo leem os tokens ao vivo: troque o tema e a densidade e veja os valores mudarem.</p>

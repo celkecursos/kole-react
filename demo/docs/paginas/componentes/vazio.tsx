@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Vazio"
+      pagina="vazio"
       icone="inbox"
       componente="Vazio"
-      resumo="O que mostrar quando não há nada: lista sem registros, busca sem resultado, caixa de entrada limpa."
       notas={
         <ul className="doc-lista">
           <li>Diga o que aconteceria aqui e qual é o próximo passo; quando houver, ofereça a ação em botão.</li>

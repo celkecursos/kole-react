@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Avaliação"
+      pagina="avaliacao"
       icone="star"
       componente="Avaliacao"
-      resumo="Nota com estrelas ou corações: para votar, com meio ponto e mensagem por nota, ou só para mostrar."
       notas={
         <ul className="doc-lista">
           <li>

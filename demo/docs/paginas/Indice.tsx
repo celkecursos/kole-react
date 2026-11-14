@@ -1,15 +1,13 @@
+import { useT } from '../../i18n/useT';
 import { CATEGORIAS, rotaComponente } from '../nav';
 import { PaginaGuia, Secao } from '../PaginaDoc';
 
 const TOTAL = CATEGORIAS.reduce((n, c) => n + c.itens.length, 0);
 
 export function DocIndice() {
+  const { tp } = useT();
   return (
-    <PaginaGuia
-      titulo="Componentes"
-      icone="layers"
-      resumo={`${TOTAL} páginas, cada uma com exemplos funcionando, o código de cada exemplo e a tabela de props.`}
-    >
+    <PaginaGuia pagina="indice" icone="layers" resumo={tp('docs.indice.textos.resumo', TOTAL)}>
       {CATEGORIAS.map((c) => (
         <Secao key={c.rotulo} id={c.rotulo.toLowerCase().replace(/\s+/g, '-')} titulo={c.rotulo}>
           <div className="doc-indice">

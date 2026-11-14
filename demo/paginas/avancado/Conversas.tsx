@@ -13,6 +13,7 @@ import {
   type ItemReferencia,
 } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 interface Msg {
   id: number;
@@ -196,9 +197,10 @@ function ChatDemo({ inicial, falhar, larguraMaxima, vazio }: { inicial: Msg[]; f
 }
 
 export function PaginaConversas() {
+  const { t } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Conversas" icone="message-square" trilha />
+      <CabecalhoPagina titulo={t('paginas.conversas.titulo')} icone="message-square" trilha />
 
       <Bloco
         titulo="Conversa ocupando a página"
@@ -210,12 +212,12 @@ export function PaginaConversas() {
       </Bloco>
 
       <div className="demo-colunas">
-        <Card titulo="Erro e tentar novamente" subtitulo="A primeira resposta falha" corpoSemEspaco>
+        <Card titulo={t('paginas.conversas.secoes.erro')} subtitulo="A primeira resposta falha" corpoSemEspaco>
           <div className="demo-chat-card">
             <ChatDemo inicial={[]} falhar vazio={<Vazio titulo="Faça uma pergunta" descricao="A primeira resposta vai falhar de propósito." icone="message-square" />} />
           </div>
         </Card>
-        <Card titulo="Estado vazio" subtitulo="Card com altura fixa" corpoSemEspaco>
+        <Card titulo={t('paginas.conversas.secoes.vazio')} subtitulo="Card com altura fixa" corpoSemEspaco>
           <div className="demo-chat-card">
             <ChatDemo inicial={[]} />
           </div>

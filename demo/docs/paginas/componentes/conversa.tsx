@@ -5,13 +5,12 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Conversa"
+      pagina="conversa"
       icone="message-square"
       componente="Conversa"
       outros={['Mensagem', 'CampoMensagem', 'ListaConversas', 'InicioConversa', 'BlocoCodigo', 'ChatFlutuante']}
       tipos={['AnexoMensagem', 'ItemConversa', 'SugestaoConversa']}
       importar={['Referencias']}
-      resumo="Chat completo: a área que rola e acompanha a última mensagem, os balões de cada autor com os estados de envio, e o campo com Enter para enviar. Para assistentes de IA: histórico, tela inicial com sugestões, anexos, código com copiar e o chat flutuante do site."
       notas={
         <ul className="doc-lista">
           <li>

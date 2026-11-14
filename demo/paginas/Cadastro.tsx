@@ -24,6 +24,7 @@ import {
   useToast,
   type ItemMenuForm,
 } from '../../src';
+import { useT } from '../i18n/useT';
 
 const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -53,6 +54,7 @@ interface ItemPedido {
 }
 
 export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: string) => void }) {
+  const { t } = useT();
   const atual: IdFormulario = FORMULARIOS.find((x) => x.rota === rota)?.id ?? 'cliente';
   const toast = useToast();
   const [salvando, setSalvando] = useState(false);
@@ -143,7 +145,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
 
   return (
     <Form
-      titulo="Novo pedido"
+      titulo={t('paginas.novoPedido.titulo')}
       icone="shopping-cart"
       trilha={[{ rotulo: FORMULARIOS.find((x) => x.id === atual)!.rotulo }]}
       aoSalvar={salvar}
@@ -156,7 +158,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
     >
       {atual === 'cliente' && (
         <>
-          <FormSecao legenda="Cliente" icone="user">
+          <FormSecao legenda={t('paginas.novoPedido.secoes.cliente')} icone="user">
             <CampoTipoPessoa rotulo="Tipo de pessoa" valor={f.tipoPessoa} aoMudar={mudar('tipoPessoa')} />
             <CampoCpfCnpj rotulo={juridica ? 'CNPJ' : 'CPF'} obrigatorio valor={f.documento} aoMudar={mudar('documento')} erro={erro('documento')} />
             <CampoTexto
@@ -171,7 +173,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
             <CampoTelefone className="lp-col-2" rotulo="Telefone" valor={f.telefone} aoMudar={mudar('telefone')} />
           </FormSecao>
 
-          <FormSecao legenda="Endereço de entrega" icone="map-pin">
+          <FormSecao legenda={t('paginas.novoPedido.secoes.enderecoEntrega')} icone="map-pin">
             <CampoCep rotulo="CEP" valor={f.cep} aoMudar={mudar('cep')} />
             <CampoUf rotulo="UF" valor={f.uf} aoMudar={mudar('uf')} />
             <CampoTexto className="lp-col-2" rotulo="Cidade" valor={f.cidade} aoMudar={mudar('cidade')} />
@@ -186,7 +188,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
       {atual === 'itens' && (
         <>
           <FormSecao
-            legenda="Itens do pedido"
+            legenda={t('paginas.novoPedido.secoes.itens')}
             icone="list"
             acoes={<Botao rotulo="Adicionar item" icone="plus" severidade="secundario" aparencia="contorno" onClick={adicionarItem} />}
           >
@@ -218,7 +220,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
             </div>
           </FormSecao>
 
-          <FormSecao legenda="Valores" icone="calculator">
+          <FormSecao legenda={t('paginas.novoPedido.secoes.valores')} icone="calculator">
             <CampoMoeda rotulo="Subtotal" valor={subtotal} disabled dica={`${itens.length} item(ns)`} />
             <CampoMoeda rotulo="Desconto" valor={f.desconto} aoMudar={mudar('desconto')} />
             <CampoMoeda rotulo="Frete" valor={f.frete} aoMudar={mudar('frete')} />
@@ -229,7 +231,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
 
       {atual === 'pagamento' && (
         <>
-          <FormSecao legenda="Pagamento" icone="wallet">
+          <FormSecao legenda={t('paginas.novoPedido.secoes.pagamento')} icone="wallet">
             <Escolha
               className="lp-col-2"
               rotulo="Forma de pagamento"
@@ -253,7 +255,7 @@ export function PaginaCadastro({ rota, navegar }: { rota: string; navegar: (r: s
             <CampoMarcacao className="lp-col-full" aparencia="chave" rotulo="Pagamento já confirmado" valor={f.pago} aoMudar={mudar('pago')} dica="Libera o pedido para separação no estoque." />
           </FormSecao>
 
-          <FormSecao legenda="Prazos e entrega" icone="truck">
+          <FormSecao legenda={t('paginas.novoPedido.secoes.prazos')} icone="truck">
             <CampoData rotulo="Data do pedido" valor={f.dataPedido} aoMudar={mudar('dataPedido')} />
             <CampoData rotulo="Previsão de entrega" obrigatorio valor={f.entrega} aoMudar={mudar('entrega')} erro={erro('entrega')} />
             <CampoHora rotulo="Horário de entrega" valor={f.horario} aoMudar={mudar('horario')} />

@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Status"
+      pagina="status"
       icone="circle-check"
       componente="Status"
-      resumo="Selo da situação de um registro: pago, em análise, cancelado. Cor e ícone vêm da severidade."
       notas={
         <ul className="doc-lista">
           <li>

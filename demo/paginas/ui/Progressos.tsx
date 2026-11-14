@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Botao, CabecalhoPagina, GrupoBotoes, Progresso, type CorProgresso } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const VALORES = [10, 25, 50, 75, 100];
 const CORES: CorProgresso[] = ['pri', 'destaque', 'ok', 'info', 'warn'];
 const CORES_2: CorProgresso[] = ['secundario', 'warn', 'info', 'ok', 'err'];
 
 export function PaginaProgressos() {
+  const { t } = useT();
   const [rodada, setRodada] = useState(0);
   const [envio, setEnvio] = useState(40);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Progresso" icone="chart-column" trilha />
+      <CabecalhoPagina titulo={t('paginas.progresso.titulo')} icone="chart-column" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Básico">

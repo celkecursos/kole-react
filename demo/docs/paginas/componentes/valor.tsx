@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Valor e dinheiro"
+      pagina="valor"
       icone="banknote"
       componente="Valor"
       outros={['ProvedorValores', 'BotaoOcultarValores']}
-      resumo="Valor em dinheiro com sinal e cor de entrada e saída, números alinhados em coluna e o “ocultar valores” dos apps de finanças. Junto vêm os formatadores de moeda e porcentagem."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Trilha"
+      pagina="trilha"
       icone="chevrons-right"
       componente="Trilha"
       importar={['type ItemTrilha']}
-      resumo="O caminho até a página atual (breadcrumb), com separador, ícones e aparência configuráveis."
       notas={
         <ul className="doc-lista">
           <li>

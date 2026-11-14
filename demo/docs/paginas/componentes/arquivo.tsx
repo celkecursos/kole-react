@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Anexos e fotos"
+      pagina="arquivo"
       icone="paperclip"
       componente="CampoAnexo"
       outros={['Foto', 'VisualizadorArquivo', 'DialogoArquivo']}
       importar={['type Anexo', 'type CampoAnexoRef']}
-      resumo="Envio de arquivos com arrastar e soltar, visualizador de imagem com zoom e a foto de uma pessoa ou registro."
       notas={
         <ul className="doc-lista">
           <li>

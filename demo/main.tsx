@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
 import './demo.css';
@@ -48,6 +48,8 @@ import { PaginaErro } from './paginas/Erro';
 import { PaginaSite } from './paginas/site/Site';
 import { version } from '../package.json';
 import { NAV } from './nav';
+import { traduzirNav } from './i18n/menu';
+import { useT } from './i18n/useT';
 import { paginaDocs } from './docs/rotas';
 
 function rotaDoHash() {
@@ -74,6 +76,9 @@ function App() {
     }
   };
   const toast = useToast();
+  // o menu no idioma do seletor da topbar: a trilha e a busca Ctrl K saem dele
+  const { idioma } = useT();
+  const nav = useMemo(() => traduzirNav(NAV, idioma), [idioma]);
 
   useEffect(() => {
     const h = () => setRota(rotaDoHash());
@@ -142,9 +147,9 @@ function App() {
   return (
     <Estrutura
       marca={{ nome: 'Gestor', subtitulo: 'Gestão comercial' }}
-      nav={NAV}
+      nav={nav}
       rotaAtual={rota}
-      // seletor de idioma na topbar (os textos da biblioteca; o conteúdo da demo continua em português)
+      // seletor de idioma na topbar: os textos da biblioteca e o menu da demo (demo/i18n)
       idiomas={['pt-BR', 'en', 'es']}
       // nas finanças, o topo troca entre o pessoal e a empresa
       contexto={ehFinancas(rota) ? <SeletorEspaco /> : undefined}

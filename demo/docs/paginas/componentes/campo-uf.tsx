@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="UF, cidade e tipo de pessoa"
+      pagina="campoUf"
       icone="map-pin"
       componente="CampoUf"
       outros={['CampoUfMultiplo', 'CampoCidade']}
       importar={['CampoTipoPessoa', 'type Municipio']}
-      resumo="Campos de domínio já com as opções: as 27 UFs, a cidade da UF escolhida e pessoa física ou jurídica."
       notas={
         <ul className="doc-lista">
           <li>

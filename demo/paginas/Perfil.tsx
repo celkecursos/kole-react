@@ -24,6 +24,7 @@ import {
   type ItemMenuForm,
 } from '../../src';
 import { retrato } from './Bloco';
+import { useT } from '../i18n/useT';
 
 export interface DadosPerfil {
   nome: string;
@@ -85,11 +86,12 @@ export function PaginaPerfil(props: PaginaPerfilProps) {
 /* ---------------- visualizar ---------------- */
 
 function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
+  const { t } = useT();
   const atendidos = 1248;
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo="Meu perfil"
+        titulo={t('paginas.perfil.titulo')}
         trilha
         icone="user"
         acoes={<Botao rotulo="Editar" icone="pencil" severidade="warn" onClick={() => navegar('/perfil/editar')} />}
@@ -185,6 +187,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
 /* ---------------- editar (3 formulários com menu lateral) ---------------- */
 
 function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & { atual: IdFormulario }) {
+  const { t } = useT();
   const toast = useToast();
   const [salvando, setSalvando] = useState(false);
   const [dados, setDados] = useState({ nome: perfil.nome, email: perfil.email, cpf: perfil.cpf, apelido: perfil.apelido });
@@ -225,7 +228,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
 
   return (
     <Form
-      titulo="Meu perfil"
+      titulo={t('paginas.perfil.titulo')}
       icone="user"
       trilha={[{ rotulo: FORMULARIOS.find((f) => f.id === atual)!.rotulo }]}
       menu={menu}
@@ -237,7 +240,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
       acoes={<Botao rotulo="Ver perfil" icone="eye" severidade="secundario" aparencia="texto" onClick={() => navegar('/perfil')} />}
     >
       {atual === 'editar' && (
-        <FormSecao legenda="Editar perfil" icone="user-pen">
+        <FormSecao legenda={t('paginas.perfil.secoes.editarPerfil')} icone="user-pen">
           <CampoTexto
             className="lp-col-2"
             rotulo="Nome"
@@ -268,7 +271,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
       )}
 
       {atual === 'senha' && (
-        <FormSecao legenda="Alterar senha" icone="lock">
+        <FormSecao legenda={t('paginas.perfil.secoes.alterarSenha')} icone="lock">
           <CampoSenha
             className="lp-col-2"
             rotulo="Senha atual"
@@ -303,7 +306,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
 
       {atual === 'foto' && (
         <>
-          <FormSecao legenda="Foto do perfil" icone="image">
+          <FormSecao legenda={t('paginas.perfil.secoes.foto')} icone="image">
             <div className="demo-perfil-foto-atual">
               <Foto nome={perfil.nome} fotos={novaFoto[0]?.url ?? perfil.foto} tamanho="md" />
               <span>{novaFoto.length ? 'Pré-visualização' : 'Foto atual'}</span>
@@ -319,7 +322,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
               aoMudar={setNovaFoto}
             />
           </FormSecao>
-          <FormSecao legenda="Visibilidade da foto" icone="eye">
+          <FormSecao legenda={t('paginas.perfil.secoes.visibilidadeFoto')} icone="eye">
             <Escolha
               className="lp-col-full"
               aparencia="radio"

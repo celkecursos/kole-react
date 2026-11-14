@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Recolhível"
+      pagina="recolhivel"
       icone="chevron-down"
       componente="Recolhivel"
-      resumo="Só a animação de abrir e fechar, para qualquer conteúdo: o app decide o botão e o estado."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Girador"
+      pagina="girador"
       icone="loader-circle"
       componente="Girador"
-      resumo="Indicador de atividade em três formas (anel, pulso, pontos), com cor e tamanho."
       notas={
         <ul className="doc-lista">
           <li>

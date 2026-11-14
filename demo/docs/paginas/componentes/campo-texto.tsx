@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Campo de texto"
+      pagina="campoTexto"
       icone="pencil"
       componente="CampoTexto"
-      resumo="Entrada de texto com rótulo, dica, máscara, prefixo/sufixo e validação. É a base dos outros campos da biblioteca."
       padroes={{ type: "'text'" }}
       notas={
         <ul className="doc-lista">

@@ -1,5 +1,6 @@
 import { Avatar, CabecalhoPagina, Figura, Foto, Imagem, Status, type Anexo } from '../../../src';
 import { Bloco, cena, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const FOTOS: Anexo[] = [
   { nome: 'frente.svg', tamanho: 18_000, tipo: 'image/svg+xml', url: retrato('#0b1a36', 'AP') },
@@ -21,9 +22,10 @@ const TEXTO =
   'Texto de exemplo correndo em volta da imagem. A imagem flutua para o lado e o parágrafo ocupa o espaço que sobra, descendo por baixo dela quando acaba a altura.';
 
 export function PaginaImagens() {
+  const { t } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Imagens e figuras" icone="image" trilha />
+      <CabecalhoPagina titulo={t('paginas.imagens.titulo')} icone="image" trilha />
 
       <div className="demo-colunas-3">
         <Bloco titulo="Imagem responsiva" descricao="Encolhe para caber no container e nunca estoura a largura.">

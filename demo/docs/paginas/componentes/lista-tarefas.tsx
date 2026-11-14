@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Lista de tarefas"
+      pagina="listaTarefas"
       icone="list-todo"
       componente="ListaTarefas"
       tipos={['TarefaLista', 'ReordenarTarefa']}
       importar={['type TarefaLista']}
-      resumo="Tarefas em linhas: marcar como feita, situação, prioridade, prazo, etiquetas, subtarefas e responsáveis; clicar abre o detalhe e a alça reordena arrastando (mouse, toque e teclado)."
       notas={
         <ul className="doc-lista">
           <li>

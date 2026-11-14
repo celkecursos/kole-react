@@ -57,9 +57,8 @@ const SCRIPT = `// no <head> (SSR) — define <html lang> antes da primeira pint
 export default function DocIdioma() {
   return (
     <PaginaGuia
-      titulo="Idioma"
+      pagina="idioma"
       icone="globe"
-      resumo="Os textos da própria biblioteca (rótulos padrão, listas vazias, aria-labels, validações, datas e números) em português do Brasil, inglês ou espanhol. O padrão continua pt-BR: nada muda até o sistema pedir."
     >
       <Secao id="ligar" titulo="Ligar o seletor">
         <p className="doc-p">

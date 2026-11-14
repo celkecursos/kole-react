@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Imagem e figura"
+      pagina="imagem"
       icone="image"
       componente="Imagem"
       outros={['Figura']}
-      resumo="Imagem responsiva com cantos, proporção, miniatura e alinhamento; a Figura acrescenta a legenda."
       notas={
         <ul className="doc-lista">
           <li>

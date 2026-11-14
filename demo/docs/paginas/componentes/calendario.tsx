@@ -5,13 +5,12 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Calendário"
+      pagina="calendario"
       icone="calendar"
       componente="Calendario"
       outros={['MiniCalendario']}
       tipos={['EventoCalendario', 'PeriodoCalendario', 'MudancaEvento', 'RegraRepeticao', 'RascunhoCalendario', 'IntervaloHorario']}
       importar={['type EventoCalendario', 'MiniCalendario', 'repetirEvento']}
-      resumo="Agenda de eventos nas visões mês, semana, dia e lista, em pt-BR, com arrastar, eventos que se repetem e o MiniCalendario para a coluna lateral. O app guarda e busca os eventos; o calendário mostra e avisa as mudanças."
       notas={
         <ul className="doc-lista">
           <li>

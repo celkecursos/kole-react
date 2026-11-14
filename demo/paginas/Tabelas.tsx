@@ -1,4 +1,6 @@
 import { useMemo, useState, type Key, type ReactNode } from 'react';
+import type { ChaveTexto } from '../i18n/tipos';
+import { useT } from '../i18n/useT';
 import {
   AcaoLinha,
   Botao,
@@ -35,6 +37,8 @@ function Bloco({ titulo, children }: { titulo: string; children: ReactNode }) {
 
 interface ConfigTabela<T> {
   titulo: string;
+  /** Título do cabeçalho da página no dicionário (demo/i18n). */
+  chaveTitulo: ChaveTexto;
   icone: string;
   /** Nome do registro no singular, para mensagens. */
   item: string;
@@ -49,6 +53,7 @@ const PCT = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFr
 
 const CATEGORIAS: ConfigTabela<Categoria> = {
   titulo: 'Categorias',
+  chaveTitulo: 'paginas.categorias.titulo',
   icone: 'tags',
   item: 'categoria',
   registros: TABELA_CATEGORIAS,
@@ -65,6 +70,7 @@ const CATEGORIAS: ConfigTabela<Categoria> = {
 
 const PAGAMENTOS: ConfigTabela<FormaPagamento> = {
   titulo: 'Formas de pagamento',
+  chaveTitulo: 'paginas.formasPagamento.titulo',
   icone: 'credit-card',
   item: 'forma de pagamento',
   registros: TABELA_PAGAMENTOS,
@@ -80,6 +86,7 @@ const PAGAMENTOS: ConfigTabela<FormaPagamento> = {
 
 const ESTADOS: ConfigTabela<Estado> = {
   titulo: 'Estados',
+  chaveTitulo: 'paginas.estados.titulo',
   icone: 'map',
   item: 'estado',
   registros: TABELA_ESTADOS,
@@ -95,6 +102,7 @@ const ESTADOS: ConfigTabela<Estado> = {
 
 const CIDADES: ConfigTabela<Cidade> = {
   titulo: 'Cidades',
+  chaveTitulo: 'paginas.cidades.titulo',
   icone: 'map-pin',
   item: 'cidade',
   registros: TABELA_CIDADES,
@@ -239,12 +247,13 @@ function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTa
 
 export function PaginaTabelas({ tabela }: { tabela: string }) {
   const toast = useToast();
+  const { t } = useT();
   const config = { categorias: CATEGORIAS, pagamentos: PAGAMENTOS, estados: ESTADOS, cidades: CIDADES }[tabela] ?? CATEGORIAS;
 
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo={config.titulo}
+        titulo={t(config.chaveTitulo)}
         trilha
         icone={config.icone}
         acoes={<Botao rotulo="Adicionar" icone="plus" onClick={() => toast.info(`Adicionar ${config.item}`)} />}

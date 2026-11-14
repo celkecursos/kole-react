@@ -20,6 +20,7 @@ import {
 import { CENTROS_CUSTO, CONTATOS, type Lancamento, type TipoLancamento } from './dados';
 import { CabecalhoFinancas, IconeCategoria, dataBr, useEditorLancamento } from './comum';
 import { SITUACOES, acoes, categoria, categoriasDo, conta, contasDo, doEspaco, noIntervalo, situacao, totais, useFinancas, type Situacao } from './estado';
+import { useT } from '../../../i18n/useT';
 
 type FiltroTipo = 'todos' | TipoLancamento;
 type FiltroSituacao = 'pagos' | 'pendentes' | 'atrasados';
@@ -40,6 +41,7 @@ const POR_PAGINA = 15;
 const naSituacao = (f: FiltroSituacao, s: Situacao) => (f === 'pagos' ? s === 'pago' || s === 'recebido' : f === 'atrasados' ? s === 'atrasado' : s === 'pendente' || s === 'hoje' || s === 'atrasado');
 
 export function Lancamentos() {
+  const { t } = useT();
   const { espaco, periodo, lancamentos, filtroInicial } = useFinancas();
   const toast = useToast();
   const confirmar = useConfirmacao();
@@ -89,7 +91,7 @@ export function Lancamentos() {
     return l;
   }, [doPeriodo, f, ordem]);
 
-  const t = totais(filtrados);
+  const soma = totais(filtrados);
   const pendentes = filtrados.filter((x) => !x.pago).length;
   const nestaPagina = filtrados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
   const selecionadosL = filtrados.filter((x) => selecionados.includes(x.id));
@@ -115,20 +117,20 @@ export function Lancamentos() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Lançamentos" icone="list" />
+      <CabecalhoFinancas titulo={t('paginas.finLancamentos.titulo')} icone="list" />
 
       <div className="fin-resumo" aria-label={`Resumo de ${rotuloPeriodo(periodo)}`}>
         <div>
           <small>Receitas</small>
-          <Valor valor={t.receitas} tipo="receita" tamanho="grande" />
+          <Valor valor={soma.receitas} tipo="receita" tamanho="grande" />
         </div>
         <div>
           <small>Despesas</small>
-          <Valor valor={t.despesas} tipo="despesa" tamanho="grande" />
+          <Valor valor={soma.despesas} tipo="despesa" tamanho="grande" />
         </div>
         <div>
           <small>Resultado</small>
-          <Valor valor={t.saldo} colorir sinal tamanho="grande" />
+          <Valor valor={soma.saldo} colorir sinal tamanho="grande" />
         </div>
         <div>
           <small>Pendentes</small>

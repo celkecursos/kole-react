@@ -3,6 +3,7 @@ import { Botao, Card, Escolha, FiltroPilulas, Indicador, Indicadores, Status, Va
 import { CONTATOS, hoje, type Lancamento } from './dados';
 import { CabecalhoFinancas, DIA_SEMANA, IconeCategoria, useEditorLancamento, useMoeda } from './comum';
 import { SITUACOES, acoes, aReceber, categoria, conta, doEspaco, qtdLancamentos, situacao, useFinancas, vencePorSi } from './estado';
+import { useT } from '../../../i18n/useT';
 
 type Lado = 'pagar' | 'receber';
 type Janela = 'atrasados' | 'hoje' | 'semana' | 'mes' | 'todos';
@@ -21,6 +22,7 @@ const naJanela = (j: Janela, dias: number) => {
 };
 
 export function PagarReceber() {
+  const { t } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -61,7 +63,7 @@ export function PagarReceber() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Contas a pagar e receber" icone="calendar-range" semPeriodo />
+      <CabecalhoFinancas titulo={t('paginas.finPagarReceber.titulo')} icone="calendar-range" semPeriodo />
 
       <Escolha<Lado>
         ariaLabel="Mostrar"

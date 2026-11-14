@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import type { ItemNav } from '../../src';
 import { NAV } from '../../demo/nav';
+import { divergenciasPtBR } from '../../demo/i18n/menu';
 
 /** Páginas da demo: todas as rotas do menu (demo/nav.ts), inclusive as dos submenus. */
 const rotasDe = (itens: ItemNav[]): string[] => itens.flatMap((i) => [...(i.rota ? [i.rota] : []), ...rotasDe(i.filhos ?? [])]);
@@ -29,3 +30,8 @@ for (const rota of ROTAS) {
     await expect(page).toHaveScreenshot(`${nome}.png`, { fullPage: true, mask: [page.locator('[data-visual-ignorar]')] });
   });
 }
+
+// o menu da demo sai do dicionário (demo/i18n): em pt-BR, cada rótulo tem que ser o mesmo do arquivo
+test('menu: rótulos pt-BR iguais ao dicionário', () => {
+  expect(divergenciasPtBR(NAV)).toEqual([]);
+});

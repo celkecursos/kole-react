@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Avaliacao, CabecalhoPagina, Icone, useToast } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const MENSAGENS = ['Muito ruim', 'Ruim', 'Regular', 'Bom', 'Excelente!'];
 
 export function PaginaAvaliacoes() {
+  const { t } = useT();
   const toast = useToast();
   const [basica, setBasica] = useState(4);
   const [meia, setMeia] = useState(2.5);
@@ -16,7 +18,7 @@ export function PaginaAvaliacoes() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Avaliações" icone="star" trilha />
+      <CabecalhoPagina titulo={t('paginas.avaliacoes.titulo')} icone="star" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Básica">

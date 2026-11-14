@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Referências"
+      pagina="referencias"
       icone="link"
       componente="Referencias"
       importar={['type ItemReferencia']}
-      resumo="Lista recolhível das fontes de uma resposta (assistente, busca): título, detalhe, trecho e link."
       notas={
         <ul className="doc-lista">
           <li>

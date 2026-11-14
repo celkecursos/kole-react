@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Filtros"
+      pagina="filtros"
       icone="funnel"
       componente="Filtros"
       importar={['type FiltroAplicado']}
-      resumo="Barra de filtros de listagem: campos, Consultar, Limpar e os chips dos filtros aplicados."
       notas={
         <ul className="doc-lista">
           <li>

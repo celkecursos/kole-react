@@ -24,6 +24,7 @@ import {
 import { dia, hoje, novoId, type Meta } from './dados';
 import { CabecalhoFinancas, dataBr, useMoeda } from './comum';
 import { acoes, useFinancas } from './estado';
+import { useT } from '../../../i18n/useT';
 
 const CORES: { valor: CorProgresso; rotulo: string }[] = [
   { valor: 'ok', rotulo: 'Verde' },
@@ -122,6 +123,7 @@ function Guardar({ meta }: { meta: Meta }) {
 }
 
 export function Metas() {
+  const { t } = useT();
   const { espaco, metas } = useFinancas();
   const moeda = useMoeda();
   const confirmar = useConfirmacao();
@@ -141,7 +143,7 @@ export function Metas() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Metas" icone="target" semPeriodo acoes={<Botao rotulo="Nova meta" icone="plus" onClick={nova} />}>
+      <CabecalhoFinancas titulo={t('paginas.finMetas.titulo')} icone="target" semPeriodo acoes={<Botao rotulo="Nova meta" icone="plus" onClick={nova} />}>
         {lista.length > 0 && (
           <p className="fin-metas-resumo">
             <Valor valor={guardado} forte /> guardados de <Valor valor={alvo} centavos={false} /> ({formatarPercentual(alvo ? (guardado / alvo) * 100 : 0, { casas: 0 })}). Para cumprir os prazos,

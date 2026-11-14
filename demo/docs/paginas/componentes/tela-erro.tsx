@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Tela de erro"
+      pagina="telaErro"
       icone="triangle-alert"
       componente="TelaErro"
-      resumo="Página de erro (401, 404, 500 ou outra) com código, explicação, detalhe técnico e as saídas possíveis."
       notas={
         <ul className="doc-lista">
           <li>Diga o que aconteceu em linguagem simples e ofereça uma saída: voltar, ir ao painel, tentar de novo, entrar de novo.</li>

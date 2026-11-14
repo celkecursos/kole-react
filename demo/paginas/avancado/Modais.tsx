@@ -13,6 +13,7 @@ import {
   type DialogoProps,
 } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const PARAGRAFO =
   'Este é um texto de exemplo para o diálogo. Ele existe só para ocupar espaço e mostrar como o conteúdo se comporta: quebra de linha, espaçamento e rolagem quando passa da altura da tela.';
@@ -41,6 +42,7 @@ const TELA_CHEIA: Array<[DialogoProps['telaCheiaAbaixo'] | 'sempre', string]> = 
 ];
 
 export function PaginaModais() {
+  const { t } = useT();
   const toast = useToast();
   // um diálogo aberto por vez, identificado por uma chave
   const [aberto, setAberto] = useState<string | null>(null);
@@ -65,7 +67,7 @@ export function PaginaModais() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Modais e fechar" icone="app-window" trilha />
+      <CabecalhoPagina titulo={t('paginas.modais.titulo')} icone="app-window" trilha />
 
       <div className="demo-colunas-3">
         <Bloco titulo="Básico">

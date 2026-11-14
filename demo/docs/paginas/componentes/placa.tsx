@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Placa"
+      pagina="placa"
       icone="truck"
       componente="Placa"
-      resumo="Placa de veículo no padrão Mercosul, para cadastros de frota, entregas e estacionamento."
       notas={
         <ul className="doc-lista">
           <li>

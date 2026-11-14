@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Indicador"
+      pagina="indicador"
       icone="chart-column"
       componente="Indicador"
       importar={['Indicadores']}
-      resumo="Número de destaque do painel: rótulo, valor, ícone, variação sobre o período anterior e minigráfico de tendência."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Skeleton"
+      pagina="skeleton"
       icone="square"
       componente="Skeleton"
-      resumo="Silhueta animada no lugar do conteúdo que ainda está carregando, para a página não pular quando os dados chegam."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,13 +5,12 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Gráficos"
+      pagina="graficos"
       icone="chart-line"
       componente="GraficoLinha"
       outros={['GraficoBarras', 'GraficoCombinado', 'GraficoDispersao', 'GraficoRosca', 'MapaCalor', 'Minigrafico']}
       tipos={['SerieGrafico', 'EixoXGrafico', 'EixoGrafico']}
       importar={['type DadoGrafico', 'type CelulaMapaCalor']}
-      resumo="Gráficos em SVG próprio, sem biblioteca externa: linha, barras, combinado (barras e linha com dois eixos), dispersão, rosca e mapa de calor. Seguem o tema e a densidade."
       notas={
         <ul className="doc-lista">
           <li>

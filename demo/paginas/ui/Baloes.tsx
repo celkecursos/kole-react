@@ -1,5 +1,6 @@
 import { Avatar, Balao, Botao, CabecalhoPagina, Icone, useToast, type CorBalao, type PosicaoBalao, type SeveridadeBotao } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const DIRECOES: Array<{ posicao: PosicaoBalao; rotulo: string }> = [
   { posicao: 'cima', rotulo: 'Em cima' },
@@ -32,11 +33,12 @@ const NOME_COR: Record<CorBalao, string> = {
 };
 
 export function PaginaBaloes() {
+  const { t } = useT();
   const toast = useToast();
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Balões" icone="message-square" trilha />
+      <CabecalhoPagina titulo={t('paginas.baloes.titulo')} icone="message-square" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Padrão" descricao="Clique para abrir; clique fora ou Esc para fechar.">

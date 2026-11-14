@@ -11,6 +11,7 @@ import {
   type SeveridadeBotao,
 } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const ACOES: ItemMenuSuspenso[] = [
   { id: 'acao', rotulo: 'Ação' },
@@ -30,6 +31,7 @@ const CORES: Array<{ cor: SeveridadeBotao; rotulo: string }> = [
 ];
 
 export function PaginaMenusSuspensos() {
+  const { t } = useT();
   const toast = useToast();
   const escolher = (id: string) => toast.info('Item escolhido', id);
   const [email, setEmail] = useState('');
@@ -38,7 +40,7 @@ export function PaginaMenusSuspensos() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Menus suspensos" icone="chevron-down" trilha />
+      <CabecalhoPagina titulo={t('paginas.menus.titulo')} icone="chevron-down" trilha />
 
       <Bloco titulo="Menu suspenso" descricao="O gatilho pode ser um botão ou ter cara de link (aparência texto).">
         <div className="demo-linha">

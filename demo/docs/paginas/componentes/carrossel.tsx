@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Carrossel"
+      pagina="carrossel"
       icone="image"
       componente="Carrossel"
       importar={['type SlideCarrossel']}
-      resumo="Slides de imagens com título e descrição, setas, indicadores, troca automática e arrastar no celular."
       notas={
         <ul className="doc-lista">
           <li>

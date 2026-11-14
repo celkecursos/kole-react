@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Alerta"
+      pagina="alerta"
       icone="triangle-alert"
       componente="Alerta"
-      resumo="Mensagem fixa na página: informação, sucesso, atenção ou erro. Para avisos passageiros, use o toast."
       notas={
         <ul className="doc-lista">
           <li>

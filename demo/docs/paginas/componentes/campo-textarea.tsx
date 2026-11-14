@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Área de texto"
+      pagina="campoTextarea"
       icone="file-text"
       componente="CampoTextarea"
-      resumo="Texto de várias linhas, com rótulo, dica, erro e contador de caracteres."
       notas={
         <ul className="doc-lista">
           <li>

@@ -1,5 +1,6 @@
 import { Aba, Abas, Avatar, Badge, CabecalhoPagina, Detalhes, ItemLista, Lista } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const TEXTOS = [
   'Como um bom atendimento ajuda a vender mais. Clientes satisfeitos voltam, indicam a loja e compram com mais frequência. Pequenos cuidados no pós-venda fazem diferença no fim do mês.',
@@ -33,9 +34,10 @@ function abasPadrao(icones = false, paragrafos = 1) {
 }
 
 export function PaginaAbasNavegacao() {
+  const { t } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Abas e navegação" icone="panel-right" trilha />
+      <CabecalhoPagina titulo={t('paginas.abas.titulo')} icone="panel-right" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Abas estáticas" descricao="Só a barra, sem painel.">

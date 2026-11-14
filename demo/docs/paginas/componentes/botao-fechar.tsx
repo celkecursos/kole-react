@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Botão fechar"
+      pagina="botaoFechar"
       icone="x"
       componente="BotaoFechar"
-      resumo="O × padrão de diálogos, cards, alertas e painéis, com nome acessível e área de toque adequada."
       notas={
         <ul className="doc-lista">
           <li>

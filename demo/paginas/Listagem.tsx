@@ -12,6 +12,7 @@ import {
   type Ordenacao,
 } from '../../src';
 import { OPCOES_PAGAMENTO, OPCOES_SITUACAO, PEDIDOS, SEVERIDADE, type Pedido } from './dados';
+import { useT } from '../i18n/useT';
 
 const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 const DATA = (iso: unknown) => new Date(`${iso}T00:00`).toLocaleDateString('pt-BR');
@@ -24,6 +25,7 @@ interface Criterios {
 const VAZIO: Criterios = { cliente: '', pagamento: null, situacao: null };
 
 export function PaginaListagem({ navegar }: { navegar: (r: string) => void }) {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [rascunho, setRascunho] = useState<Criterios>(VAZIO);
@@ -73,7 +75,7 @@ export function PaginaListagem({ navegar }: { navegar: (r: string) => void }) {
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo="Pedidos"
+        titulo={t('paginas.pedidos.titulo')}
         trilha
         icone="shopping-cart"
         acoes={

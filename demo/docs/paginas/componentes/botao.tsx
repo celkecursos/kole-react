@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Botão"
+      pagina="botao"
       icone="square-mouse-pointer"
       componente="Botao"
-      resumo="Dispara uma ação. Tem oito cores, seis aparências, três tamanhos, ícone, estado de carregando e modo alternância."
       padroes={{ severidade: "'pri'", aparencia: "'solido'", formato: "'pilula'", tamanho: "'medio'", type: "'button'" }}
       notas={
         <ul className="doc-lista">

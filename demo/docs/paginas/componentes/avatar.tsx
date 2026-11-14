@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Avatar"
+      pagina="avatar"
       icone="circle-user"
       componente="Avatar"
       outros={['ComBadge', 'GrupoAvatares']}
       tipos={['PessoaAvatar']}
-      resumo="Foto ou iniciais de uma pessoa ou empresa, com contagem ou ponto de status no canto (ComBadge) e avatares sobrepostos com +N (GrupoAvatares)."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Detalhes"
+      pagina="detalhes"
       icone="file-text"
       componente="Detalhes"
-      resumo="Par rótulo e valor para telas de visualização: resumo de pedido, perfil, diálogo de detalhes."
       notas={
         <ul className="doc-lista">
           <li>

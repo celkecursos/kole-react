@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Balão"
+      pagina="balao"
       icone="message-square"
       componente="Balao"
-      resumo="Conteúdo flutuante preso a um elemento: explicação mais longa, detalhes de um item. Abre no clique (padrão), no foco ou ao passar o mouse."
       notas={
         <ul className="doc-lista">
           <li>

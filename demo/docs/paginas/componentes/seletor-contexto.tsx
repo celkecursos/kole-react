@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Seletor de contexto"
+      pagina="seletorContexto"
       icone="building-2"
       componente="SeletorContexto"
       tipos={['OpcaoContexto']}
-      resumo="Troca o contexto do sistema inteiro: pessoal ou empresa, a empresa do grupo, a filial, a escola. Fica no topo da Estrutura (prop contexto) ou onde o app quiser."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Quadro arrastável"
+      pagina="quadroArrastavel"
       icone="grip-vertical"
       componente="QuadroArrastavel"
       tipos={['ColunaArrastavel', 'PosicaoQuadro', 'SoltarItem', 'SoltarColuna']}
       importar={['type ColunaArrastavel']}
-      resumo="Colunas de itens que se reordenam e trocam de coluna arrastando, também pelo teclado. É a base do Kanban e da ListaTarefas."
       notas={
         <ul className="doc-lista">
           <li>

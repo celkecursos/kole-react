@@ -1,5 +1,6 @@
 import { CabecalhoPagina, Carrossel, type SlideCarrossel } from '../../../src';
 import { Bloco, cena } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const IMAGENS = [
   { imagem: cena('#1f5fe0', '#0b1a36'), alt: 'Paisagem azul ao anoitecer' },
@@ -23,9 +24,10 @@ const LEGENDAS = [
 const comLegendas = (base: typeof IMAGENS): SlideCarrossel[] => base.map((s, i) => ({ ...s, ...LEGENDAS[i] }));
 
 export function PaginaCarrosseis() {
+  const { t } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Carrossel" icone="image" trilha />
+      <CabecalhoPagina titulo={t('paginas.carrossel.titulo')} icone="image" trilha />
 
       <div className="demo-colunas-3">
         <Bloco titulo="Só os slides" descricao="Avança sozinho; o botão no canto pausa.">

@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Avatar, Badge, Botao, CabecalhoPagina, Card, QuadroArrastavel, type ColunaArrastavel } from '../../../src';
 import { cena, retrato } from '../Bloco';
+import { useT, type TradutorDemo } from '../../i18n/useT';
 
 interface ItemCard {
   id: string;
@@ -34,11 +35,12 @@ const INICIAL: ColunaArrastavel<ItemCard>[] = [
 ];
 
 /** O conteúdo de cada card; `alca` é o botão de arrastar. */
-function conteudo(item: ItemCard, alca: ReactNode) {
+// recebe o `t` de quem renderiza: é chamada pelo QuadroArrastavel, não é um componente
+function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
   switch (item.id) {
     case 'tela-cheia':
       return (
-        <Card titulo="Card com tela cheia" telaCheia ferramentas={alca} rodape={<Botao rotulo="Ler mais" tamanho="pequeno" formato="retangulo" />}>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.telaCheia')} telaCheia ferramentas={alca} rodape={<Botao rotulo="Ler mais" tamanho="pequeno" formato="retangulo" />}>
           <strong>Card em tela cheia</strong>
           <p className="demo-arrasta-texto">{TEXTO}</p>
         </Card>
@@ -56,7 +58,7 @@ function conteudo(item: ItemCard, alca: ReactNode) {
         <Card
           midia={<img src={item.id === 'imagem-1' ? cena('#4fb3e8', '#15803d') : cena('#f7931e', '#7a2e0e', '#fff3c4')} alt="" />}
           posicaoMidia="fundo"
-          titulo="Imagens com véu ficam ótimas!"
+          titulo={t('paginas.cardsArrastaveis.secoes.imagensVeu')}
           acoes={alca}
         >
           <p className="demo-arrasta-texto">{TEXTO}</p>
@@ -105,14 +107,14 @@ function conteudo(item: ItemCard, alca: ReactNode) {
       );
     case 'recolher':
       return (
-        <Card titulo="Card recolhível" recolhivel ferramentas={alca}>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.recolhivel')} recolhivel ferramentas={alca}>
           <strong>Card recolhível</strong>
           <p className="demo-arrasta-texto">{TEXTO}</p>
         </Card>
       );
     default:
       return (
-        <Card titulo="Card que fecha" dispensavel ferramentas={alca}>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.fecha')} dispensavel ferramentas={alca}>
           <strong>Card fechável</strong>
           <p className="demo-arrasta-texto">{TEXTO}</p>
         </Card>
@@ -121,16 +123,17 @@ function conteudo(item: ItemCard, alca: ReactNode) {
 }
 
 export function PaginaCardsArrastaveis() {
+  const { t } = useT();
   const [colunas, setColunas] = useState(INICIAL);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Cards arrastáveis" icone="grip-vertical" trilha />
+      <CabecalhoPagina titulo={t('paginas.cardsArrastaveis.titulo')} icone="grip-vertical" trilha />
       <p className="demo-bloco-desc demo-arrasta-ajuda">
         Arraste pela alça <span aria-hidden="true">⋮⋮</span> para reordenar ou trocar de coluna. No teclado: foque a alça, Espaço pega e solta, as setas
         movem e Esc cancela.
       </p>
-      <QuadroArrastavel colunas={colunas} aoMudar={setColunas} renderItem={conteudo} nomeItem={(i) => i.nome} />
+      <QuadroArrastavel colunas={colunas} aoMudar={setColunas} renderItem={(item, alca) => conteudo(item, alca, t)} nomeItem={(i) => i.nome} />
       <div>
         <Botao rotulo="Voltar à ordem inicial" icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setColunas(INICIAL)} />
       </div>

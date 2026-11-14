@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { CabecalhoPagina, Paginacao } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 export function PaginaPaginacoes() {
+  const { t } = useT();
   const [pagina, setPagina] = useState(3);
   const [tamanho, setTamanho] = useState(10);
   const [simples, setSimples] = useState(1);
@@ -10,7 +12,7 @@ export function PaginaPaginacoes() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Paginação" icone="chevrons-right" trilha />
+      <CabecalhoPagina titulo={t('paginas.paginacao.titulo')} icone="chevrons-right" trilha />
 
       <Bloco titulo="Completa" descricao="Total, páginas e escolha da quantidade por página.">
         <Paginacao

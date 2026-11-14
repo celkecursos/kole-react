@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Card"
+      pagina="card"
       icone="layers"
       componente="Card"
       importar={['GrupoCards']}
-      resumo="Caixa de conteúdo com título, mídia, ferramentas, ações e rodapé. Pode recolher, abrir em tela cheia, sair da tela e ser clicável."
       notas={
         <ul className="doc-lista">
           <li>

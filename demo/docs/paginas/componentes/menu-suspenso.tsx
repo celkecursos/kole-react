@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Menu suspenso"
+      pagina="menuSuspenso"
       icone="chevron-down"
       componente="MenuSuspenso"
       tipos={['ItemMenuSuspenso']}
       importar={['type ItemMenuSuspenso']}
-      resumo="Um botão que abre uma lista de ações. Aceita títulos, divisores, atalhos, links e o modo dividido."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,13 +5,12 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Confirmação"
+      pagina="confirmacao"
       icone="circle-question-mark"
       componente="useConfirmacao"
       semPropsProprias
       tipos={['OpcoesConfirmacao']}
       importar={['type OpcoesConfirmacao']}
-      resumo="O diálogo de 'tem certeza?' como uma função: await confirmar(...) devolve true ou false. Inclui o atalho de remoção e o aviso de um botão só."
       notas={
         <ul className="doc-lista">
           <li>

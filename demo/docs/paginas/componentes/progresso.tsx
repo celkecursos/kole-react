@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Progresso"
+      pagina="progresso"
       icone="chart-column"
       componente="Progresso"
       importar={['type SegmentoProgresso']}
-      resumo="Barra de andamento: envio, meta, etapas. Mostra o valor de vários jeitos e aceita segmentos coloridos."
       notas={
         <ul className="doc-lista">
           <li>

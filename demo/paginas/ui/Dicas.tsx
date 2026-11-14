@@ -1,5 +1,6 @@
 import { Avatar, Botao, CabecalhoPagina, Dica, Icone, type CorDica, type PosicaoDica, type SeveridadeBotao } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const DIRECOES: Array<{ posicao: PosicaoDica; rotulo: string }> = [
   { posicao: 'cima', rotulo: 'Dica em cima' },
@@ -21,9 +22,10 @@ const CORES: Array<{ cor: CorDica; rotulo: string; posicao: PosicaoDica; botao: 
 ];
 
 export function PaginaDicas() {
+  const { t } = useT();
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Dicas" icone="message-square" trilha />
+      <CabecalhoPagina titulo={t('paginas.dicas.titulo')} icone="message-square" trilha />
 
       <Bloco titulo="Direções" descricao="Passe o mouse ou foque com o teclado. Se não couber, a dica vira para o outro lado.">
         <div className="demo-linha">

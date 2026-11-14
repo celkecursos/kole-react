@@ -39,11 +39,10 @@ export function Login({ entrar }: { entrar: () => void }) {
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Tela de login"
+      pagina="telaLogin"
       icone="log-in"
       componente="TelaLogin"
       importar={['type ApresentacaoLogin', 'type CredenciaisLogin', 'type ResultadoLogin']}
-      resumo="Tela de entrada completa: apresentação do sistema, formulário com CPF, e-mail ou usuário, senha, e a etapa do código de verificação em duas etapas."
       notas={
         <ul className="doc-lista">
           <li>

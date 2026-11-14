@@ -16,6 +16,7 @@ import {
 } from '../../../src';
 import { DialogoEvento, useAgenda } from '../../docs/exemplos/calendario/Cadastro';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 /*
  * Agenda fictícia de vendas, montada a partir do mês atual (o teste visual fixa
@@ -161,6 +162,7 @@ const DATA = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric',
 const HORA = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
 export function PaginaCalendario() {
+  const { t } = useT();
   const toast = useToast();
   const [segunda, setSegunda] = useState(false);
   const [periodo, setPeriodo] = useState<PeriodoCalendario | null>(null);
@@ -175,7 +177,7 @@ export function PaginaCalendario() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Calendário" icone="calendar" trilha>
+      <CabecalhoPagina titulo={t('paginas.calendario.titulo')} icone="calendar" trilha>
         Visão mês, semana, dia e lista, eventos coloridos pelos tokens, "+N mais" por dia e navegação pelo teclado (setas, Home/End, Page Up/Down, Enter).
       </CabecalhoPagina>
 

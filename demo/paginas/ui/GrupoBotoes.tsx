@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { BarraBotoes, Botao, CabecalhoPagina, CampoTexto, GrupoAlternancia, GrupoBotoes, MenuSuspenso, useToast } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 export function PaginaGrupoBotoes() {
+  const { t } = useT();
   const toast = useToast();
   const [aba, setAba] = useState<string | null>('ativos');
   const [colunas, setColunas] = useState<string[]>(['cliente', 'total']);
@@ -13,7 +15,7 @@ export function PaginaGrupoBotoes() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Grupo de botões" icone="layout-grid" trilha />
+      <CabecalhoPagina titulo={t('paginas.grupoBotoes.titulo')} icone="layout-grid" trilha />
 
       <div className="demo-colunas-4">
         <Bloco titulo="Básico">

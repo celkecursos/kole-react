@@ -66,12 +66,11 @@ function Layout() {
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Estrutura"
+      pagina="estrutura"
       icone="layout-grid"
       componente="Estrutura"
       tipos={['ItemNav', 'Marca']}
       importar={['type SecaoNav', 'type ItemNav']}
-      resumo="A moldura do sistema: menu lateral recolhível com seções e submenus, barra do topo com busca, tema, notificações e usuário, trilha automática e rodapé."
       notas={
         <ul className="doc-lista">
           <li>

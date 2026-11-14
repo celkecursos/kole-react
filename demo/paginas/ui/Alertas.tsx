@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Alerta, Avatar, Botao, CabecalhoPagina, type CorAlerta } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const CORES: { cor: CorAlerta; nome: string }[] = [
   { cor: 'pri', nome: 'principal' },
@@ -22,11 +23,12 @@ const PESSOAS = [
 ];
 
 export function PaginaAlertas() {
+  const { t } = useT();
   const [vivos, setVivos] = useState<number[]>([]);
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Alertas" icone="triangle-alert" trilha />
+      <CabecalhoPagina titulo={t('paginas.alertas.titulo')} icone="triangle-alert" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Padrão">

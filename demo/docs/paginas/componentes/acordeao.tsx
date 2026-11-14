@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Acordeão"
+      pagina="acordeao"
       icone="list"
       componente="Acordeao"
       outros={['ItemAcordeao']}
-      resumo="Seções que abrem e fecham: perguntas frequentes, grupos de configurações, detalhes opcionais."
       notas={
         <ul className="doc-lista">
           <li>

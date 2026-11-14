@@ -5,12 +5,11 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Navegador de período"
+      pagina="navegadorPeriodo"
       icone="calendar-range"
       componente="NavegadorPeriodo"
       tipos={['Periodo', 'AtalhoPeriodo']}
       importar={['periodoDe', 'type Periodo']}
-      resumo="“‹ Novembro de 2026 ›”: as setas andam de mês em mês (ou trimestre, ano, intervalo), e o rótulo abre atalhos e um intervalo livre de/até. Para relatórios, extratos e painéis."
       notas={
         <ul className="doc-lista">
           <li>

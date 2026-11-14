@@ -5,7 +5,7 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Campos prontos"
+      pagina="camposProntos"
       icone="id-card"
       componente="CampoTelefone"
       importar={[
@@ -25,7 +25,6 @@ export default function Pagina() {
         'CampoCnh',
         'CampoImei',
       ]}
-      resumo="CampoTexto com máscara, placeholder, teclado e validação prontos para os formatos brasileiros mais comuns."
       notas={
         <ul className="doc-lista">
           <li>

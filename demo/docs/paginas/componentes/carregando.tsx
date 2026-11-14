@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Carregando"
+      pagina="carregando"
       icone="loader-circle"
       componente="Carregando"
-      resumo="Aviso de espera com animação e mensagem, numa área ou cobrindo a tela inteira (bloqueante)."
       notas={
         <ul className="doc-lista">
           <li>

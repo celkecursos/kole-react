@@ -27,6 +27,7 @@ import {
 } from '../../../src';
 import { ETIQUETAS, LISTAS, PESSOAS, dia, etiquetas, pessoa, tarefasIniciais, type TarefaDemo } from './dados';
 import './apps.css';
+import { useT } from '../../i18n/useT';
 
 type Visao = { tipo: 'meu-dia' } | { tipo: 'todas' } | { tipo: 'concluidas' } | { tipo: 'lista'; id: string } | { tipo: 'etiqueta'; id: string };
 type Prazo = 'todas' | 'atrasadas' | 'hoje' | 'semana';
@@ -57,6 +58,7 @@ const noPrazo = (p: Prazo) => (t: TarefaDemo) => {
 };
 
 export function PaginaTarefas() {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [tarefas, setTarefas] = useState(tarefasIniciais);
@@ -76,14 +78,14 @@ export function PaginaTarefas() {
 
   const tituloVisao =
     visao.tipo === 'meu-dia'
-      ? 'Meu dia'
+      ? t('paginas.tarefas.textos.meuDia')
       : visao.tipo === 'todas'
-        ? 'Todas as tarefas'
+        ? t('paginas.tarefas.titulo')
         : visao.tipo === 'concluidas'
-          ? 'Concluídas'
+          ? t('paginas.tarefas.textos.concluidas')
           : visao.tipo === 'lista'
             ? LISTAS.find((l) => l.id === visao.id)!.rotulo
-            : `Etiqueta: ${ETIQUETAS.find((e) => e.id === visao.id)!.rotulo}`;
+            : t('paginas.tarefas.textos.etiqueta', { nome: ETIQUETAS.find((e) => e.id === visao.id)!.rotulo });
 
   // a linha da lista: etiquetas e responsável saem dos ids
   const linhas = tarefas.map((t) => ({
@@ -141,9 +143,9 @@ export function PaginaTarefas() {
     <div className="demo-tarefas">
       <nav className="demo-tarefas-lado" aria-label="Visões de tarefas">
         <ul>
-          {itemVisao({ tipo: 'meu-dia' }, 'Meu dia', 'sun', tarefas.filter((t) => t.meuDia && !feita(t)).length)}
-          {itemVisao({ tipo: 'todas' }, 'Todas as tarefas', 'list-todo', tarefas.filter((t) => !feita(t)).length)}
-          {itemVisao({ tipo: 'concluidas' }, 'Concluídas', 'circle-check', tarefas.filter(feita).length)}
+          {itemVisao({ tipo: 'meu-dia' }, t('paginas.tarefas.textos.meuDia'), 'sun', tarefas.filter((t) => t.meuDia && !feita(t)).length)}
+          {itemVisao({ tipo: 'todas' }, t('paginas.tarefas.titulo'), 'list-todo', tarefas.filter((t) => !feita(t)).length)}
+          {itemVisao({ tipo: 'concluidas' }, t('paginas.tarefas.textos.concluidas'), 'circle-check', tarefas.filter(feita).length)}
         </ul>
         <h2 className="demo-tarefas-lado-titulo">Minhas listas</h2>
         <ul>{LISTAS.map((l) => itemVisao({ tipo: 'lista', id: l.id }, l.rotulo, '', tarefas.filter((t) => t.lista === l.id && !feita(t)).length, l.cor))}</ul>

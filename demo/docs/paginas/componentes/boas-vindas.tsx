@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Boas-vindas"
+      pagina="boasVindas"
       icone="house"
       componente="BoasVindas"
-      resumo="Faixa de saudação do painel inicial: nome, cargo, setor, último acesso e as ações mais usadas."
       notas={
         <ul className="doc-lista">
           <li>

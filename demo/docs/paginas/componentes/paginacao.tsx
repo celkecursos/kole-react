@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Paginação"
+      pagina="paginacao"
       icone="chevrons-right"
       componente="Paginacao"
-      resumo="Navegação entre páginas de uma listagem, com o total de registros e a escolha de itens por página."
       notas={
         <ul className="doc-lista">
           <li>

@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Busca global"
+      pagina="busca"
       icone="search"
       componente="Busca"
       importar={['type ItemBusca']}
-      resumo="A busca do topo do sistema: encontra páginas do menu enquanto digita e, com Enter, busca no servidor. Abre com Ctrl K."
       notas={
         <ul className="doc-lista">
           <li>

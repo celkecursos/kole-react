@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Avatar, Badge, CabecalhoPagina, Icone, ItemLista, Lista, useToast, type CorBadge, type CorItemLista } from '../../../src';
 import { Bloco, retrato } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const PESSOAS: Array<[string, string]> = [
   ['Alícia Serra', '#1f5fe0'],
@@ -40,6 +41,7 @@ const TAREFAS = [
 ];
 
 export function PaginaListas() {
+  const { t } = useT();
   const toast = useToast();
   const [cidade, setCidade] = useState('sp');
   const [botao, setBotao] = useState(0);
@@ -48,7 +50,7 @@ export function PaginaListas() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Listas" icone="list" trilha />
+      <CabecalhoPagina titulo={t('paginas.listas.titulo')} icone="list" trilha />
 
       <div className="demo-colunas-3">
         <Bloco titulo="Lista básica">

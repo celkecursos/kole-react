@@ -19,9 +19,8 @@ const QUAL_USAR = [
 export function DocCarregamento() {
   return (
     <PaginaGuia
-      titulo="Carregamento"
+      pagina="carregamento"
       icone="loader-circle"
-      resumo="Qual loading usar em cada situação: ao salvar, ao abrir uma página, ao paginar uma lista, ao gerar um arquivo. Os componentes já trazem o estado de espera; o app só liga a prop."
     >
       <Secao id="qual-usar" titulo="Qual usar">
         <Tabela

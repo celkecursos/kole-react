@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Dica"
+      pagina="dica"
       icone="circle-question-mark"
       componente="Dica"
-      resumo="Balão curto que aparece ao passar o mouse ou focar o elemento: o nome de um botão só com ícone, uma explicação rápida."
       notas={
         <ul className="doc-lista">
           <li>

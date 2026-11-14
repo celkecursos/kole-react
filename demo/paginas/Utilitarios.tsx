@@ -40,6 +40,7 @@ import {
   type TipoDeCampo,
 } from '../../src';
 import { Bloco } from './Bloco';
+import { useT } from '../i18n/useT';
 
 function Linha({ codigo, children }: { codigo: string; children: ReactNode }) {
   return (
@@ -61,6 +62,7 @@ const JWT_EXEMPLO = [
 ].join('.');
 
 export function PaginaUtilitarios() {
+  const { t } = useT();
   const [tipo, setTipo] = useState<TipoDeCampo | null>('cpf');
   const [valorTipo, setValorTipo] = useState('529.982.247-25');
   const [numero, setNumero] = useState('1234567');
@@ -87,7 +89,7 @@ export function PaginaUtilitarios() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Utilitários" icone="code" trilha />
+      <CabecalhoPagina titulo={t('paginas.utilitarios.titulo')} icone="code" trilha />
 
       <Bloco titulo="Validadores e tipos de campo" descricao="validar(tipo, valor) devolve '' quando vazio ou válido; separa 'incompleto' de 'inválido'.">
         <div className="demo-grade">

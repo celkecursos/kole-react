@@ -23,6 +23,7 @@ import { dia, hoje, type Categoria } from './dados';
 import { CabecalhoFinancas, IconeCategoria, useMoeda } from './comum';
 import { acoes, categoriasDo, doEspaco, noIntervalo, orcamentoDe, useFinancas } from './estado';
 import { ROTAS } from './rotas';
+import { useT } from '../../../i18n/useT';
 
 function EditarOrcamento({ categoria, valor }: { categoria: Categoria; valor: number }) {
   const toast = useToast();
@@ -49,6 +50,7 @@ function EditarOrcamento({ categoria, valor }: { categoria: Categoria; valor: nu
 }
 
 export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
+  const { t } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const meses = mesesDoPeriodo(periodo).length;
@@ -72,7 +74,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Orçamento" icone="target" />
+      <CabecalhoFinancas titulo={t('paginas.finOrcamento.titulo')} icone="target" />
 
       <Indicadores>
         <Indicador rotulo="Orçado" icone="target" cor="var(--graf-1)" valor={moeda(orcado, { centavos: false })} descricao={meses === 1 ? 'Para o mês' : `Para ${meses} meses`} />
@@ -87,7 +89,7 @@ export function Orcamento({ navegar }: { navegar: (r: string) => void }) {
         />
       </Indicadores>
 
-      <Card titulo="Por categoria" subtitulo={emAndamento ? `A marca na barra é o ritmo esperado: ${formatarPercentual(ritmo, { casas: 0 })} do período já passou` : undefined}>
+      <Card titulo={t('paginas.finOrcamento.secoes.porCategoria')} subtitulo={emAndamento ? `A marca na barra é o ritmo esperado: ${formatarPercentual(ritmo, { casas: 0 })} do período já passou` : undefined}>
         <ul className="fin-orc-tabela">
           {linhas.map(({ c, gasto: g, mensal, limite, parte }) => {
             const resta = somarMoeda([limite, -g]);

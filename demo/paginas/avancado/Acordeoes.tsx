@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { Acordeao, Botao, CabecalhoPagina, ItemAcordeao, Recolhivel, type AcordeaoProps } from '../../../src';
 import { Bloco } from '../Bloco';
+import { useT } from '../../i18n/useT';
 
 const TEXTO = (
   <>
@@ -37,6 +38,7 @@ function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
 }
 
 export function PaginaAcordeoes() {
+  const { t } = useT();
   const [link, setLink] = useState(false);
   const [primeiro, setPrimeiro] = useState(false);
   const [segundo, setSegundo] = useState(false);
@@ -44,7 +46,7 @@ export function PaginaAcordeoes() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Acordeões e recolhíveis" icone="list" trilha />
+      <CabecalhoPagina titulo={t('paginas.acordeoes.titulo')} icone="list" trilha />
 
       <div className="demo-colunas">
         <Bloco titulo="Acordeão básico" descricao="Abrir um item fecha o outro.">

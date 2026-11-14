@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Diálogo"
+      pagina="dialogo"
       icone="app-window"
       componente="Dialogo"
-      resumo="Janela sobre a página para uma tarefa curta: cadastro rápido, detalhes, filtros. Pode ser central ou lateral (gaveta)."
       notas={
         <ul className="doc-lista">
           <li>

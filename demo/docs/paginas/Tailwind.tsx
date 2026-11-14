@@ -21,9 +21,8 @@ const UTILITARIOS = `<Card titulo="Resumo" className="mt-4">
 export function DocTailwind() {
   return (
     <PaginaGuia
-      titulo="Tailwind"
+      pagina="tailwind"
       icone="code"
-      resumo="A kole-react não depende de Tailwind, mas convive com ele. Com a ordem de camadas certa, o kole vence o preflight e os utilitários vencem o kole."
     >
       <Secao id="camadas" titulo="Ordem das camadas">
         <p className="doc-p">

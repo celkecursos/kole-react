@@ -37,6 +37,7 @@ import {
   vencePorSi,
 } from './estado';
 import { ROTAS } from './rotas';
+import { useT } from '../../../i18n/useT';
 
 const MES_CURTO = new Intl.DateTimeFormat('pt-BR', { month: 'short' });
 
@@ -51,6 +52,7 @@ function fimDosMeses(ate: string, n: number): string[] {
 }
 
 export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
+  const { t } = useT();
   const { espaco, periodo, lancamentos, orcamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -60,7 +62,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
   const todos = doEspaco(lancamentos, espaco);
   const doPeriodo = noIntervalo(todos, periodo);
   const meses = mesesDoPeriodo(periodo).length;
-  const t = totais(doPeriodo);
+  const soma = totais(doPeriodo);
   const ta = totais(noIntervalo(todos, intervaloDeslocado(periodo, -meses)));
 
   const contas = contasDo(espaco);
@@ -95,9 +97,9 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
     .sort((a, b) => b.parte - a.parte)
     .slice(0, 5);
 
-  const margem = t.receitas ? (t.saldo / t.receitas) * 100 : 0;
-  const varRec = variacaoPercentual(t.receitas, ta.receitas);
-  const varDesp = variacaoPercentual(t.despesas, ta.despesas);
+  const margem = soma.receitas ? (soma.saldo / soma.receitas) * 100 : 0;
+  const varRec = variacaoPercentual(soma.receitas, ta.receitas);
+  const varDesp = variacaoPercentual(soma.despesas, ta.despesas);
   const eixoMoeda = { formatar: (v: number) => moeda(v, { compacto: true }) };
 
   const abrirCategoria = (id: string) => {
@@ -111,7 +113,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo="Visão geral" icone="house" />
+      <CabecalhoFinancas titulo={t('paginas.finVisaoGeral.titulo')} icone="house" />
 
       <Indicadores>
         <Indicador
@@ -123,14 +125,14 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
           descricao={`Hoje, somando ${bancarias.length} contas`}
           aoClicar={() => navegar(ROTAS.contas)}
         />
-        <Indicador rotulo={empresa ? 'Faturamento' : 'Receitas'} icone="trending-up" cor="var(--ok-solid)" valor={moeda(t.receitas)} variacao={varRec ?? undefined} descricao="Comparado ao período anterior" />
-        <Indicador rotulo="Despesas" icone="trending-down" cor="var(--err-solid)" valor={moeda(t.despesas)} variacao={varDesp ?? undefined} variacaoBoa="baixa" descricao="Comparado ao período anterior" />
+        <Indicador rotulo={empresa ? 'Faturamento' : 'Receitas'} icone="trending-up" cor="var(--ok-solid)" valor={moeda(soma.receitas)} variacao={varRec ?? undefined} descricao="Comparado ao período anterior" />
+        <Indicador rotulo="Despesas" icone="trending-down" cor="var(--err-solid)" valor={moeda(soma.despesas)} variacao={varDesp ?? undefined} variacaoBoa="baixa" descricao="Comparado ao período anterior" />
         <Indicador
           rotulo={empresa ? 'Resultado' : 'Economia'}
           icone={empresa ? 'chart-column' : 'piggy-bank'}
-          cor={t.saldo >= 0 ? 'var(--graf-3)' : 'var(--err-solid)'}
-          valor={moeda(t.saldo, { sinal: true })}
-          descricao={t.receitas ? `${formatarPercentual(margem)} ${empresa ? 'de margem' : 'das receitas'}` : 'Sem receitas no período'}
+          cor={soma.saldo >= 0 ? 'var(--graf-3)' : 'var(--err-solid)'}
+          valor={moeda(soma.saldo, { sinal: true })}
+          descricao={soma.receitas ? `${formatarPercentual(margem)} ${empresa ? 'de margem' : 'das receitas'}` : 'Sem receitas no período'}
         />
       </Indicadores>
 
@@ -160,7 +162,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
             chaveCor="cor"
             maxFatias={7}
             formatar={(v) => moeda(v)}
-            centro={{ rotulo: 'Total gasto', valor: moeda(t.despesas) }}
+            centro={{ rotulo: 'Total gasto', valor: moeda(soma.despesas) }}
             aoEscolher={(d) => abrirCategoria(d.id as string)}
             textoVazio="Nenhuma despesa no período."
             posicaoLegenda="abaixo"
@@ -171,7 +173,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
 
       <div className="fin-grade fin-grade--2">
         <Card
-          titulo="Próximos vencimentos"
+          titulo={t('paginas.finVisaoGeral.secoes.proximosVencimentos')}
           subtitulo="Atrasados e dos próximos 15 dias"
           corpoSemEspaco
           rodape={<Botao rotulo="Ver contas a pagar e receber" aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.pagarReceber)} />}
@@ -196,7 +198,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
         </Card>
 
         <Card
-          titulo="Contas"
+          titulo={t('paginas.finVisaoGeral.secoes.contas')}
           subtitulo="Saldo hoje"
           corpoSemEspaco
           rodape={
@@ -240,7 +242,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
         </Card>
 
         <Card
-          titulo={meses === 1 ? 'Orçamento do mês' : 'Orçamento do período'}
+          titulo={meses === 1 ? t('paginas.finVisaoGeral.secoes.orcamentoMes') : t('paginas.finVisaoGeral.secoes.orcamentoPeriodo')}
           subtitulo="As categorias mais perto do limite"
           rodape={<Botao rotulo="Ver orçamento" aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.orcamento)} />}
         >
@@ -261,7 +263,7 @@ export function VisaoGeral({ navegar }: { navegar: (r: string) => void }) {
         </Card>
 
         <Card
-          titulo="Últimos lançamentos"
+          titulo={t('paginas.finVisaoGeral.secoes.ultimosLancamentos')}
           corpoSemEspaco
           rodape={<Botao rotulo="Ver todos" aparencia="texto" icone="arrow-right" posicaoIcone="direita" onClick={() => navegar(ROTAS.lancamentos)} />}
         >

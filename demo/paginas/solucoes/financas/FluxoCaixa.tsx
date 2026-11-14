@@ -3,6 +3,7 @@ import { Alerta, Card, Escolha, GraficoLinha, Indicador, Indicadores, Tabela, Va
 import { dia, type Lancamento } from './dados';
 import { CabecalhoFinancas, dataBr, useMoeda } from './comum';
 import { contasDo, doEspaco, efeito, saldoConta, useFinancas } from './estado';
+import { useT } from '../../../i18n/useT';
 
 type Horizonte = '30' | '60' | '90';
 const PASSADO = 30;
@@ -18,6 +19,7 @@ interface Semana {
 }
 
 export function FluxoCaixa() {
+  const { t } = useT();
   const { espaco, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const [horizonte, setHorizonte] = useState<Horizonte>('60');
@@ -73,7 +75,7 @@ export function FluxoCaixa() {
   return (
     <div className="demo-pilha">
       <CabecalhoFinancas
-        titulo="Fluxo de caixa"
+        titulo={t('paginas.finFluxoCaixa.titulo')}
         icone="chart-line"
         semPeriodo
         acoes={
@@ -130,7 +132,7 @@ export function FluxoCaixa() {
         />
       </Card>
 
-      <Card titulo="Semana a semana" corpoSemEspaco>
+      <Card titulo={t('paginas.finFluxoCaixa.secoes.semanaASemana')} corpoSemEspaco>
         <Tabela<Semana>
           rotulo="Projeção por semana"
           registros={semanas}

@@ -12,9 +12,11 @@ import {
   type Ordenacao,
 } from '../../src';
 import { TABELA_CATEGORIAS, type Categoria } from './dados';
+import { useT } from '../i18n/useT';
 
 /** Modelo de tabela com BOTÕES (texto + ícone) nas ações, em vez de só ícones. */
 export function PaginaTabelaBotoes() {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [registros, setRegistros] = useState(TABELA_CATEGORIAS);
@@ -43,7 +45,7 @@ export function PaginaTabelaBotoes() {
   return (
     <div className="demo-pilha">
       <CabecalhoPagina
-        titulo="Tabela com botões"
+        titulo={t('paginas.tabelaBotoes.titulo')}
         icone="table"
         trilha
         acoes={<Botao rotulo="Nova categoria" icone="plus" onClick={() => toast.info('Nova categoria')} />}

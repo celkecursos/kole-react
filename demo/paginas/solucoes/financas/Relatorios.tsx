@@ -3,6 +3,7 @@ import { Botao, Card, GraficoBarras, Icone, dataIso, formatarMoeda, formatarPerc
 import type { GrupoDre, Lancamento } from './dados';
 import { CabecalhoFinancas, useMoeda } from './comum';
 import { categoriasDo, doEspaco, noIntervalo, useFinancas } from './estado';
+import { useT } from '../../../i18n/useT';
 
 const MES = new Intl.DateTimeFormat('pt-BR', { month: 'short', year: '2-digit' });
 
@@ -29,6 +30,7 @@ function mesesDoRelatorio(p: { tipo: string; de: string; ate: string }) {
 }
 
 export function Relatorios() {
+  const { t } = useT();
   const { espaco, periodo, lancamentos } = useFinancas();
   const moeda = useMoeda();
   const toast = useToast();
@@ -143,7 +145,7 @@ export function Relatorios() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo={empresa ? 'DRE' : 'Relatórios'} icone="file-spreadsheet" acoes={<Botao rotulo="Exportar CSV" icone="download" aparencia="contorno" severidade="secundario" onClick={exportar} />}>
+      <CabecalhoFinancas titulo={empresa ? t('paginas.finRelatorios.textos.dre') : t('paginas.finRelatorios.titulo')} icone="file-spreadsheet" acoes={<Botao rotulo="Exportar CSV" icone="download" aparencia="contorno" severidade="secundario" onClick={exportar} />}>
         {empresa
           ? 'Demonstração do resultado pelo regime de competência: cada lançamento conta no mês da sua data, pago ou não. Transferências entre contas ficam de fora.'
           : 'Receitas e despesas de cada categoria, mês a mês. Transferências entre as suas contas ficam de fora.'}

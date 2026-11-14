@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Citação"
+      pagina="citacao"
       icone="message-square"
       componente="Citacao"
-      resumo="Trecho destacado com autor e fonte: regra de negócio, depoimento, nota de manual."
       notas={
         <ul className="doc-lista">
           <li>

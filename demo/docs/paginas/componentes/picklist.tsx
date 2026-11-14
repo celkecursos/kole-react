@@ -5,11 +5,10 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Picklist"
+      pagina="picklist"
       icone="arrow-up-down"
       componente="Picklist"
       importar={['type PicklistValor']}
-      resumo="Duas listas lado a lado para mover itens de uma para a outra: permissões, colunas visíveis, membros de um grupo."
       notas={
         <ul className="doc-lista">
           <li>

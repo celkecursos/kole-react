@@ -22,6 +22,7 @@ import {
   type ItemReferencia,
   type SugestaoConversa,
 } from '../../../src';
+import { useT } from '../../i18n/useT';
 
 /*
  * Página modelo de um assistente de IA dentro do sistema. Tudo aqui é simulado, sem rede:
@@ -286,6 +287,7 @@ let seq = 1000;
 /* ---------- a página ---------- */
 
 export function PaginaAssistente() {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [conversas, setConversas] = useState(historicoInicial);
@@ -476,7 +478,7 @@ export function PaginaAssistente() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo="Assistente" icone="sparkles" trilha>
+      <CabecalhoPagina titulo={t('paginas.assistente.titulo')} icone="sparkles" trilha>
         Página modelo de um assistente de IA no sistema: histórico, tela inicial com sugestões, anexos, ferramentas e respostas com tabela e código.
       </CabecalhoPagina>
 
@@ -583,7 +585,7 @@ export function PaginaAssistente() {
       </Dialogo>
 
       <div className="demo-colunas">
-        <Card titulo="Componentes do kole" subtitulo="O que esta página usa">
+        <Card titulo={t('paginas.assistente.secoes.componentesKole')} subtitulo="O que esta página usa">
           <ul className="demo-ia-lista">
             <li>
               <b>ListaConversas</b>: histórico agrupado por data, busca, renomear, fixar e excluir.
@@ -599,7 +601,7 @@ export function PaginaAssistente() {
             </li>
           </ul>
         </Card>
-        <Card titulo="O que fica com o app" subtitulo="Fora da biblioteca">
+        <Card titulo={t('paginas.assistente.secoes.ficaComApp')} subtitulo="Fora da biblioteca">
           <ul className="demo-ia-lista">
             <li>Chamar a API do modelo e ler a resposta em pedaços (streaming), atualizando a mensagem com <code>estado="gerando"</code>.</li>
             <li>Salvar e buscar o histórico; a <b>ListaConversas</b> só mostra e avisa (renomear, excluir).</li>

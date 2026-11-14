@@ -5,10 +5,9 @@ import { PaginaComponente } from '../../PaginaDoc';
 export default function Pagina() {
   return (
     <PaginaComponente
-      titulo="Ação de linha"
+      pagina="acaoLinha"
       icone="pencil"
       componente="AcaoLinha"
-      resumo="Botão só com ícone para as ações de cada linha de uma tabela ou lista: visualizar, editar, excluir."
       notas={
         <ul className="doc-lista">
           <li>
