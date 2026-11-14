@@ -117,6 +117,7 @@ const CIDADES: ConfigTabela<Cidade> = {
 };
 
 function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTabela<T> }) {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [registros, setRegistros] = useState(config.registros);
@@ -142,22 +143,22 @@ function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTa
 
   const excluir = async (linha: T) => {
     const ok = await confirmar({
-      titulo: `Excluir ${config.item}?`,
-      mensagem: `"${config.descrever(linha)}" será removido definitivamente.`,
+      titulo: t('paginas.tabelas.textos.excluirItem', { item: config.item }),
+      mensagem: t('paginas.tabelas.textos.valorSeraRemovidoDefinitivamente', { valor: config.descrever(linha) }),
       severidade: 'err',
       rotuloAceitar: 'Excluir',
       iconeAceitar: 'trash-2',
     });
     if (!ok) return;
     setRegistros((l) => l.filter((x) => x.id !== linha.id));
-    toast.ok('Registro excluído', config.descrever(linha));
+    toast.ok(t('paginas.tabelas.textos.registroExcluido'), config.descrever(linha));
   };
 
   const selecionado = registros.find((r) => r.id === selUnica[0]);
 
   return (
     <>
-      <Bloco titulo="Listrada — ordenação, paginação e ações">
+      <Bloco titulo={t('paginas.tabelas.secoes.listradaOrdenacaoPaginacaoE')}>
         <Tabela<T>
           rotulo={config.titulo}
           registros={ordenados.slice((pagina - 1) * tamanho, pagina * tamanho)}
@@ -166,11 +167,11 @@ function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTa
           aoOrdenar={aoOrdenar}
           acoes={(l) => (
             <>
-              <AcaoLinha icone="pencil" rotulo="Editar" severidade="destaque" onClick={() => toast.info('Editar', config.descrever(l))} />
-              <AcaoLinha icone="trash-2" rotulo="Excluir" severidade="err" onClick={() => excluir(l)} />
+              <AcaoLinha icone="pencil" rotulo={t('paginas.tabelas.textos.editar')} severidade="destaque" onClick={() => toast.info(t('paginas.tabelas.textos.editar'), config.descrever(l))} />
+              <AcaoLinha icone="trash-2" rotulo={t('paginas.tabelas.textos.excluir')} severidade="err" onClick={() => excluir(l)} />
             </>
           )}
-          vazioAcoes={<Botao rotulo="Restaurar registros" severidade="secundario" onClick={() => setRegistros(config.registros)} />}
+          vazioAcoes={<Botao rotulo={t('paginas.tabelas.textos.restaurarRegistros')} severidade="secundario" onClick={() => setRegistros(config.registros)} />}
           paginacao={{
             total: ordenados.length,
             pagina,
@@ -185,47 +186,47 @@ function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTa
         />
       </Bloco>
 
-      <Bloco titulo="Grade — seleção única">
+      <Bloco titulo={t('paginas.tabelas.secoes.gradeSelecaoUnica')}>
         <Tabela<T>
           aparencia="grade"
-          rotulo={`${config.titulo} (seleção única)`}
+          rotulo={t('paginas.tabelas.textos.tituloSelecaoUnica', { titulo: config.titulo })}
           registros={ordenados.slice(0, 5)}
           colunas={config.colunas}
           selecao="unica"
           selecionados={selUnica}
           aoMudarSelecao={setSelUnica}
         />
-        <span>Selecionado: {selecionado ? config.descrever(selecionado) : 'nenhum'}</span>
+        <span>{t('paginas.tabelas.textos.selecionado')}{selecionado ? config.descrever(selecionado) : 'nenhum'}</span>
       </Bloco>
 
-      <Bloco titulo="Seleção múltipla e linha clicável">
+      <Bloco titulo={t('paginas.tabelas.secoes.selecaoMultiplaELinha')}>
         <Tabela<T>
-          rotulo={`${config.titulo} (seleção múltipla)`}
+          rotulo={t('paginas.tabelas.textos.tituloSelecaoMultipla', { titulo: config.titulo })}
           registros={ordenados.slice(0, 5)}
           colunas={config.colunas}
           selecao="multipla"
           selecionados={selMultipla}
           aoMudarSelecao={setSelMultipla}
         />
-        <span>{selMultipla.length} selecionado(s)</span>
+        <span>{t('paginas.tabelas.textos.nSelecionadoS', { n: selMultipla.length })}</span>
         <Tabela<T>
-          rotulo={`${config.titulo} (linha clicável)`}
+          rotulo={t('paginas.tabelas.textos.tituloLinhaClicavel', { titulo: config.titulo })}
           registros={ordenados.slice(0, 3)}
           colunas={config.colunas}
-          aoClicarLinha={(l) => toast.info('Linha clicada', config.descrever(l))}
+          aoClicarLinha={(l) => toast.info(t('paginas.tabelas.textos.linhaClicada'), config.descrever(l))}
         />
       </Bloco>
 
-      <Bloco titulo="Estados">
+      <Bloco titulo={t('paginas.tabelas.secoes.estados')}>
         <Escolha
-          rotulo="Estado da tabela"
+          rotulo={t('paginas.tabelas.textos.estadoDaTabela')}
           valor={estado}
           aoMudar={setEstado}
           opcoes={[
-            { valor: 'carregando', rotulo: 'Carregando' },
-            { valor: 'atualizando', rotulo: 'Atualizando' },
-            { valor: 'erro', rotulo: 'Erro' },
-            { valor: 'vazio', rotulo: 'Vazio' },
+            { valor: 'carregando', rotulo: t('paginas.tabelas.textos.carregando') },
+            { valor: 'atualizando', rotulo: t('paginas.tabelas.textos.atualizando') },
+            { valor: 'erro', rotulo: t('paginas.tabelas.textos.erro') },
+            { valor: 'vazio', rotulo: t('paginas.tabelas.textos.vazio') },
           ]}
         />
         <Tabela<T>
@@ -236,9 +237,9 @@ function ExemplosTabela<T extends { id: number }>({ config }: { config: ConfigTa
           atualizando={estado === 'atualizando'}
           erro={estado === 'erro'}
           aoRecarregar={() => setEstado('atualizando')}
-          vazioTitulo="Nenhum registro cadastrado"
-          vazioDescricao="Cadastre o primeiro registro para começar."
-          vazioAcoes={<Botao rotulo="Cadastrar" icone="plus" onClick={() => toast.info('Cadastrar')} />}
+          vazioTitulo={t('paginas.tabelas.textos.nenhumRegistroCadastrado')}
+          vazioDescricao={t('paginas.tabelas.textos.cadastreOPrimeiroRegistro')}
+          vazioAcoes={<Botao rotulo={t('paginas.tabelas.textos.cadastrar')} icone="plus" onClick={() => toast.info(t('paginas.tabelas.textos.cadastrar'))} />}
         />
       </Bloco>
     </>
@@ -256,7 +257,7 @@ export function PaginaTabelas({ tabela }: { tabela: string }) {
         titulo={t(config.chaveTitulo)}
         trilha
         icone={config.icone}
-        acoes={<Botao rotulo="Adicionar" icone="plus" onClick={() => toast.info(`Adicionar ${config.item}`)} />}
+        acoes={<Botao rotulo={t('paginas.tabelas.textos.adicionar')} icone="plus" onClick={() => toast.info(t('paginas.tabelas.textos.adicionarItem', { item: config.item }))} />}
       />
       {/* `key` reinicia o estado ao trocar de tabela. */}
       <ExemplosTabela key={tabela} config={config as unknown as ConfigTabela<{ id: number }>} />

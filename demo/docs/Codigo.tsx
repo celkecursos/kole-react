@@ -28,11 +28,3 @@ export function Codigo({ codigo, linguagem = 'tsx' }: { codigo: string; linguage
 export function C({ children }: { children: string }) {
   return <code className="doc-c">{children}</code>;
 }
-
-/**
- * Texto do dicionário com código inline: o trecho entre crases vira `<C>`.
- * `'Importe o \`estilos.css\` uma vez só'` → Importe o <C>estilos.css</C> uma vez só.
- */
-export function comCodigo(texto: string) {
-  return texto.split('`').map((parte, i) => (i % 2 ? <C key={i}>{parte}</C> : parte));
-}

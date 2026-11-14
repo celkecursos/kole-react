@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="busca"
@@ -11,21 +13,13 @@ export default function Pagina() {
       importar={['type ItemBusca']}
       notas={
         <ul className="doc-lista">
-          <li>
-            A <C>Estrutura</C> já traz esta busca, alimentada pelos itens do <C>nav</C>: use o componente sozinho só fora dela.
-          </li>
-          <li>
-            Só pode haver um atalho Ctrl K por tela; numa segunda busca, passe <C>{'atalho={false}'}</C>.
-          </li>
-          <li>
-            A busca ignora acentos e caixa: "relatorio" encontra "Relatórios".
-          </li>
+          <li>{rico(t('docs.busca.textos.aEstruturaJaTraz'))}</li>
+          <li>{rico(t('docs.busca.textos.soPodeHaverUm'))}</li>
+          <li>{t('docs.busca.textos.aBuscaIgnoraAcentos')}</li>
         </ul>
       }
     >
-      <Exemplo id="busca/Basico" titulo="Páginas e busca no servidor">
-        Digite "ped" para ver as páginas; Enter chama <C>aoBuscar</C>.
-      </Exemplo>
+      <Exemplo id="busca/Basico" titulo={t('docs.busca.secoes.paginasEBuscaNo')}>{rico(t('docs.busca.textos.digitePedParaVer'))}</Exemplo>
     </PaginaComponente>
   );
 }

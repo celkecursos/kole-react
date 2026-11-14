@@ -41,19 +41,19 @@ export function PaginaBaloes() {
       <CabecalhoPagina titulo={t('paginas.baloes.titulo')} icone="message-square" trilha />
 
       <div className="demo-colunas">
-        <Bloco titulo="Padrão" descricao="Clique para abrir; clique fora ou Esc para fechar.">
+        <Bloco titulo={t('paginas.baloes.secoes.padrao')} descricao={t('paginas.baloes.textos.cliqueParaAbrirClique')}>
           <div className="demo-linha">
             {DIRECOES.map((d) => (
-              <Balao key={d.posicao} posicao={d.posicao} titulo={`Balão ${d.rotulo.toLowerCase()}`} conteudo="E aqui um conteúdo interessante. Bem envolvente, não é?">
+              <Balao key={d.posicao} posicao={d.posicao} titulo={t('paginas.baloes.textos.balaoValor', { valor: d.rotulo.toLowerCase() })} conteudo={t('paginas.baloes.textos.eAquiUmConteudo')}>
                 <Botao rotulo={d.rotulo} formato="retangulo" />
               </Balao>
             ))}
           </div>
         </Bloco>
-        <Bloco titulo="Cabeçalho colorido" descricao="Só o título ganha a cor.">
+        <Bloco titulo={t('paginas.baloes.secoes.cabecalhoColorido')} descricao={t('paginas.baloes.textos.soOTituloGanha')}>
           <div className="demo-linha">
             {CORES.map((c) => (
-              <Balao key={c.cor} cor={c.cor} aparencia="cabecalho" posicao={c.posicao} titulo="Cabeçalho colorido" conteudo={`Balão com cabeçalho na cor ${NOME_COR[c.cor]}.`}>
+              <Balao key={c.cor} cor={c.cor} aparencia="cabecalho" posicao={c.posicao} titulo={t('paginas.baloes.textos.cabecalhoColorido')} conteudo={t('paginas.baloes.textos.balaoComCabecalhoNa', { v: NOME_COR[c.cor] })}>
                 <Botao rotulo={c.rotulo} severidade={c.cor as SeveridadeBotao} aparencia="contorno" formato="retangulo" />
               </Balao>
             ))}
@@ -61,20 +61,20 @@ export function PaginaBaloes() {
         </Bloco>
       </div>
 
-      <Bloco titulo="Balões coloridos" descricao="O balão todo na cor.">
+      <Bloco titulo={t('paginas.baloes.secoes.baloesColoridos')} descricao={t('paginas.baloes.textos.oBalaoTodoNa')}>
         <div className="demo-linha">
           {CORES.map((c) => (
-            <Balao key={c.cor} cor={c.cor} aparencia="solido" posicao={c.posicao} titulo="Fundo colorido" conteudo={`Balão com fundo na cor ${NOME_COR[c.cor]}.`}>
+            <Balao key={c.cor} cor={c.cor} aparencia="solido" posicao={c.posicao} titulo={t('paginas.baloes.textos.fundoColorido')} conteudo={t('paginas.baloes.textos.balaoComFundoNa', { v: NOME_COR[c.cor] })}>
               <Botao rotulo={c.rotulo} severidade={c.cor as SeveridadeBotao} formato="retangulo" />
             </Balao>
           ))}
         </div>
       </Bloco>
 
-      <Bloco titulo="Balões suaves" descricao="Fundo claro da cor.">
+      <Bloco titulo={t('paginas.baloes.secoes.baloesSuaves')} descricao={t('paginas.baloes.textos.fundoClaroDaCor')}>
         <div className="demo-linha">
           {CORES.map((c) => (
-            <Balao key={c.cor} cor={c.cor} aparencia="suave" posicao={c.posicao} titulo="Fundo claro" conteudo={`Balão com fundo claro na cor ${NOME_COR[c.cor]}.`}>
+            <Balao key={c.cor} cor={c.cor} aparencia="suave" posicao={c.posicao} titulo={t('paginas.baloes.textos.fundoClaro')} conteudo={t('paginas.baloes.textos.balaoComFundoClaro', { v: NOME_COR[c.cor] })}>
               <Botao rotulo={c.rotulo} severidade={c.cor as SeveridadeBotao} aparencia="suave" formato="retangulo" />
             </Balao>
           ))}
@@ -82,26 +82,26 @@ export function PaginaBaloes() {
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Fecha no próximo clique" descricao="Qualquer clique, até no próprio balão, fecha.">
+        <Bloco titulo={t('paginas.baloes.secoes.fechaNoProximoClique')} descricao={t('paginas.baloes.textos.qualquerCliqueAteNo')}>
           <div className="demo-linha">
             {DIRECOES.map((d, i) => (
-              <Balao key={d.posicao} gatilho="foco" posicao={d.posicao} titulo="Balão descartável" conteudo="E aqui um conteúdo interessante. Bem envolvente, não é?">
+              <Balao key={d.posicao} gatilho="foco" posicao={d.posicao} titulo={t('paginas.baloes.textos.balaoDescartavel')} conteudo={t('paginas.baloes.textos.eAquiUmConteudo')}>
                 <Botao rotulo={d.rotulo} severidade={(['pri', 'secundario', 'info', 'warn'] as const)[i]} formato="retangulo" />
               </Balao>
             ))}
           </div>
         </Bloco>
-        <Bloco titulo="Botão desabilitado" descricao="Abre ao passar o mouse ou com o foco do teclado, mesmo com o botão desabilitado.">
+        <Bloco titulo={t('paginas.baloes.secoes.botaoDesabilitado')} descricao={t('paginas.baloes.textos.abreAoPassarO')}>
           <div className="demo-linha">
             {(['cima', 'direita', 'baixo'] as const).map((p) => (
-              <Balao key={p} gatilho="passar" posicao={p} conteudo="Esta ação está desabilitada no momento.">
-                <Botao rotulo="Botão desabilitado" formato="retangulo" disabled />
+              <Balao key={p} gatilho="passar" posicao={p} conteudo={t('paginas.baloes.textos.estaAcaoEstaDesabilitada')}>
+                <Botao rotulo={t('paginas.baloes.textos.botaoDesabilitado')} formato="retangulo" disabled />
               </Balao>
             ))}
           </div>
         </Bloco>
 
-        <Bloco titulo="Ícones" descricao="Ao passar o mouse.">
+        <Bloco titulo={t('paginas.baloes.secoes.icones')} descricao={t('paginas.baloes.textos.aoPassarOMouse')}>
           <div className="demo-linha demo-linha--centro">
             {(
               [
@@ -111,7 +111,7 @@ export function PaginaBaloes() {
                 ['ok', 'direita', 'circle-check', 'Tudo certo'],
               ] as const
             ).map(([cor, posicao, icone, rotulo]) => (
-              <Balao key={icone} gatilho="passar" cor={cor} aparencia="solido" posicao={posicao} conteudo="Este balão explica o que este ícone quer dizer.">
+              <Balao key={icone} gatilho="passar" cor={cor} aparencia="solido" posicao={posicao} conteudo={t('paginas.baloes.textos.esteBalaoExplicaO')}>
                 <button type="button" className={`demo-balao-icone demo-balao-icone--${cor}`} aria-label={rotulo}>
                   <Icone icone={icone} />
                 </button>
@@ -119,7 +119,7 @@ export function PaginaBaloes() {
             ))}
           </div>
         </Bloco>
-        <Bloco titulo="Avatares" descricao="Clique na pessoa para ver os dados.">
+        <Bloco titulo={t('paginas.baloes.secoes.avatares')} descricao={t('paginas.baloes.textos.cliqueNaPessoaPara')}>
           <div className="demo-linha demo-linha--centro">
             {(
               [
@@ -138,10 +138,10 @@ export function PaginaBaloes() {
         </Bloco>
       </div>
 
-      <Bloco titulo="Conteúdo livre" descricao="O conteúdo pode ter texto formatado e ações.">
+      <Bloco titulo={t('paginas.baloes.secoes.conteudoLivre')} descricao={t('paginas.baloes.textos.oConteudoPodeTer')}>
         <div className="demo-linha">
           <Balao
-            titulo="Pedido PED-2026-0042"
+            titulo={t('paginas.baloes.textos.pedidoPed20260042')}
             posicao="direita"
             largura="19rem"
             conteudo={
@@ -157,7 +157,7 @@ export function PaginaBaloes() {
               </div>
             }
           >
-            <Botao rotulo="Resumo do pedido" icone="package" aparencia="contorno" formato="retangulo" />
+            <Botao rotulo={t('paginas.baloes.textos.resumoDoPedido')} icone="package" aparencia="contorno" formato="retangulo" />
           </Balao>
         </div>
       </Bloco>

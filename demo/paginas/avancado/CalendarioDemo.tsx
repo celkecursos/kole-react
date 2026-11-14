@@ -101,6 +101,7 @@ function avulsosDaAgenda(hoje: Date): EventoCalendario[] {
  * O estado e o diálogo são os do exemplo "Cadastro" da documentação.
  */
 function AgendaEditavel() {
+  const { t } = useT();
   const toast = useToast();
   const hoje = useMemo(() => new Date(), []);
   const agenda = useAgenda({ avulsos: avulsosDaAgenda(hoje), series: seriesDaAgenda(hoje).map((s) => ({ ...s, excecoes: [] })) });
@@ -130,7 +131,7 @@ function AgendaEditavel() {
       // ocorrência de uma série: a série pula esse dia e a ocorrência vira um evento avulso
       setSeries((l) => l.map((s) => (s.base.id === ev.serie ? { ...s, excecoes: [...s.excecoes, ev.inicio] } : s)));
       setAvulsos((l) => [...l, { ...ev, ...novo, id: `${ev.id}-avulso`, serie: undefined, repete: false }]);
-      toast.info('Só esta ocorrência', `"${ev.titulo}" mudou só neste dia; a série continua igual.`);
+      toast.info(t('paginas.calendario.textos.soEstaOcorrencia'), t('paginas.calendario.textos.tituloMudouSoNeste', { titulo: ev.titulo }));
       return;
     }
     setAvulsos((l) => l.map((e) => (e.id === ev.id ? { ...e, ...novo } : e)));
@@ -142,7 +143,7 @@ function AgendaEditavel() {
         <MiniCalendario valor={dia} aoEscolher={setDia} aoMudarMes={setMesMini} marcados={marcados} destaque={periodo?.visao === 'mes' ? null : periodo} />
       </Card>
       <Calendario
-        rotulo="Agenda editável"
+        rotulo={t('paginas.calendario.textos.agendaEditavel')}
         eventos={agenda.eventos}
         visaoInicial="semana"
         data={dia}
@@ -177,14 +178,12 @@ export function PaginaCalendario() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo={t('paginas.calendario.titulo')} icone="calendar" trilha>
-        Visão mês, semana, dia e lista, eventos coloridos pelos tokens, "+N mais" por dia e navegação pelo teclado (setas, Home/End, Page Up/Down, Enter).
-      </CabecalhoPagina>
+      <CabecalhoPagina titulo={t('paginas.calendario.titulo')} icone="calendar" trilha>{t('paginas.calendario.textos.visaoMesSemanaDia')}</CabecalhoPagina>
 
-      <Bloco titulo="Agenda de vendas" descricao="Clique num dia para criar um evento ou num evento para ver os detalhes. O dia 9 tem mais eventos do que cabem.">
+      <Bloco titulo={t('paginas.calendario.secoes.agendaDeVendas')} descricao={t('paginas.calendario.textos.cliqueNumDiaPara')}>
         <div className="demo-linha">
           <Botao
-            rotulo="Semana começa na segunda"
+            rotulo={t('paginas.calendario.textos.semanaComecaNaSegunda')}
             severidade="secundario"
             aparencia="contorno"
             tamanho="pequeno"
@@ -193,56 +192,56 @@ export function PaginaCalendario() {
           />
         </div>
         <Calendario
-          rotulo="Agenda de vendas"
+          rotulo={t('paginas.calendario.textos.agendaDeVendas')}
           eventos={eventos}
           inicioSemana={segunda ? 1 : 0}
           aoMudarPeriodo={setPeriodo}
-          aoClicarDia={(d) => toast.info('Novo evento', `Criar evento em ${DATA.format(d)}.`)}
+          aoClicarDia={(d) => toast.info(t('paginas.calendario.textos.novoEvento'), t('paginas.calendario.textos.criarEventoEmValor', { valor: DATA.format(d) }))}
           aoClicarEvento={setAberto}
         />
       </Bloco>
 
       <Bloco
-        titulo="Semana e dia"
-        descricao="Faixa de horários das 7h às 21h, eventos pela hora, sobrepostos lado a lado e a linha vermelha do agora. Clique num horário vazio para criar um evento ali."
+        titulo={t('paginas.calendario.secoes.semanaEDia')}
+        descricao={t('paginas.calendario.textos.faixaDeHorariosDas')}
       >
         <Calendario
-          rotulo="Agenda da semana"
+          rotulo={t('paginas.calendario.textos.agendaDaSemana')}
           eventos={semana}
           visaoInicial="semana"
           inicioSemana={segunda ? 1 : 0}
-          aoClicarDia={(d) => toast.info('Dia', DATA.format(d))}
-          aoClicarHorario={(d) => toast.info('Novo evento', `Criar evento em ${DATA.format(d)}, às ${HORA.format(d)}.`)}
+          aoClicarDia={(d) => toast.info(t('paginas.calendario.textos.dia'), DATA.format(d))}
+          aoClicarHorario={(d) => toast.info(t('paginas.calendario.textos.novoEvento'), t('paginas.calendario.textos.criarEventoEmValor2', { valor: DATA.format(d), valor2: HORA.format(d) }))}
           aoClicarEvento={setAberto}
         />
       </Bloco>
 
       <Bloco
-        titulo="Cadastrar, arrastar e repetir"
-        descricao="Clique num horário vazio, ou arraste sobre ele para escolher o intervalo, e cadastre o evento (com o campo Repete); clique num evento para editar ou excluir. Arraste um evento para outro dia ou horário, ou puxe a borda de baixo para mudar a duração (no toque, segure antes de arrastar; pelo teclado, Alt+setas e Alt+Shift+↑↓; no cursor de horário, Shift+↑↓ aumentam o intervalo e Enter abre o cadastro). O Inventário é fixo. O minicalendário escolhe o dia."
+        titulo={t('paginas.calendario.secoes.cadastrarArrastarERepetir')}
+        descricao={t('paginas.calendario.textos.cliqueNumHorarioVazio')}
       >
         <AgendaEditavel />
       </Bloco>
 
-      <Bloco titulo="Visão lista" descricao="Eventos do mês agrupados por dia: a visão boa para o celular.">
-        <Calendario rotulo="Agenda em lista" eventos={eventos} visaoInicial="lista" aoClicarEvento={setAberto} />
+      <Bloco titulo={t('paginas.calendario.secoes.visaoLista')} descricao={t('paginas.calendario.textos.eventosDoMesAgrupados')}>
+        <Calendario rotulo={t('paginas.calendario.textos.agendaEmLista')} eventos={eventos} visaoInicial="lista" aoClicarEvento={setAberto} />
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Carregando">
+        <Bloco titulo={t('paginas.calendario.secoes.carregando')}>
           <Calendario eventos={[]} carregando visoes={['mes']} />
         </Bloco>
-        <Bloco titulo="Sem eventos (lista)">
-          <Calendario eventos={[]} visaoInicial="lista" textoVazio="Nenhuma entrega agendada neste mês." />
+        <Bloco titulo={t('paginas.calendario.secoes.semEventosLista')}>
+          <Calendario eventos={[]} visaoInicial="lista" textoVazio={t('paginas.calendario.textos.nenhumaEntregaAgendadaNeste')} />
         </Bloco>
       </div>
 
       <Dialogo aberto={!!aberto} aoFechar={() => setAberto(null)} titulo={aberto?.titulo ?? ''} icone="calendar" tamanho="pequeno">
         {aberto && (
           <div className="demo-pilha">
-            <Detalhes rotulo="Data" valor={DATA.format(aberto.inicio)} />
-            <Detalhes rotulo="Horário" valor={aberto.diaInteiro ? 'Dia inteiro' : `${HORA.format(aberto.inicio)}${aberto.fim ? ` às ${HORA.format(aberto.fim)}` : ''}`} />
-            <Detalhes rotulo="Categoria" valor={aberto.categoria} />
+            <Detalhes rotulo={t('paginas.calendario.textos.data')} valor={DATA.format(aberto.inicio)} />
+            <Detalhes rotulo={t('paginas.calendario.textos.horario')} valor={aberto.diaInteiro ? 'Dia inteiro' : `${HORA.format(aberto.inicio)}${aberto.fim ? ` às ${HORA.format(aberto.fim)}` : ''}`} />
+            <Detalhes rotulo={t('paginas.calendario.textos.categoria')} valor={aberto.categoria} />
           </div>
         )}
       </Dialogo>

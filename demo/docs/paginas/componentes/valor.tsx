@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="valor"
@@ -11,25 +13,14 @@ export default function Pagina() {
       outros={['ProvedorValores', 'BotaoOcultarValores']}
       notas={
         <ul className="doc-lista">
-          <li>
-            Guarde os valores sempre positivos e diga o sentido com <C>tipo</C>: <C>receita</C> sai em verde com <C>+</C>, <C>despesa</C> em
-            vermelho com <C>−</C>, <C>neutro</C> (transferência) sem cor. Sem <C>tipo</C>, <C>colorir</C> pinta pelo sinal do número.
-          </li>
-          <li>
-            Todo <C>Valor</C> dentro de um <C>ProvedorValores</C> obedece ao <C>BotaoOcultarValores</C>. Com <C>chave</C>, a escolha fica
-            lembrada no navegador. Para textos fora do componente (um <C>Indicador</C>, o eixo de um gráfico), leia{' '}
-            <C>useValoresOcultos().ocultos</C>.
-          </li>
-          <li>
-            <C>formatarMoeda</C> usa o sinal de menos tipográfico (<C>−R$ 80,00</C>), espaço inseparável depois do <C>R$</C> e nunca mostra{' '}
-            <C>−0,00</C>. <C>dividirEmParcelas</C> fecha os centavos (a diferença vai para a primeira parcela) e <C>somarMoeda</C> soma em
-            centavos, sem o erro do ponto flutuante.
-          </li>
+          <li>{rico(t('docs.valor.textos.guardeOsValoresSempre'))}</li>
+          <li>{rico(t('docs.valor.textos.todoValorDentroDe'))}</li>
+          <li>{rico(t('docs.valor.textos.formatarmoedaUsaOSinal'))}</li>
         </ul>
       }
     >
-      <Exemplo id="valor/Basico" titulo="Sentido, tamanhos e ocultar" />
-      <Exemplo id="valor/Formatar" titulo="Formatadores" />
+      <Exemplo id="valor/Basico" titulo={t('docs.valor.secoes.sentidoTamanhosEOcultar')} />
+      <Exemplo id="valor/Formatar" titulo={t('docs.valor.secoes.formatadores')} />
     </PaginaComponente>
   );
 }

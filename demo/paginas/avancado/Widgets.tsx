@@ -22,6 +22,7 @@ import {
 } from '../../../src';
 import { retrato } from '../Bloco';
 import { useT } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -37,19 +38,20 @@ const foto = (i: number) => retrato(PESSOAS[i].cor, PESSOAS[i].nome[0]);
 
 /** Menu "…" que se repete no canto dos widgets. */
 function MaisOpcoes({ rotulo }: { rotulo: string }) {
+  const { t } = useT();
   return (
     <MenuSuspenso
       icone="ellipsis"
       semSeta
-      aria-label={`Opções de ${rotulo}`}
+      aria-label={t('paginas.widgets.textos.opcoesDeRotulo', { rotulo })}
       aparencia="texto"
       severidade="secundario"
       tamanho="pequeno"
       alinhamento="fim"
       itens={[
-        { id: 'semana', rotulo: 'Esta semana' },
-        { id: 'mes', rotulo: 'Este mês' },
-        { id: 'ano', rotulo: 'Este ano' },
+        { id: 'semana', rotulo: t('paginas.widgets.textos.estaSemana') },
+        { id: 'mes', rotulo: t('paginas.widgets.textos.esteMes') },
+        { id: 'ano', rotulo: t('paginas.widgets.textos.esteAno') },
       ]}
     />
   );
@@ -57,12 +59,13 @@ function MaisOpcoes({ rotulo }: { rotulo: string }) {
 
 /** Gráfico de barras simples em SVG (sem biblioteca de gráficos). */
 function Barras({ dados, rotulos }: { dados: Array<[number, number]>; rotulos: string[] }) {
+  const { t } = useT();
   const max = 100;
   const larg = 280;
   const alt = 150;
   const passo = larg / dados.length;
   return (
-    <svg className="demo-wid-barras" viewBox={`0 0 ${larg} ${alt + 18}`} role="img" aria-label="Candidatos por dia da semana: candidaturas e entrevistas">
+    <svg className="demo-wid-barras" viewBox={`0 0 ${larg} ${alt + 18}`} role="img" aria-label={t('paginas.widgets.textos.candidatosPorDiaDa')}>
       {[0, 25, 50, 75, 100].map((v) => (
         <line key={v} x1="0" x2={larg} y1={alt - (v / max) * alt} y2={alt - (v / max) * alt} className="demo-wid-grade" />
       ))}
@@ -104,18 +107,18 @@ export function PaginaWidgets() {
 
       {/* ---- indicadores com variação ---- */}
       <Indicadores className="demo-wid-linha-ind">
-        <Indicador rotulo="Produtos" valor={45280} icone="package" cor="var(--pri)" variacao={1.31} />
-        <Indicador rotulo="Pedidos" valor={12088} icone="shopping-cart" cor="var(--err-solid)" variacao={-12.05} />
-        <Indicador rotulo="Vendas" valor={10500} icone="chart-line" cor="var(--info-solid)" variacao={1.14} />
-        <Indicador rotulo="Receita" valor={BRL.format(69270)} icone="wallet" cor="var(--acento)" variacao={2.58} />
-        <Indicador rotulo="Despesas" valor={BRL.format(21520)} icone="credit-card" cor="var(--ok-solid)" variacao={-14.69} variacaoBoa="baixa" />
+        <Indicador rotulo={t('paginas.widgets.textos.produtos')} valor={45280} icone="package" cor="var(--pri)" variacao={1.31} />
+        <Indicador rotulo={t('paginas.widgets.textos.pedidos')} valor={12088} icone="shopping-cart" cor="var(--err-solid)" variacao={-12.05} />
+        <Indicador rotulo={t('paginas.widgets.textos.vendas')} valor={10500} icone="chart-line" cor="var(--info-solid)" variacao={1.14} />
+        <Indicador rotulo={t('paginas.widgets.textos.receita')} valor={BRL.format(69270)} icone="wallet" cor="var(--acento)" variacao={2.58} />
+        <Indicador rotulo={t('paginas.widgets.textos.despesas')} valor={BRL.format(21520)} icone="credit-card" cor="var(--ok-solid)" variacao={-14.69} variacaoBoa="baixa" />
       </Indicadores>
 
       <Indicadores>
-        <Indicador rotulo="Projetos" valor="676,90" icone="briefcase" cor="var(--info-solid)" variacao={105.05} descricao="há 6 min" />
-        <Indicador rotulo="Projetos pendentes" valor="406,90" icone="clock" cor="var(--err-solid)" variacao={-95.05} descricao="há 30 min" />
-        <Indicador rotulo="Projetos novos" valor="716,80" icone="folder" cor="var(--acento)" variacao={6.43} descricao="há 1 h" />
-        <Indicador rotulo="Projetos concluídos" valor="536,80" icone="circle-check" cor="var(--ok-solid)" variacao={-396.03} descricao="há 30 min" />
+        <Indicador rotulo={t('paginas.widgets.textos.projetos')} valor="676,90" icone="briefcase" cor="var(--info-solid)" variacao={105.05} descricao={t('paginas.widgets.textos.ha6Min')} />
+        <Indicador rotulo={t('paginas.widgets.textos.projetosPendentes')} valor="406,90" icone="clock" cor="var(--err-solid)" variacao={-95.05} descricao={t('paginas.widgets.textos.ha30Min')} />
+        <Indicador rotulo={t('paginas.widgets.textos.projetosNovos')} valor="716,80" icone="folder" cor="var(--acento)" variacao={6.43} descricao={t('paginas.widgets.textos.ha1H')} />
+        <Indicador rotulo={t('paginas.widgets.textos.projetosConcluidos')} valor="536,80" icone="circle-check" cor="var(--ok-solid)" variacao={-396.03} descricao={t('paginas.widgets.textos.ha30Min')} />
       </Indicadores>
 
       <div className="demo-wid-grade-6">
@@ -147,8 +150,8 @@ export function PaginaWidgets() {
             <div className="demo-wid-meta">
               {/* o título já está no cabeçalho do card: o rótulo do indicador fica só para leitor de tela */}
               <Indicador rotulo={t(`paginas.widgets.secoes.${id}`)} valor={v} variacao={variacao} className="demo-wid-sem-borda demo-wid-sem-rotulo" />
-              <Progresso valor={meta} cor={cor as CorProgresso} altura="sm" rotulo={`${meta}% da meta`} />
-              <small>{meta}% da meta</small>
+              <Progresso valor={meta} cor={cor as CorProgresso} altura="sm" rotulo={t('paginas.widgets.textos.metaDaMeta', { meta })} />
+              <small>{t('paginas.widgets.textos.metaDaMeta', { meta })}</small>
             </div>
           </Card>
         ))}
@@ -182,7 +185,7 @@ export function PaginaWidgets() {
             </span>
             <div>
               <strong>{BRL.format(21520)}</strong>
-              <span>Despesas</span>
+              <span>{t('paginas.widgets.textos.despesas')}</span>
             </div>
             <Badge cor="ok" rotulo="↑ 14,69%" />
           </div>
@@ -190,7 +193,7 @@ export function PaginaWidgets() {
       </div>
 
       <div className="demo-wid-dois">
-        <Card titulo={t('paginas.widgets.secoes.resumoRh')} subtitulo="Comparado ao mês anterior">
+        <Card titulo={t('paginas.widgets.secoes.resumoRh')} subtitulo={t('paginas.widgets.textos.comparadoAoMesAnterior')}>
           <div className="demo-wid-mini-grade">
             {(
               [
@@ -216,8 +219,7 @@ export function PaginaWidgets() {
             <div className="demo-wid-premium">
               <strong>9.231</strong>
               <span>
-                <Icone icone="arrow-up" /> 2,3% desde o mês passado
-              </span>
+                <Icone icone="arrow-up" />{t('paginas.widgets.textos.t23DesdeO')}</span>
             </div>
           </Card>
           <Card>
@@ -225,9 +227,7 @@ export function PaginaWidgets() {
               <span className="demo-wid-tile">
                 <Icone icone="wallet" />
               </span>
-              <div>
-                <strong>Bitcoin</strong>
-                <span>{BRL.format(58151.02)}</span>
+              <div>{rico(t('paginas.widgets.textos.bitcoin'))}<span>{BRL.format(58151.02)}</span>
               </div>
               <div className="demo-wid-cripto-var">
                 <Badge cor="ok" aparencia="suave" rotulo="↑ 2,14%" />
@@ -235,71 +235,67 @@ export function PaginaWidgets() {
               </div>
             </div>
             <div className="demo-wid-cripto-acoes">
-              <Botao rotulo="Vender" severidade="secundario" aparencia="suave" formato="retangulo" bloco onClick={() => toast.info('Venda', 'Simulação')} />
-              <Botao rotulo="Comprar" aparencia="suave" formato="retangulo" bloco onClick={() => toast.ok('Compra', 'Simulação')} />
+              <Botao rotulo={t('paginas.widgets.textos.vender')} severidade="secundario" aparencia="suave" formato="retangulo" bloco onClick={() => toast.info(t('paginas.widgets.textos.venda'), t('paginas.widgets.textos.simulacao'))} />
+              <Botao rotulo={t('paginas.widgets.textos.comprar')} aparencia="suave" formato="retangulo" bloco onClick={() => toast.ok(t('paginas.widgets.textos.compra'), t('paginas.widgets.textos.simulacao'))} />
             </div>
           </Card>
         </div>
       </div>
 
       <div className="demo-wid-dois">
-        <Card titulo={t('paginas.widgets.secoes.desempenhoEquipe')} rodape={<Botao rotulo="Ver o desempenho de todos" icone="arrow-right" posicaoIcone="direita" aparencia="texto" formato="retangulo" />}>
+        <Card titulo={t('paginas.widgets.secoes.desempenhoEquipe')} rodape={<Botao rotulo={t('paginas.widgets.textos.verODesempenhoDe')} icone="arrow-right" posicaoIcone="direita" aparencia="texto" formato="retangulo" />}>
           <div className="demo-wid-equipe">
             <div>
               <Avatar nome={PESSOAS[0].nome} foto={foto(0)} tamanho="3.5rem" />
               <strong>{PESSOAS[0].nome}</strong>
-              <span>Melhor vendedora</span>
+              <span>{t('paginas.widgets.textos.melhorVendedora')}</span>
             </div>
             <div>
               <span className="demo-wid-tile">
                 <Icone icone="shopping-cart" />
               </span>
               <strong>71.234</strong>
-              <span>Metas totais</span>
+              <span>{t('paginas.widgets.textos.metasTotais')}</span>
             </div>
             <div>
               <span className="demo-wid-tile">
                 <Icone icone="chart-column" />
               </span>
               <strong>66.450</strong>
-              <span>Vendas totais</span>
+              <span>{t('paginas.widgets.textos.vendasTotais')}</span>
             </div>
           </div>
         </Card>
         <Card titulo={t('paginas.widgets.secoes.vendasCategoria')}>
           <div className="demo-wid-categorias">
             <div>
-              <span>Vendas totais</span>
-              <strong>55.283 / 120 mil</strong>
-            </div>
+              <span>{t('paginas.widgets.textos.vendasTotais')}</span>{rico(t('paginas.widgets.textos.t55283120Mil'))}</div>
             <Progresso
               altura="xl"
               mostrarValor="dentro"
-              rotulo="Vendas por categoria"
+              rotulo={t('paginas.widgets.textos.vendasPorCategoria')}
               segmentos={[
-                { valor: 25, cor: 'pri', rotulo: 'Eletrônicos' },
-                { valor: 40, cor: 'destaque', rotulo: 'Casa' },
+                { valor: 25, cor: 'pri', rotulo: t('paginas.widgets.textos.eletronicos') },
+                { valor: 40, cor: 'destaque', rotulo: t('paginas.widgets.textos.casa') },
               ]}
             />
             <div className="demo-wid-legenda">
               <span>
-                <i className="demo-wid-ponto" style={{ background: 'var(--pri)' }} /> Eletrônicos
-              </span>
+                <i className="demo-wid-ponto" style={{ background: 'var(--pri)' }} />{t('paginas.widgets.textos.eletronicos2')}</span>
               <span>
-                <i className="demo-wid-ponto" style={{ background: 'var(--acento)' }} /> Casa
-              </span>
+                <i className="demo-wid-ponto" style={{ background: 'var(--acento)' }} />{t('paginas.widgets.textos.casa2')}</span>
             </div>
           </div>
         </Card>
       </div>
 
-      <Card titulo={t('paginas.widgets.secoes.principaisOrigens')} ferramentas={<MaisOpcoes rotulo="Principais origens" />} corpoSemEspaco>
+      <Card titulo={t('paginas.widgets.secoes.principaisOrigens')} ferramentas={<MaisOpcoes rotulo={t('paginas.widgets.textos.principaisOrigens')} />} corpoSemEspaco>
         <table className="demo-wid-tabela">
           <thead>
             <tr>
-              <th>Navegador</th>
-              <th>Visualizações</th>
-              <th>Participação</th>
+              <th>{t('paginas.widgets.textos.navegador')}</th>
+              <th>{t('paginas.widgets.textos.visualizacoes')}</th>
+              <th>{t('paginas.widgets.textos.participacao')}</th>
             </tr>
           </thead>
           <tbody>
@@ -333,10 +329,10 @@ export function PaginaWidgets() {
       </Card>
 
       <div className="demo-wid-dois demo-wid-dois--largo">
-        <Card titulo={t('paginas.widgets.secoes.listaTarefas')} ferramentas={<Botao rotulo="Nova tarefa" icone="plus" tamanho="pequeno" aparencia="suave" formato="retangulo" />}>
-          <Abas variante="suave" rotulo="Tarefas">
-            <Aba valor="ativas" rotulo="Ativas">
-              <Lista rotulo="Tarefas ativas">
+        <Card titulo={t('paginas.widgets.secoes.listaTarefas')} ferramentas={<Botao rotulo={t('paginas.widgets.textos.novaTarefa')} icone="plus" tamanho="pequeno" aparencia="suave" formato="retangulo" />}>
+          <Abas variante="suave" rotulo={t('paginas.widgets.textos.tarefas')}>
+            <Aba valor="ativas" rotulo={t('paginas.widgets.textos.ativas')}>
+              <Lista rotulo={t('paginas.widgets.textos.tarefasAtivas')}>
                 {TAREFAS.map(([t, hora, quando, cor], i) => (
                   <ItemLista
                     key={t}
@@ -355,8 +351,8 @@ export function PaginaWidgets() {
                 ))}
               </Lista>
             </Aba>
-            <Aba valor="concluidas" rotulo="Concluídas" pendentes={tarefasFeitas.length}>
-              <Lista rotulo="Tarefas concluídas">
+            <Aba valor="concluidas" rotulo={t('paginas.widgets.textos.concluidas')} pendentes={tarefasFeitas.length}>
+              <Lista rotulo={t('paginas.widgets.textos.tarefasConcluidas')}>
                 {tarefasFeitas.length ? (
                   tarefasFeitas.map((i) => (
                     <ItemLista key={i} icone="circle-check">
@@ -364,13 +360,13 @@ export function PaginaWidgets() {
                     </ItemLista>
                   ))
                 ) : (
-                  <ItemLista>Nenhuma tarefa concluída.</ItemLista>
+                  <ItemLista>{t('paginas.widgets.textos.nenhumaTarefaConcluida')}</ItemLista>
                 )}
               </Lista>
             </Aba>
           </Abas>
         </Card>
-        <Card titulo={t('paginas.widgets.secoes.transacoesRecentes')} ferramentas={<MaisOpcoes rotulo="Transações recentes" />}>
+        <Card titulo={t('paginas.widgets.secoes.transacoesRecentes')} ferramentas={<MaisOpcoes rotulo={t('paginas.widgets.textos.transacoesRecentes')} />}>
           <Lista variante="sem-borda">
             {(
               [
@@ -408,14 +404,14 @@ export function PaginaWidgets() {
           titulo={t('paginas.widgets.secoes.statusTarefas')}
           ferramentas={
             <MenuSuspenso
-              rotulo="Semanal"
+              rotulo={t('paginas.widgets.textos.semanal')}
               tamanho="pequeno"
               aparencia="suave"
               formato="retangulo"
               alinhamento="fim"
               itens={[
-                { id: 'semana', rotulo: 'Semanal', ativo: true },
-                { id: 'mes', rotulo: 'Mensal' },
+                { id: 'semana', rotulo: t('paginas.widgets.textos.semanal'), ativo: true },
+                { id: 'mes', rotulo: t('paginas.widgets.textos.mensal') },
               ]}
             />
           }
@@ -439,7 +435,7 @@ export function PaginaWidgets() {
             ))}
           </Lista>
         </Card>
-        <Card titulo={t('paginas.widgets.secoes.membrosEquipe')} ferramentas={<Botao rotulo="Ver todos" icone="arrow-right" posicaoIcone="direita" tamanho="pequeno" aparencia="suave" formato="retangulo" />}>
+        <Card titulo={t('paginas.widgets.secoes.membrosEquipe')} ferramentas={<Botao rotulo={t('paginas.widgets.textos.verTodos')} icone="arrow-right" posicaoIcone="direita" tamanho="pequeno" aparencia="suave" formato="retangulo" />}>
           <Lista variante="sem-borda">
             {PESSOAS.map((p, i) => (
               <ItemLista
@@ -449,21 +445,17 @@ export function PaginaWidgets() {
                 fim={
                   <span className="demo-wid-membro">
                     <Badge cor="ok" aparencia="suave" icone="map-pin" rotulo={p.cidade} />
-                    <Botao icone="message-square" dica="Mensagem" aria-label={`Mensagem para ${p.nome}`} tamanho="pequeno" aparencia="suave" severidade="destaque" formato="retangulo" />
+                    <Botao icone="message-square" dica={t('paginas.widgets.textos.mensagem')} aria-label={t('paginas.widgets.textos.mensagemParaNome', { nome: p.nome })} tamanho="pequeno" aparencia="suave" severidade="destaque" formato="retangulo" />
                   </span>
                 }
-              >
-                Olá, tudo bem?
-              </ItemLista>
+              >{t('paginas.widgets.textos.olaTudoBem')}</ItemLista>
             ))}
           </Lista>
         </Card>
-        <Card titulo={t('paginas.widgets.secoes.novosCandidatos')} ferramentas={<Badge cor="pri" aparencia="suave" rotulo="Hoje" />}>
+        <Card titulo={t('paginas.widgets.secoes.novosCandidatos')} ferramentas={<Badge cor="pri" aparencia="suave" rotulo={t('paginas.widgets.textos.hoje')} />}>
           <Lista variante="sem-borda">
             {['Desenvolvedor full-stack', 'Designer de interface', 'Líder de equipe', 'Gerente de produto', 'Desenvolvedor web'].map((vaga, i) => (
-              <ItemLista key={vaga} titulo={PESSOAS[i].nome} inicio={<Avatar nome={PESSOAS[i].nome} foto={foto(i)} tamanho="2rem" />}>
-                Candidatou-se a {vaga}
-              </ItemLista>
+              <ItemLista key={vaga} titulo={PESSOAS[i].nome} inicio={<Avatar nome={PESSOAS[i].nome} foto={foto(i)} tamanho="2rem" />}>{t('paginas.widgets.textos.candidatouSeAVaga', { vaga })}</ItemLista>
             ))}
           </Lista>
         </Card>
@@ -472,7 +464,7 @@ export function PaginaWidgets() {
       <div className="demo-wid-tres">
         <Card titulo={t('paginas.widgets.secoes.transferenciaRapida')}>
           <div className="demo-wid-transfer">
-            <div className="demo-wid-transfer-pessoas" role="radiogroup" aria-label="Enviar para">
+            <div className="demo-wid-transfer-pessoas" role="radiogroup" aria-label={t('paginas.widgets.textos.enviarPara')}>
               {PESSOAS.map((p, i) => (
                 <button
                   key={p.nome}
@@ -487,18 +479,18 @@ export function PaginaWidgets() {
                 </button>
               ))}
             </div>
-            <CampoTexto rotulo={`Enviar para ${PESSOAS[destino].nome}`} valor={conta} aoMudar={setConta} sufixo={<Botao rotulo="Conferir" tamanho="pequeno" aparencia="texto" formato="retangulo" />} />
-            <CampoMoeda rotulo="Valor" valor={valor} aoMudar={setValor} />
+            <CampoTexto rotulo={t('paginas.widgets.textos.enviarParaNome', { nome: PESSOAS[destino].nome })} valor={conta} aoMudar={setConta} sufixo={<Botao rotulo={t('paginas.widgets.textos.conferir')} tamanho="pequeno" aparencia="texto" formato="retangulo" />} />
+            <CampoMoeda rotulo={t('paginas.widgets.textos.valor')} valor={valor} aoMudar={setValor} />
             <Botao
-              rotulo="Transferir"
+              rotulo={t('paginas.widgets.textos.transferir')}
               icone="send"
               formato="retangulo"
               bloco
-              onClick={() => toast.ok('Transferência enviada', `${BRL.format(valor ?? 0)} para ${PESSOAS[destino].nome}`)}
+              onClick={() => toast.ok(t('paginas.widgets.textos.transferenciaEnviada'), t('paginas.widgets.textos.valorParaNome', { valor: BRL.format(valor ?? 0), nome: PESSOAS[destino].nome }))}
             />
           </div>
         </Card>
-        <Card titulo={t('paginas.widgets.secoes.candidatosRecentes')} subtitulo="Candidaturas e entrevistas na semana">
+        <Card titulo={t('paginas.widgets.secoes.candidatosRecentes')} subtitulo={t('paginas.widgets.textos.candidaturasEEntrevistasNa')}>
           <Barras
             rotulos={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
             dados={[
@@ -513,14 +505,12 @@ export function PaginaWidgets() {
           />
           <div className="demo-wid-legenda">
             <span>
-              <i className="demo-wid-ponto" style={{ background: 'var(--pri)' }} /> Candidaturas
-            </span>
+              <i className="demo-wid-ponto" style={{ background: 'var(--pri)' }} />{t('paginas.widgets.textos.candidaturas')}</span>
             <span>
-              <i className="demo-wid-ponto" style={{ background: 'var(--border-2)' }} /> Entrevistas
-            </span>
+              <i className="demo-wid-ponto" style={{ background: 'var(--border-2)' }} />{t('paginas.widgets.textos.entrevistas')}</span>
           </div>
         </Card>
-        <Card titulo={t('paginas.widgets.secoes.contato')} subtitulo="Preencha o formulário e nossa equipe retorna.">
+        <Card titulo={t('paginas.widgets.secoes.contato')} subtitulo={t('paginas.widgets.textos.preenchaOFormularioE')}>
           <Lista variante="sem-borda">
             {(
               [

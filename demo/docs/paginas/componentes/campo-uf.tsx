@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="campoUf"
@@ -12,22 +14,14 @@ export default function Pagina() {
       importar={['CampoTipoPessoa', 'type Municipio']}
       notas={
         <ul className="doc-lista">
-          <li>
-            <C>CampoUf</C> guarda a sigla (<C>'PR'</C>); <C>exibicao="sigla"</C> mostra só a sigla na lista.
-          </li>
-          <li>
-            <C>CampoCidade</C> com <C>buscarPorUf</C> sugere os municípios da UF; sem ele, aceita texto livre. O valor é o município
-            escolhido ou o texto digitado.
-          </li>
-          <li>Ao trocar a UF, limpe a cidade, como no exemplo.</li>
-          <li>
-            <C>CampoTipoPessoa</C> guarda <C>'F'</C> ou <C>'J'</C> e aceita as props do <C>CampoSelect</C>. Combine com o{' '}
-            <C>CampoCpfCnpj</C>.
-          </li>
+          <li>{rico(t('docs.campoUf.textos.campoufGuardaASigla'))}</li>
+          <li>{rico(t('docs.campoUf.textos.campocidadeComBuscarporufSugere'))}</li>
+          <li>{t('docs.campoUf.textos.aoTrocarAUf')}</li>
+          <li>{rico(t('docs.campoUf.textos.campotipopessoaGuardaFOu'))}</li>
         </ul>
       }
     >
-      <Exemplo id="campo-uf/Basico" titulo="Básico" />
+      <Exemplo id="campo-uf/Basico" titulo={t('docs.campoUf.secoes.basico')} />
     </PaginaComponente>
   );
 }

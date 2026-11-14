@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Botao, CabecalhoPagina, Card, Carregando, Girador, Skeleton, type CorGirador, type SeveridadeBotao } from '../../../src';
 import { Bloco } from '../Bloco';
 import { useT } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 const CORES: CorGirador[] = ['pri', 'secundario', 'ok', 'err', 'warn', 'info', 'destaque', 'escuro'];
 
@@ -19,12 +20,12 @@ export function PaginaGiradores() {
       <CabecalhoPagina titulo={t('paginas.giradores.titulo')} icone="loader-circle" trilha />
 
       <div className="demo-colunas">
-        <Bloco titulo="Anel" descricao="Gira sem parar; o texto vai só para o leitor de tela.">
+        <Bloco titulo={t('paginas.giradores.secoes.anel')} descricao={t('paginas.giradores.textos.giraSemPararO')}>
           <div>
             <Girador />
           </div>
         </Bloco>
-        <Bloco titulo="Anel em cores">
+        <Bloco titulo={t('paginas.giradores.secoes.anelEmCores')}>
           <div className="demo-linha demo-linha--centro">
             {CORES.map((c) => (
               <Girador key={c} cor={c} />
@@ -32,12 +33,12 @@ export function PaginaGiradores() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Pulso" descricao="Cresce e some, para esperas mais discretas.">
+        <Bloco titulo={t('paginas.giradores.secoes.pulso')} descricao={t('paginas.giradores.textos.cresceESomePara')}>
           <div>
             <Girador tipo="pulso" />
           </div>
         </Bloco>
-        <Bloco titulo="Pulso em cores">
+        <Bloco titulo={t('paginas.giradores.secoes.pulsoEmCores')}>
           <div className="demo-linha demo-linha--centro">
             {CORES.map((c) => (
               <Girador key={c} tipo="pulso" cor={c} />
@@ -45,12 +46,12 @@ export function PaginaGiradores() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Pontos" descricao="Três pontos piscando em sequência.">
+        <Bloco titulo={t('paginas.giradores.secoes.pontos')} descricao={t('paginas.giradores.textos.tresPontosPiscandoEm')}>
           <div>
             <Girador tipo="pontos" />
           </div>
         </Bloco>
-        <Bloco titulo="Pontos em cores">
+        <Bloco titulo={t('paginas.giradores.secoes.pontosEmCores')}>
           <div className="demo-linha demo-linha--centro">
             {CORES.map((c) => (
               <Girador key={c} tipo="pontos" cor={c} tamanho="pequeno" />
@@ -58,16 +59,14 @@ export function PaginaGiradores() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Alinhamento com flex" descricao="Texto de um lado, girador do outro.">
+        <Bloco titulo={t('paginas.giradores.secoes.alinhamentoComFlex')} descricao={t('paginas.giradores.textos.textoDeUmLado')}>
           <div className="demo-gir-flex">
             <Girador />
           </div>
-          <div className="demo-gir-flex demo-gir-flex--entre">
-            <strong>Carregando...</strong>
-            <Girador rotulo="Carregando a lista" />
+          <div className="demo-gir-flex demo-gir-flex--entre">{rico(t('paginas.giradores.textos.carregando'))}<Girador rotulo={t('paginas.giradores.textos.carregandoALista')} />
           </div>
         </Bloco>
-        <Bloco titulo="Alinhamento flutuante">
+        <Bloco titulo={t('paginas.giradores.secoes.alinhamentoFlutuante')}>
           <div className="demo-gir-fluxo">
             <Girador className="demo-gir-direita" />
           </div>
@@ -76,18 +75,18 @@ export function PaginaGiradores() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Centralizado">
+        <Bloco titulo={t('paginas.giradores.secoes.centralizado')}>
           <div className="demo-gir-centro">
             <Girador />
           </div>
         </Bloco>
-        <Bloco titulo="Com margem" descricao="Espaço em volta, separado do conteúdo.">
+        <Bloco titulo={t('paginas.giradores.secoes.comMargem')} descricao={t('paginas.giradores.textos.espacoEmVoltaSeparado')}>
           <div>
             <Girador className="demo-gir-margem" />
           </div>
         </Bloco>
 
-        <Bloco titulo="Tamanhos" descricao="pequeno, medio, grande ou qualquer medida.">
+        <Bloco titulo={t('paginas.giradores.secoes.tamanhos')} descricao={t('paginas.giradores.textos.pequenoMedioGrandeOu')}>
           <div className="demo-linha demo-linha--centro">
             <Girador tamanho="pequeno" />
             <Girador tipo="pulso" tamanho="pequeno" />
@@ -98,33 +97,33 @@ export function PaginaGiradores() {
             <Girador tamanho="3.5rem" />
           </div>
         </Bloco>
-        <Bloco titulo="Com rótulo visível">
+        <Bloco titulo={t('paginas.giradores.secoes.comRotuloVisivel')}>
           <div className="demo-linha demo-linha--centro">
             <Girador mostrarRotulo tamanho="pequeno" />
-            <Girador tipo="pulso" cor="ok" mostrarRotulo rotulo="Sincronizando..." tamanho="pequeno" />
-            <Girador tipo="pontos" cor="destaque" mostrarRotulo rotulo="Digitando" tamanho="pequeno" />
+            <Girador tipo="pulso" cor="ok" mostrarRotulo rotulo={t('paginas.giradores.textos.sincronizando')} tamanho="pequeno" />
+            <Girador tipo="pontos" cor="destaque" mostrarRotulo rotulo={t('paginas.giradores.textos.digitando')} tamanho="pequeno" />
           </div>
         </Bloco>
       </div>
 
-      <Bloco titulo="Em botões" descricao={<>Use cor=&quot;atual&quot; para o girador herdar a cor do botão.</>}>
+      <Bloco titulo={t('paginas.giradores.secoes.emBotoes')} descricao={<>Use cor=&quot;atual&quot; para o girador herdar a cor do botão.</>}>
         <div className="demo-linha demo-linha--centro">
-          <Botao icone={<Girador tamanho="0.875rem" cor="atual" />} aparencia="suave" formato="retangulo" aria-label="Carregando" disabled />
-          <Botao icone={<Girador tamanho="0.875rem" cor="atual" rotulo="" />} rotulo="Carregando..." aparencia="suave" formato="retangulo" disabled />
-          <Botao icone={<Girador tipo="pulso" tamanho="0.875rem" cor="atual" />} aparencia="suave" formato="retangulo" aria-label="Carregando" disabled />
+          <Botao icone={<Girador tamanho="0.875rem" cor="atual" />} aparencia="suave" formato="retangulo" aria-label={t('paginas.giradores.textos.carregando2')} disabled />
+          <Botao icone={<Girador tamanho="0.875rem" cor="atual" rotulo="" />} rotulo={t('paginas.giradores.textos.carregando3')} aparencia="suave" formato="retangulo" disabled />
+          <Botao icone={<Girador tipo="pulso" tamanho="0.875rem" cor="atual" />} aparencia="suave" formato="retangulo" aria-label={t('paginas.giradores.textos.carregando2')} disabled />
           {(['pri', 'secundario', 'ok', 'info', 'warn', 'err'] as SeveridadeBotao[]).map((s) => (
-            <Botao key={s} icone={<Girador tipo="pulso" tamanho="0.875rem" cor="atual" rotulo="" />} rotulo="Carregando..." severidade={s} aparencia="suave" formato="retangulo" disabled />
+            <Botao key={s} icone={<Girador tipo="pulso" tamanho="0.875rem" cor="atual" rotulo="" />} rotulo={t('paginas.giradores.textos.carregando3')} severidade={s} aparencia="suave" formato="retangulo" disabled />
           ))}
-          <Botao icone={<Girador tamanho="0.875rem" cor="atual" rotulo="" />} rotulo="Carregando..." severidade="escuro" formato="retangulo" disabled />
+          <Botao icone={<Girador tamanho="0.875rem" cor="atual" rotulo="" />} rotulo={t('paginas.giradores.textos.carregando3')} severidade="escuro" formato="retangulo" disabled />
         </div>
         <div className="demo-linha demo-linha--centro">
-          <Botao rotulo={salvando ? 'Salvando...' : 'Salvar'} icone="save" carregando={salvando} formato="retangulo" onClick={salvar} />
-          <span className="demo-bloco-desc demo-gir-nota">O próprio Botao tem a prop carregando: clique para ver.</span>
+          <Botao rotulo={salvando ? t('paginas.giradores.textos.salvando') : t('paginas.giradores.textos.salvar')} icone="save" carregando={salvando} formato="retangulo" onClick={salvar} />
+          <span className="demo-bloco-desc demo-gir-nota">{t('paginas.giradores.textos.oProprioBotaoTem')}</span>
         </div>
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Silhuetas" descricao="Skeleton ocupa o lugar do conteúdo enquanto ele carrega.">
+        <Bloco titulo={t('paginas.giradores.secoes.silhuetas')} descricao={t('paginas.giradores.textos.skeletonOcupaOLugar')}>
           <Card>
             <div className="demo-pilha-p">
               <Skeleton largura="60%" />
@@ -134,9 +133,9 @@ export function PaginaGiradores() {
             </div>
           </Card>
         </Bloco>
-        <Bloco titulo="Carregando" descricao="Girador com mensagem, para áreas inteiras. A versão bloqueante está em Notificações.">
+        <Bloco titulo={t('paginas.giradores.secoes.carregando')} descricao={t('paginas.giradores.textos.giradorComMensagemPara')}>
           <Card>
-            <Carregando mensagem="Carregando" />
+            <Carregando mensagem={t('paginas.giradores.textos.carregando2')} />
           </Card>
         </Bloco>
       </div>

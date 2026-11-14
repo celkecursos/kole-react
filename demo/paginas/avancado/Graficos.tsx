@@ -158,91 +158,88 @@ export function PaginaGraficos() {
   const [rodada, setRodada] = useState(0);
   return (
     <div className="demo-pilha">
-      <CabecalhoPagina titulo={t('paginas.graficos.titulo')} icone="chart-line" trilha>
-        Linha, barras, combinado, dispersão, mapa de calor e minigráfico no indicador, em SVG próprio. Dados fictícios de
-        vendas, no tema das páginas de pedidos e tabelas.
-      </CabecalhoPagina>
+      <CabecalhoPagina titulo={t('paginas.graficos.titulo')} icone="chart-line" trilha>{t('paginas.graficos.textos.linhaBarrasCombinadoDispersao')}</CabecalhoPagina>
 
       <Indicadores>
         <Indicador
-          rotulo="Faturamento de junho"
+          rotulo={t('paginas.graficos.textos.faturamentoDeJunho')}
           valor={emReais(ULTIMO.faturamento)}
           icone="wallet"
           cor="var(--graf-1)"
           variacao={variacao(ULTIMO.faturamento, PENULTIMO.faturamento)}
           tendencia={MENSAL.slice(-12).map((d) => d.faturamento)}
-          descricao="últimos 12 meses"
+          descricao={t('paginas.graficos.textos.ultimos12Meses')}
         />
         <Indicador
-          rotulo="Pedidos em junho"
+          rotulo={t('paginas.graficos.textos.pedidosEmJunho')}
           valor={ULTIMO.pedidos}
           icone="shopping-cart"
           cor="var(--graf-3)"
           variacao={variacao(ULTIMO.pedidos, PENULTIMO.pedidos)}
           tendencia={MENSAL.slice(-12).map((d) => d.pedidos)}
-          descricao="últimos 12 meses"
+          descricao={t('paginas.graficos.textos.ultimos12Meses')}
         />
-        <Indicador rotulo="Ticket médio" valor={emCentavos(ULTIMO.ticket)} icone="credit-card" cor="var(--graf-4)" tendencia={MENSAL.slice(-12).map((d) => d.ticket)} descricao="por pedido" />
-        <Indicador rotulo="Sem minigráfico" valor={TABELA_CATEGORIAS.length} icone="tags" descricao="categorias cadastradas" />
+        <Indicador rotulo={t('paginas.graficos.textos.ticketMedio')} valor={emCentavos(ULTIMO.ticket)} icone="credit-card" cor="var(--graf-4)" tendencia={MENSAL.slice(-12).map((d) => d.ticket)} descricao={t('paginas.graficos.textos.porPedido')} />
+        <Indicador rotulo={t('paginas.graficos.textos.semMinigrafico')} valor={TABELA_CATEGORIAS.length} icone="tags" descricao={t('paginas.graficos.textos.categoriasCadastradas')} />
       </Indicadores>
 
-      <Bloco titulo="Linha" descricao="Faixas sombreadas (fim de ano), referência (média) e falha no mês que não foi fechado.">
+      <Bloco titulo={t('paginas.graficos.secoes.linha')} descricao={t('paginas.graficos.textos.faixasSombreadasFimDe')}>
         <GraficoLinha
-          titulo="Faturamento mensal"
-          descricao="Faturamento de julho de 2024 a junho de 2026, com a meta do mês tracejada e a média mensal como referência. Abril de 2025 sem fechamento; novembro e dezembro sombreados."
+          titulo={t('paginas.graficos.textos.faturamentoMensal')}
+          descricao={t('paginas.graficos.textos.faturamentoDeJulhoDe')}
           dados={FATURAMENTO}
-          eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-          eixoY={{ rotulo: 'Faturamento', formatar: emReais }}
+          eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+          eixoY={{ rotulo: t('paginas.graficos.textos.faturamento'), formatar: emReais }}
           series={[
-            { chave: 'faturamento', rotulo: 'Faturamento' },
-            { chave: 'meta', rotulo: 'Meta', tracejada: true },
+            { chave: 'faturamento', rotulo: t('paginas.graficos.textos.faturamento') },
+            { chave: 'meta', rotulo: t('paginas.graficos.textos.meta'), tracejada: true },
           ]}
           area
           faixas={[
-            { de: '2024-11', ate: '2024-12', rotulo: 'Fim de ano' },
-            { de: '2025-11', ate: '2025-12', rotulo: 'Fim de ano' },
+            { de: '2024-11', ate: '2024-12', rotulo: t('paginas.graficos.textos.fimDeAno') },
+            { de: '2025-11', ate: '2025-12', rotulo: t('paginas.graficos.textos.fimDeAno') },
           ]}
-          referencias={[{ valor: MEDIA_MENSAL, rotulo: `Média mensal (${emReais(MEDIA_MENSAL)})` }]}
+          referencias={[{ valor: MEDIA_MENSAL, rotulo: t('paginas.graficos.textos.mediaMensalValor', { valor: emReais(MEDIA_MENSAL) }) }]}
         />
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Várias séries e tendência">
+        <Bloco titulo={t('paginas.graficos.secoes.variasSeriesETendencia')}>
           <GraficoLinha
-            titulo="Pedidos por forma de pagamento"
-            descricao={`Pedidos por mês pagos com ${PIX}, ${CREDITO} e ${BOLETO}, com a tendência linear do ${PIX} tracejada. Setembro de 2025 sem dado do boleto.`}
+            titulo={t('paginas.graficos.textos.pedidosPorFormaDe')}
+            descricao={t('paginas.graficos.textos.pedidosPorMesPagos', { PIX, CREDITO, BOLETO, PIX2: PIX })}
             dados={POR_PAGAMENTO}
-            eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-            eixoY={{ rotulo: 'Pedidos' }}
+            eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.pedidos') }}
             series={[
               { chave: 'pix', rotulo: PIX },
               { chave: 'credito', rotulo: CREDITO },
               { chave: 'boleto', rotulo: BOLETO },
-              { chave: 'tendencia', rotulo: `Tendência do ${PIX}`, tracejada: true, cor: 'var(--graf-texto)' },
+              { chave: 'tendencia', rotulo: t('paginas.graficos.textos.tendenciaDoPix', { PIX }), tracejada: true, cor: 'var(--graf-texto)' },
             ]}
           />
         </Bloco>
-        <Bloco titulo="Muitos pontos">
+        <Bloco titulo={t('paginas.graficos.secoes.muitosPontos')}>
           <GraficoLinha
-            titulo="Pedidos por dia, janeiro a abril de 2026"
-            descricao="120 dias de pedidos; os vales são os domingos. Acima de 60 pontos, os marcadores somem."
+            titulo={t('paginas.graficos.textos.pedidosPorDiaJaneiro')}
+            descricao={t('paginas.graficos.textos.t120DiasDePedidos')}
             dados={POR_DIA}
-            eixoX={{ chave: 'dia', tipo: 'data', rotulo: 'Dia' }}
-            eixoY={{ rotulo: 'Pedidos' }}
-            series={[{ chave: 'pedidos', rotulo: 'Pedidos do dia' }]}
+            eixoX={{ chave: 'dia', tipo: 'data', rotulo: t('paginas.graficos.textos.dia') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.pedidos') }}
+            series={[{ chave: 'pedidos', rotulo: t('paginas.graficos.textos.pedidosDoDia') }]}
             area
           />
         </Bloco>
       </div>
 
       <div className="demo-colunas">
-        <Bloco titulo="Barras agrupadas">
+        <Bloco titulo={t('paginas.graficos.secoes.barrasAgrupadas')}>
           <GraficoBarras
-            titulo="Vendas por categoria no 1º semestre"
-            descricao="Vendas das seis categorias ativas com mais produtos, no 1º semestre de 2025 e de 2026, em mil reais. Utilidades sem venda em 2025."
+            titulo={t('paginas.graficos.textos.vendasPorCategoriaNo')}
+            descricao={t('paginas.graficos.textos.vendasDasSeisCategorias')}
             dados={POR_CATEGORIA}
-            eixoX={{ chave: 'categoria', tipo: 'categoria', rotulo: 'Categoria' }}
-            eixoY={{ rotulo: 'Vendas', unidade: 'mil R$' }}
+            eixoX={{ chave: 'categoria', tipo: 'categoria', rotulo: t('paginas.graficos.textos.categoria') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.vendas'), unidade: 'mil R$' }}
             series={[
               { chave: 'ano2025', rotulo: '2025' },
               { chave: 'ano2026', rotulo: '2026' },
@@ -250,81 +247,81 @@ export function PaginaGraficos() {
             rotulosNasBarras
           />
         </Bloco>
-        <Bloco titulo="Barras divergentes">
+        <Bloco titulo={t('paginas.graficos.secoes.barrasDivergentes')}>
           <GraficoBarras
-            titulo="Faturamento acima ou abaixo da meta"
-            descricao="Diferença entre o faturamento e a meta de cada mês, de janeiro de 2025 a junho de 2026, em mil reais."
+            titulo={t('paginas.graficos.textos.faturamentoAcimaOuAbaixo')}
+            descricao={t('paginas.graficos.textos.diferencaEntreOFaturamento')}
             dados={DESVIO_META}
-            eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-            eixoY={{ rotulo: 'Diferença', unidade: 'mil R$' }}
-            series={[{ chave: 'desvio', rotulo: 'Diferença para a meta' }]}
+            eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.diferenca'), unidade: 'mil R$' }}
+            series={[{ chave: 'desvio', rotulo: t('paginas.graficos.textos.diferencaParaAMeta') }]}
             divergente
           />
         </Bloco>
       </div>
 
       <div className="demo-colunas">
-        <Bloco titulo="Barras horizontais (ranking)">
+        <Bloco titulo={t('paginas.graficos.secoes.barrasHorizontaisRanking')}>
           <GraficoBarras
-            titulo="Clientes que mais compraram"
-            descricao="Os sete clientes com maior valor em pedidos não cancelados, somados da página Pedidos."
+            titulo={t('paginas.graficos.textos.clientesQueMaisCompraram')}
+            descricao={t('paginas.graficos.textos.osSeteClientesCom')}
             dados={RANKING}
-            eixoX={{ chave: 'cliente', tipo: 'categoria', rotulo: 'Cliente' }}
-            eixoY={{ rotulo: 'Total em pedidos', formatar: emReais }}
-            series={[{ chave: 'total', rotulo: 'Total em pedidos' }]}
+            eixoX={{ chave: 'cliente', tipo: 'categoria', rotulo: t('paginas.graficos.textos.cliente') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.totalEmPedidos'), formatar: emReais }}
+            series={[{ chave: 'total', rotulo: t('paginas.graficos.textos.totalEmPedidos') }]}
             orientacao="horizontal"
             rotulosNasBarras
-            referencias={[{ valor: MEDIA_RANKING, rotulo: 'Média' }]}
+            referencias={[{ valor: MEDIA_RANKING, rotulo: t('paginas.graficos.textos.media') }]}
           />
         </Bloco>
-        <Bloco titulo="Combinado (dois eixos)">
+        <Bloco titulo={t('paginas.graficos.secoes.combinadoDoisEixos')}>
           <GraficoCombinado
-            titulo="Pedidos e ticket médio"
-            descricao="Quantidade de pedidos em barras, no eixo esquerdo, e ticket médio em linha, no eixo direito, de julho de 2025 a junho de 2026."
+            titulo={t('paginas.graficos.textos.pedidosETicketMedio')}
+            descricao={t('paginas.graficos.textos.quantidadeDePedidosEm')}
             dados={COMBINADO}
-            eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-            eixoY={{ rotulo: 'Pedidos' }}
-            eixoYDireito={{ rotulo: 'Ticket médio', formatar: emCentavos }}
-            barras={[{ chave: 'pedidos', rotulo: 'Pedidos' }]}
-            linhas={[{ chave: 'ticket', rotulo: 'Ticket médio', cor: 'var(--graf-2)' }]}
+            eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.pedidos') }}
+            eixoYDireito={{ rotulo: t('paginas.graficos.textos.ticketMedio'), formatar: emCentavos }}
+            barras={[{ chave: 'pedidos', rotulo: t('paginas.graficos.textos.pedidos') }]}
+            linhas={[{ chave: 'ticket', rotulo: t('paginas.graficos.textos.ticketMedio'), cor: 'var(--graf-2)' }]}
           />
         </Bloco>
       </div>
 
       <div className="demo-colunas">
-        <Bloco titulo="Dispersão com regressão">
+        <Bloco titulo={t('paginas.graficos.secoes.dispersaoComRegressao')}>
           <GraficoDispersao
-            titulo="Preço × unidades vendidas"
-            descricao="Um ponto por produto: preço no eixo horizontal e unidades vendidas no mês no vertical. Os produtos em promoção estão destacados."
+            titulo={t('paginas.graficos.textos.precoUnidadesVendidas')}
+            descricao={t('paginas.graficos.textos.umPontoPorProduto')}
             dados={DISPERSAO}
-            eixoX={{ rotulo: 'Preço', formatar: emCentavos }}
-            eixoY={{ rotulo: 'Unidades vendidas' }}
+            eixoX={{ rotulo: t('paginas.graficos.textos.preco'), formatar: emCentavos }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.unidadesVendidas') }}
             chaveX="preco"
             chaveY="unidades"
             chaveRotulo="produto"
             chaveDestaque="promocao"
             rotuloPontos="Produtos"
-            rotuloDestaque="Em promoção"
+            rotuloDestaque={t('paginas.graficos.textos.emPromocao')}
             regressao
             nota={`A cada R$ 1,00 a mais no preço, cerca de ${Math.abs(Math.round(retaPreco.inclinacao))} unidades a menos no mês. Outras estatísticas são calculadas pelo app e entram aqui, na nota.`}
           />
         </Bloco>
-        <Bloco titulo="Estados">
+        <Bloco titulo={t('paginas.graficos.secoes.estados')}>
           <div className="demo-pilha">
-            <GraficoLinha titulo="Carregando" dados={[]} eixoX={{ chave: 'x', tipo: 'categoria' }} series={[{ chave: 'y', rotulo: 'Y' }]} carregando altura={120} />
+            <GraficoLinha titulo={t('paginas.graficos.textos.carregando')} dados={[]} eixoX={{ chave: 'x', tipo: 'categoria' }} series={[{ chave: 'y', rotulo: 'Y' }]} carregando altura={120} />
             <GraficoBarras
-              titulo="Pedidos cancelados no período"
+              titulo={t('paginas.graficos.textos.pedidosCanceladosNoPeriodo')}
               dados={[]}
               eixoX={{ chave: 'x', tipo: 'categoria' }}
               series={[{ chave: 'y', rotulo: 'Y' }]}
-              textoVazio="Nenhum pedido cancelado no período escolhido."
+              textoVazio={t('paginas.graficos.textos.nenhumPedidoCanceladoNo')}
             />
           </div>
         </Bloco>
       </div>
 
       <Bloco
-        titulo="Animação"
+        titulo={t('paginas.graficos.secoes.animacao')}
         descricao={
           <>
             Com <code>animacao</code>, as linhas se desenham, as barras crescem a partir do zero e os pontos surgem, só na
@@ -333,98 +330,98 @@ export function PaginaGraficos() {
         }
       >
         <div className="demo-linha">
-          <Botao rotulo="Repetir a animação" icone="rotate-cw" severidade="secundario" tamanho="pequeno" onClick={() => setRodada((r) => r + 1)} />
+          <Botao rotulo={t('paginas.graficos.textos.repetirAAnimacao')} icone="rotate-cw" severidade="secundario" tamanho="pequeno" onClick={() => setRodada((r) => r + 1)} />
         </div>
         <div key={rodada} className="demo-pilha">
           <Indicadores>
             <Indicador
-              rotulo="Faturamento de junho"
+              rotulo={t('paginas.graficos.textos.faturamentoDeJunho')}
               valor={emReais(ULTIMO.faturamento)}
               icone="wallet"
               cor="var(--graf-1)"
               tendencia={MENSAL.slice(-12).map((d) => d.faturamento)}
               animacao
-              descricao="últimos 12 meses"
+              descricao={t('paginas.graficos.textos.ultimos12Meses')}
             />
             <Indicador
-              rotulo="Pedidos em junho"
+              rotulo={t('paginas.graficos.textos.pedidosEmJunho')}
               valor={ULTIMO.pedidos}
               icone="shopping-cart"
               cor="var(--graf-3)"
               tendencia={MENSAL.slice(-12).map((d) => d.pedidos)}
               animacao
-              descricao="últimos 12 meses"
+              descricao={t('paginas.graficos.textos.ultimos12Meses')}
             />
           </Indicadores>
           <div className="demo-colunas">
             <GraficoCombinado
-              titulo="Pedidos e ticket médio"
+              titulo={t('paginas.graficos.textos.pedidosETicketMedio')}
               dados={COMBINADO}
-              eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-              eixoY={{ rotulo: 'Pedidos' }}
-              eixoYDireito={{ rotulo: 'Ticket médio', formatar: emCentavos }}
-              barras={[{ chave: 'pedidos', rotulo: 'Pedidos' }]}
-              linhas={[{ chave: 'ticket', rotulo: 'Ticket médio', cor: 'var(--graf-2)' }]}
+              eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+              eixoY={{ rotulo: t('paginas.graficos.textos.pedidos') }}
+              eixoYDireito={{ rotulo: t('paginas.graficos.textos.ticketMedio'), formatar: emCentavos }}
+              barras={[{ chave: 'pedidos', rotulo: t('paginas.graficos.textos.pedidos') }]}
+              linhas={[{ chave: 'ticket', rotulo: t('paginas.graficos.textos.ticketMedio'), cor: 'var(--graf-2)' }]}
               animacao
             />
             <GraficoBarras
-              titulo="Faturamento acima ou abaixo da meta"
+              titulo={t('paginas.graficos.textos.faturamentoAcimaOuAbaixo')}
               dados={DESVIO_META}
-              eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-              eixoY={{ rotulo: 'Diferença', unidade: 'mil R$' }}
-              series={[{ chave: 'desvio', rotulo: 'Diferença para a meta' }]}
+              eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+              eixoY={{ rotulo: t('paginas.graficos.textos.diferenca'), unidade: 'mil R$' }}
+              series={[{ chave: 'desvio', rotulo: t('paginas.graficos.textos.diferencaParaAMeta') }]}
               divergente
               animacao
             />
             <GraficoBarras
-              titulo="Clientes que mais compraram"
+              titulo={t('paginas.graficos.textos.clientesQueMaisCompraram')}
               dados={RANKING}
-              eixoX={{ chave: 'cliente', tipo: 'categoria', rotulo: 'Cliente' }}
-              eixoY={{ rotulo: 'Total em pedidos', formatar: emReais }}
-              series={[{ chave: 'total', rotulo: 'Total em pedidos' }]}
+              eixoX={{ chave: 'cliente', tipo: 'categoria', rotulo: t('paginas.graficos.textos.cliente') }}
+              eixoY={{ rotulo: t('paginas.graficos.textos.totalEmPedidos'), formatar: emReais }}
+              series={[{ chave: 'total', rotulo: t('paginas.graficos.textos.totalEmPedidos') }]}
               orientacao="horizontal"
               rotulosNasBarras
-              referencias={[{ valor: MEDIA_RANKING, rotulo: 'Média' }]}
+              referencias={[{ valor: MEDIA_RANKING, rotulo: t('paginas.graficos.textos.media') }]}
               animacao
             />
             <GraficoDispersao
-              titulo="Preço × unidades vendidas"
+              titulo={t('paginas.graficos.textos.precoUnidadesVendidas')}
               dados={DISPERSAO}
-              eixoX={{ rotulo: 'Preço', formatar: emCentavos }}
-              eixoY={{ rotulo: 'Unidades vendidas' }}
+              eixoX={{ rotulo: t('paginas.graficos.textos.preco'), formatar: emCentavos }}
+              eixoY={{ rotulo: t('paginas.graficos.textos.unidadesVendidas') }}
               chaveX="preco"
               chaveY="unidades"
               chaveRotulo="produto"
               chaveDestaque="promocao"
               rotuloPontos="Produtos"
-              rotuloDestaque="Em promoção"
+              rotuloDestaque={t('paginas.graficos.textos.emPromocao')}
               regressao
               animacao
             />
           </div>
           <GraficoLinha
-            titulo="Faturamento mensal"
+            titulo={t('paginas.graficos.textos.faturamentoMensal')}
             dados={FATURAMENTO}
-            eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
-            eixoY={{ rotulo: 'Faturamento', formatar: emReais }}
+            eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.graficos.textos.mes') }}
+            eixoY={{ rotulo: t('paginas.graficos.textos.faturamento'), formatar: emReais }}
             series={[
-              { chave: 'faturamento', rotulo: 'Faturamento' },
-              { chave: 'meta', rotulo: 'Meta', tracejada: true },
+              { chave: 'faturamento', rotulo: t('paginas.graficos.textos.faturamento') },
+              { chave: 'meta', rotulo: t('paginas.graficos.textos.meta'), tracejada: true },
             ]}
             area
-            referencias={[{ valor: MEDIA_MENSAL, rotulo: `Média mensal (${emReais(MEDIA_MENSAL)})` }]}
+            referencias={[{ valor: MEDIA_MENSAL, rotulo: t('paginas.graficos.textos.mediaMensalValor', { valor: emReais(MEDIA_MENSAL) }) }]}
             animacao
           />
         </div>
       </Bloco>
 
       <Bloco
-        titulo="Mapa de calor"
-        descricao="Pedidos por hora e dia da semana. A grade rola na vertical com os dias presos no topo; células hachuradas são horas sem registro."
+        titulo={t('paginas.graficos.secoes.mapaDeCalor')}
+        descricao={t('paginas.graficos.textos.pedidosPorHoraE')}
       >
         <MapaCalor
-          titulo="Pedidos por hora e dia da semana, 1º semestre de 2026"
-          descricao="Grade de horas por dias da semana; quanto mais escura a célula, mais pedidos. Picos no almoço e no fim da tarde; domingo das 3h às 4h sem registro, com o sistema em manutenção."
+          titulo={t('paginas.graficos.textos.pedidosPorHoraE2')}
+          descricao={t('paginas.graficos.textos.gradeDeHorasPor')}
           linhas={HORAS}
           colunas={DIAS}
           valores={CALOR}

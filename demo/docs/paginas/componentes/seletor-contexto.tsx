@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="seletorContexto"
@@ -11,21 +13,13 @@ export default function Pagina() {
       tipos={['OpcaoContexto']}
       notas={
         <ul className="doc-lista">
-          <li>
-            Na <C>Estrutura</C>, passe em <C>contexto</C>: ele fica à esquerda da barra do topo e continua visível no celular (abaixo de
-            40rem, só o quadrado com o ícone).
-          </li>
-          <li>
-            O seletor só avisa: <C>aoMudar</C> recebe o <C>id</C> e o app recarrega os dados do novo contexto. <C>acoes</C> acrescenta itens
-            depois das opções (ex.: “Gerenciar empresas”).
-          </li>
-          <li>
-            A demo usa o seletor para alternar entre as finanças pessoais e as da empresa (menu Soluções › Finanças).
-          </li>
+          <li>{rico(t('docs.seletorContexto.textos.naEstruturaPasseEm'))}</li>
+          <li>{rico(t('docs.seletorContexto.textos.oSeletorSoAvisa'))}</li>
+          <li>{t('docs.seletorContexto.textos.aDemoUsaO')}</li>
         </ul>
       }
     >
-      <Exemplo id="seletor-contexto/Basico" titulo="Pessoal e empresas" />
+      <Exemplo id="seletor-contexto/Basico" titulo={t('docs.seletorContexto.secoes.pessoalEEmpresas')} />
     </PaginaComponente>
   );
 }

@@ -36,7 +36,7 @@ export function PaginaToasts() {
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.toasts.titulo')} icone="bell" trilha />
 
-      <Bloco titulo="Posições" descricao="useToast().mostrar({ posicao }) — cada posição tem a sua pilha.">
+      <Bloco titulo={t('paginas.toasts.secoes.posicoes')} descricao={t('paginas.toasts.textos.usetoastMostrarPosicaoCada')}>
         <div className="demo-linha">
           {POSICOES.map((p) => (
             <Botao
@@ -44,14 +44,14 @@ export function PaginaToasts() {
               rotulo={p.rotulo}
               aparencia="contorno"
               formato="retangulo"
-              onClick={() => toast.mostrar({ titulo: 'Celke Kole', detalhe: `Aviso em ${p.rotulo.toLowerCase()}.`, posicao: p.posicao, aparencia: 'padrao', icone: 'bell' })}
+              onClick={() => toast.mostrar({ titulo: t('paginas.toasts.textos.celkeKole'), detalhe: t('paginas.toasts.textos.avisoEmValor', { valor: p.rotulo.toLowerCase() }), posicao: p.posicao, aparencia: 'padrao', icone: 'bell' })}
             />
           ))}
         </div>
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Cores suaves" descricao="Fundo claro da cor (o padrão).">
+        <Bloco titulo={t('paginas.toasts.secoes.coresSuaves')} descricao={t('paginas.toasts.textos.fundoClaroDaCor')}>
           <div className="demo-linha">
             {CORES.map((c) => (
               <Botao
@@ -60,12 +60,12 @@ export function PaginaToasts() {
                 severidade={c.cor as SeveridadeBotao}
                 aparencia="suave"
                 formato="retangulo"
-                onClick={() => toast.mostrar({ titulo: c.rotulo, detalhe: 'Seu aviso aparece aqui.', cor: c.cor, icone: 'bell' })}
+                onClick={() => toast.mostrar({ titulo: c.rotulo, detalhe: t('paginas.toasts.textos.seuAvisoApareceAqui'), cor: c.cor, icone: 'bell' })}
               />
             ))}
           </div>
         </Bloco>
-        <Bloco titulo="Cores sólidas">
+        <Bloco titulo={t('paginas.toasts.secoes.coresSolidas')}>
           <div className="demo-linha">
             {CORES.map((c) => (
               <Botao
@@ -73,7 +73,7 @@ export function PaginaToasts() {
                 rotulo={c.rotulo}
                 severidade={c.cor as SeveridadeBotao}
                 formato="retangulo"
-                onClick={() => toast.mostrar({ titulo: c.rotulo, detalhe: 'Seu aviso aparece aqui.', cor: c.cor, aparencia: 'solido', icone: 'bell' })}
+                onClick={() => toast.mostrar({ titulo: c.rotulo, detalhe: t('paginas.toasts.textos.seuAvisoApareceAqui'), cor: c.cor, aparencia: 'solido', icone: 'bell' })}
               />
             ))}
           </div>
@@ -82,13 +82,13 @@ export function PaginaToasts() {
 
       <div className="demo-colunas-3">
         <div className="demo-pilha">
-          <Bloco titulo="Exemplo ao vivo" descricao="Os atalhos ok, info, warn e err já trazem ícone e cor.">
+          <Bloco titulo={t('paginas.toasts.secoes.exemploAoVivo')} descricao={t('paginas.toasts.textos.osAtalhosOkInfo')}>
             <div className="demo-linha">
-              <Botao rotulo="Mostrar toast" formato="retangulo" onClick={() => toast.ok('Pedido salvo', 'PED-2026-0042 foi gravado.')} />
-              <Botao rotulo="Erro" severidade="err" aparencia="contorno" formato="retangulo" onClick={() => toast.err('Falha ao salvar', 'Tente de novo em instantes.')} />
+              <Botao rotulo={t('paginas.toasts.textos.mostrarToast')} formato="retangulo" onClick={() => toast.ok(t('paginas.toasts.textos.pedidoSalvo'), t('paginas.toasts.textos.ped20260042Foi'))} />
+              <Botao rotulo={t('paginas.toasts.textos.erro')} severidade="err" aparencia="contorno" formato="retangulo" onClick={() => toast.err(t('paginas.toasts.textos.falhaAoSalvar'), t('paginas.toasts.textos.tenteDeNovoEm'))} />
             </div>
           </Bloco>
-          <Bloco titulo="Esquemas de cor" descricao="Toasts fixos, sólidos, só com o texto.">
+          <Bloco titulo={t('paginas.toasts.secoes.esquemasDeCor')} descricao={t('paginas.toasts.textos.toastsFixosSolidosSo')}>
             <div className="demo-toasts-pilha">
               {(
                 [
@@ -100,7 +100,7 @@ export function PaginaToasts() {
               ).map(
                 ([c, nome]) =>
                   aberto(`esq-${c}`) && (
-                    <Toast key={c} cor={c} aparencia="solido" detalhe={`Olá! Este é o aviso na cor ${nome}.`} aoFechar={fechar(`esq-${c}`)} />
+                    <Toast key={c} cor={c} aparencia="solido" detalhe={t('paginas.toasts.textos.olaEsteEO', { nome })} aoFechar={fechar(`esq-${c}`)} />
                   ),
               )}
             </div>
@@ -108,39 +108,39 @@ export function PaginaToasts() {
         </div>
 
         <div className="demo-pilha">
-          <Bloco titulo="Básico" descricao="Modelo com cabeçalho: ícone, título, tempo e ×.">
+          <Bloco titulo={t('paginas.toasts.secoes.basico')} descricao={t('paginas.toasts.textos.modeloComCabecalhoIcone')}>
             {aberto('basico') && (
-              <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo="Celke Kole" tempo="há 11 min" detalhe="Olá! Esta é uma mensagem de aviso." aoFechar={fechar('basico')} />
+              <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 11 min" detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={fechar('basico')} />
             )}
           </Bloco>
-          <Bloco titulo="Empilhados" descricao="Vários avisos, um embaixo do outro.">
+          <Bloco titulo={t('paginas.toasts.secoes.empilhados')} descricao={t('paginas.toasts.textos.variosAvisosUmEmbaixo')}>
             <div className="demo-toasts-pilha">
               {aberto('pilha1') && (
-                <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo="Celke Kole" tempo="agora" detalhe="Viu? Assim mesmo." aoFechar={fechar('pilha1')} />
+                <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="agora" detalhe={t('paginas.toasts.textos.viuAssimMesmo')} aoFechar={fechar('pilha1')} />
               )}
               {aberto('pilha2') && (
-                <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo="Celke Kole" tempo="há 2 s" detalhe="Atenção: os avisos se empilham sozinhos." aoFechar={fechar('pilha2')} />
+                <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 2 s" detalhe={t('paginas.toasts.textos.atencaoOsAvisosSe')} aoFechar={fechar('pilha2')} />
               )}
             </div>
           </Bloco>
         </div>
 
         <div className="demo-pilha">
-          <Bloco titulo="Translúcido" descricao="Vidro fosco: deixa o fundo aparecer.">
+          <Bloco titulo={t('paginas.toasts.secoes.translucido')} descricao={t('paginas.toasts.textos.vidroFoscoDeixaO')}>
             <div className="demo-toasts-fundo">
-              <Toast modelo="cabecalho" aparencia="translucido" icone="bell" titulo="Celke Kole" tempo="há 11 min" detalhe="Olá! Esta é uma mensagem de aviso." aoFechar={() => toast.info('É só um exemplo', 'Este fica fixo.')} />
+              <Toast modelo="cabecalho" aparencia="translucido" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 11 min" detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={() => toast.info(t('paginas.toasts.textos.eSoUmExemplo'), t('paginas.toasts.textos.esteFicaFixo'))} />
             </div>
           </Bloco>
-          <Bloco titulo="Conteúdo próprio" descricao="Botões e links dentro do aviso.">
+          <Bloco titulo={t('paginas.toasts.secoes.conteudoProprio')} descricao={t('paginas.toasts.textos.botoesELinksDentro')}>
             <div className="demo-toasts-pilha">
-              {aberto('proprio') && <Toast aparencia="padrao" detalhe="Olá! Esta é uma mensagem de aviso." aoFechar={fechar('proprio')} />}
+              {aberto('proprio') && <Toast aparencia="padrao" detalhe={t('paginas.toasts.textos.olaEstaEUma')} aoFechar={fechar('proprio')} />}
               <Toast
                 aparencia="padrao"
-                detalhe="Olá! Esta é uma mensagem de aviso."
+                detalhe={t('paginas.toasts.textos.olaEstaEUma')}
                 acoes={
                   <>
-                    <Botao rotulo="Fazer algo" tamanho="pequeno" formato="retangulo" onClick={() => toast.ok('Feito!')} />
-                    <Botao rotulo="Fechar" severidade="secundario" tamanho="pequeno" formato="retangulo" onClick={() => toast.info('É só um exemplo', 'Este fica fixo.')} />
+                    <Botao rotulo={t('paginas.toasts.textos.fazerAlgo')} tamanho="pequeno" formato="retangulo" onClick={() => toast.ok(t('paginas.toasts.textos.feito'))} />
+                    <Botao rotulo={t('paginas.toasts.textos.fechar')} severidade="secundario" tamanho="pequeno" formato="retangulo" onClick={() => toast.info(t('paginas.toasts.textos.eSoUmExemplo'), t('paginas.toasts.textos.esteFicaFixo'))} />
                   </>
                 }
               />
@@ -149,15 +149,15 @@ export function PaginaToasts() {
         </div>
       </div>
 
-      <Bloco titulo="Centralizado com flex" descricao="Um Toast é um bloco comum: alinhe como qualquer elemento.">
+      <Bloco titulo={t('paginas.toasts.secoes.centralizadoComFlex')} descricao={t('paginas.toasts.textos.umToastEUm')}>
         <div className="demo-toasts-centro">
-          <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo="Celke Kole" tempo="há 11 min" detalhe="Olá! Esta é uma mensagem de aviso." />
+          <Toast modelo="cabecalho" aparencia="padrao" icone="bell" titulo={t('paginas.toasts.textos.celkeKole')} tempo="há 11 min" detalhe={t('paginas.toasts.textos.olaEstaEUma')} />
         </div>
       </Bloco>
 
       {fechados.length > 0 && (
         <div>
-          <Botao rotulo="Reabrir os toasts fechados" icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setFechados([])} />
+          <Botao rotulo={t('paginas.toasts.textos.reabrirOsToastsFechados')} icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setFechados([])} />
         </div>
       )}
     </div>

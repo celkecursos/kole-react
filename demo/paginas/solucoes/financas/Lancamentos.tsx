@@ -21,6 +21,7 @@ import { CENTROS_CUSTO, CONTATOS, type Lancamento, type TipoLancamento } from '.
 import { CabecalhoFinancas, IconeCategoria, dataBr, useEditorLancamento } from './comum';
 import { SITUACOES, acoes, categoria, categoriasDo, conta, contasDo, doEspaco, noIntervalo, situacao, totais, useFinancas, type Situacao } from './estado';
 import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 type FiltroTipo = 'todos' | TipoLancamento;
 type FiltroSituacao = 'pagos' | 'pendentes' | 'atrasados';
@@ -108,7 +109,7 @@ export function Lancamentos() {
   };
   const excluirSelecionados = async () => {
     const n = selecionadosL.length;
-    const sim = await confirmar.remover({ titulo: `Excluir ${n} ${n === 1 ? 'lançamento' : 'lançamentos'}?`, mensagem: 'Eles saem dos saldos e dos relatórios.', rotuloAceitar: 'Excluir' });
+    const sim = await confirmar.remover({ titulo: t('paginas.finLancamentos.textos.excluirNV', { n, v: n === 1 ? 'lançamento' : 'lançamentos' }), mensagem: t('paginas.finLancamentos.textos.elesSaemDosSaldos'), rotuloAceitar: 'Excluir' });
     if (!sim) return;
     acoes.excluir(selecionadosL.map((x) => x.id));
     toast.ok(`${n} ${n === 1 ? 'lançamento excluído' : 'lançamentos excluídos'}`);
@@ -119,78 +120,70 @@ export function Lancamentos() {
     <div className="demo-pilha">
       <CabecalhoFinancas titulo={t('paginas.finLancamentos.titulo')} icone="list" />
 
-      <div className="fin-resumo" aria-label={`Resumo de ${rotuloPeriodo(periodo)}`}>
-        <div>
-          <small>Receitas</small>
-          <Valor valor={soma.receitas} tipo="receita" tamanho="grande" />
+      <div className="fin-resumo" aria-label={t('paginas.finLancamentos.textos.resumoDeValor', { valor: rotuloPeriodo(periodo) })}>
+        <div>{rico(t('paginas.finLancamentos.textos.receitas'))}<Valor valor={soma.receitas} tipo="receita" tamanho="grande" />
         </div>
-        <div>
-          <small>Despesas</small>
-          <Valor valor={soma.despesas} tipo="despesa" tamanho="grande" />
+        <div>{rico(t('paginas.finLancamentos.textos.despesas'))}<Valor valor={soma.despesas} tipo="despesa" tamanho="grande" />
         </div>
-        <div>
-          <small>Resultado</small>
-          <Valor valor={soma.saldo} colorir sinal tamanho="grande" />
+        <div>{rico(t('paginas.finLancamentos.textos.resultado'))}<Valor valor={soma.saldo} colorir sinal tamanho="grande" />
         </div>
-        <div>
-          <small>Pendentes</small>
-          <strong className="fin-resumo-n">{pendentes}</strong>
+        <div>{rico(t('paginas.finLancamentos.textos.pendentes'))}<strong className="fin-resumo-n">{pendentes}</strong>
         </div>
       </div>
 
       <div className="fin-filtros">
         <FiltroPilulas<FiltroTipo>
-          rotulo="Tipo"
+          rotulo={t('paginas.finLancamentos.textos.tipo')}
           valor={f.tipo}
           aoMudar={(tipo) => mudar({ tipo, categoria: null })}
           opcoes={[
-            { valor: 'todos', rotulo: 'Todos' },
-            { valor: 'receita', rotulo: 'Receitas' },
-            { valor: 'despesa', rotulo: 'Despesas' },
-            { valor: 'transferencia', rotulo: 'Transferências' },
+            { valor: 'todos', rotulo: t('paginas.finLancamentos.textos.todos') },
+            { valor: 'receita', rotulo: t('paginas.finLancamentos.textos.receitas2') },
+            { valor: 'despesa', rotulo: t('paginas.finLancamentos.textos.despesas2') },
+            { valor: 'transferencia', rotulo: t('paginas.finLancamentos.textos.transferencias') },
           ]}
         />
         <div className="fin-filtros-campos">
-          <CampoTexto icone="search" aria-label="Buscar lançamento" placeholder="Buscar descrição" valor={f.busca} aoMudar={(busca) => mudar({ busca })} />
-          <CampoSelect aria-label="Conta" placeholder="Todas as contas" botaoLimpar opcoes={contas.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.conta} aoMudar={(v) => mudar({ conta: v })} />
+          <CampoTexto icone="search" aria-label={t('paginas.finLancamentos.textos.buscarLancamento')} placeholder={t('paginas.finLancamentos.textos.buscarDescricao')} valor={f.busca} aoMudar={(busca) => mudar({ busca })} />
+          <CampoSelect aria-label={t('paginas.finLancamentos.textos.conta')} placeholder={t('paginas.finLancamentos.textos.todasAsContas')} botaoLimpar opcoes={contas.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.conta} aoMudar={(v) => mudar({ conta: v })} />
           {f.tipo !== 'transferencia' && (
-            <CampoSelect aria-label="Categoria" placeholder="Todas as categorias" botaoLimpar comBusca opcoes={categorias.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.categoria} aoMudar={(v) => mudar({ categoria: v })} />
+            <CampoSelect aria-label={t('paginas.finLancamentos.textos.categoria')} placeholder={t('paginas.finLancamentos.textos.todasAsCategorias')} botaoLimpar comBusca opcoes={categorias.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.categoria} aoMudar={(v) => mudar({ categoria: v })} />
           )}
           <CampoSelect<FiltroSituacao>
-            aria-label="Situação"
-            placeholder="Qualquer situação"
+            aria-label={t('paginas.finLancamentos.textos.situacao')}
+            placeholder={t('paginas.finLancamentos.textos.qualquerSituacao')}
             botaoLimpar
             opcoes={[
-              { valor: 'pagos', rotulo: 'Pagos e recebidos' },
-              { valor: 'pendentes', rotulo: 'Pendentes' },
-              { valor: 'atrasados', rotulo: 'Atrasados' },
+              { valor: 'pagos', rotulo: t('paginas.finLancamentos.textos.pagosERecebidos') },
+              { valor: 'pendentes', rotulo: t('paginas.finLancamentos.textos.pendentes2') },
+              { valor: 'atrasados', rotulo: t('paginas.finLancamentos.textos.atrasados') },
             ]}
             valor={f.situacao}
             aoMudar={(v) => mudar({ situacao: v })}
           />
           {empresa && (
             <>
-              <CampoSelect aria-label="Centro de custo" placeholder="Todos os centros" botaoLimpar opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.centro} aoMudar={(v) => mudar({ centro: v })} />
-              <CampoSelect aria-label="Cliente ou fornecedor" placeholder="Clientes e fornecedores" botaoLimpar comBusca opcoes={CONTATOS.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.contato} aoMudar={(v) => mudar({ contato: v })} />
+              <CampoSelect aria-label={t('paginas.finLancamentos.textos.centroDeCusto')} placeholder={t('paginas.finLancamentos.textos.todosOsCentros')} botaoLimpar opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.centro} aoMudar={(v) => mudar({ centro: v })} />
+              <CampoSelect aria-label={t('paginas.finLancamentos.textos.clienteOuFornecedor')} placeholder={t('paginas.finLancamentos.textos.clientesEFornecedores')} botaoLimpar comBusca opcoes={CONTATOS.map((c) => ({ valor: c.id, rotulo: c.nome }))} valor={f.contato} aoMudar={(v) => mudar({ contato: v })} />
             </>
           )}
-          {filtrando && <Botao rotulo="Limpar" icone="funnel-x" aparencia="texto" severidade="secundario" onClick={() => mudar(VAZIO)} />}
+          {filtrando && <Botao rotulo={t('paginas.finLancamentos.textos.limpar')} icone="funnel-x" aparencia="texto" severidade="secundario" onClick={() => mudar(VAZIO)} />}
         </div>
       </div>
 
       {selecionadosL.length > 0 && (
-        <div className="fin-selecao" role="region" aria-label="Ações dos selecionados">
+        <div className="fin-selecao" role="region" aria-label={t('paginas.finLancamentos.textos.acoesDosSelecionados')}>
           <span>
-            <strong>{selecionadosL.length}</strong> selecionados · <Valor valor={totais(selecionadosL).saldo} colorir sinal forte />
+            <strong>{selecionadosL.length}</strong>{t('paginas.finLancamentos.textos.selecionados')}<Valor valor={totais(selecionadosL).saldo} colorir sinal forte />
           </span>
-          <Botao rotulo="Marcar como pago" icone="check" severidade="ok" tamanho="pequeno" disabled={selecionadosL.every((x) => x.pago)} onClick={pagarSelecionados} />
-          <Botao rotulo="Excluir" icone="trash-2" severidade="err" aparencia="contorno" tamanho="pequeno" onClick={excluirSelecionados} />
-          <Botao rotulo="Desmarcar" aparencia="texto" severidade="secundario" tamanho="pequeno" onClick={() => setSelecionados([])} />
+          <Botao rotulo={t('paginas.finLancamentos.textos.marcarComoPago')} icone="check" severidade="ok" tamanho="pequeno" disabled={selecionadosL.every((x) => x.pago)} onClick={pagarSelecionados} />
+          <Botao rotulo={t('paginas.finLancamentos.textos.excluir')} icone="trash-2" severidade="err" aparencia="contorno" tamanho="pequeno" onClick={excluirSelecionados} />
+          <Botao rotulo={t('paginas.finLancamentos.textos.desmarcar')} aparencia="texto" severidade="secundario" tamanho="pequeno" onClick={() => setSelecionados([])} />
         </div>
       )}
 
       <Tabela<Lancamento>
-        rotulo={`Lançamentos de ${rotuloPeriodo(periodo)}`}
+        rotulo={t('paginas.finLancamentos.textos.lancamentosDeValor', { valor: rotuloPeriodo(periodo) })}
         className="fin-tabela"
         registros={nestaPagina}
         selecao="multipla"
@@ -200,10 +193,10 @@ export function Lancamentos() {
         ordenacao={ordem}
         aoOrdenar={(campo) => setOrdem((o) => (o?.campo === campo ? { campo, direcao: o.direcao === 'asc' ? 'desc' : 'asc' } : { campo, direcao: campo === 'descricao' ? 'asc' : 'desc' }))}
         colunas={[
-          { campo: 'data', rotulo: 'Data', ordenavel: true, largura: '7rem', formato: (v) => dataBr(v as string) },
+          { campo: 'data', rotulo: t('paginas.finLancamentos.textos.data'), ordenavel: true, largura: '7rem', formato: (v) => dataBr(v as string) },
           {
             campo: 'descricao',
-            rotulo: 'Descrição',
+            rotulo: t('paginas.finLancamentos.textos.descricao'),
             ordenavel: true,
             render: (l) => {
               const cat = categoria(l.categoria);
@@ -228,33 +221,33 @@ export function Lancamentos() {
               );
             },
           },
-          { campo: 'conta', rotulo: 'Conta', formato: (_v, l) => (l.tipo === 'transferencia' ? '—' : conta(l.conta)?.nome) },
+          { campo: 'conta', rotulo: t('paginas.finLancamentos.textos.conta'), formato: (_v, l) => (l.tipo === 'transferencia' ? '—' : conta(l.conta)?.nome) },
           {
             campo: 'pago',
-            rotulo: 'Situação',
+            rotulo: t('paginas.finLancamentos.textos.situacao'),
             render: (l) => {
               const s = SITUACOES[situacao(l)];
               return <Status rotulo={s.rotulo} severidade={s.severidade} icone={s.icone} />;
             },
           },
-          { campo: 'valor', rotulo: 'Valor', ordenavel: true, alinhamento: 'direita', render: (l) => <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'neutro' : l.tipo} forte /> },
+          { campo: 'valor', rotulo: t('paginas.finLancamentos.textos.valor'), ordenavel: true, alinhamento: 'direita', render: (l) => <Valor valor={l.valor} tipo={l.tipo === 'transferencia' ? 'neutro' : l.tipo} forte /> },
         ]}
         acoes={(l) =>
           !l.pago ? (
             <AcaoLinha
               icone="check"
-              rotulo={l.tipo === 'receita' ? 'Marcar como recebido' : 'Marcar como pago'}
+              rotulo={l.tipo === 'receita' ? t('paginas.finLancamentos.textos.marcarComoRecebido') : t('paginas.finLancamentos.textos.marcarComoPago')}
               severidade="pri"
               onClick={(e) => {
                 e.stopPropagation();
                 acoes.marcarPago([l.id]);
-                toast.ok(l.tipo === 'receita' ? 'Recebimento registrado' : 'Pagamento registrado', `${l.descricao} · ${formatarMoeda(l.valor)}`);
+                toast.ok(l.tipo === 'receita' ? t('paginas.finLancamentos.textos.recebimentoRegistrado') : t('paginas.finLancamentos.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor)}`);
               }}
             />
           ) : (
             <AcaoLinha
               icone="pencil"
-              rotulo="Editar"
+              rotulo={t('paginas.finLancamentos.textos.editar')}
               severidade="pri"
               onClick={(e) => {
                 e.stopPropagation();
@@ -263,10 +256,10 @@ export function Lancamentos() {
             />
           )
         }
-        vazioTitulo={filtrando ? 'Nada com esses filtros' : 'Nenhum lançamento no período'}
-        vazioDescricao={filtrando ? 'Mude os filtros ou o período.' : 'Registre uma receita ou despesa para começar.'}
+        vazioTitulo={filtrando ? t('paginas.finLancamentos.textos.nadaComEssesFiltros') : t('paginas.finLancamentos.textos.nenhumLancamentoNoPeriodo')}
+        vazioDescricao={filtrando ? t('paginas.finLancamentos.textos.mudeOsFiltrosOu') : t('paginas.finLancamentos.textos.registreUmaReceitaOu')}
         vazioIcone="receipt"
-        vazioAcoes={filtrando ? <Botao rotulo="Limpar filtros" severidade="secundario" onClick={() => mudar(VAZIO)} /> : <Botao rotulo="Nova despesa" icone="plus" onClick={() => abrir('despesa')} />}
+        vazioAcoes={filtrando ? <Botao rotulo={t('paginas.finLancamentos.textos.limparFiltros')} severidade="secundario" onClick={() => mudar(VAZIO)} /> : <Botao rotulo={t('paginas.finLancamentos.textos.novaDespesa')} icone="plus" onClick={() => abrir('despesa')} />}
         paginacao={filtrados.length > POR_PAGINA ? { total: filtrados.length, pagina, tamanho: POR_PAGINA, aoMudarPagina: setPagina } : undefined}
       />
     </div>

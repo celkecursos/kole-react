@@ -154,6 +154,7 @@ function useChatSimulado(inicial: Msg[], falhar = false) {
 
 /** Conversa + campo ligados ao chat simulado. */
 function ChatDemo({ inicial, falhar, larguraMaxima, vazio }: { inicial: Msg[]; falhar?: boolean; larguraMaxima?: string; vazio?: ReactNode }) {
+  const { t } = useT();
   const chat = useChatSimulado(inicial, falhar);
   const [texto, setTexto] = useState('');
 
@@ -172,7 +173,7 @@ function ChatDemo({ inicial, falhar, larguraMaxima, vazio }: { inicial: Msg[]; f
           gerando={chat.gerando}
           aoParar={chat.parar}
           maxCaracteres={500}
-          acoesExtras={<Botao icone="paperclip" aria-label="Anexar arquivo" dica="Anexar arquivo" severidade="secundario" aparencia="texto" tamanho="pequeno" />}
+          acoesExtras={<Botao icone="paperclip" aria-label={t('paginas.conversas.textos.anexarArquivo')} dica={t('paginas.conversas.textos.anexarArquivo')} severidade="secundario" aparencia="texto" tamanho="pequeno" />}
         />
       }
     >
@@ -203,8 +204,8 @@ export function PaginaConversas() {
       <CabecalhoPagina titulo={t('paginas.conversas.titulo')} icone="message-square" trilha />
 
       <Bloco
-        titulo="Conversa ocupando a página"
-        descricao="Envie uma mensagem: a resposta chega aos poucos e a conversa acompanha o fim. Role para cima durante a resposta para ver o “Ir para o fim”. Enter envia, Shift+Enter quebra a linha."
+        titulo={t('paginas.conversas.secoes.conversaOcupandoAPagina')}
+        descricao={t('paginas.conversas.textos.envieUmaMensagemA')}
       >
         <div className="demo-chat-pagina">
           <ChatDemo inicial={INICIAIS} larguraMaxima="48rem" />
@@ -212,33 +213,25 @@ export function PaginaConversas() {
       </Bloco>
 
       <div className="demo-colunas">
-        <Card titulo={t('paginas.conversas.secoes.erro')} subtitulo="A primeira resposta falha" corpoSemEspaco>
+        <Card titulo={t('paginas.conversas.secoes.erro')} subtitulo={t('paginas.conversas.textos.aPrimeiraRespostaFalha')} corpoSemEspaco>
           <div className="demo-chat-card">
-            <ChatDemo inicial={[]} falhar vazio={<Vazio titulo="Faça uma pergunta" descricao="A primeira resposta vai falhar de propósito." icone="message-square" />} />
+            <ChatDemo inicial={[]} falhar vazio={<Vazio titulo={t('paginas.conversas.textos.facaUmaPergunta')} descricao={t('paginas.conversas.textos.aPrimeiraRespostaVai')} icone="message-square" />} />
           </div>
         </Card>
-        <Card titulo={t('paginas.conversas.secoes.vazio')} subtitulo="Card com altura fixa" corpoSemEspaco>
+        <Card titulo={t('paginas.conversas.secoes.vazio')} subtitulo={t('paginas.conversas.textos.cardComAlturaFixa')} corpoSemEspaco>
           <div className="demo-chat-card">
             <ChatDemo inicial={[]} />
           </div>
         </Card>
       </div>
 
-      <Bloco titulo="Mensagens soltas" descricao="Todos os estados, sem a área rolável.">
-        <Mensagem autor="usuario" nome="Você" hora={new Date()} estado="enviando">
-          Mensagem ainda sendo enviada
-        </Mensagem>
+      <Bloco titulo={t('paginas.conversas.secoes.mensagensSoltas')} descricao={t('paginas.conversas.textos.todosOsEstadosSem')}>
+        <Mensagem autor="usuario" nome="Você" hora={new Date()} estado="enviando">{t('paginas.conversas.textos.mensagemAindaSendoEnviada')}</Mensagem>
         <Mensagem autor="assistente" nome="Assistente" avatar estado="gerando" />
-        <Mensagem autor="assistente" nome="Assistente" avatar estado="gerando">
-          Texto parcial, com o cursor no fim
-        </Mensagem>
-        <Mensagem autor="assistente" nome="Assistente" avatar estado="erro" erro="O serviço demorou demais para responder." aoTentarNovamente={() => undefined}>
-          Começo de resposta que parou no meio
-        </Mensagem>
-        <Mensagem autor="assistente" nome="Assistente" avatar copiavel rodape={<Referencias itens={FONTES_FRETE} abertoInicial />}>
-          Resposta concluída, com as fontes abertas.
-        </Mensagem>
-        <Mensagem autor="sistema">Ana Pereira entrou na conversa</Mensagem>
+        <Mensagem autor="assistente" nome="Assistente" avatar estado="gerando">{t('paginas.conversas.textos.textoParcialComO')}</Mensagem>
+        <Mensagem autor="assistente" nome="Assistente" avatar estado="erro" erro={t('paginas.conversas.textos.oServicoDemorouDemais')} aoTentarNovamente={() => undefined}>{t('paginas.conversas.textos.comecoDeRespostaQue')}</Mensagem>
+        <Mensagem autor="assistente" nome="Assistente" avatar copiavel rodape={<Referencias itens={FONTES_FRETE} abertoInicial />}>{t('paginas.conversas.textos.respostaConcluidaComAs')}</Mensagem>
+        <Mensagem autor="sistema">{t('paginas.conversas.textos.anaPereiraEntrouNa')}</Mensagem>
       </Bloco>
     </div>
   );

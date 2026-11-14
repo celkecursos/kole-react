@@ -37,6 +37,8 @@ import {
   Vazio,
 } from '../../../src';
 import { AtendimentoSite } from './AtendimentoSite';
+import { useT, type TradutorDemo } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 /*
  * Páginas modelo de site institucional genérico (EstruturaSite), com os textos
@@ -101,6 +103,7 @@ function LinkDemo({ rota, children }: { rota: string; children: ReactNode }) {
 }
 
 export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: string) => void }) {
+  const { t } = useT();
   // página nova começa do topo (o site rola a janela, não um painel)
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -137,36 +140,36 @@ export function PaginaSite({ rota, navegar }: { rota: string; navegar: (rota: st
       avisoLateral={
         <>
           <span>(11) 0000-0000</span>
-          <span>contato@suamarca.com</span>
+          <span>{t('paginas.site.textos.contatoSuamarcaCom')}</span>
         </>
       }
       acoes={
         <>
-          <Botao rotulo="Entrar" severidade="secundario" aparencia="contorno" onClick={() => navegar('/login')} />
-          <Botao rotulo="Fale conosco" onClick={() => navegar('/site/contato')} />
+          <Botao rotulo={t('paginas.site.textos.entrar')} severidade="secundario" aparencia="contorno" onClick={() => navegar('/login')} />
+          <Botao rotulo={t('paginas.site.textos.faleConosco')} onClick={() => navegar('/site/contato')} />
         </>
       }
       rodape={
         <RodapeSite
           nome={MARCA}
-          descricao="Uma frase que resume o que a empresa faz e para quem."
-          extra={<Newsletter aparencia="linha" rotuloBotao="Assinar" aoInscrever={() => undefined} />}
+          descricao={t('paginas.site.textos.umaFraseQueResume')}
+          extra={<Newsletter aparencia="linha" rotuloBotao={t('paginas.site.textos.assinar')} aoInscrever={() => undefined} />}
           colunas={[
-            { titulo: 'Navegação', links: NAV },
+            { titulo: t('paginas.site.textos.navegacao'), links: NAV },
             {
-              titulo: 'Legal',
+              titulo: t('paginas.site.textos.legal'),
               links: [
-                { rotulo: 'Termos de Uso', rota: '/site/termos' },
-                { rotulo: 'Política de Privacidade', rota: '/site/privacidade' },
-                { rotulo: 'Cookies', rota: '/site/cookies' },
+                { rotulo: t('paginas.site.textos.termosDeUso'), rota: '/site/termos' },
+                { rotulo: t('paginas.site.textos.politicaDePrivacidade'), rota: '/site/privacidade' },
+                { rotulo: t('paginas.site.textos.cookies'), rota: '/site/cookies' },
               ],
             },
           ]}
           copyright={`© 2026 ${MARCA}. Todos os direitos reservados.`}
           redes={[
-            { rotulo: 'Instagram', rota: '/site' },
-            { rotulo: 'LinkedIn', rota: '/site' },
-            { rotulo: 'YouTube', rota: '/site' },
+            { rotulo: t('paginas.site.textos.instagram'), rota: '/site' },
+            { rotulo: t('paginas.site.textos.linkedin'), rota: '/site' },
+            { rotulo: t('paginas.site.textos.youtube'), rota: '/site' },
           ]}
         />
       }
@@ -199,31 +202,30 @@ const FAQ = [
 ];
 
 function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'escuro' | 'claro' }) {
+  const { t } = useT();
   const botoes = (
     <div className="demo-linha">
-      <Botao rotulo="Começar agora" tamanho="grande" severidade={faixa === 'escuro' ? 'destaque' : 'pri'} onClick={() => navegar('/site/contato')} />
-      <Botao rotulo="Ver serviços" tamanho="grande" severidade="secundario" aparencia="contorno" onClick={() => navegar('/site/servicos')} />
+      <Botao rotulo={t('paginas.site.textos.comecarAgora')} tamanho="grande" severidade={faixa === 'escuro' ? 'destaque' : 'pri'} onClick={() => navegar('/site/contato')} />
+      <Botao rotulo={t('paginas.site.textos.verServicos')} tamanho="grande" severidade="secundario" aparencia="contorno" onClick={() => navegar('/site/servicos')} />
     </div>
   );
   return (
     <>
       {faixa === 'escuro' ? (
         <DestaqueSite
-          selo="Seu slogan ou novidade aqui"
+          selo={t('paginas.site.textos.seuSloganOuNovidade')}
           titulo={TITULO_HOME}
           realce="negócio"
           descricao={TEXTO_HOME}
           lateral={
             <div className="demo-site-hero-midia">
               <div className="demo-site-hero-fundo" aria-hidden="true" />
-              <Imagem legenda="imagem principal / mockup do produto" proporcao="5 / 4" className="demo-site-img--escura" />
+              <Imagem legenda={t('paginas.site.textos.imagemPrincipalMockupDo')} proporcao="5 / 4" className="demo-site-img--escura" />
               <div className="demo-site-hero-selo">
                 <span className="demo-site-hero-selo-ic" aria-hidden="true">
                   ✓
                 </span>
-                <span>
-                  <b>Destaque rápido</b>
-                  <span>Um diferencial em uma linha</span>
+                <span>{rico(t('paginas.site.textos.destaqueRapido'))}<span>{t('paginas.site.textos.umDiferencialEmUma')}</span>
                 </span>
               </div>
             </div>
@@ -232,30 +234,30 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
           {botoes}
           <FaixaNumeros
             aparencia="simples"
-            rotulo="Números da empresa"
+            rotulo={t('paginas.site.textos.numerosDaEmpresa')}
             itens={[
-              { valor: '+1.200', rotulo: 'clientes atendidos' },
-              { valor: '4,9/5', rotulo: 'avaliação média' },
-              { valor: '10 anos', rotulo: 'de mercado' },
+              { valor: '+1.200', rotulo: t('paginas.site.textos.clientesAtendidos') },
+              { valor: '4,9/5', rotulo: t('paginas.site.textos.avaliacaoMedia') },
+              { valor: '10 anos', rotulo: t('paginas.site.textos.deMercado') },
             ]}
           />
         </DestaqueSite>
       ) : (
         <DestaqueSite
           aparencia="claro"
-          selo="Seu slogan ou novidade aqui"
+          selo={t('paginas.site.textos.seuSloganOuNovidade')}
           titulo={TITULO_HOME}
           realce="negócio"
           descricao={TEXTO_HOME}
-          midia={<Imagem legenda="imagem principal / mockup do produto" proporcao="16 / 7" />}
+          midia={<Imagem legenda={t('paginas.site.textos.imagemPrincipalMockupDo')} proporcao="16 / 7" />}
         >
           {botoes}
         </DestaqueSite>
       )}
 
-      <SecaoSite espaco="compacto" rotulo="Clientes">
+      <SecaoSite espaco="compacto" rotulo={t('paginas.site.textos.clientes')}>
         <div className="demo-site-logos">
-          <span>Quem já confia na gente</span>
+          <span>{t('paginas.site.textos.quemJaConfiaNa')}</span>
           <ul>
             {['LOGO 1', 'LOGO 2', 'LOGO 3', 'LOGO 4', 'LOGO 5', 'LOGO 6'].map((l) => (
               <li key={l}>{l}</li>
@@ -264,11 +266,11 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         </div>
       </SecaoSite>
 
-      <SecaoSite rotulo="Diferenciais">
+      <SecaoSite rotulo={t('paginas.site.textos.diferenciais')}>
         <CabecalhoSecao
-          sobretitulo="Diferenciais"
-          titulo={`Por que escolher a ${MARCA}`}
-          descricao="Liste os principais benefícios. Cada card aceita um ícone, um título curto e uma frase de apoio."
+          sobretitulo={t('paginas.site.textos.diferenciais')}
+          titulo={t('paginas.site.textos.porQueEscolherA', { MARCA })}
+          descricao={t('paginas.site.textos.listeOsPrincipaisBeneficios')}
         />
         <div className="demo-site-grade demo-site-grade--300">
           {DIFERENCIAIS.map((d) => (
@@ -279,52 +281,52 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         </div>
       </SecaoSite>
 
-      <SecaoSite rotulo="Como funciona">
+      <SecaoSite rotulo={t('paginas.site.textos.comoFunciona')}>
         <div className="demo-site-dividido">
-          <Imagem legenda="foto da equipe / ambiente / produto" proporcao="4 / 3" />
+          <Imagem legenda={t('paginas.site.textos.fotoDaEquipeAmbiente')} proporcao="4 / 3" />
           <div className="demo-pilha">
-            <CabecalhoSecao sobretitulo="Como funciona" titulo="Do primeiro contato ao resultado em três passos" />
+            <CabecalhoSecao sobretitulo={t('paginas.site.textos.comoFunciona')} titulo={t('paginas.site.textos.doPrimeiroContatoAo')} />
             <ListaNumerada
-              rotulo="Passos"
+              rotulo={t('paginas.site.textos.passos')}
               itens={[
-                { titulo: 'Contato inicial', descricao: 'O cliente conta o que precisa por formulário, WhatsApp ou telefone.' },
-                { titulo: 'Proposta sob medida', descricao: 'Você apresenta a solução, os prazos e os valores.' },
-                { titulo: 'Entrega e acompanhamento', descricao: 'O trabalho é realizado e acompanhado até o resultado.' },
+                { titulo: t('paginas.site.textos.contatoInicial'), descricao: t('paginas.site.textos.oClienteContaO') },
+                { titulo: t('paginas.site.textos.propostaSobMedida'), descricao: t('paginas.site.textos.voceApresentaASolucao') },
+                { titulo: t('paginas.site.textos.entregaEAcompanhamento'), descricao: t('paginas.site.textos.oTrabalhoERealizado') },
               ]}
             />
           </div>
         </div>
       </SecaoSite>
 
-      <SecaoSite espaco="compacto" rotulo="Números">
+      <SecaoSite espaco="compacto" rotulo={t('paginas.site.textos.numeros')}>
         <FaixaNumeros
-          rotulo="Números da empresa"
+          rotulo={t('paginas.site.textos.numerosDaEmpresa')}
           itens={[
-            { valor: '1.200', sufixo: '+', rotulo: 'clientes atendidos' },
-            { valor: '98', sufixo: '%', rotulo: 'de satisfação' },
-            { valor: '24', sufixo: 'h', rotulo: 'para primeira resposta' },
-            { valor: '10', rotulo: 'anos de experiência' },
+            { valor: '1.200', sufixo: '+', rotulo: t('paginas.site.textos.clientesAtendidos') },
+            { valor: '98', sufixo: '%', rotulo: t('paginas.site.textos.deSatisfacao') },
+            { valor: '24', sufixo: 'h', rotulo: t('paginas.site.textos.paraPrimeiraResposta') },
+            { valor: '10', rotulo: t('paginas.site.textos.anosDeExperiencia') },
           ]}
         />
       </SecaoSite>
 
-      <SecaoSite rotulo="Depoimentos">
-        <CabecalhoSecao sobretitulo="Depoimentos" titulo="O que dizem os clientes" />
+      <SecaoSite rotulo={t('paginas.site.textos.depoimentos')}>
+        <CabecalhoSecao sobretitulo={t('paginas.site.textos.depoimentos')} titulo={t('paginas.site.textos.oQueDizemOs')} />
         <div className="demo-site-grade demo-site-grade--320">
-          <CardDepoimento texto="Espaço para um depoimento real de cliente, com duas ou três linhas falando do resultado obtido." nome="Nome do Cliente" cargo="Cargo · Empresa" />
-          <CardDepoimento texto="Outro depoimento curto destacando atendimento, rapidez ou qualidade da entrega." nome="Nome do Cliente" cargo="Cargo · Empresa" />
-          <CardDepoimento texto="Um terceiro depoimento reforçando confiança e recomendação do serviço." nome="Nome do Cliente" cargo="Cargo · Empresa" nota={4} />
+          <CardDepoimento texto={t('paginas.site.textos.espacoParaUmDepoimento')} nome="Nome do Cliente" cargo="Cargo · Empresa" />
+          <CardDepoimento texto={t('paginas.site.textos.outroDepoimentoCurtoDestacando')} nome="Nome do Cliente" cargo="Cargo · Empresa" />
+          <CardDepoimento texto={t('paginas.site.textos.umTerceiroDepoimentoReforcando')} nome="Nome do Cliente" cargo="Cargo · Empresa" nota={4} />
         </div>
       </SecaoSite>
 
-      <SecaoSite rotulo="Blog">
-        <CabecalhoSecao sobretitulo="Blog" titulo="Conteúdos recentes" acao={<LinkDemo rota="/site/blog">Ver todos →</LinkDemo>} />
+      <SecaoSite rotulo={t('paginas.site.textos.blog')}>
+        <CabecalhoSecao sobretitulo={t('paginas.site.textos.blog')} titulo={t('paginas.site.textos.conteudosRecentes')} acao={<LinkDemo rota="/site/blog">{t('paginas.site.textos.verTodos')}</LinkDemo>} />
         <div className="demo-site-grade demo-site-grade--300">
           {POSTS.slice(0, 3).map((p) => (
             <CardConteudo
               key={p.titulo}
               href="/site/blog/post"
-              midia={<Imagem legenda="imagem do post" />}
+              midia={<Imagem legenda={t('paginas.site.textos.imagemDoPost')} />}
               etiquetas={
                 <>
                   <Badge cor="pri" aparencia="suave" formato="pilula" rotulo={p.cat} />
@@ -337,8 +339,8 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         </div>
       </SecaoSite>
 
-      <SecaoSite largura="estreita" rotulo="Perguntas frequentes">
-        <CabecalhoSecao sobretitulo="Dúvidas" titulo="Perguntas frequentes" alinhamento="centro" />
+      <SecaoSite largura="estreita" rotulo={t('paginas.site.textos.perguntasFrequentes')}>
+        <CabecalhoSecao sobretitulo={t('paginas.site.textos.duvidas')} titulo={t('paginas.site.textos.perguntasFrequentes')} alinhamento="centro" />
         <Acordeao icone="mais" padraoAbertos={['0']}>
           {FAQ.map(([p, r], i) => (
             <ItemAcordeao key={p} valor={String(i)} titulo={p}>
@@ -348,14 +350,14 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
         </Acordeao>
       </SecaoSite>
 
-      <SecaoSite espaco="amplo" rotulo="Contato">
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.contato')}>
         <FaixaChamada
-          titulo="Pronto para começar? Fale com a nossa equipe hoje."
-          descricao="Uma linha de reforço com a principal promessa ou condição especial."
+          titulo={t('paginas.site.textos.prontoParaComecarFale')}
+          descricao={t('paginas.site.textos.umaLinhaDeReforco')}
           acoes={
             <>
-              <Botao rotulo="Solicitar contato" tamanho="grande" severidade="destaque" onClick={() => navegar('/site/contato')} />
-              <Botao rotulo="Ver planos" tamanho="grande" aparencia="contorno" onClick={() => navegar('/site/servicos')} />
+              <Botao rotulo={t('paginas.site.textos.solicitarContato')} tamanho="grande" severidade="destaque" onClick={() => navegar('/site/contato')} />
+              <Botao rotulo={t('paginas.site.textos.verPlanos')} tamanho="grande" aparencia="contorno" onClick={() => navegar('/site/servicos')} />
             </>
           }
         />
@@ -367,43 +369,45 @@ function Home({ navegar, faixa }: { navegar: (rota: string) => void; faixa: 'esc
 /* ---------------- Sobre ---------------- */
 
 function CabecalhoPaginaSite({ atual, titulo, descricao }: { atual: string; titulo: string; descricao?: string }) {
+  const { t } = useT();
   return (
     <SecaoSite fundo="superficie" rotulo={atual}>
-      <Trilha itens={[{ rotulo: 'Home', rota: '/site', icone: 'house' }, { rotulo: atual }]} />
+      <Trilha itens={[{ rotulo: t('paginas.site.textos.home'), rota: '/site', icone: 'house' }, { rotulo: atual }]} />
       <CabecalhoSecao nivel={1} tamanho="pagina" titulo={titulo} descricao={descricao} />
     </SecaoSite>
   );
 }
 
 function Sobre() {
+  const { t } = useT();
   return (
     <>
       <CabecalhoPaginaSite
-        atual="Sobre"
-        titulo={`Uma frase sobre a missão e a história da ${MARCA}.`}
-        descricao="Conte em poucas linhas quando começou, o que motivou e onde quer chegar."
+        atual={t('paginas.site.textos.sobre')}
+        titulo={t('paginas.site.textos.umaFraseSobreA', { MARCA })}
+        descricao={t('paginas.site.textos.conteEmPoucasLinhas')}
       />
-      <SecaoSite rotulo="Nossa história">
+      <SecaoSite rotulo={t('paginas.site.textos.nossaHistoria')}>
         <div className="demo-site-dividido">
           <div className="demo-site-texto">
-            <h2>Nossa história</h2>
-            <p>Este bloco é para um texto mais longo sobre a trajetória: fundação, primeiros clientes, marcos importantes e o que mudou ao longo do tempo.</p>
-            <p>Um segundo parágrafo pode falar sobre o jeito de trabalhar, a cultura da equipe e o compromisso com quem é atendido.</p>
+            <h2>{t('paginas.site.textos.nossaHistoria')}</h2>
+            <p>{t('paginas.site.textos.esteBlocoEPara')}</p>
+            <p>{t('paginas.site.textos.umSegundoParagrafoPode')}</p>
             <FaixaNumeros
               aparencia="cartoes"
-              rotulo="A empresa em números"
+              rotulo={t('paginas.site.textos.aEmpresaEmNumeros')}
               itens={[
-                { valor: '10', rotulo: 'anos' },
-                { valor: '1.200', sufixo: '+', rotulo: 'clientes' },
-                { valor: '25', rotulo: 'pessoas' },
+                { valor: '10', rotulo: t('paginas.site.textos.anos') },
+                { valor: '1.200', sufixo: '+', rotulo: t('paginas.site.textos.clientes2') },
+                { valor: '25', rotulo: t('paginas.site.textos.pessoas') },
               ]}
             />
           </div>
-          <Imagem legenda="foto institucional" proporcao="1" />
+          <Imagem legenda={t('paginas.site.textos.fotoInstitucional')} proporcao="1" />
         </div>
       </SecaoSite>
-      <SecaoSite espaco="compacto" rotulo="Nossos valores">
-        <CabecalhoSecao titulo="Nossos valores" />
+      <SecaoSite espaco="compacto" rotulo={t('paginas.site.textos.nossosValores')}>
+        <CabecalhoSecao titulo={t('paginas.site.textos.nossosValores')} />
         <div className="demo-site-grade demo-site-grade--260">
           {[
             ['Transparência', 'Comunicação clara em todas as etapas.'],
@@ -417,11 +421,11 @@ function Sobre() {
           ))}
         </div>
       </SecaoSite>
-      <SecaoSite espaco="amplo" rotulo="Equipe">
-        <CabecalhoSecao titulo="Equipe" />
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.equipe')}>
+        <CabecalhoSecao titulo={t('paginas.site.textos.equipe')} />
         <div className="demo-site-grade demo-site-grade--220">
           {['Fundador(a)', 'Diretor(a) de Operações', 'Atendimento', 'Marketing'].map((cargo) => (
-            <CardConteudo key={cargo} className="demo-site-pessoa" midia={<Imagem legenda="foto" />} titulo="Nome Sobrenome" resumo={cargo} />
+            <CardConteudo key={cargo} className="demo-site-pessoa" midia={<Imagem legenda={t('paginas.site.textos.foto')} />} titulo={t('paginas.site.textos.nomeSobrenome')} resumo={cargo} />
           ))}
         </div>
       </SecaoSite>
@@ -445,16 +449,17 @@ const PLANOS = [
 ];
 
 function Servicos({ navegar }: { navegar: (rota: string) => void }) {
+  const { t } = useT();
   const [cobranca, setCobranca] = useState('mensal');
   const anual = cobranca === 'anual';
   return (
     <>
       <DestaqueSite
-        topo={<Trilha itens={[{ rotulo: 'Home', rota: '/site', icone: 'house' }, { rotulo: 'Serviços' }]} />}
-        titulo="Serviços e planos para cada necessidade."
-        descricao="Apresente o que você oferece. Funciona para produtos, consultorias, cursos, assinaturas ou serviços locais."
+        topo={<Trilha itens={[{ rotulo: t('paginas.site.textos.home'), rota: '/site', icone: 'house' }, { rotulo: t('paginas.site.textos.servicos') }]} />}
+        titulo={t('paginas.site.textos.servicosEPlanosPara')}
+        descricao={t('paginas.site.textos.apresenteOQueVoce')}
       />
-      <SecaoSite rotulo="Serviços">
+      <SecaoSite rotulo={t('paginas.site.textos.servicos')}>
         <div className="demo-site-grade demo-site-grade--340">
           {(
             [
@@ -464,18 +469,16 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
               ['message-square', 'Serviço ou produto 4'],
             ] as const
           ).map(([icone, titulo]) => (
-            <CardRecurso key={titulo} formato="horizontal" icone={icone} titulo={titulo} acao={<LinkDemo rota="/site/contato">Saiba mais →</LinkDemo>}>
-              Descrição curta do que está incluso e para quem é indicado.
-            </CardRecurso>
+            <CardRecurso key={titulo} formato="horizontal" icone={icone} titulo={titulo} acao={<LinkDemo rota="/site/contato">{t('paginas.site.textos.saibaMais')}</LinkDemo>}>{t('paginas.site.textos.descricaoCurtaDoQue')}</CardRecurso>
           ))}
         </div>
       </SecaoSite>
-      <SecaoSite espaco="amplo" rotulo="Planos">
-        <CabecalhoSecao titulo="Planos" descricao="Escolha o que faz mais sentido para você." alinhamento="centro" />
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.planos')}>
+        <CabecalhoSecao titulo={t('paginas.site.textos.planos')} descricao={t('paginas.site.textos.escolhaOQueFaz')} alinhamento="centro" />
         <div className="demo-site-centro">
-          <Abas variante="segmentado" ativa={cobranca} aoMudar={setCobranca} rotulo="Cobrança">
-            <Aba valor="mensal" rotulo="Mensal" />
-            <Aba valor="anual" rotulo="Anual · −20%" />
+          <Abas variante="segmentado" ativa={cobranca} aoMudar={setCobranca} rotulo={t('paginas.site.textos.cobranca')}>
+            <Aba valor="mensal" rotulo={t('paginas.site.textos.mensal')} />
+            <Aba valor="anual" rotulo={t('paginas.site.textos.anual20')} />
           </Abas>
         </div>
         <div className="demo-site-grade demo-site-grade--300 demo-site-planos">
@@ -490,7 +493,7 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
               destaque={p.destaque}
               acao={
                 <Botao
-                  rotulo={`Assinar ${p.nome}`}
+                  rotulo={t('paginas.site.textos.assinarNome', { nome: p.nome })}
                   bloco
                   tamanho="grande"
                   severidade={p.destaque ? 'destaque' : 'secundario'}
@@ -511,6 +514,7 @@ function Servicos({ navegar }: { navegar: (rota: string) => void }) {
 const POR_PAGINA = 6;
 
 function Blog() {
+  const { t } = useT();
   const [termo, setTermo] = useState('');
   const [busca, setBusca] = useState('');
   const [cat, setCat] = useState('Todos');
@@ -519,12 +523,12 @@ function Blog() {
   const visiveis = filtrados.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
   return (
     <>
-      <SecaoSite fundo="superficie" rotulo="Filtros do blog">
-        <Trilha itens={[{ rotulo: 'Home', rota: '/site', icone: 'house' }, { rotulo: 'Blog' }]} />
+      <SecaoSite fundo="superficie" rotulo={t('paginas.site.textos.filtrosDoBlog')}>
+        <Trilha itens={[{ rotulo: t('paginas.site.textos.home'), rota: '/site', icone: 'house' }, { rotulo: t('paginas.site.textos.blog') }]} />
         <CabecalhoSecao
           nivel={1}
           tamanho="pagina"
-          titulo="Blog"
+          titulo={t('paginas.site.textos.blog')}
           acao={
             <CampoPesquisa
               valor={termo}
@@ -533,12 +537,12 @@ function Blog() {
                 setBusca(t);
                 setPagina(1);
               }}
-              placeholder="Pesquisar no blog"
+              placeholder={t('paginas.site.textos.pesquisarNoBlog')}
             />
           }
         />
         <FiltroPilulas
-          rotulo="Categoria"
+          rotulo={t('paginas.site.textos.categoria')}
           disposicao="rolar"
           valor={cat}
           aoMudar={(c) => {
@@ -548,22 +552,22 @@ function Blog() {
           opcoes={['Todos', 'Guias', 'Dicas', 'Novidades', 'Cases'].map((c) => ({ valor: c, rotulo: c }))}
         />
       </SecaoSite>
-      <SecaoSite espaco="amplo" rotulo="Posts">
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.posts')}>
         <div className="demo-site-lista-lateral">
           <div className="demo-pilha">
             <CardConteudo
               formato="horizontal"
               nivel={2}
               href="/site/blog/post-lateral"
-              midia={<Imagem legenda="imagem em destaque" />}
+              midia={<Imagem legenda={t('paginas.site.textos.imagemEmDestaque')} />}
               etiquetas={
                 <>
-                  <Badge cor="destaque" formato="pilula" rotulo="Destaque" />
+                  <Badge cor="destaque" formato="pilula" rotulo={t('paginas.site.textos.destaque')} />
                   <Badge cor="pri" aparencia="suave" formato="pilula" rotulo={POSTS[0].cat} />
                 </>
               }
-              titulo="Título do post em destaque, com uma promessa clara para o leitor"
-              resumo="Resumo do conteúdo em duas linhas, para chamar o clique e situar o assunto."
+              titulo={t('paginas.site.textos.tituloDoPostEm')}
+              resumo={t('paginas.site.textos.resumoDoConteudoEm')}
               rodape="Nome do autor · 05/11/2026 · 6 min de leitura"
             />
             {visiveis.length ? (
@@ -584,7 +588,7 @@ function Blog() {
                 ))}
               </div>
             ) : (
-              <Vazio titulo="Nenhum post nesta categoria ainda." icone="file-text" />
+              <Vazio titulo={t('paginas.site.textos.nenhumPostNestaCategoria')} icone="file-text" />
             )}
             {filtrados.length > POR_PAGINA && <Paginacao total={filtrados.length} pagina={pagina} tamanho={POR_PAGINA} aoMudarPagina={setPagina} />}
           </div>
@@ -600,15 +604,14 @@ function Blog() {
 const TRILHA_POST = [{ rotulo: 'Home', rota: '/site', icone: 'house' as const }, { rotulo: 'Blog', rota: '/site/blog' }, { rotulo: 'Guias' }];
 
 function CabecalhoPost() {
+  const { t } = useT();
   return (
     <>
       <Trilha itens={TRILHA_POST} />
-      <CabecalhoSecao nivel={1} tamanho="pagina" titulo="Título do post em destaque, com uma promessa clara para o leitor" descricao="Linha fina que resume o artigo e ajuda no SEO." />
+      <CabecalhoSecao nivel={1} tamanho="pagina" titulo={t('paginas.site.textos.tituloDoPostEm')} descricao={t('paginas.site.textos.linhaFinaQueResume')} />
       <div className="demo-site-autor">
         <Avatar nome="Nome do Autor" tamanho="2.5rem" />
-        <span>
-          <b>Nome do autor</b>
-          <span>05/11/2026 · 6 min de leitura</span>
+        <span>{rico(t('paginas.site.textos.nomeDoAutor'))}<span>{t('paginas.site.textos.t051120266')}</span>
         </span>
       </div>
     </>
@@ -616,21 +619,19 @@ function CabecalhoPost() {
 }
 
 function TextoPost({ className }: { className?: string }) {
+  const { t } = useT();
   return (
     <ConteudoArtigo className={className}>
-      <p>Primeiro parágrafo do artigo. A área de leitura tem largura limitada (cerca de 70 caracteres por linha) para manter o texto confortável em qualquer tela.</p>
-      <h2>Um subtítulo para organizar o conteúdo</h2>
-      <p>
-        Texto corrido com <a href="#/site/blog">links</a>, <b>negrito</b> e listas. O mesmo estilo serve para páginas institucionais como termos de uso e
-        política de privacidade.
-      </p>
+      <p>{t('paginas.site.textos.primeiroParagrafoDoArtigo')}</p>
+      <h2>{t('paginas.site.textos.umSubtituloParaOrganizar')}</h2>
+      <p>{t('paginas.site.textos.textoCorridoCom')}<a href="#/site/blog">{t('paginas.site.textos.links')}</a>{rico(t('paginas.site.textos.negritoEListasO'))}</p>
       <ul>
-        <li>Item de lista com um ponto importante</li>
-        <li>Outro item curto</li>
-        <li>Um terceiro item para fechar</li>
+        <li>{t('paginas.site.textos.itemDeListaCom')}</li>
+        <li>{t('paginas.site.textos.outroItemCurto')}</li>
+        <li>{t('paginas.site.textos.umTerceiroItemPara')}</li>
       </ul>
-      <blockquote>Uma citação ou destaque que vale a pena ressaltar no meio do texto.</blockquote>
-      <p>Parágrafo de conclusão com uma chamada para a próxima ação do leitor.</p>
+      <blockquote>{t('paginas.site.textos.umaCitacaoOuDestaque')}</blockquote>
+      <p>{t('paginas.site.textos.paragrafoDeConclusaoCom')}</p>
       <div className="demo-site-tags">
         {['guia', 'iniciantes', 'produtividade'].map((t) => (
           <Badge key={t} cor="neutral" aparencia="suave" formato="pilula" rotulo={`#${t}`} />
@@ -641,9 +642,10 @@ function TextoPost({ className }: { className?: string }) {
 }
 
 function LeiaTambem() {
+  const { t } = useT();
   return (
-    <SecaoSite espaco="amplo" rotulo="Leia também">
-      <CabecalhoSecao titulo="Leia também" />
+    <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.leiaTambem')}>
+      <CabecalhoSecao titulo={t('paginas.site.textos.leiaTambem')} />
       <div className="demo-site-grade demo-site-grade--280">
         {POSTS.slice(0, 3).map((p) => (
           <CardConteudo key={p.titulo} href="/site/blog/post" etiquetas={<span className="demo-site-cat-tx">{p.cat}</span>} titulo={p.titulo} />
@@ -655,28 +657,30 @@ function LeiaTambem() {
 
 /** Coluna da direita do blog: newsletter, mais lidos e banner (a mesma da listagem). */
 function LateralBlog() {
+  const { t } = useT();
   return (
-    <aside className="demo-site-lateral" aria-label="Mais do blog">
-      <Newsletter descricao="Um e-mail por semana com os melhores conteúdos." aoInscrever={() => undefined} />
-      <Card titulo="Mais lidos">
-        <ListaNumerada tamanho="compacto" rotulo="Mais lidos" itens={POSTS.slice(1, 5).map((p) => ({ titulo: p.titulo, href: '/site/blog/post' }))} />
+    <aside className="demo-site-lateral" aria-label={t('paginas.site.textos.maisDoBlog')}>
+      <Newsletter descricao={t('paginas.site.textos.umEMailPor')} aoInscrever={() => undefined} />
+      <Card titulo={t('paginas.site.secoes.maisLidos')}>
+        <ListaNumerada tamanho="compacto" rotulo={t('paginas.site.textos.maisLidos')} itens={POSTS.slice(1, 5).map((p) => ({ titulo: p.titulo, href: '/site/blog/post' }))} />
       </Card>
-      <Imagem legenda="banner" proporcao="4 / 3" className="demo-site-img--tracejada" />
+      <Imagem legenda={t('paginas.site.textos.banner')} proporcao="4 / 3" className="demo-site-img--tracejada" />
     </aside>
   );
 }
 
 /** Post sem coluna lateral: cabeçalho, capa e texto na mesma coluna de leitura, centralizada. */
 function PostCompleto() {
+  const { t } = useT();
   return (
     <article>
-      <SecaoSite espaco="compacto" rotulo="Cabeçalho do post" className="demo-site-post">
+      <SecaoSite espaco="compacto" rotulo={t('paginas.site.textos.cabecalhoDoPost')} className="demo-site-post">
         <CabecalhoPost />
       </SecaoSite>
       <div className="demo-site-capa">
-        <Imagem legenda="imagem de capa" proporcao="21 / 9" />
+        <Imagem legenda={t('paginas.site.textos.imagemDeCapa')} proporcao="21 / 9" />
       </div>
-      <SecaoSite rotulo="Texto do post">
+      <SecaoSite rotulo={t('paginas.site.textos.textoDoPost')}>
         <TextoPost />
       </SecaoSite>
       <LeiaTambem />
@@ -686,13 +690,14 @@ function PostCompleto() {
 
 /** Post com a coluna da direita do blog: o texto fica na coluna da esquerda, alinhado a ela. */
 function PostComLateral() {
+  const { t } = useT();
   return (
     <>
-      <SecaoSite espaco="amplo" rotulo="Post">
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.post')}>
         <div className="demo-site-lista-lateral">
           <article className="demo-site-post-coluna">
             <CabecalhoPost />
-            <Imagem legenda="imagem de capa" proporcao="16 / 9" />
+            <Imagem legenda={t('paginas.site.textos.imagemDeCapa')} proporcao="16 / 9" />
             <TextoPost className="demo-site-post-texto" />
           </article>
           <LateralBlog />
@@ -706,17 +711,18 @@ function PostComLateral() {
 /* ---------------- Contato ---------------- */
 
 function Contato() {
+  const { t } = useT();
   const [enviado, setEnviado] = useState(false);
   const [f, setF] = useState({ nome: '', email: '', telefone: '', assunto: 'orcamento' as string | null, mensagem: '' });
   return (
     <>
-      <CabecalhoPaginaSite atual="Contato" titulo="Fale com a gente" descricao="Respondemos em até um dia útil. Escolha o canal que preferir." />
-      <SecaoSite espaco="amplo" rotulo="Formulário de contato">
+      <CabecalhoPaginaSite atual={t('paginas.site.textos.contato')} titulo={t('paginas.site.textos.faleComAGente')} descricao={t('paginas.site.textos.respondemosEmAteUm')} />
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.formularioDeContato')}>
         <div className="demo-site-lista-lateral">
           <Card className="demo-site-form">
             {enviado ? (
-              <Vazio titulo="Mensagem enviada!" descricao="Retornaremos em breve pelo e-mail informado." icone="circle-check">
-                <Botao rotulo="Enviar outra" severidade="secundario" aparencia="contorno" onClick={() => setEnviado(false)} />
+              <Vazio titulo={t('paginas.site.textos.mensagemEnviada')} descricao={t('paginas.site.textos.retornaremosEmBrevePelo')} icone="circle-check">
+                <Botao rotulo={t('paginas.site.textos.enviarOutra')} severidade="secundario" aparencia="contorno" onClick={() => setEnviado(false)} />
               </Vazio>
             ) : (
               <form
@@ -726,33 +732,33 @@ function Contato() {
                   setEnviado(true);
                 }}
               >
-                <CampoTexto rotulo="Nome" placeholder="Seu nome" valor={f.nome} aoMudar={(nome) => setF({ ...f, nome })} />
-                <CampoEmail rotulo="E-mail" placeholder="voce@email.com" valor={f.email} aoMudar={(email) => setF({ ...f, email })} />
-                <CampoTelefone rotulo="Telefone" valor={f.telefone} aoMudar={(telefone) => setF({ ...f, telefone })} />
+                <CampoTexto rotulo={t('paginas.site.textos.nome')} placeholder={t('paginas.site.textos.seuNome')} valor={f.nome} aoMudar={(nome) => setF({ ...f, nome })} />
+                <CampoEmail rotulo={t('paginas.site.textos.eMail')} placeholder={t('paginas.site.textos.voceEmailCom')} valor={f.email} aoMudar={(email) => setF({ ...f, email })} />
+                <CampoTelefone rotulo={t('paginas.site.textos.telefone')} valor={f.telefone} aoMudar={(telefone) => setF({ ...f, telefone })} />
                 <CampoSelect
-                  rotulo="Assunto"
+                  rotulo={t('paginas.site.textos.assunto')}
                   valor={f.assunto}
                   aoMudar={(assunto) => setF({ ...f, assunto })}
                   opcoes={[
-                    { valor: 'orcamento', rotulo: 'Orçamento' },
-                    { valor: 'suporte', rotulo: 'Suporte' },
-                    { valor: 'parcerias', rotulo: 'Parcerias' },
-                    { valor: 'outro', rotulo: 'Outro' },
+                    { valor: 'orcamento', rotulo: t('paginas.site.textos.orcamento') },
+                    { valor: 'suporte', rotulo: t('paginas.site.textos.suporte') },
+                    { valor: 'parcerias', rotulo: t('paginas.site.textos.parcerias') },
+                    { valor: 'outro', rotulo: t('paginas.site.textos.outro') },
                   ]}
                 />
-                <CampoTextarea className="demo-site-form-cheio" rotulo="Mensagem" placeholder="Como podemos ajudar?" valor={f.mensagem} aoMudar={(mensagem) => setF({ ...f, mensagem })} />
+                <CampoTextarea className="demo-site-form-cheio" rotulo={t('paginas.site.textos.mensagem')} placeholder={t('paginas.site.textos.comoPodemosAjudar')} valor={f.mensagem} aoMudar={(mensagem) => setF({ ...f, mensagem })} />
                 <div className="demo-site-form-pe">
-                  <span>Ao enviar, você concorda com a Política de Privacidade.</span>
-                  <Botao rotulo="Enviar mensagem" tamanho="grande" type="submit" />
+                  <span>{t('paginas.site.textos.aoEnviarVoceConcorda')}</span>
+                  <Botao rotulo={t('paginas.site.textos.enviarMensagem')} tamanho="grande" type="submit" />
                 </div>
               </form>
             )}
           </Card>
-          <aside className="demo-site-lateral" aria-label="Outros canais">
-            <CardRecurso formato="horizontal" icone="phone" sobretitulo="Telefone / WhatsApp" titulo="(11) 0000-0000" />
-            <CardRecurso formato="horizontal" icone="mail" sobretitulo="E-mail" titulo="contato@suamarca.com" />
-            <CardRecurso formato="horizontal" icone="map-pin" sobretitulo="Endereço" titulo="Rua Exemplo, 123 · Cidade/UF" />
-            <Imagem legenda="mapa" proporcao="4 / 3" />
+          <aside className="demo-site-lateral" aria-label={t('paginas.site.textos.outrosCanais')}>
+            <CardRecurso formato="horizontal" icone="phone" sobretitulo={t('paginas.site.textos.telefoneWhatsapp')} titulo="(11) 0000-0000" />
+            <CardRecurso formato="horizontal" icone="mail" sobretitulo={t('paginas.site.textos.eMail')} titulo={t('paginas.site.textos.contatoSuamarcaCom')} />
+            <CardRecurso formato="horizontal" icone="map-pin" sobretitulo={t('paginas.site.textos.endereco')} titulo={t('paginas.site.textos.ruaExemplo123Cidade')} />
+            <Imagem legenda={t('paginas.site.textos.mapa')} proporcao="4 / 3" />
           </aside>
         </div>
       </SecaoSite>
@@ -770,11 +776,12 @@ interface SecaoLegal {
 
 /** Modelo das páginas legais: sumário ao lado, aviso de texto de exemplo e seções numeradas. */
 function PaginaLegal({ atual, titulo, atualizacao, introducao, secoes }: { atual: string; titulo: string; atualizacao: string; introducao: ReactNode; secoes: SecaoLegal[] }) {
+  const { t } = useT();
   const numeradas = secoes.map((s, i) => ({ ...s, rotulo: `${i + 1}. ${s.titulo}` }));
   return (
     <>
-      <CabecalhoPaginaSite atual={atual} titulo={titulo} descricao={`Última atualização: ${atualizacao} · Em vigor a partir de ${atualizacao}`} />
-      <SecaoSite espaco="amplo" rotulo={`Texto: ${titulo}`}>
+      <CabecalhoPaginaSite atual={atual} titulo={titulo} descricao={t('paginas.site.textos.ultimaAtualizacaoAtualizacaoEm', { atualizacao, atualizacao2: atualizacao })} />
+      <SecaoSite espaco="amplo" rotulo={t('paginas.site.textos.textoTitulo', { titulo })}>
         <div className="demo-site-termos">
           <aside className="demo-site-termos-sumario">
             <SumarioPagina itens={numeradas} />
@@ -782,8 +789,8 @@ function PaginaLegal({ atual, titulo, atualizacao, introducao, secoes }: { atual
           <ConteudoArtigo className="demo-site-termos-texto">
             <Alerta
               severidade="warn"
-              titulo="Texto de exemplo"
-              mensagem="Este é um modelo para mostrar a página. Troque pelo texto da sua empresa e revise com um advogado antes de publicar."
+              titulo={t('paginas.site.textos.textoDeExemplo')}
+              mensagem={t('paginas.site.textos.esteEUmModelo')}
             />
             {introducao}
             {numeradas.map((s) => (
@@ -799,302 +806,260 @@ function PaginaLegal({ atual, titulo, atualizacao, introducao, secoes }: { atual
   );
 }
 
-const CONTATO_LEGAL = (
-  <p>
-    Dúvidas: <a href="#/site/contato">fale com a gente</a>, escreva para contato@suamarca.com ou ligue para (11) 0000-0000.
-  </p>
+// recebe o `t` de quem usa: o texto fica no dicionário
+const contatoLegal = (t: TradutorDemo['t']) => (
+  <p>{t('paginas.site.textos.duvidas2')}<a href="#/site/contato">{t('paginas.site.textos.faleComAGente2')}</a>{t('paginas.site.textos.escrevaParaContatoSuamarca')}</p>
 );
 
 function Termos() {
+  const { t } = useT();
   return (
     <PaginaLegal
-      atual="Termos de uso"
-      titulo="Termos de uso"
+      atual={t('paginas.site.textos.termosDeUso2')}
+      titulo={t('paginas.site.textos.termosDeUso2')}
       atualizacao="05/11/2026"
       introducao={
-        <p>
-          Estes Termos de uso regulam o acesso e o uso do site, dos aplicativos e dos serviços da <b>{MARCA}</b>. Leia com atenção: ao usar qualquer um deles,
-          você declara que leu, entendeu e concorda com as regras abaixo.
-        </p>
+        <p>{t('paginas.site.textos.estesTermosDeUso')}<b>{MARCA}</b>{t('paginas.site.textos.leiaComAtencaoAo')}</p>
       }
       secoes={[
         {
           id: 'aceitacao',
-          titulo: 'Aceitação dos termos',
+          titulo: t('paginas.site.textos.aceitacaoDosTermos'),
           conteudo: (
             <>
-              <p>
-                Ao criar uma conta ou usar os serviços, você aceita estes termos e a <a href="#/site/privacidade">Política de Privacidade</a>. Se não concordar,
-                não use os serviços.
-              </p>
-              <p>Quem usa os serviços em nome de uma empresa declara ter poderes para aceitar estes termos em nome dela.</p>
+              <p>{t('paginas.site.textos.aoCriarUmaConta')}<a href="#/site/privacidade">{t('paginas.site.textos.politicaDePrivacidade')}</a>{t('paginas.site.textos.seNaoConcordarNao')}</p>
+              <p>{t('paginas.site.textos.quemUsaOsServicos')}</p>
             </>
           ),
         },
         {
           id: 'definicoes',
-          titulo: 'Definições',
+          titulo: t('paginas.site.textos.definicoes'),
           conteudo: (
             <ul>
-              <li>
-                <b>Serviços:</b> o site, os aplicativos e tudo o que a {MARCA} oferece por eles.
-              </li>
-              <li>
-                <b>Usuário:</b> a pessoa que acessa ou usa os serviços, com ou sem cadastro.
-              </li>
-              <li>
-                <b>Conta:</b> o cadastro pessoal e intransferível que dá acesso às áreas restritas.
-              </li>
+              <li>{rico(t('paginas.site.textos.servicosOSiteOs', { MARCA }))}</li>
+              <li>{rico(t('paginas.site.textos.usuarioAPessoaQue'))}</li>
+              <li>{rico(t('paginas.site.textos.contaOCadastroPessoal'))}</li>
             </ul>
           ),
         },
         {
           id: 'cadastro',
-          titulo: 'Cadastro e conta',
+          titulo: t('paginas.site.textos.cadastroEConta'),
           conteudo: (
             <>
-              <p>Para algumas funções é preciso criar uma conta com dados verdadeiros e atualizados. Você é responsável por manter sua senha em segredo e por tudo o que for feito com a sua conta.</p>
-              <p>Se perceber qualquer uso indevido, avise a {MARCA} pelos canais de contato. Podemos suspender contas com dados falsos ou uso que viole estes termos.</p>
+              <p>{t('paginas.site.textos.paraAlgumasFuncoesE')}</p>
+              <p>{t('paginas.site.textos.sePerceberQualquerUso', { MARCA })}</p>
             </>
           ),
         },
         {
           id: 'uso',
-          titulo: 'Uso permitido',
+          titulo: t('paginas.site.textos.usoPermitido'),
           conteudo: (
             <>
-              <p>Você se compromete a usar os serviços de forma lícita e a não:</p>
+              <p>{t('paginas.site.textos.voceSeComprometeA')}</p>
               <ol>
-                <li>tentar acessar áreas, contas ou sistemas sem autorização;</li>
-                <li>enviar conteúdo ilegal, ofensivo ou que viole direitos de terceiros;</li>
-                <li>copiar, revender ou explorar os serviços sem autorização por escrito;</li>
-                <li>usar robôs ou programas que sobrecarreguem ou prejudiquem os serviços.</li>
+                <li>{t('paginas.site.textos.tentarAcessarAreasContas')}</li>
+                <li>{t('paginas.site.textos.enviarConteudoIlegalOfensivo')}</li>
+                <li>{t('paginas.site.textos.copiarRevenderOuExplorar')}</li>
+                <li>{t('paginas.site.textos.usarRobosOuProgramas')}</li>
               </ol>
             </>
           ),
         },
         {
           id: 'pagamentos',
-          titulo: 'Pagamentos e cancelamento',
+          titulo: t('paginas.site.textos.pagamentosECancelamento'),
           conteudo: (
             <>
-              <p>
-                Os preços, as formas de pagamento e os prazos de cada plano aparecem na página de <a href="#/site/servicos">Serviços e planos</a>. As assinaturas
-                são renovadas automaticamente no fim de cada período, até que você cancele.
-              </p>
-              <p>
-                Você pode cancelar quando quiser, pela sua conta ou pelos nossos canais. Nas compras feitas pela internet, vale o direito de arrependimento de 7
-                dias previsto no Código de Defesa do Consumidor.
-              </p>
+              <p>{t('paginas.site.textos.osPrecosAsFormas')}<a href="#/site/servicos">{t('paginas.site.textos.servicosEPlanos')}</a>{t('paginas.site.textos.asAssinaturasSaoRenovadas')}</p>
+              <p>{t('paginas.site.textos.vocePodeCancelarQuando')}</p>
             </>
           ),
         },
         {
           id: 'propriedade',
-          titulo: 'Propriedade intelectual',
-          conteudo: <p>Marcas, logotipos, textos, imagens e programas dos serviços pertencem à {MARCA} ou a quem os licenciou. O uso dos serviços não transfere a você nenhum desses direitos.</p>,
+          titulo: t('paginas.site.textos.propriedadeIntelectual'),
+          conteudo: <p>{t('paginas.site.textos.marcasLogotiposTextosImagens', { MARCA })}</p>,
         },
         {
           id: 'dados',
-          titulo: 'Privacidade e dados pessoais',
+          titulo: t('paginas.site.textos.privacidadeEDadosPessoais'),
           conteudo: (
-            <p>
-              Tratamos os dados pessoais de acordo com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), como explica a{' '}
-              <a href="#/site/privacidade">Política de Privacidade</a>. O uso de cookies está na <a href="#/site/cookies">Política de Cookies</a>.
+            <p>{t('paginas.site.textos.tratamosOsDadosPessoais')}<a href="#/site/privacidade">{t('paginas.site.textos.politicaDePrivacidade')}</a>{t('paginas.site.textos.oUsoDeCookies')}<a href="#/site/cookies">{t('paginas.site.textos.politicaDeCookies')}</a>.
             </p>
           ),
         },
         {
           id: 'responsabilidade',
-          titulo: 'Limitação de responsabilidade',
+          titulo: t('paginas.site.textos.limitacaoDeResponsabilidade'),
           conteudo: (
-            <p>
-              Trabalhamos para manter os serviços disponíveis e seguros, mas eles podem passar por interrupções para manutenção ou por motivos fora do nosso
-              controle. A {MARCA} não responde por danos causados por mau uso da conta ou por serviços de terceiros ligados aos nossos.
-            </p>
+            <p>{t('paginas.site.textos.trabalhamosParaManterOs', { MARCA })}</p>
           ),
         },
         {
           id: 'alteracoes',
-          titulo: 'Alterações destes termos',
-          conteudo: <p>Estes termos podem mudar. Avisaremos as mudanças importantes por e-mail ou por um aviso no site, com antecedência razoável. Continuar usando os serviços depois disso significa aceitar a nova versão.</p>,
+          titulo: t('paginas.site.textos.alteracoesDestesTermos'),
+          conteudo: <p>{t('paginas.site.textos.estesTermosPodemMudar')}</p>,
         },
         {
           id: 'foro',
-          titulo: 'Lei aplicável e foro',
-          conteudo: <p>Estes termos seguem as leis brasileiras. Fica eleito o foro da comarca do domicílio do usuário para resolver qualquer questão sobre eles.</p>,
+          titulo: t('paginas.site.textos.leiAplicavelEForo'),
+          conteudo: <p>{t('paginas.site.textos.estesTermosSeguemAs')}</p>,
         },
-        { id: 'contato', titulo: 'Contato', conteudo: CONTATO_LEGAL },
+        { id: 'contato', titulo: t('paginas.site.textos.contato'), conteudo: contatoLegal(t) },
       ]}
     />
   );
 }
 
 function Privacidade() {
+  const { t } = useT();
   return (
     <PaginaLegal
-      atual="Política de Privacidade"
-      titulo="Política de Privacidade"
+      atual={t('paginas.site.textos.politicaDePrivacidade')}
+      titulo={t('paginas.site.textos.politicaDePrivacidade')}
       atualizacao="05/11/2026"
       introducao={
-        <p>
-          Esta política explica como a <b>{MARCA}</b> coleta, usa, guarda e protege os seus dados pessoais, de acordo com a Lei Geral de Proteção de Dados
-          (LGPD, Lei nº 13.709/2018), e como você exerce os seus direitos.
-        </p>
+        <p>{t('paginas.site.textos.estaPoliticaExplicaComo')}<b>{MARCA}</b>{t('paginas.site.textos.coletaUsaGuardaE')}</p>
       }
       secoes={[
         {
           id: 'controlador',
-          titulo: 'Quem cuida dos seus dados',
+          titulo: t('paginas.site.textos.quemCuidaDosSeus'),
           conteudo: (
-            <p>
-              A {MARCA} é a controladora dos dados tratados nos serviços. O encarregado pelo tratamento de dados (DPO) atende pelo e-mail
-              privacidade@suamarca.com.
-            </p>
+            <p>{t('paginas.site.textos.aMarcaEA', { MARCA })}</p>
           ),
         },
         {
           id: 'coleta',
-          titulo: 'Dados que coletamos',
+          titulo: t('paginas.site.textos.dadosQueColetamos'),
           conteudo: (
             <ul>
-              <li>
-                <b>Que você informa:</b> nome, e-mail, telefone e as mensagens dos formulários.
-              </li>
-              <li>
-                <b>De uso:</b> páginas visitadas, data e hora de acesso, endereço IP, navegador e dispositivo.
-              </li>
-              <li>
-                <b>De pagamento:</b> tratados pelo meio de pagamento escolhido; não guardamos o número completo do cartão.
-              </li>
+              <li>{rico(t('paginas.site.textos.queVoceInformaNome'))}</li>
+              <li>{rico(t('paginas.site.textos.deUsoPaginasVisitadas'))}</li>
+              <li>{rico(t('paginas.site.textos.dePagamentoTratadosPelo'))}</li>
             </ul>
           ),
         },
         {
           id: 'finalidade',
-          titulo: 'Para que usamos os dados',
+          titulo: t('paginas.site.textos.paraQueUsamosOs'),
           conteudo: (
             <ol>
-              <li>prestar os serviços contratados e o atendimento;</li>
-              <li>enviar comunicações sobre a conta e, com a sua autorização, novidades;</li>
-              <li>cumprir obrigações legais, como as fiscais;</li>
-              <li>manter os serviços seguros e prevenir fraudes.</li>
+              <li>{t('paginas.site.textos.prestarOsServicosContratados')}</li>
+              <li>{t('paginas.site.textos.enviarComunicacoesSobreA')}</li>
+              <li>{t('paginas.site.textos.cumprirObrigacoesLegaisComo')}</li>
+              <li>{t('paginas.site.textos.manterOsServicosSeguros')}</li>
             </ol>
           ),
         },
         {
           id: 'bases',
-          titulo: 'Bases legais',
-          conteudo: <p>Tratamos os dados com base na execução de contrato, no cumprimento de obrigação legal, no legítimo interesse e, quando necessário, no seu consentimento, que pode ser retirado a qualquer momento.</p>,
+          titulo: t('paginas.site.textos.basesLegais'),
+          conteudo: <p>{t('paginas.site.textos.tratamosOsDadosCom')}</p>,
         },
         {
           id: 'compartilhamento',
-          titulo: 'Compartilhamento',
-          conteudo: <p>Compartilhamos dados só com quem nos ajuda a prestar os serviços (hospedagem, pagamento, envio de e-mail), sempre com contrato e para as mesmas finalidades, ou quando a lei ou uma autoridade exigir. Não vendemos dados pessoais.</p>,
+          titulo: t('paginas.site.textos.compartilhamento'),
+          conteudo: <p>{t('paginas.site.textos.compartilhamosDadosSoCom')}</p>,
         },
         {
           id: 'guarda',
-          titulo: 'Guarda e segurança',
-          conteudo: <p>Guardamos os dados pelo tempo necessário para as finalidades acima ou pelo prazo que a lei exigir. Usamos conexão criptografada, controle de acesso e cópias de segurança para protegê-los.</p>,
+          titulo: t('paginas.site.textos.guardaESeguranca'),
+          conteudo: <p>{t('paginas.site.textos.guardamosOsDadosPelo')}</p>,
         },
         {
           id: 'direitos',
-          titulo: 'Seus direitos',
+          titulo: t('paginas.site.textos.seusDireitos'),
           conteudo: (
             <>
-              <p>Pela LGPD, você pode pedir a qualquer momento:</p>
+              <p>{t('paginas.site.textos.pelaLgpdVocePode')}</p>
               <ul>
-                <li>a confirmação de que tratamos seus dados e o acesso a eles;</li>
-                <li>a correção de dados incompletos ou desatualizados;</li>
-                <li>a exclusão dos dados tratados com o seu consentimento;</li>
-                <li>a portabilidade para outro fornecedor;</li>
-                <li>informações sobre com quem compartilhamos os dados.</li>
+                <li>{t('paginas.site.textos.aConfirmacaoDeQue')}</li>
+                <li>{t('paginas.site.textos.aCorrecaoDeDados')}</li>
+                <li>{t('paginas.site.textos.aExclusaoDosDados')}</li>
+                <li>{t('paginas.site.textos.aPortabilidadeParaOutro')}</li>
+                <li>{t('paginas.site.textos.informacoesSobreComQuem')}</li>
               </ul>
-              <blockquote>Para exercer seus direitos, escreva para privacidade@suamarca.com. Respondemos em até 15 dias.</blockquote>
+              <blockquote>{t('paginas.site.textos.paraExercerSeusDireitos')}</blockquote>
             </>
           ),
         },
         {
           id: 'cookies-privacidade',
-          titulo: 'Cookies',
+          titulo: t('paginas.site.textos.cookies'),
           conteudo: (
-            <p>
-              Usamos cookies para o site funcionar e, com a sua autorização, para medir o uso. Os detalhes estão na <a href="#/site/cookies">Política de Cookies</a>.
+            <p>{t('paginas.site.textos.usamosCookiesParaO')}<a href="#/site/cookies">{t('paginas.site.textos.politicaDeCookies')}</a>.
             </p>
           ),
         },
         {
           id: 'alteracoes-privacidade',
-          titulo: 'Alterações desta política',
-          conteudo: <p>Esta política pode mudar. A data da última atualização fica no alto da página, e as mudanças importantes são avisadas por e-mail ou por um aviso no site.</p>,
+          titulo: t('paginas.site.textos.alteracoesDestaPolitica'),
+          conteudo: <p>{t('paginas.site.textos.estaPoliticaPodeMudar')}</p>,
         },
-        { id: 'contato-privacidade', titulo: 'Contato', conteudo: CONTATO_LEGAL },
+        { id: 'contato-privacidade', titulo: t('paginas.site.textos.contato'), conteudo: contatoLegal(t) },
       ]}
     />
   );
 }
 
 function Cookies() {
+  const { t } = useT();
   return (
     <PaginaLegal
-      atual="Política de Cookies"
-      titulo="Política de Cookies"
+      atual={t('paginas.site.textos.politicaDeCookies')}
+      titulo={t('paginas.site.textos.politicaDeCookies')}
       atualizacao="05/11/2026"
       introducao={
-        <p>
-          Esta política explica o que são cookies, quais a <b>{MARCA}</b> usa e como você pode controlá-los. Ela completa a{' '}
-          <a href="#/site/privacidade">Política de Privacidade</a>.
+        <p>{t('paginas.site.textos.estaPoliticaExplicaO')}<b>{MARCA}</b>{t('paginas.site.textos.usaEComoVoce')}<a href="#/site/privacidade">{t('paginas.site.textos.politicaDePrivacidade')}</a>.
         </p>
       }
       secoes={[
         {
           id: 'o-que-sao',
-          titulo: 'O que são cookies',
-          conteudo: <p>Cookies são pequenos arquivos que o site guarda no seu navegador para lembrar informações entre uma visita e outra, como a sua sessão ou o tema escolhido.</p>,
+          titulo: t('paginas.site.textos.oQueSaoCookies'),
+          conteudo: <p>{t('paginas.site.textos.cookiesSaoPequenosArquivos')}</p>,
         },
         {
           id: 'tipos',
-          titulo: 'Cookies que usamos',
+          titulo: t('paginas.site.textos.cookiesQueUsamos'),
           conteudo: (
             <ul>
-              <li>
-                <b>Necessários:</b> mantêm a sessão, a segurança e as suas preferências. Sem eles o site não funciona e, por isso, não dependem de autorização.
-              </li>
-              <li>
-                <b>De desempenho:</b> medem, de forma agregada, quais páginas são mais visitadas, para melhorar o site.
-              </li>
-              <li>
-                <b>De marketing:</b> mostram anúncios mais relevantes em outros sites. Só são usados com a sua autorização.
-              </li>
+              <li>{rico(t('paginas.site.textos.necessariosMantemASessao'))}</li>
+              <li>{rico(t('paginas.site.textos.deDesempenhoMedemDe'))}</li>
+              <li>{rico(t('paginas.site.textos.deMarketingMostramAnuncios'))}</li>
             </ul>
           ),
         },
         {
           id: 'terceiros',
-          titulo: 'Cookies de terceiros',
-          conteudo: <p>Algumas ferramentas de medição e de anúncios usam cookies próprios. Elas seguem as políticas dos seus fornecedores, que recomendamos consultar.</p>,
+          titulo: t('paginas.site.textos.cookiesDeTerceiros'),
+          conteudo: <p>{t('paginas.site.textos.algumasFerramentasDeMedicao')}</p>,
         },
         {
           id: 'controle',
-          titulo: 'Como controlar os cookies',
+          titulo: t('paginas.site.textos.comoControlarOsCookies'),
           conteudo: (
             <>
-              <p>Você pode aceitar ou recusar os cookies que não são necessários no aviso que aparece na primeira visita, e mudar a escolha quando quiser.</p>
-              <p>Também é possível apagar ou bloquear cookies nas configurações do navegador. Bloquear os necessários pode impedir partes do site de funcionar.</p>
+              <p>{t('paginas.site.textos.vocePodeAceitarOu')}</p>
+              <p>{t('paginas.site.textos.tambemEPossivelApagar')}</p>
             </>
           ),
         },
         {
           id: 'prazo',
-          titulo: 'Por quanto tempo',
-          conteudo: <p>Os cookies de sessão somem quando você fecha o navegador. Os demais duram até 12 meses, ou até você apagá-los.</p>,
+          titulo: t('paginas.site.textos.porQuantoTempo'),
+          conteudo: <p>{t('paginas.site.textos.osCookiesDeSessao')}</p>,
         },
         {
           id: 'alteracoes-cookies',
-          titulo: 'Alterações desta política',
-          conteudo: <p>Esta política pode mudar quando passarmos a usar novas ferramentas. A data da última atualização fica no alto da página.</p>,
+          titulo: t('paginas.site.textos.alteracoesDestaPolitica'),
+          conteudo: <p>{t('paginas.site.textos.estaPoliticaPodeMudar2')}</p>,
         },
-        { id: 'contato-cookies', titulo: 'Contato', conteudo: CONTATO_LEGAL },
+        { id: 'contato-cookies', titulo: t('paginas.site.textos.contato'), conteudo: contatoLegal(t) },
       ]}
     />
   );

@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="alerta"
@@ -10,20 +12,15 @@ export default function Pagina() {
       componente="Alerta"
       notas={
         <ul className="doc-lista">
-          <li>
-            <C>dispensavel</C> some sozinho ao clicar no ×; com <C>aoFechar</C>, quem decide é o app (por exemplo, lembrar que a pessoa já
-            dispensou).
-          </li>
-          <li>
-            O ícone vem da severidade. Troque com <C>icone</C> ou tire com <C>{'icone={false}'}</C>.
-          </li>
-          <li>Retorno de uma ação (salvou, excluiu) é toast; o alerta é para o que precisa continuar visível.</li>
+          <li>{rico(t('docs.alerta.textos.dispensavelSomeSozinhoAo'))}</li>
+          <li>{rico(t('docs.alerta.textos.oIconeVemDa'))}</li>
+          <li>{t('docs.alerta.textos.retornoDeUmaAcao')}</li>
         </ul>
       }
     >
-      <Exemplo id="alerta/Severidades" titulo="Severidades" />
-      <Exemplo id="alerta/Aparencias" titulo="Aparências" />
-      <Exemplo id="alerta/Acoes" titulo="Com ação e fechar" />
+      <Exemplo id="alerta/Severidades" titulo={t('docs.alerta.secoes.severidades')} />
+      <Exemplo id="alerta/Aparencias" titulo={t('docs.alerta.secoes.aparencias')} />
+      <Exemplo id="alerta/Acoes" titulo={t('docs.alerta.secoes.comAcaoEFechar')} />
     </PaginaComponente>
   );
 }

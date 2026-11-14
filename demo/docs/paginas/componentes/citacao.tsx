@@ -1,8 +1,11 @@
 import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="citacao"
@@ -10,16 +13,12 @@ export default function Pagina() {
       componente="Citacao"
       notas={
         <ul className="doc-lista">
-          <li>
-            Usa <C>{'<blockquote>'}</C> e <C>{'<cite>'}</C>: o leitor de tela anuncia que é uma citação.
-          </li>
-          <li>
-            Depoimento de cliente no site público é o <C>CardDepoimento</C>.
-          </li>
+          <li>{t('docs.citacao.textos.usa')}<C>{'<blockquote>'}</C> e <C>{'<cite>'}</C>{t('docs.citacao.textos.oLeitorDeTela')}</li>
+          <li>{rico(t('docs.citacao.textos.depoimentoDeClienteNo'))}</li>
         </ul>
       }
     >
-      <Exemplo id="citacao/Basico" titulo="Simples e cartão" />
+      <Exemplo id="citacao/Basico" titulo={t('docs.citacao.secoes.simplesECartao')} />
     </PaginaComponente>
   );
 }

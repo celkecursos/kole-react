@@ -46,39 +46,39 @@ export function PaginaTrilhas({
       <CabecalhoPagina titulo={t('paginas.trilha.titulo')} icone="list" trilha />
 
       <Bloco
-        titulo="Usar no sistema"
-        descricao="O modelo escolhido vale para as trilhas de todas as páginas (prop modeloTrilha da Estrutura). Abra Pedidos para ver aplicado."
+        titulo={t('paginas.trilha.secoes.usarNoSistema')}
+        descricao={t('paginas.trilha.textos.oModeloEscolhidoVale')}
       >
         <div className="demo-linha demo-linha--centro">
-          <Escolha rotulo="Modelo" opcoes={MODELOS_TRILHA.map((m) => ({ valor: m.id, rotulo: m.nome }))} valor={escolhido.id} aoMudar={aoMudarModelo} />
-          <Botao rotulo="Ver em Pedidos" icone="arrow-right" posicaoIcone="direita" severidade="secundario" onClick={() => navegar('/pedidos')} />
+          <Escolha rotulo={t('paginas.trilha.textos.modelo')} opcoes={MODELOS_TRILHA.map((m) => ({ valor: m.id, rotulo: m.nome }))} valor={escolhido.id} aoMudar={aoMudarModelo} />
+          <Botao rotulo={t('paginas.trilha.textos.verEmPedidos')} icone="arrow-right" posicaoIcone="direita" severidade="secundario" onClick={() => navegar('/pedidos')} />
         </div>
         <code className="demo-util-res">{`<Estrutura modeloTrilha={${escolhido.codigo}} … />`}</code>
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Padrão" descricao="Separador ›, ícone só no Início.">
+        <Bloco titulo={t('paginas.trilha.secoes.padrao')} descricao={t('paginas.trilha.textos.separadorIconeSoNo')}>
           <Niveis />
         </Bloco>
-        <Bloco titulo="Barra">
+        <Bloco titulo={t('paginas.trilha.secoes.barra')}>
           <Niveis separador="barra" icones="nenhum" />
         </Bloco>
-        <Bloco titulo="Duplo">
+        <Bloco titulo={t('paginas.trilha.secoes.duplo')}>
           <Niveis separador="duplo" icones="nenhum" />
         </Bloco>
-        <Bloco titulo="Til">
+        <Bloco titulo={t('paginas.trilha.secoes.til')}>
           <Niveis separador="til" icones="nenhum" />
         </Bloco>
-        <Bloco titulo="Seta">
+        <Bloco titulo={t('paginas.trilha.secoes.seta')}>
           <Niveis separador="seta" icones="nenhum" />
         </Bloco>
-        <Bloco titulo="Com ícones" descricao={'icones="todos": cada passo mostra o ícone do item do menu.'}>
+        <Bloco titulo={t('paginas.trilha.secoes.comIcones')} descricao={t('paginas.trilha.textos.iconesTodosCadaPasso')}>
           <Niveis icones="todos" />
         </Bloco>
-        <Bloco titulo="Com fundo">
+        <Bloco titulo={t('paginas.trilha.secoes.comFundo')}>
           <Niveis aparencia="fundo" />
         </Bloco>
-        <Bloco titulo="Personalizado" descricao="O separador aceita qualquer conteúdo (aqui, “|”).">
+        <Bloco titulo={t('paginas.trilha.secoes.personalizado')} descricao={t('paginas.trilha.textos.oSeparadorAceitaQualquer')}>
           <Niveis separador="|" icones="nenhum" aparencia="fundo" />
         </Bloco>
       </div>

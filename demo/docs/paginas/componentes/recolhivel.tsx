@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="recolhivel"
@@ -10,19 +12,13 @@ export default function Pagina() {
       componente="Recolhivel"
       notas={
         <ul className="doc-lista">
-          <li>
-            Ligue o botão ao conteúdo: <C>aria-expanded</C> no botão e <C>aria-controls</C> apontando para o <C>id</C> do recolhível.
-          </li>
-          <li>
-            Fechado, o conteúdo fica <C>inert</C>: sai do Tab e do leitor de tela.
-          </li>
-          <li>
-            Para várias seções com título, o <C>Acordeao</C> já traz o botão pronto.
-          </li>
+          <li>{rico(t('docs.recolhivel.textos.ligueOBotaoAo'))}</li>
+          <li>{rico(t('docs.recolhivel.textos.fechadoOConteudoFica'))}</li>
+          <li>{rico(t('docs.recolhivel.textos.paraVariasSecoesCom'))}</li>
         </ul>
       }
     >
-      <Exemplo id="recolhivel/Basico" titulo="Com botão" />
+      <Exemplo id="recolhivel/Basico" titulo={t('docs.recolhivel.secoes.comBotao')} />
     </PaginaComponente>
   );
 }

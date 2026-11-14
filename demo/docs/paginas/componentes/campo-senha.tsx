@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="campoSenha"
@@ -11,20 +13,13 @@ export default function Pagina() {
       importar={['type PoliticaSenha']}
       notas={
         <ul className="doc-lista">
-          <li>
-            No login, deixe sem <C>forca</C> e sem <C>politica</C>: exigir regras ali só atrapalha quem já tem senha.
-          </li>
-          <li>
-            Em troca de senha, passe <C>autoComplete="new-password"</C> para o navegador sugerir uma senha nova.
-          </li>
-          <li>
-            Com <C>forca</C>, a <C>politica</C> liga o medidor e vira validação do campo: o <C>Form</C> acusa a pendência ao salvar. Sem
-            ela, vale a política padrão.
-          </li>
+          <li>{rico(t('docs.campoSenha.textos.noLoginDeixeSem'))}</li>
+          <li>{rico(t('docs.campoSenha.textos.emTrocaDeSenha'))}</li>
+          <li>{rico(t('docs.campoSenha.textos.comForcaAPolitica'))}</li>
         </ul>
       }
     >
-      <Exemplo id="campo-senha/Basico" titulo="Login e troca de senha" />
+      <Exemplo id="campo-senha/Basico" titulo={t('docs.campoSenha.secoes.loginETrocaDe')} />
     </PaginaComponente>
   );
 }

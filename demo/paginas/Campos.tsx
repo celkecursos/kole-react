@@ -115,98 +115,98 @@ export function PaginaCampos() {
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.campos.titulo')} icone="pencil" trilha />
 
-      <Bloco titulo="Campos básicos" descricao="Texto, ícone, erro, aviso, desabilitado, somente leitura e select; a variante inline fica na mesma linha do rótulo.">
+      <Bloco titulo={t('paginas.campos.secoes.camposBasicos')} descricao={t('paginas.campos.textos.textoIconeErroAviso')}>
         <div className="demo-grade">
-          <CampoTexto rotulo="Texto" placeholder="Digite…" valor={texto} aoMudar={setTexto} dica="Texto de ajuda" />
-          <CampoTexto rotulo="Com ícone" icone="search" placeholder="Pesquisar" />
-          <CampoTexto rotulo="Obrigatório com erro" obrigatorio erro="Campo obrigatório." />
-          <CampoTexto rotulo="Com aviso" aviso="Confira se o valor está correto." defaultValue="123" />
-          <CampoTexto rotulo="Desabilitado" disabled defaultValue="Não editável" />
-          <CampoTexto rotulo="Somente leitura" readOnly defaultValue="Somente leitura" />
-          <CampoSelect rotulo="Select" opcoes={OPCOES_PAGAMENTO} placeholder="Forma de pagamento" />
+          <CampoTexto rotulo={t('paginas.campos.textos.texto')} placeholder={t('paginas.campos.textos.digite')} valor={texto} aoMudar={setTexto} dica={t('paginas.campos.textos.textoDeAjuda')} />
+          <CampoTexto rotulo={t('paginas.campos.textos.comIcone')} icone="search" placeholder={t('paginas.campos.textos.pesquisar')} />
+          <CampoTexto rotulo={t('paginas.campos.textos.obrigatorioComErro')} obrigatorio erro={t('paginas.campos.textos.campoObrigatorio')} />
+          <CampoTexto rotulo={t('paginas.campos.textos.comAviso')} aviso={t('paginas.campos.textos.confiraSeOValor')} defaultValue="123" />
+          <CampoTexto rotulo={t('paginas.campos.textos.desabilitado')} disabled defaultValue={t('paginas.campos.textos.naoEditavel')} />
+          <CampoTexto rotulo={t('paginas.campos.textos.somenteLeitura')} readOnly defaultValue={t('paginas.campos.textos.somenteLeitura')} />
+          <CampoSelect rotulo={t('paginas.campos.textos.select')} opcoes={OPCOES_PAGAMENTO} placeholder={t('paginas.campos.textos.formaDePagamento')} />
         </div>
         <div className="demo-linha">
-          <CampoTexto variante="inline" rotulo="Inline" placeholder="valor" />
-          <CampoSelect variante="inline" rotulo="Pagamento" opcoes={OPCOES_PAGAMENTO} placeholder="Todos" />
+          <CampoTexto variante="inline" rotulo={t('paginas.campos.textos.inline')} placeholder={t('paginas.campos.textos.valor')} />
+          <CampoSelect variante="inline" rotulo={t('paginas.campos.textos.pagamento')} opcoes={OPCOES_PAGAMENTO} placeholder={t('paginas.campos.textos.todos')} />
         </div>
       </Bloco>
 
-      <Bloco titulo="Escolhas e marcação">
+      <Bloco titulo={t('paginas.campos.secoes.escolhasEMarcacao')}>
         <div className="demo-linha">
           <Escolha
-            rotulo="Segmentado"
+            rotulo={t('paginas.campos.textos.segmentado')}
             opcoes={[
-              { valor: 'dia', rotulo: 'Dia' },
-              { valor: 'semana', rotulo: 'Semana' },
-              { valor: 'mes', rotulo: 'Mês' },
+              { valor: 'dia', rotulo: t('paginas.campos.textos.dia') },
+              { valor: 'semana', rotulo: t('paginas.campos.textos.semana') },
+              { valor: 'mes', rotulo: t('paginas.campos.textos.mes') },
             ]}
             valor={esc}
             aoMudar={setEsc}
           />
           <Escolha
-            rotulo="Radio"
+            rotulo={t('paginas.campos.textos.radio')}
             aparencia="radio"
             opcoes={[
-              { valor: 'a', rotulo: 'Opção A' },
-              { valor: 'b', rotulo: 'Opção B' },
+              { valor: 'a', rotulo: t('paginas.campos.textos.opcaoA') },
+              { valor: 'b', rotulo: t('paginas.campos.textos.opcaoB') },
             ]}
             valor={radio}
             aoMudar={setRadio}
           />
-          <CampoMarcacao rotulo="Caixa de marcação" valor={marc} aoMudar={setMarc} />
-          <CampoMarcacao rotulo="Chave" aparencia="chave" valor={chave} aoMudar={setChave} />
+          <CampoMarcacao rotulo={t('paginas.campos.textos.caixaDeMarcacao')} valor={marc} aoMudar={setMarc} />
+          <CampoMarcacao rotulo={t('paginas.campos.textos.chave')} aparencia="chave" valor={chave} aoMudar={setChave} />
         </div>
       </Bloco>
 
       <Bloco
-        titulo="Campos tipados BR"
-        descricao="Máscara, placeholder e validação vêm do mesmo descritor (TIPOS_CAMPO). O CPF já chega preenchido com um dígito errado: valor carregado de fora vira aviso, não erro."
+        titulo={t('paginas.campos.secoes.camposTipadosBr')}
+        descricao={t('paginas.campos.textos.mascaraPlaceholderEValidacao')}
       >
         <div className="demo-grade">
-          <CampoCpf rotulo="CPF" valor={doc.cpf} aoMudar={mudar('cpf')} />
-          <CampoCnpj rotulo="CNPJ" valor={doc.cnpj} aoMudar={mudar('cnpj')} dica="Teste: 11.222.333/0001-81" />
-          <CampoCpfCnpj rotulo="CPF ou CNPJ" valor={doc.cpfCnpj} aoMudar={mudar('cpfCnpj')} dica="A máscara muda pelo tamanho" />
-          <CampoEmail rotulo="E-mail" valor={doc.email} aoMudar={mudar('email')} />
-          <CampoTelefone rotulo="Telefone" valor={doc.telefone} aoMudar={mudar('telefone')} dica="Fixo ou celular" />
-          <CampoTelefone rotulo="Celular" tipo="celular" valor={doc.celular} aoMudar={mudar('celular')} />
-          <CampoPlaca rotulo="Placa" valor={doc.placa} aoMudar={mudar('placa')} dica="Antiga ou Mercosul" />
-          <CampoRenavam rotulo="RENAVAM" valor={doc.renavam} aoMudar={mudar('renavam')} />
-          <CampoChassi rotulo="Chassi" valor={doc.chassi} aoMudar={mudar('chassi')} dica="Teste: 9BWZZZ377VT004251" />
-          <CampoCnh rotulo="CNH" valor={doc.cnh} aoMudar={mudar('cnh')} dica="Teste: 02650306461" />
-          <CampoImei rotulo="IMEI" valor={doc.imei} aoMudar={mudar('imei')} dica="Teste: 490154203237518" />
+          <CampoCpf rotulo={t('paginas.campos.textos.cpf')} valor={doc.cpf} aoMudar={mudar('cpf')} />
+          <CampoCnpj rotulo={t('paginas.campos.textos.cnpj')} valor={doc.cnpj} aoMudar={mudar('cnpj')} dica={t('paginas.campos.textos.teste11222333')} />
+          <CampoCpfCnpj rotulo={t('paginas.campos.textos.cpfOuCnpj')} valor={doc.cpfCnpj} aoMudar={mudar('cpfCnpj')} dica={t('paginas.campos.textos.aMascaraMudaPelo')} />
+          <CampoEmail rotulo={t('paginas.campos.textos.eMail')} valor={doc.email} aoMudar={mudar('email')} />
+          <CampoTelefone rotulo={t('paginas.campos.textos.telefone')} valor={doc.telefone} aoMudar={mudar('telefone')} dica={t('paginas.campos.textos.fixoOuCelular')} />
+          <CampoTelefone rotulo={t('paginas.campos.textos.celular')} tipo="celular" valor={doc.celular} aoMudar={mudar('celular')} />
+          <CampoPlaca rotulo={t('paginas.campos.textos.placa')} valor={doc.placa} aoMudar={mudar('placa')} dica={t('paginas.campos.textos.antigaOuMercosul')} />
+          <CampoRenavam rotulo={t('paginas.campos.textos.renavam')} valor={doc.renavam} aoMudar={mudar('renavam')} />
+          <CampoChassi rotulo={t('paginas.campos.textos.chassi')} valor={doc.chassi} aoMudar={mudar('chassi')} dica={t('paginas.campos.textos.teste9bwzzz377vt004251')} />
+          <CampoCnh rotulo={t('paginas.campos.textos.cnh')} valor={doc.cnh} aoMudar={mudar('cnh')} dica={t('paginas.campos.textos.teste02650306461')} />
+          <CampoImei rotulo={t('paginas.campos.textos.imei')} valor={doc.imei} aoMudar={mudar('imei')} dica={t('paginas.campos.textos.teste490154203237518')} />
         </div>
       </Bloco>
 
-      <Bloco titulo="Domínio: UF, cidade e tipo de pessoa" descricao="Trocar a UF limpa a cidade escolhida (cascata embutida no CampoCidade).">
+      <Bloco titulo={t('paginas.campos.secoes.dominioUfCidadeE')} descricao={t('paginas.campos.textos.trocarAUfLimpa')}>
         <div className="demo-grade">
-          <CampoUf rotulo="UF" valor={uf} aoMudar={setUf} />
-          <CampoCidade rotulo="Cidade" uf={uf ?? ''} buscarPorUf={buscarMunicipios} valor={cidade} aoMudar={setCidade} dica="Com sugestões (PR, SP, GO)" />
-          <CampoCidade rotulo="Cidade (texto livre)" uf={uf ?? ''} valor={cidadeLivre} aoMudar={setCidadeLivre} dica="Sem buscarPorUf: aceita texto" />
-          <CampoTipoPessoa rotulo="Tipo de pessoa" valor={tipoPessoa} aoMudar={setTipoPessoa} />
-          <CampoUfMultiplo className="lp-col-2" rotulo="UFs de atuação" exibicao="sigla" valor={ufs} aoMudar={setUfs} botaoLimpar />
+          <CampoUf rotulo={t('paginas.campos.textos.uf')} valor={uf} aoMudar={setUf} />
+          <CampoCidade rotulo={t('paginas.campos.textos.cidade')} uf={uf ?? ''} buscarPorUf={buscarMunicipios} valor={cidade} aoMudar={setCidade} dica={t('paginas.campos.textos.comSugestoesPrSp')} />
+          <CampoCidade rotulo={t('paginas.campos.textos.cidadeTextoLivre')} uf={uf ?? ''} valor={cidadeLivre} aoMudar={setCidadeLivre} dica={t('paginas.campos.textos.semBuscarporufAceitaTexto')} />
+          <CampoTipoPessoa rotulo={t('paginas.campos.textos.tipoDePessoa')} valor={tipoPessoa} aoMudar={setTipoPessoa} />
+          <CampoUfMultiplo className="lp-col-2" rotulo={t('paginas.campos.textos.ufsDeAtuacao')} exibicao="sigla" valor={ufs} aoMudar={setUfs} botaoLimpar />
         </div>
       </Bloco>
 
-      <Bloco titulo="Busca remota" descricao="Espera a digitação parar e descarta resposta atrasada. O valor é o registro escolhido, não o texto.">
+      <Bloco titulo={t('paginas.campos.secoes.buscaRemota')} descricao={t('paginas.campos.textos.esperaADigitacaoParar')}>
         <div className="demo-grade-2">
           <CampoBusca<Servidor>
-            rotulo="Servidor responsável"
+            rotulo={t('paginas.campos.textos.servidorResponsavel')}
             buscar={buscarServidores}
             paraRotulo={(s) => s.nome}
             paraDetalhe={(s) => `Matrícula ${s.matricula} · ${s.lotacao}`}
             valor={servidor}
             aoMudar={setServidor}
-            placeholder="Digite o nome"
+            placeholder={t('paginas.campos.textos.digiteONome')}
           />
-          <div className="demo-util-res">valor: {servidor ? JSON.stringify(servidor) : 'null'}</div>
+          <div className="demo-util-res">{t('paginas.campos.textos.valor2')}{servidor ? JSON.stringify(servidor) : 'null'}</div>
         </div>
       </Bloco>
 
-      <Bloco titulo="Senha">
+      <Bloco titulo={t('paginas.campos.secoes.senha')}>
         <div className="demo-grade-2">
-          <CampoSenha rotulo="Senha atual" valor={senha} aoMudar={setSenha} dica="Login: sem medidor nem política" />
+          <CampoSenha rotulo={t('paginas.campos.textos.senhaAtual')} valor={senha} aoMudar={setSenha} dica={t('paginas.campos.textos.loginSemMedidorNem')} />
           <CampoSenha
-            rotulo="Nova senha"
+            rotulo={t('paginas.campos.textos.novaSenha')}
             forca
             politica={{ minimo: 10, exigirMaiuscula: true, exigirDigito: true, exigirSimbolo: true }}
             autoComplete="new-password"
@@ -214,7 +214,7 @@ export function PaginaCampos() {
             aoMudar={setNovaSenha}
           />
           <CampoSenha
-            rotulo="Confirmar nova senha"
+            rotulo={t('paginas.campos.textos.confirmarNovaSenha')}
             autoComplete="new-password"
             valor={confirmar}
             aoMudar={setConfirmar}
@@ -223,42 +223,42 @@ export function PaginaCampos() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Picklist" descricao="Clique (Ctrl para vários), duplo clique, Enter, arrastar e soltar; Alt + setas reordena.">
-        <Picklist rotulo="Permissões do perfil" rotuloFonte="Disponíveis" rotuloAlvo="Concedidas" filtro valor={permissoes} aoMudar={setPermissoes} />
+      <Bloco titulo={t('paginas.campos.secoes.picklist')} descricao={t('paginas.campos.textos.cliqueCtrlParaVarios')}>
+        <Picklist rotulo={t('paginas.campos.textos.permissoesDoPerfil')} rotuloFonte={t('paginas.campos.textos.disponiveis')} rotuloAlvo="Concedidas" filtro valor={permissoes} aoMudar={setPermissoes} />
       </Bloco>
 
-      <Bloco titulo="Anexos" descricao="Clique num anexo para abrir o visualizador (← → folheia). O File real sai por ref.arquivoDe(anexo).">
-        <CampoAnexo ref={anexoRef} rotulo="Documentos" valor={anexos} aoMudar={setAnexos} maxTamanho={5 * 1024 * 1024} accept="image/*,.pdf,.doc,.docx" />
+      <Bloco titulo={t('paginas.campos.secoes.anexos')} descricao={t('paginas.campos.textos.cliqueNumAnexoPara')}>
+        <CampoAnexo ref={anexoRef} rotulo={t('paginas.campos.textos.documentos')} valor={anexos} aoMudar={setAnexos} maxTamanho={5 * 1024 * 1024} accept="image/*,.pdf,.doc,.docx" />
         <div className="demo-linha">
           <Botao
-            rotulo="Enviar anexos"
+            rotulo={t('paginas.campos.textos.enviarAnexos')}
             icone="upload"
             severidade="secundario"
             onClick={() => {
               const daSessao = anexos.filter((a) => anexoRef.current?.arquivoDe(a));
-              toast.info('Upload simulado', `${daSessao.length} arquivo(s) novo(s) desta sessão; ${anexos.length - daSessao.length} já salvo(s).`);
+              toast.info(t('paginas.campos.textos.uploadSimulado'), t('paginas.campos.textos.nArquivoSNovo', { n: daSessao.length, v: anexos.length - daSessao.length }));
             }}
           />
         </div>
       </Bloco>
 
-      <Bloco titulo="Visualizador de arquivo" descricao="Na imagem: + e − ampliam, 0 ajusta, R gira, duplo clique alterna 200%, arraste quando ampliada.">
+      <Bloco titulo={t('paginas.campos.secoes.visualizadorDeArquivo')} descricao={t('paginas.campos.textos.naImagemEAmpliam')}>
         <Escolha
-          rotulo="Arquivo"
+          rotulo={t('paginas.campos.textos.arquivo')}
           valor={arquivo}
           aoMudar={setArquivo}
           opcoes={[
-            { valor: 'imagem', rotulo: 'Imagem' },
-            { valor: 'outro', rotulo: 'Planilha (não renderiza)' },
-            { valor: 'semUrl', rotulo: 'Sem URL' },
+            { valor: 'imagem', rotulo: t('paginas.campos.textos.imagem') },
+            { valor: 'outro', rotulo: t('paginas.campos.textos.planilhaNaoRenderiza') },
+            { valor: 'semUrl', rotulo: t('paginas.campos.textos.semUrl') },
           ]}
         />
         <div style={{ height: '22rem', display: 'flex', border: 'var(--hairline) solid var(--border)', borderRadius: 'var(--r-card)', overflow: 'hidden' }}>
-          <VisualizadorArquivo arquivo={ARQUIVOS[arquivo]} aoFalhar={(a) => toast.err('Falha ao carregar', a.nome)} />
+          <VisualizadorArquivo arquivo={ARQUIVOS[arquivo]} aoFalhar={(a) => toast.err(t('paginas.campos.textos.falhaAoCarregar'), a.nome)} />
         </div>
       </Bloco>
 
-      <Bloco titulo="Pendências reveladas ao salvar" descricao="Sem mexer nos campos, clique em Salvar: todo campo obrigatório ou fora do formato acusa a pendência.">
+      <Bloco titulo={t('paginas.campos.secoes.pendenciasReveladasAoSalvar')} descricao={t('paginas.campos.textos.semMexerNosCampos')}>
         <FormDemo />
       </Bloco>
     </div>
@@ -276,7 +276,7 @@ function FormDemo() {
     <>
       <div className="demo-linha">
         <Botao
-          rotulo="Abrir formulário"
+          rotulo={t('paginas.campos.textos.abrirFormulario')}
           icone="app-window"
           severidade="secundario"
           onClick={() => {
@@ -295,16 +295,16 @@ function FormDemo() {
           const ok = obrig.email && isCpf(obrig.cpf) && obrig.responsavel && obrig.anexos.length;
           if (ok) {
             setAberto(false);
-            toast.ok('Servidor salvo');
+            toast.ok(t('paginas.campos.textos.servidorSalvo'));
           }
         }}
       >
         <FormSecao legenda={t('paginas.campos.secoes.identificacao')} icone="id-card">
-          <CampoCpf rotulo="CPF" obrigatorio valor={obrig.cpf} aoMudar={(cpf) => setObrig((o) => ({ ...o, cpf }))} />
-          <CampoEmail className="lp-col-2" rotulo="E-mail" obrigatorio valor={obrig.email} aoMudar={(email) => setObrig((o) => ({ ...o, email }))} />
+          <CampoCpf rotulo={t('paginas.campos.textos.cpf')} obrigatorio valor={obrig.cpf} aoMudar={(cpf) => setObrig((o) => ({ ...o, cpf }))} />
+          <CampoEmail className="lp-col-2" rotulo={t('paginas.campos.textos.eMail')} obrigatorio valor={obrig.email} aoMudar={(email) => setObrig((o) => ({ ...o, email }))} />
           <CampoBusca<Servidor>
             className="lp-col-full"
-            rotulo="Chefia imediata"
+            rotulo={t('paginas.campos.textos.chefiaImediata')}
             obrigatorio
             buscar={buscarServidores}
             paraRotulo={(s) => s.nome}
@@ -313,7 +313,7 @@ function FormDemo() {
           />
         </FormSecao>
         <FormSecao legenda={t('paginas.campos.secoes.documentos')} icone="paperclip">
-          <CampoAnexo className="lp-col-full" rotulo="Portaria de nomeação" minimo={1} multiple={false} valor={obrig.anexos} aoMudar={(anexos) => setObrig((o) => ({ ...o, anexos }))} />
+          <CampoAnexo className="lp-col-full" rotulo={t('paginas.campos.textos.portariaDeNomeacao')} minimo={1} multiple={false} valor={obrig.anexos} aoMudar={(anexos) => setObrig((o) => ({ ...o, anexos }))} />
         </FormSecao>
       </Form>
     </>

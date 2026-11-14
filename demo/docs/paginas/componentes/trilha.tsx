@@ -1,8 +1,11 @@
 import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="trilha"
@@ -11,19 +14,13 @@ export default function Pagina() {
       importar={['type ItemTrilha']}
       notas={
         <ul className="doc-lista">
-          <li>
-            Dentro da <C>Estrutura</C>, prefira <C>{'<CabecalhoPagina trilha />'}</C>, que monta o caminho pelo menu.
-          </li>
-          <li>
-            O último item é a página atual: sem <C>rota</C>, com <C>aria-current="page"</C>.
-          </li>
-          <li>
-            A aparência pode valer para o sistema todo pela prop <C>modeloTrilha</C> da <C>Estrutura</C>.
-          </li>
+          <li>{rico(t('docs.trilha.textos.dentroDaEstruturaPrefira'))}<C>{'<CabecalhoPagina trilha />'}</C>{t('docs.trilha.textos.queMontaOCaminho')}</li>
+          <li>{rico(t('docs.trilha.textos.oUltimoItemE'))}</li>
+          <li>{rico(t('docs.trilha.textos.aAparenciaPodeValer'))}</li>
         </ul>
       }
     >
-      <Exemplo id="trilha/Basico" titulo="Separadores e aparências" />
+      <Exemplo id="trilha/Basico" titulo={t('docs.trilha.secoes.separadoresEAparencias')} />
     </PaginaComponente>
   );
 }

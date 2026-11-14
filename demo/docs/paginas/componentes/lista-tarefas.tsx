@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="listaTarefas"
@@ -12,30 +14,15 @@ export default function Pagina() {
       importar={['type TarefaLista']}
       notas={
         <ul className="doc-lista">
-          <li>
-            Controlada: <C>aoConcluir</C> recebe a tarefa e o novo estado; <C>aoReordenar</C> recebe a lista inteira na ordem nova, ao soltar
-            (sem ele, não há alça).
-          </li>
-          <li>
-            <C>filtro</C> faz as visões (Hoje, Atrasadas, uma lista, uma etiqueta): as tarefas escondidas guardam o lugar, e reordenar as
-            visíveis não bagunça a ordem delas.
-          </li>
-          <li>
-            <C>concluida</C> vale sobre <C>situacao</C>; <C>situacao</C> "Em andamento" e "Bloqueada" aparecem como selo. O prazo segue as
-            cores do <C>SeloPrazo</C> e fica verde na tarefa feita.
-          </li>
-          <li>
-            Com <C>aoAbrir</C>, a linha inteira abre o detalhe (em geral um <C>Dialogo</C> com <C>aparencia="lateral"</C>) e
-            <C>selecionada</C> destaca a tarefa aberta.
-          </li>
-          <li>
-            A demo traz a tela completa: visões, listas e etiquetas na lateral, filtros de prazo e painel de detalhe (menu Aplicativos ›
-            Tarefas).
-          </li>
+          <li>{rico(t('docs.listaTarefas.textos.controladaAoconcluirRecebeA'))}</li>
+          <li>{rico(t('docs.listaTarefas.textos.filtroFazAsVisoes'))}</li>
+          <li>{rico(t('docs.listaTarefas.textos.concluidaValeSobreSituacao'))}</li>
+          <li>{rico(t('docs.listaTarefas.textos.comAoabrirALinha'))}</li>
+          <li>{t('docs.listaTarefas.textos.aDemoTrazA')}</li>
         </ul>
       }
     >
-      <Exemplo id="lista-tarefas/Basico" titulo="Concluir, reordenar e visões" />
+      <Exemplo id="lista-tarefas/Basico" titulo={t('docs.listaTarefas.secoes.concluirReordenarEVisoes')} />
     </PaginaComponente>
   );
 }

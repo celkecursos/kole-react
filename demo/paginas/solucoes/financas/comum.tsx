@@ -28,6 +28,7 @@ import {
 } from '../../../../src';
 import { CENTROS_CUSTO, CONTATOS, ESPACOS, dia, novoId, type Categoria, type Conta, type Espaco, type Lancamento, type TipoConta, type TipoLancamento } from './dados';
 import { acoes, categoriasDo, contasDo, useFinancas } from './estado';
+import { useT } from '../../../i18n/useT';
 
 // ícones das categorias: o app registra os que a biblioteca não traz
 registrarIcones({
@@ -76,6 +77,7 @@ export function IconeCategoria({ categoria, transferencia, tamanho }: { categori
 
 /** O seletor Pessoal × Empresa, no topo da `Estrutura`. */
 export function SeletorEspaco({ aoMudar }: { aoMudar?: (espaco: Espaco) => void }) {
+  const { t } = useT();
   const { espaco } = useFinancas();
   const toast = useToast();
   return (
@@ -86,8 +88,8 @@ export function SeletorEspaco({ aoMudar }: { aoMudar?: (espaco: Espaco) => void 
         acoes.trocarEspaco(id as Espaco);
         aoMudar?.(id as Espaco);
       }}
-      acoes={[{ id: 'novo', rotulo: 'Adicionar empresa', icone: 'plus' }]}
-      aoEscolherAcao={() => toast.info('Adicionar empresa', 'Aqui entraria o cadastro do CNPJ.')}
+      acoes={[{ id: 'novo', rotulo: t('paginas.financas.textos.adicionarEmpresa'), icone: 'plus' }]}
+      aoEscolherAcao={() => toast.info(t('paginas.financas.textos.adicionarEmpresa'), t('paginas.financas.textos.aquiEntrariaOCadastro'))}
     />
   );
 }
@@ -127,6 +129,7 @@ const TIPOS: { valor: TipoLancamento; rotulo: string }[] = [
 type Repetir = 'nao' | 'parcelado' | 'fixo';
 
 function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; novo: boolean; aoFechar: () => void }) {
+  const { t } = useT();
   const toast = useToast();
   const confirmar = useConfirmacao();
   const [l, setL] = useState(inicial);
@@ -141,7 +144,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
   const n = Math.max(2, Math.min(60, Number(vezes) || 0));
 
   const erros = {
-    descricao: !l.descricao.trim() ? 'Informe a descrição' : undefined,
+    descricao: !l.descricao.trim() ? t('paginas.financas.textos.informeADescricao') : undefined,
     valor: !(l.valor > 0) ? 'Informe o valor' : undefined,
     data: !l.data ? 'Informe a data' : undefined,
     categoria: l.tipo !== 'transferencia' && !l.categoria ? 'Escolha a categoria' : undefined,
@@ -178,15 +181,15 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
       }));
     }
     acoes.salvar(lista);
-    toast.ok(novo ? (lista.length > 1 ? `${lista.length} lançamentos criados` : 'Lançamento criado') : 'Lançamento salvo', base.descricao);
+    toast.ok(novo ? (lista.length > 1 ? t('paginas.financas.textos.nLancamentosCriados', { n: lista.length }) : t('paginas.financas.textos.lancamentoCriado')) : t('paginas.financas.textos.lancamentoSalvo'), base.descricao);
     aoFechar();
   };
 
   const excluir = async () => {
-    const sim = await confirmar.remover({ titulo: 'Excluir lançamento?', mensagem: `"${l.descricao}" sai dos saldos e dos relatórios.`, rotuloAceitar: 'Excluir' });
+    const sim = await confirmar.remover({ titulo: t('paginas.financas.textos.excluirLancamento'), mensagem: t('paginas.financas.textos.descricaoSaiDosSaldos', { descricao: l.descricao }), rotuloAceitar: 'Excluir' });
     if (!sim) return;
     acoes.excluir([l.id]);
-    toast.ok('Lançamento excluído', l.descricao);
+    toast.ok(t('paginas.financas.textos.lancamentoExcluido'), l.descricao);
     aoFechar();
   };
 
@@ -196,16 +199,16 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
     <Dialogo
       aberto
       aoFechar={aoFechar}
-      titulo={novo ? 'Novo lançamento' : 'Editar lançamento'}
+      titulo={novo ? t('paginas.financas.textos.novoLancamento') : t('paginas.financas.textos.editarLancamento')}
       subtitulo={ESPACOS.find((e) => e.id === l.espaco)?.nome}
       icone={l.tipo === 'transferencia' ? 'arrow-left-right' : l.tipo === 'receita' ? 'trending-up' : 'trending-down'}
       tamanho="medio"
       telaCheiaAbaixo="sm"
       rodape={
         <>
-          {!novo && <Botao rotulo="Excluir" icone="trash-2" severidade="err" aparencia="texto" onClick={excluir} className="fin-dlg-excluir" />}
-          <Botao rotulo="Cancelar" severidade="secundario" aparencia="contorno" onClick={aoFechar} />
-          <Botao rotulo="Salvar" icone="check" onClick={salvar} />
+          {!novo && <Botao rotulo={t('paginas.financas.textos.excluir')} icone="trash-2" severidade="err" aparencia="texto" onClick={excluir} className="fin-dlg-excluir" />}
+          <Botao rotulo={t('paginas.financas.textos.cancelar')} severidade="secundario" aparencia="contorno" onClick={aoFechar} />
+          <Botao rotulo={t('paginas.financas.textos.salvar')} icone="check" onClick={salvar} />
         </>
       }
     >
@@ -224,11 +227,11 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
           aoMudar={(tipo) => mudar({ tipo, categoria: undefined, contato: undefined, pago: tipo !== 'receita' ? l.pago : false })}
           disabled={!novo && !!l.parcela}
         />
-        <CampoTexto className="fin-form-inteiro" rotulo="Descrição" obrigatorio valor={l.descricao} aoMudar={(descricao) => mudar({ descricao })} erro={mostrar(erros.descricao)} autoFocus={novo} />
-        <CampoMoeda rotulo={repetir === 'parcelado' ? 'Valor total' : 'Valor'} obrigatorio valor={l.valor || null} aoMudar={(v) => mudar({ valor: v ?? 0 })} erro={mostrar(erros.valor)} />
-        <CampoData rotulo={l.pago ? 'Data' : 'Vencimento'} obrigatorio valor={l.data} aoMudar={(data) => mudar({ data })} erro={mostrar(erros.data)} />
+        <CampoTexto className="fin-form-inteiro" rotulo={t('paginas.financas.textos.descricao')} obrigatorio valor={l.descricao} aoMudar={(descricao) => mudar({ descricao })} erro={mostrar(erros.descricao)} autoFocus={novo} />
+        <CampoMoeda rotulo={repetir === 'parcelado' ? t('paginas.financas.textos.valorTotal') : t('paginas.financas.textos.valor')} obrigatorio valor={l.valor || null} aoMudar={(v) => mudar({ valor: v ?? 0 })} erro={mostrar(erros.valor)} />
+        <CampoData rotulo={l.pago ? t('paginas.financas.textos.data') : t('paginas.financas.textos.vencimento')} obrigatorio valor={l.data} aoMudar={(data) => mudar({ data })} erro={mostrar(erros.data)} />
         <CampoSelect
-          rotulo={l.tipo === 'transferencia' ? 'De' : l.tipo === 'receita' ? 'Recebe na conta' : 'Paga com'}
+          rotulo={l.tipo === 'transferencia' ? t('paginas.financas.textos.de') : l.tipo === 'receita' ? t('paginas.financas.textos.recebeNaConta') : t('paginas.financas.textos.pagaCom')}
           obrigatorio
           opcoes={contas.filter((c) => l.tipo === 'despesa' || c.tipo !== 'cartao').map((c) => ({ valor: c.id, rotulo: `${c.nome} · ${c.instituicao}` }))}
           valor={l.conta}
@@ -236,7 +239,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         />
         {l.tipo === 'transferencia' ? (
           <CampoSelect
-            rotulo="Para"
+            rotulo={t('paginas.financas.textos.para')}
             obrigatorio
             opcoes={contas.filter((c) => c.id !== l.conta).map((c) => ({ valor: c.id, rotulo: `${c.nome} · ${c.instituicao}` }))}
             valor={l.contaDestino ?? null}
@@ -245,7 +248,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
           />
         ) : (
           <CampoSelect
-            rotulo="Categoria"
+            rotulo={t('paginas.financas.textos.categoria')}
             obrigatorio
             comBusca
             opcoes={categorias.map((c) => ({ valor: c.id, rotulo: c.nome }))}
@@ -257,8 +260,8 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         {l.espaco === 'empresa' && l.tipo !== 'transferencia' && (
           <>
             <CampoSelect
-              rotulo={l.tipo === 'receita' ? 'Cliente' : 'Fornecedor'}
-              placeholder="Nenhum"
+              rotulo={l.tipo === 'receita' ? t('paginas.financas.textos.cliente') : t('paginas.financas.textos.fornecedor')}
+              placeholder={t('paginas.financas.textos.nenhum')}
               botaoLimpar
               comBusca
               opcoes={contatos.map((c) => ({ valor: c.id, rotulo: c.nome }))}
@@ -266,8 +269,8 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
               aoMudar={(contato) => mudar({ contato: contato ?? undefined })}
             />
             <CampoSelect
-              rotulo="Centro de custo"
-              placeholder="Nenhum"
+              rotulo={t('paginas.financas.textos.centroDeCusto')}
+              placeholder={t('paginas.financas.textos.nenhum')}
               botaoLimpar
               opcoes={CENTROS_CUSTO.map((c) => ({ valor: c.id, rotulo: c.nome }))}
               valor={l.centroCusto ?? null}
@@ -278,25 +281,25 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         {novo && (
           <>
             <Escolha
-              rotulo="Repetir"
+              rotulo={t('paginas.financas.textos.repetir')}
               opcoes={[
-                { valor: 'nao', rotulo: 'Não' },
-                { valor: 'parcelado', rotulo: 'Parcelado' },
-                { valor: 'fixo', rotulo: 'Todo mês' },
+                { valor: 'nao', rotulo: t('paginas.financas.textos.nao') },
+                { valor: 'parcelado', rotulo: t('paginas.financas.textos.parcelado') },
+                { valor: 'fixo', rotulo: t('paginas.financas.textos.todoMes') },
               ]}
               valor={repetir}
               aoMudar={(v) => setRepetir(v as Repetir)}
             />
             {repetir !== 'nao' ? (
               <CampoTexto
-                rotulo={repetir === 'parcelado' ? 'Parcelas' : 'Por quantos meses'}
+                rotulo={repetir === 'parcelado' ? t('paginas.financas.textos.parcelas') : t('paginas.financas.textos.porQuantosMeses')}
                 type="number"
                 min={2}
                 max={60}
                 valor={vezes}
                 aoMudar={setVezes}
                 erro={mostrar(erros.vezes)}
-                dica={repetir === 'parcelado' && l.valor > 0 && !erros.vezes ? `${n}× de ${dividirEmParcelas(l.valor, n).at(-1)!.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}` : undefined}
+                dica={repetir === 'parcelado' && l.valor > 0 && !erros.vezes ? t('paginas.financas.textos.nDeValor', { n, valor: dividirEmParcelas(l.valor, n).at(-1)!.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }) : undefined}
               />
             ) : (
               <span />
@@ -305,11 +308,10 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
         )}
         {!novo && l.parcela && (
           <p className="fin-form-inteiro fin-form-nota">
-            <Icone icone="info" /> Parcela {l.parcela.numero} de {l.parcela.total}: a mudança vale só para esta parcela.
-          </p>
+            <Icone icone="info" />{t('paginas.financas.textos.parcelaNumeroDeTotal', { numero: l.parcela.numero, total: l.parcela.total })}</p>
         )}
         <CampoMarcacao className="fin-form-inteiro" aparencia="chave" rotulo={rotuloPago} valor={l.pago} aoMudar={(pago) => mudar({ pago })} />
-        <CampoTextarea className="fin-form-inteiro" rotulo="Observação" rows={2} maxLength={300} valor={l.observacao ?? ''} aoMudar={(observacao) => mudar({ observacao: observacao || undefined })} />
+        <CampoTextarea className="fin-form-inteiro" rotulo={t('paginas.financas.textos.observacao')} rows={2} maxLength={300} valor={l.observacao ?? ''} aoMudar={(observacao) => mudar({ observacao: observacao || undefined })} />
         <button type="submit" hidden />
       </form>
     </Dialogo>
@@ -319,19 +321,20 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
 // ---------- cabeçalho comum ----------
 
 export function BotaoNovoLancamento({ tamanho }: { tamanho?: 'pequeno' }) {
+  const { t } = useT();
   const abrir = useEditorLancamento();
   return (
     <MenuSuspenso
-      rotulo="Novo lançamento"
+      rotulo={t('paginas.financas.textos.novoLancamento')}
       icone="plus"
       dividido
       tamanho={tamanho}
       alinhamento="fim"
       aoClicarPrincipal={() => abrir('despesa')}
       itens={[
-        { id: 'despesa', rotulo: 'Despesa', icone: 'trending-down' },
-        { id: 'receita', rotulo: 'Receita', icone: 'trending-up' },
-        { id: 'transferencia', rotulo: 'Transferência', icone: 'arrow-left-right' },
+        { id: 'despesa', rotulo: t('paginas.financas.textos.despesa'), icone: 'trending-down' },
+        { id: 'receita', rotulo: t('paginas.financas.textos.receita'), icone: 'trending-up' },
+        { id: 'transferencia', rotulo: t('paginas.financas.textos.transferencia'), icone: 'arrow-left-right' },
       ]}
       aoEscolher={(id) => abrir(id as TipoLancamento)}
     />

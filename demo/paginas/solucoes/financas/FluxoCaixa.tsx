@@ -82,50 +82,46 @@ export function FluxoCaixa() {
           <Escolha<Horizonte>
             ariaLabel="Projetar"
             opcoes={[
-              { valor: '30', rotulo: '30 dias' },
-              { valor: '60', rotulo: '60 dias' },
-              { valor: '90', rotulo: '90 dias' },
+              { valor: '30', rotulo: t('paginas.finFluxoCaixa.textos.t30Dias') },
+              { valor: '60', rotulo: t('paginas.finFluxoCaixa.textos.t60Dias') },
+              { valor: '90', rotulo: t('paginas.finFluxoCaixa.textos.t90Dias') },
             ]}
             valor={horizonte}
             aoMudar={setHorizonte}
           />
         }
-      >
-        Saldo das contas com liquidez ({caixa.map((c) => c.nome).join(', ')}) nos últimos {PASSADO} dias e a projeção com o que falta pagar e receber.
-      </CabecalhoFinancas>
+      >{t('paginas.finFluxoCaixa.textos.saldoDasContasCom')}{caixa.map((c) => c.nome).join(', ')}{t('paginas.finFluxoCaixa.textos.nosUltimosPassadoDias', { PASSADO })}</CabecalhoFinancas>
 
       {menor.saldo < 0 && (
-        <Alerta severidade="err" titulo={`O caixa fica negativo em ${dataBr(menor.dia)}`}>
-          A projeção chega a {moeda(menor.saldo)}. Antecipe recebimentos, adie pagamentos ou resgate da reserva antes dessa data.
-        </Alerta>
+        <Alerta severidade="err" titulo={t('paginas.finFluxoCaixa.textos.oCaixaFicaNegativo', { valor: dataBr(menor.dia) })}>{t('paginas.finFluxoCaixa.textos.aProjecaoChegaA')}{moeda(menor.saldo)}{t('paginas.finFluxoCaixa.textos.antecipeRecebimentosAdiePagamentos')}</Alerta>
       )}
 
       <Indicadores>
-        <Indicador rotulo="Saldo hoje" icone="wallet" cor="var(--graf-1)" valor={moeda(saldoHoje)} />
-        <Indicador rotulo="Entradas previstas" icone="trending-up" cor="var(--ok-solid)" valor={moeda(entradas)} descricao={`Próximos ${futuro} dias`} />
-        <Indicador rotulo="Saídas previstas" icone="trending-down" cor="var(--err-solid)" valor={moeda(saidas)} descricao={`Próximos ${futuro} dias`} />
+        <Indicador rotulo={t('paginas.finFluxoCaixa.textos.saldoHoje')} icone="wallet" cor="var(--graf-1)" valor={moeda(saldoHoje)} />
+        <Indicador rotulo={t('paginas.finFluxoCaixa.textos.entradasPrevistas')} icone="trending-up" cor="var(--ok-solid)" valor={moeda(entradas)} descricao={t('paginas.finFluxoCaixa.textos.proximosFuturoDias', { futuro })} />
+        <Indicador rotulo={t('paginas.finFluxoCaixa.textos.saidasPrevistas')} icone="trending-down" cor="var(--err-solid)" valor={moeda(saidas)} descricao={t('paginas.finFluxoCaixa.textos.proximosFuturoDias', { futuro })} />
         <Indicador
-          rotulo="Menor saldo previsto"
+          rotulo={t('paginas.finFluxoCaixa.textos.menorSaldoPrevisto')}
           icone={menor.saldo < 0 ? 'circle-alert' : 'shield-check'}
           cor={menor.saldo < 0 ? 'var(--err-solid)' : 'var(--graf-3)'}
           valor={moeda(menor.saldo)}
-          descricao={`Em ${dataBr(menor.dia)} · termina com ${moeda(final, { centavos: false })}`}
+          descricao={t('paginas.finFluxoCaixa.textos.emValorTerminaCom', { valor: dataBr(menor.dia), valor2: moeda(final, { centavos: false }) })}
         />
       </Indicadores>
 
       <Card>
         <GraficoLinha
-          titulo="Saldo diário: realizado e projetado"
-          descricao={`Saldo de hoje ${moeda(saldoHoje)}; menor saldo previsto ${moeda(menor.saldo)} em ${dataBr(menor.dia)}`}
+          titulo={t('paginas.finFluxoCaixa.textos.saldoDiarioRealizadoE')}
+          descricao={t('paginas.finFluxoCaixa.textos.saldoDeHojeValor', { valor: moeda(saldoHoje), valor2: moeda(menor.saldo), valor3: dataBr(menor.dia) })}
           dados={pontos}
-          eixoX={{ chave: 'dia', tipo: 'data', rotulo: 'Dia' }}
+          eixoX={{ chave: 'dia', tipo: 'data', rotulo: t('paginas.finFluxoCaixa.textos.dia') }}
           eixoY={{ formatar: (v) => moeda(v, { compacto: true }) }}
           series={[
-            { chave: 'realizado', rotulo: 'Realizado', cor: 'var(--graf-1)' },
-            { chave: 'projetado', rotulo: 'Projetado', cor: 'var(--graf-1)', tracejada: true },
+            { chave: 'realizado', rotulo: t('paginas.finFluxoCaixa.textos.realizado'), cor: 'var(--graf-1)' },
+            { chave: 'projetado', rotulo: t('paginas.finFluxoCaixa.textos.projetado'), cor: 'var(--graf-1)', tracejada: true },
           ]}
-          faixas={[{ de: hoje, ate: dia(futuro), rotulo: 'Projeção' }]}
-          referencias={menor.saldo < 0 ? [{ valor: 0, rotulo: 'Zero' }] : undefined}
+          faixas={[{ de: hoje, ate: dia(futuro), rotulo: t('paginas.finFluxoCaixa.textos.projecao') }]}
+          referencias={menor.saldo < 0 ? [{ valor: 0, rotulo: t('paginas.finFluxoCaixa.textos.zero') }] : undefined}
           pontos={false}
           area
           altura={300}
@@ -134,18 +130,18 @@ export function FluxoCaixa() {
 
       <Card titulo={t('paginas.finFluxoCaixa.secoes.semanaASemana')} corpoSemEspaco>
         <Tabela<Semana>
-          rotulo="Projeção por semana"
+          rotulo={t('paginas.finFluxoCaixa.textos.projecaoPorSemana')}
           registros={semanas}
           colunas={[
             {
               campo: 'de',
-              rotulo: 'Semana',
+              rotulo: t('paginas.finFluxoCaixa.textos.semana'),
               destaque: true,
               formato: (_v, s) => `${CURTA.format(paraData(s.de))} a ${CURTA.format(paraData(s.ate))}`,
             },
-            { campo: 'entradas', rotulo: 'Entradas', alinhamento: 'direita', render: (s) => <Valor valor={s.entradas} tipo={s.entradas ? 'receita' : 'neutro'} /> },
-            { campo: 'saidas', rotulo: 'Saídas', alinhamento: 'direita', render: (s) => <Valor valor={s.saidas} tipo={s.saidas ? 'despesa' : 'neutro'} /> },
-            { campo: 'saldo', rotulo: 'Saldo no fim', alinhamento: 'direita', render: (s) => <Valor valor={s.saldo} colorir={s.saldo < 0} forte /> },
+            { campo: 'entradas', rotulo: t('paginas.finFluxoCaixa.textos.entradas'), alinhamento: 'direita', render: (s) => <Valor valor={s.entradas} tipo={s.entradas ? 'receita' : 'neutro'} /> },
+            { campo: 'saidas', rotulo: t('paginas.finFluxoCaixa.textos.saidas'), alinhamento: 'direita', render: (s) => <Valor valor={s.saidas} tipo={s.saidas ? 'despesa' : 'neutro'} /> },
+            { campo: 'saldo', rotulo: t('paginas.finFluxoCaixa.textos.saldoNoFim'), alinhamento: 'direita', render: (s) => <Valor valor={s.saldo} colorir={s.saldo < 0} forte /> },
           ]}
         />
       </Card>

@@ -1,6 +1,7 @@
 import { Alerta } from '../../../src';
 import { useT } from '../../i18n/useT';
-import { Codigo, comCodigo } from '../Codigo';
+import { rico } from '../../i18n/rico';
+import { Codigo } from '../Codigo';
 import { PaginaGuia, Secao } from '../PaginaDoc';
 
 const USO = `// main.tsx
@@ -46,12 +47,12 @@ export function DocInstalacao() {
     <PaginaGuia pagina="instalacao" icone="download">
       <Secao id="instalar" titulo={t('docs.instalacao.secoes.instalar')}>
         <Codigo linguagem="bash" codigo="npm i @celke/kole-react" />
-        <p className="doc-p">{comCodigo(t('docs.instalacao.textos.pacote'))}</p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.pacote'))}</p>
       </Secao>
 
       <Secao id="provedor" titulo={t('docs.instalacao.secoes.provedor')}>
         <Codigo codigo={USO} />
-        <p className="doc-p">{comCodigo(t('docs.instalacao.textos.provedor'))}</p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.provedor'))}</p>
       </Secao>
 
       <Secao id="primeira-tela" titulo={t('docs.instalacao.secoes.primeiraTela')}>
@@ -59,9 +60,9 @@ export function DocInstalacao() {
       </Secao>
 
       <Secao id="tema-sem-piscar" titulo={t('docs.instalacao.secoes.temaSemPiscar')}>
-        <p className="doc-p">{comCodigo(t('docs.instalacao.textos.temaHead'))}</p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.temaHead'))}</p>
         <Codigo codigo={TEMA_HEAD} />
-        <p className="doc-p">{comCodigo(t('docs.instalacao.textos.temaSemSsr'))}</p>
+        <p className="doc-p">{rico(t('docs.instalacao.textos.temaSemSsr'))}</p>
       </Secao>
 
       <Secao id="tailwind" titulo={t('docs.instalacao.secoes.tailwind')}>

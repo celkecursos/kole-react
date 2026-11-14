@@ -1,0 +1,227 @@
+import type { TextosDemoParciais } from '../../tipos';
+import type { docsDados as Pt } from '../../pt-BR/docs/dados';
+
+export const docsDados: TextosDemoParciais<typeof Pt> = {
+  tabela: {
+    titulo: 'Table',
+    textos: {
+      resumo: 'Record listing with formatted columns, status badge, row actions, sorting, selection, pagination and the loading, empty and error states.',
+      aTabelaNaoOrdena: 'The table doesn\'t sort or paginate by itself: it shows `ordenacao` and `paginacao` and reports through `aoOrdenar` and `aoMudarPagina`. That way the same code works for server data.',
+      campoAceitaCaminhoCom: '`campo` accepts a dotted path (`endereco.cidade`). `formato` formats the value; `render` draws the whole cell.',
+      carregandoMostraSilhuetasNa: '`carregando` shows skeletons on the first load; `atualizando` dims the already-filled table when paging or sorting.',
+      emTelaEstreitaA: 'On a narrow screen, the table scrolls horizontally inside its own frame; the page doesn\'t get sideways scrolling.',
+      paraRegistrosQueLeem: 'For records that read better as a card (products, people), see `ListaCards`.',
+      descricao: 'Sorting, selection, actions and states',
+    },
+    secoes: {
+      colunasSituacaoEAcoes: 'Columns, status and actions',
+      ordenacaoSelecaoEPaginacao: 'Sorting, selection and pagination',
+      carregandoVaziaEErro: 'Loading, empty and error',
+    },
+  },
+  listaCards: {
+    titulo: 'Card list',
+    textos: {
+      resumo: 'The same listing as Tabela, as a card grid: with pagination and the loading, empty and error states.',
+      cardDesenhaCadaItem: '`card` draws each item; the grid adapts to the width through each card\'s `larguraMin`.',
+      alturacardEAAltura: '`alturaCard` is the height of the skeletons while loading, so the page doesn\'t jump when the data arrives.',
+      useQuandoORegistro: 'Use it when the record has an image or few fields; with many columns to compare, `Tabela` is better.',
+      descricao: 'Listing as a card grid',
+    },
+    secoes: { basicoComPaginacao: 'Basic with pagination' },
+  },
+  paginacao: {
+    titulo: 'Pagination',
+    textos: {
+      resumo: 'Navigation between the pages of a listing, with the total number of records and the choice of items per page.',
+      aTabelaEA: '`Tabela` and `ListaCards` already draw the pagination through the `paginacao` prop: use this component on its own only in other lists.',
+      paginaComecaEm1: '`pagina` starts at 1. When the size changes, go back to the first page.',
+      semAomudartamanhoAEscolha: 'Without `aoMudarTamanho`, the items-per-page choice doesn\'t appear.',
+      descricao: 'Pages and items per page',
+    },
+    secoes: { basico: 'Basic' },
+  },
+  lista: {
+    titulo: 'List',
+    textos: {
+      resumo: 'List of items with icon, title, content at the start and end, active item, links and selection (checkbox or radio).',
+      itemComOnclickVira: 'An item with `onClick` becomes a button, and with `href`, a link: both enter the Tab order.',
+      comMarcacaoOItem: 'With `marcacao`, the whole item is the input\'s label. For radio, pass the same `nome` on every item.',
+      numeradaUsa: '`numerada` uses ',
+      horizontalDeitaALista: '; `horizontal` lays the list out sideways from a given width (`sm` to `xl`).',
+      descricao: 'Items with icon, selection and links',
+    },
+    secoes: {
+      itensAtivoEDesabilitado: 'Items, active and disabled',
+      comCaixaERadio: 'With checkbox and radio',
+    },
+  },
+  detalhes: {
+    titulo: 'Details',
+    textos: {
+      resumo: 'Label and value pair for view screens: order summary, profile, details dialog.',
+      oValorPodeSer: 'The value can be text (`valor`) or any content (`children`): status, link, badge.',
+      valorVazioMostraUm: 'An empty value shows a dash, so the label isn\'t left alone.',
+      numFormComModo: 'In a `Form` with `modo="leitura"`, Save disappears and Cancel becomes Close: good for a view dialog.',
+      descricao: 'Label and value pairs',
+    },
+    secoes: { colunaELinha: 'Column and row' },
+  },
+  indicador: {
+    titulo: 'Indicator',
+    textos: {
+      resumo: 'Dashboard highlight number: label, value, icon, change versus the previous period and a trend sparkline.',
+      coloqueOsIndicadoresDentro: 'Put the indicators inside `Indicadores`, which builds the grid and wraps the rows on phones.',
+      variacaoEEmPontos: '`variacao` is in percentage points. The color (green or red) follows `variacaoBoa`: for cancellations, going down is good.',
+      comHrefOuAoclicar: 'With `href` or `aoClicar`, the whole card becomes a link to the detailed listing.',
+      tendenciaDesenhaUmMinigrafico: '`tendencia` draws a `Minigrafico`; it can also be used on its own, in a table cell.',
+      descricao: 'Dashboard number with change',
+    },
+    secoes: { painelDeIndicadores: 'Indicators dashboard' },
+  },
+  graficos: {
+    titulo: 'Charts',
+    textos: {
+      resumo: 'Charts in our own SVG, with no external library: line, bars, combined (bars and line with two axes), scatter, donut and heat map. They follow the theme and the density.',
+      dadosEUmaLista: '`dados` is a list of objects; `eixoX.chave` and each `series[].chave` point to the fields. Dates in ISO (`2026-06` or `2026-06-15`) with `tipo: \'data\'`.',
+      tituloEDescricaoViram: '`titulo` and `descricao` become the chart\'s name and description for screen readers. The show-data button (`verDados`, on by default) switches to a table with the same numbers.',
+      graficoroscaMostraAParticipacao: '`GraficoRosca` shows each part\'s share: the active slice (mouse, touch or arrows) appears in the middle of the ring, the legend brings value and percentage and hides slices, `maxFatias` merges the smaller ones into “Outros” and `aoEscolher` receives the click or Enter on a slice.',
+      noGraficocombinadoALinha: 'In `GraficoCombinado`, the line with `eixo: \'esquerdo\'` shares the bars\' axis and the right axis doesn\'t appear.',
+      valorNullEFalta: 'A `null` value is missing data: the line breaks instead of dropping to zero.',
+      asCoresVemDos: 'The colors come from the tokens `--graf-1` to `--graf-6` (series), `--graf-pos`/`--graf-neg` (diverging bars) and `--graf-seq-1` to `--graf-seq-5` (heat map), with a dark theme version.',
+      descricao: 'Line, bars, donut, scatter and heat map',
+    },
+    secoes: {
+      linhaComAreaE: 'Line with area and target',
+      barras: 'Bars',
+      barrasELinhaDois: 'Bars and line, two axes',
+      roscaParticipacaoPorCategoria: 'Donut: share by category',
+      mapaDeCalor: 'Heat map',
+    },
+  },
+  valor: {
+    titulo: 'Value and money',
+    textos: {
+      resumo: 'Money value with sign and color for in and out, numbers aligned in columns and the “hide values” of finance apps. Currency and percentage formatters come along.',
+      guardeOsValoresSempre: 'Always store values as positive and state the direction with `tipo`: `receita` comes out green with `+`, `despesa` red with `−`, `neutro` (transfer) without color. Without `tipo`, `colorir` colors by the number\'s sign.',
+      todoValorDentroDe: 'Every `Valor` inside a `ProvedorValores` obeys `BotaoOcultarValores`. With `chave`, the choice is remembered in the browser. For text outside the component (an `Indicador`, a chart axis), read `useValoresOcultos().ocultos`.',
+      formatarmoedaUsaOSinal: '`formatarMoeda` uses the typographic minus sign (`−R$ 80,00`), a non-breaking space after `R$` and never shows `−0,00`. `dividirEmParcelas` closes the cents (the difference goes to the first installment) and `somarMoeda` adds in cents, without floating-point error.',
+      descricao: 'Currency with sign, color and hide values',
+    },
+    secoes: { sentidoTamanhosEOcultar: 'Direction, sizes and hiding', formatadores: 'Formatters' },
+  },
+  navegadorPeriodo: {
+    titulo: 'Period navigator',
+    textos: {
+      resumo: '“‹ November 2026 ›”: the arrows move month by month (or quarter, year, range), and the label opens shortcuts and a free from/to range. For reports, statements and dashboards.',
+      periodoETipoDe: '`Periodo` is `{ tipo, de, ate }` with `AAAA-MM-DD` dates in the local time zone, the same as `CampoData`. Send `de` and `ate` straight to the API.',
+      utilitariosPeriododeMesTrimestre: 'Utilities: `periodoDe(\'mes\' | \'trimestre\' | \'ano\', data)`, `moverPeriodo(p, passos)` (the custom one moves by its own length), `noPeriodo(data, p)`, `rotuloPeriodo(p)`, `mesesDoPeriodo(p)` and `dataIso(date)`.',
+      atalhosTrocaALista: '`atalhos` replaces the panel\'s list (e.g. “Safra 2025/26”); `personalizado={false}` removes the free range.',
+      descricao: 'Month by month, shortcuts and range',
+    },
+    secoes: { mesAMesAtalhos: 'Month by month, shortcuts and range' },
+  },
+  calendario: {
+    titulo: 'Calendar',
+    textos: {
+      resumo: 'Event calendar in month, week, day and list views, in Brazilian Portuguese, with dragging, recurring events and MiniCalendario for the side column. The app stores and fetches the events; the calendar shows them and reports changes.',
+      aomudarperiodoAvisaOPeriodo: '`aoMudarPeriodo` reports the visible period (on open and on every change of month, week, day or view): fetch only its events.',
+      naSemanaENo: 'In week and day, events are laid out by time, side by side when they overlap; `diaInteiro` ones go to the top strip, and the red line marks the current time. `aoClicarHorario` receives the clicked time, rounded to the half hour.',
+      corUsaOsTokens: '`cor` uses the tokens: `pri`, `ok`, `warn`, `err`, `info`, `destaque` and `graf-1` to `graf-6`.',
+      comAoalterareventoOsEventos: 'With `aoAlterarEvento`, events can be dragged to another day or time (in 15-minute steps) and the block\'s bottom edge stretches the duration. On touch, hold the event before dragging; Esc cancels. The app saves and returns the new list;`fixo` locks an event.',
+      cadastroAoselecionarhorarioRecebeO: 'Creating: `aoSelecionarHorario` receives the range chosen in week and day (dragging over empty slots, in 15-minute steps; a click picks the half hour; on the cursor, Shift+↑↓ widen and Enter confirms). Open the form with it and pass the data in `rascunho`: the event shows dashed while the dialog is open. The form lives in the app; the "Cadastro e edição" example has one ready to copy.',
+      eventosQueSeRepetem: 'Recurring events are computed by the app: `repetirEvento(base, regra, periodo)` returns the period\'s occurrences (daily, weekly with `diasSemana`, monthly or yearly, with `intervalo`, `ate`, `vezes` and `excecoes`). Each one carries `serie` with the base\'s id. To change just one occurrence, put the day in `excecoes` and create a standalone event.',
+      minicalendarioEscolheODia: '`MiniCalendario` picks the day (`aoEscolher`), shows dots on `marcados` and highlights the visible week (`destaque`). Tie the chosen day to the calendar\'s `data` prop.',
+      tecladoNoMesSetas: 'Keyboard: in month, arrows move through the days and Page Up/Down change the month; in week and day, a 30-minute cursor moves with the arrows and Enter picks the time. On an event, Alt+arrows move and Alt+Shift+↑↓ stretch.',
+      descricao: 'Calendar in month, week, day and list',
+    },
+    secoes: {
+      visaoMes: 'Month view',
+      visaoSemana: 'Week view',
+      visaoLista: 'List view',
+      arrastarEEsticar: 'Drag and stretch',
+      serieSemanalEMinicalendario: 'Weekly series and mini calendar',
+      cadastroEEdicaoCom: 'Create and edit (with Repeat)',
+    },
+  },
+  status: {
+    titulo: 'Status',
+    textos: {
+      resumo: 'A record\'s status badge: paid, under review, cancelled. Color and icon come from the severity.',
+      naTabelaAProp: 'In `Tabela`, the column\'s `severidade` prop draws this badge without needing `render`.',
+      statusESituacaoEstado: 'Status is a situation (the record\'s state); `Badge` is a tag (category, count, novelty).',
+      mantenhaAMesmaSeveridade: 'Keep the same severity for the same situation across the whole system.',
+      descricao: 'A record\'s status',
+    },
+    secoes: { severidades: 'Severities' },
+  },
+  badge: {
+    titulo: 'Badge',
+    textos: {
+      resumo: 'Short tag for a count, category or novelty.',
+      paraASituacaoDe: 'For a record\'s status (paid, cancelled) in a table, prefer the `Tabela` column\'s `severidade`, which already draws the badge.',
+      contagemNoCantoDe: 'A count in the corner of an avatar or icon is `ComBadge`.',
+      aCorSozinhaNao: 'Color alone doesn\'t communicate: the badge text needs to say what it means.',
+      tamanhoHerdarAcompanhaO: '`tamanho="herdar"` follows the surrounding text; `aparencia="inverso"` stays readable on a solid button.',
+      descricao: 'Tag and count',
+    },
+    secoes: {
+      cores: 'Colors',
+      aparenciaFormatoETamanho: 'Appearance, shape and size',
+      emTitulosEBotoes: 'In headings and buttons',
+    },
+  },
+  chip: {
+    titulo: 'Chip',
+    textos: {
+      resumo: 'Pill for an applied filter or chosen value, with the field, the value and the remove button.',
+      comAoremoverApareceO: 'With `aoRemover`, the × button appears, with the accessible name "Remover" followed by the filter.',
+      osFiltrosJaDesenham: '`Filtros` already draws the chips through the `aplicados` prop.',
+      descricao: 'Removable applied filter',
+    },
+    secoes: { removiveis: 'Removable' },
+  },
+  avatar: {
+    titulo: 'Avatar',
+    textos: {
+      resumo: 'Photo or initials of a person or company, with a count or status dot in the corner (ComBadge) and overlapping avatars with +N (GrupoAvatares).',
+      semFotoOuSe: 'Without `foto`, or if the image fails, it shows the `nome` initials (`iniciais`).',
+      oNomeViraO: '`nome` becomes the alternative text. Always pass it, even with a photo.',
+      combadgeValeParaQualquer: '`ComBadge` works on any element (icon, button). `descricao` is what the screen reader announces ("5 unread messages"); above `max`, it becomes "99+".',
+      grupoavataresMostraAteMax: '`GrupoAvatares` shows up to `max` people (default: 3) and groups the rest as "+N". The screen reader hears `rotulo` followed by all the names ("Responsáveis: Ana, Bruno e Carla").',
+      descricao: 'Photo or initials',
+    },
+    secoes: { fotoIniciaisEBadge: 'Photo, initials and badge', grupoDeAvatares: 'Avatar group' },
+  },
+  placa: {
+    titulo: 'License plate',
+    textos: {
+      resumo: 'License plate in the Mercosur standard, for fleet records, deliveries and parking.',
+      oNumeroSaiSempre: '`numero` always comes out in uppercase. To type the plate, use `CampoPlaca`.',
+      oLeitorDeTela: 'The screen reader announces "Placa BRA2E19, PR" (`role="img"` with `aria-label`), without spelling out the blue strip.',
+      descricao: 'Mercosur license plate',
+    },
+    secoes: { basico: 'Basic' },
+  },
+  citacao: {
+    titulo: 'Quote',
+    textos: {
+      resumo: 'Highlighted excerpt with author and source: business rule, testimonial, manual note.',
+      usa: 'Uses ',
+      oLeitorDeTela: ': the screen reader announces that it\'s a quote.',
+      depoimentoDeClienteNo: 'A customer testimonial on the public website is `CardDepoimento`.',
+      descricao: 'Highlighted excerpt with author',
+    },
+    secoes: { simplesECartao: 'Simple and card' },
+  },
+  referencias: {
+    titulo: 'References',
+    textos: {
+      resumo: 'Collapsible list of an answer\'s sources (assistant, search): title, detail, excerpt and link.',
+      combinaComAMensagem: 'Pairs with `Mensagem` in `Conversa`: pass it in the assistant message\'s `rodape`.',
+      oTrechoLongoFica: 'The long excerpt is truncated, with "Mostrar trecho completo". Change the texts with `rotulo`, `rotuloMostrarMais` and `rotuloMostrarMenos`.',
+      descricao: 'An answer\'s sources',
+    },
+    secoes: { basico: 'Basic' },
+  },
+};

@@ -61,22 +61,22 @@ export function Relatorios() {
   if (empresa) {
     const receita = grupo('receita', 'Receita bruta', itens((c) => c.dre === 'receita', 'receita'));
     const deducoes = grupo('deducoes', 'Deduções e impostos', itens((c) => c.dre === 'deducao', 'despesa'), '(−)');
-    const liquida: Linha = { id: 'liquida', rotulo: 'Receita líquida', sinal: '(=)', tipo: 'subtotal', valores: menos(receita.valores, deducoes.valores) };
+    const liquida: Linha = { id: 'liquida', rotulo: t('paginas.finRelatorios.textos.receitaLiquida'), sinal: '(=)', tipo: 'subtotal', valores: menos(receita.valores, deducoes.valores) };
     const custos = grupo('custos', 'Custos dos serviços e produtos', itens((c) => c.dre === 'custo', 'despesa'), '(−)');
-    const bruto: Linha = { id: 'bruto', rotulo: 'Lucro bruto', sinal: '(=)', tipo: 'subtotal', valores: menos(liquida.valores, custos.valores) };
+    const bruto: Linha = { id: 'bruto', rotulo: t('paginas.finRelatorios.textos.lucroBruto'), sinal: '(=)', tipo: 'subtotal', valores: menos(liquida.valores, custos.valores) };
     const despesas = grupo('despesas', 'Despesas operacionais', itens((c) => c.dre === 'despesa', 'despesa'), '(−)');
-    const operacional: Linha = { id: 'operacional', rotulo: 'Resultado operacional', sinal: '(=)', tipo: 'subtotal', valores: menos(bruto.valores, despesas.valores) };
+    const operacional: Linha = { id: 'operacional', rotulo: t('paginas.finRelatorios.textos.resultadoOperacional'), sinal: '(=)', tipo: 'subtotal', valores: menos(bruto.valores, despesas.valores) };
     const recFin = itens((c) => c.dre === 'financeiro', 'receita');
     const despFin = itens((c) => c.dre === 'financeiro', 'despesa').map((l) => ({ ...l, valores: l.valores.map((v) => -v) }));
     const financeiro = grupo('financeiro', 'Resultado financeiro', [...recFin, ...despFin], '(±)');
-    const liquido: Linha = { id: 'liquido', rotulo: 'Resultado líquido', sinal: '(=)', tipo: 'total', valores: soma([operacional, financeiro], n) };
-    const margem: Linha = { id: 'margem', rotulo: 'Margem líquida', tipo: 'percentual', valores: liquido.valores.map((v, i) => (receita.valores[i] ? (v / receita.valores[i]) * 100 : 0)) };
+    const liquido: Linha = { id: 'liquido', rotulo: t('paginas.finRelatorios.textos.resultadoLiquido'), sinal: '(=)', tipo: 'total', valores: soma([operacional, financeiro], n) };
+    const margem: Linha = { id: 'margem', rotulo: t('paginas.finRelatorios.textos.margemLiquida'), tipo: 'percentual', valores: liquido.valores.map((v, i) => (receita.valores[i] ? (v / receita.valores[i]) * 100 : 0)) };
     linhas = [receita, deducoes, liquida, custos, bruto, despesas, operacional, financeiro, liquido, margem];
   } else {
     const receitas = grupo('receitas', 'Receitas', itens(() => true, 'receita'));
     const despesas = grupo('despesas', 'Despesas', itens(() => true, 'despesa'), '(−)');
-    const resultado: Linha = { id: 'resultado', rotulo: 'Sobrou no mês', sinal: '(=)', tipo: 'total', valores: menos(receitas.valores, despesas.valores) };
-    const taxa: Linha = { id: 'taxa', rotulo: 'Taxa de poupança', tipo: 'percentual', valores: resultado.valores.map((v, i) => (receitas.valores[i] ? (v / receitas.valores[i]) * 100 : 0)) };
+    const resultado: Linha = { id: 'resultado', rotulo: t('paginas.finRelatorios.textos.sobrouNoMes'), sinal: '(=)', tipo: 'total', valores: menos(receitas.valores, despesas.valores) };
+    const taxa: Linha = { id: 'taxa', rotulo: t('paginas.finRelatorios.textos.taxaDePoupanca'), tipo: 'percentual', valores: resultado.valores.map((v, i) => (receitas.valores[i] ? (v / receitas.valores[i]) * 100 : 0)) };
     linhas = [receitas, despesas, resultado, taxa];
   }
   const base = linhas[0];
@@ -110,7 +110,7 @@ export function Relatorios() {
     a.download = `${empresa ? 'dre' : 'resumo-por-categoria'}-${meses[0].slice(0, 7)}-a-${meses[n - 1].slice(0, 7)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.ok('Planilha gerada', a.download);
+    toast.ok(t('paginas.finRelatorios.textos.planilhaGerada'), a.download);
   };
 
   const linhaTabela = (l: Linha, filho = false): ReactNode => {
@@ -145,7 +145,7 @@ export function Relatorios() {
 
   return (
     <div className="demo-pilha">
-      <CabecalhoFinancas titulo={empresa ? t('paginas.finRelatorios.textos.dre') : t('paginas.finRelatorios.titulo')} icone="file-spreadsheet" acoes={<Botao rotulo="Exportar CSV" icone="download" aparencia="contorno" severidade="secundario" onClick={exportar} />}>
+      <CabecalhoFinancas titulo={empresa ? t('paginas.finRelatorios.textos.dre') : t('paginas.finRelatorios.titulo')} icone="file-spreadsheet" acoes={<Botao rotulo={t('paginas.finRelatorios.textos.exportarCsv')} icone="download" aparencia="contorno" severidade="secundario" onClick={exportar} />}>
         {empresa
           ? 'Demonstração do resultado pelo regime de competência: cada lançamento conta no mês da sua data, pago ou não. Transferências entre contas ficam de fora.'
           : 'Receitas e despesas de cada categoria, mês a mês. Transferências entre as suas contas ficam de fora.'}
@@ -155,7 +155,7 @@ export function Relatorios() {
         <div className="fin-dre-barra">
           <strong>{empresa ? 'Demonstração do resultado' : 'Resumo por categoria'}</strong>
           <Botao
-            rotulo={todasAbertas ? 'Recolher tudo' : 'Abrir tudo'}
+            rotulo={todasAbertas ? t('paginas.finRelatorios.textos.recolherTudo') : t('paginas.finRelatorios.textos.abrirTudo')}
             icone={todasAbertas ? 'chevrons-left' : 'chevrons-right'}
             aparencia="texto"
             severidade="secundario"
@@ -163,7 +163,7 @@ export function Relatorios() {
             onClick={() => setAbertos(todasAbertas ? new Set() : new Set(linhas.filter((l) => l.filhos).map((l) => l.id)))}
           />
         </div>
-        <div className="fin-dre-rolagem" tabIndex={0} role="region" aria-label="Tabela do relatório (role para o lado)">
+        <div className="fin-dre-rolagem" tabIndex={0} role="region" aria-label={t('paginas.finRelatorios.textos.tabelaDoRelatorioRole')}>
           <table className="fin-dre">
             <thead>
               <tr>
@@ -173,10 +173,8 @@ export function Relatorios() {
                     {MES.format(paraData(m))}
                   </th>
                 ))}
-                <th scope="col">Total</th>
-                <th scope="col" title="Análise vertical: participação sobre a primeira linha">
-                  AV%
-                </th>
+                <th scope="col">{t('paginas.finRelatorios.textos.total')}</th>
+                <th scope="col" title={t('paginas.finRelatorios.textos.analiseVerticalParticipacaoSobre')}>{t('paginas.finRelatorios.textos.av')}</th>
               </tr>
             </thead>
             <tbody>{linhas.map((l) => [linhaTabela(l), ...(abertos.has(l.id) ? (l.filhos ?? []).map((f) => linhaTabela(f, true)) : [])])}</tbody>
@@ -186,9 +184,9 @@ export function Relatorios() {
 
       <Card>
         <GraficoBarras
-          titulo={empresa ? 'Resultado líquido por mês' : 'Quanto sobrou em cada mês'}
+          titulo={empresa ? t('paginas.finRelatorios.textos.resultadoLiquidoPorMes') : t('paginas.finRelatorios.textos.quantoSobrouEmCada')}
           dados={meses.map((m, i) => ({ mes: m.slice(0, 7), resultado: final.valores[i] }))}
-          eixoX={{ chave: 'mes', tipo: 'data', rotulo: 'Mês' }}
+          eixoX={{ chave: 'mes', tipo: 'data', rotulo: t('paginas.finRelatorios.textos.mes') }}
           eixoY={{ formatar: (v) => moeda(v, { compacto: true }) }}
           series={[{ chave: 'resultado', rotulo: final.rotulo }]}
           divergente

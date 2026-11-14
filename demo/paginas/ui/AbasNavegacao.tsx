@@ -40,184 +40,184 @@ export function PaginaAbasNavegacao() {
       <CabecalhoPagina titulo={t('paginas.abas.titulo')} icone="panel-right" trilha />
 
       <div className="demo-colunas">
-        <Bloco titulo="Abas estáticas" descricao="Só a barra, sem painel.">
-          <Abas variante="classica" rotulo="Abas estáticas">
-            <Aba valor="ativa" rotulo="Ativa" />
-            <Aba valor="link1" rotulo="Link" />
-            <Aba valor="link2" rotulo="Outro link" />
-            <Aba valor="desab" rotulo="Desabilitada" desabilitada />
+        <Bloco titulo={t('paginas.abas.secoes.abasEstaticas')} descricao={t('paginas.abas.textos.soABarraSem')}>
+          <Abas variante="classica" rotulo={t('paginas.abas.textos.abasEstaticas')}>
+            <Aba valor="ativa" rotulo={t('paginas.abas.textos.ativa')} />
+            <Aba valor="link1" rotulo={t('paginas.abas.textos.link')} />
+            <Aba valor="link2" rotulo={t('paginas.abas.textos.outroLink')} />
+            <Aba valor="desab" rotulo={t('paginas.abas.textos.desabilitada')} desabilitada />
           </Abas>
         </Bloco>
-        <Bloco titulo="Pílulas estáticas">
-          <Abas variante="pilulas" rotulo="Pílulas estáticas">
-            <Aba valor="ativa" rotulo="Ativa" />
-            <Aba valor="link1" rotulo="Link" />
-            <Aba valor="link2" rotulo="Outro link" />
-            <Aba valor="desab" rotulo="Desabilitada" desabilitada />
+        <Bloco titulo={t('paginas.abas.secoes.pilulasEstaticas')}>
+          <Abas variante="pilulas" rotulo={t('paginas.abas.textos.pilulasEstaticas')}>
+            <Aba valor="ativa" rotulo={t('paginas.abas.textos.ativa')} />
+            <Aba valor="link1" rotulo={t('paginas.abas.textos.link')} />
+            <Aba valor="link2" rotulo={t('paginas.abas.textos.outroLink')} />
+            <Aba valor="desab" rotulo={t('paginas.abas.textos.desabilitada')} desabilitada />
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Pílulas com badges">
-          <Abas variante="pilulas" painel="caixa" rotulo="Loja">
-            <Aba valor="produtos" rotulo="Produtos">
+        <Bloco titulo={t('paginas.abas.secoes.pilulasComBadges')}>
+          <Abas variante="pilulas" painel="caixa" rotulo={t('paginas.abas.textos.loja')}>
+            <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')}>
               <Texto n={0} />
             </Aba>
-            <Aba valor="carrinho" rotulo="Carrinho" badge={<Badge cor="err" formato="pilula" rotulo="32" />}>
+            <Aba valor="carrinho" rotulo={t('paginas.abas.textos.carrinho')} badge={<Badge cor="err" formato="pilula" rotulo="32" />}>
               <Texto n={1} />
             </Aba>
-            <Aba valor="pedidos" rotulo="Pedidos" badge={<Badge cor="ok" formato="pilula" rotulo="4" />}>
+            <Aba valor="pedidos" rotulo={t('paginas.abas.textos.pedidos')} badge={<Badge cor="ok" formato="pilula" rotulo="4" />}>
               <Texto n={2} />
             </Aba>
-            <Aba valor="ofertas" rotulo="Ofertas">
+            <Aba valor="ofertas" rotulo={t('paginas.abas.textos.ofertas')}>
               <Texto n={3} />
             </Aba>
           </Abas>
         </Bloco>
-        <Bloco titulo="Contorno justificado" descricao="Todas as abas com a mesma largura.">
-          <Abas variante="contorno" alinhamento="justificado" painel="caixa" rotulo="Loja">
-            <Aba valor="produtos" rotulo="Produtos">
+        <Bloco titulo={t('paginas.abas.secoes.contornoJustificado')} descricao={t('paginas.abas.textos.todasAsAbasCom')}>
+          <Abas variante="contorno" alinhamento="justificado" painel="caixa" rotulo={t('paginas.abas.textos.loja')}>
+            <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')}>
               <Texto n={1} />
             </Aba>
-            <Aba valor="carrinho" rotulo="Carrinho" badge={<Badge cor="info" aparencia="suave" rotulo="Cheio" />}>
+            <Aba valor="carrinho" rotulo={t('paginas.abas.textos.carrinho')} badge={<Badge cor="info" aparencia="suave" rotulo={t('paginas.abas.textos.cheio')} />}>
               <Texto n={2} />
             </Aba>
-            <Aba valor="pedidos" rotulo="Pedidos">
+            <Aba valor="pedidos" rotulo={t('paginas.abas.textos.pedidos')}>
               <Texto n={3} />
             </Aba>
-            <Aba valor="ofertas" rotulo="Ofertas" pendentes={7}>
+            <Aba valor="ofertas" rotulo={t('paginas.abas.textos.ofertas')} pendentes={7}>
               <Texto n={0} />
             </Aba>
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Centralizadas">
-          <Abas variante="suave" alinhamento="centro" painel="caixa" rotulo="Centralizadas">
+        <Bloco titulo={t('paginas.abas.secoes.centralizadas')}>
+          <Abas variante="suave" alinhamento="centro" painel="caixa" rotulo={t('paginas.abas.textos.centralizadas')}>
             {abasPadrao()}
           </Abas>
         </Bloco>
-        <Bloco titulo="À direita">
-          <Abas variante="sublinhado" alinhamento="fim" painel="caixa" rotulo="À direita">
+        <Bloco titulo={t('paginas.abas.secoes.aDireita')}>
+          <Abas variante="sublinhado" alinhamento="fim" painel="caixa" rotulo={t('paginas.abas.textos.aDireita')}>
             {abasPadrao()}
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Abas no cabeçalho" descricao="Título e abas na mesma linha.">
-          <Abas variante="suave" cabecalho="Relatório" painel="caixa" rotulo="Seções do relatório">
-            <Aba valor="inicio" rotulo="Início">
+        <Bloco titulo={t('paginas.abas.secoes.abasNoCabecalho')} descricao={t('paginas.abas.textos.tituloEAbasNa')}>
+          <Abas variante="suave" cabecalho={t('paginas.abas.textos.relatorio')} painel="caixa" rotulo={t('paginas.abas.textos.secoesDoRelatorio')}>
+            <Aba valor="inicio" rotulo={t('paginas.abas.textos.inicio')}>
               <Texto n={0} paragrafos={2} />
             </Aba>
-            <Aba valor="sobre" rotulo="Sobre">
+            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobre')}>
               <Texto n={1} paragrafos={2} />
             </Aba>
-            <Aba valor="servicos" rotulo="Serviços">
+            <Aba valor="servicos" rotulo={t('paginas.abas.textos.servicos')}>
               <Texto n={2} paragrafos={2} />
             </Aba>
           </Abas>
         </Bloco>
-        <Bloco titulo="Abas no rodapé" descricao="A barra fica abaixo do painel.">
-          <Abas variante="contorno" alinhamento="fim" posicaoBarra="base" painel="caixa" rotulo="Abas no rodapé">
-            <Aba valor="inicio" rotulo="Início">
+        <Bloco titulo={t('paginas.abas.secoes.abasNoRodape')} descricao={t('paginas.abas.textos.aBarraFicaAbaixo')}>
+          <Abas variante="contorno" alinhamento="fim" posicaoBarra="base" painel="caixa" rotulo={t('paginas.abas.textos.abasNoRodape')}>
+            <Aba valor="inicio" rotulo={t('paginas.abas.textos.inicio')}>
               <Texto n={3} />
             </Aba>
-            <Aba valor="sobre" rotulo="Sobre">
+            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobre')}>
               <Texto n={0} />
             </Aba>
-            <Aba valor="servicos" rotulo="Serviços">
+            <Aba valor="servicos" rotulo={t('paginas.abas.textos.servicos')}>
               <Texto n={1} />
             </Aba>
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Abas clássicas" descricao="A aba ativa se funde com a linha do painel.">
-          <Abas variante="classica" painel="caixa" rotulo="Abas clássicas">
+        <Bloco titulo={t('paginas.abas.secoes.abasClassicas')} descricao={t('paginas.abas.textos.aAbaAtivaSe')}>
+          <Abas variante="classica" painel="caixa" rotulo={t('paginas.abas.textos.abasClassicas')}>
             {abasPadrao()}
           </Abas>
         </Bloco>
-        <Bloco titulo="Justificadas">
-          <Abas variante="suave" alinhamento="justificado" painel="caixa" rotulo="Justificadas">
+        <Bloco titulo={t('paginas.abas.secoes.justificadas')}>
+          <Abas variante="suave" alinhamento="justificado" painel="caixa" rotulo={t('paginas.abas.textos.justificadas')}>
             {abasPadrao()}
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Vertical">
-          <Abas variante="suave" orientacao="vertical" painel="caixa" rotulo="Vertical">
+        <Bloco titulo={t('paginas.abas.secoes.vertical')}>
+          <Abas variante="suave" orientacao="vertical" painel="caixa" rotulo={t('paginas.abas.textos.vertical')}>
             {abasPadrao(false, 2)}
           </Abas>
         </Bloco>
-        <Bloco titulo="Vertical com ícones">
-          <Abas variante="pilulas" orientacao="vertical" painel="caixa" rotulo="Vertical com ícones">
+        <Bloco titulo={t('paginas.abas.secoes.verticalComIcones')}>
+          <Abas variante="pilulas" orientacao="vertical" painel="caixa" rotulo={t('paginas.abas.textos.verticalComIcones')}>
             {abasPadrao(true, 2)}
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Blocos verticais" descricao="Ícone em cima e seta apontando para o painel.">
-          <Abas variante="blocos" orientacao="vertical" painel="caixa" rotulo="Blocos verticais">
-            <Aba valor="inicio" rotulo="Início" icone="house">
+        <Bloco titulo={t('paginas.abas.secoes.blocosVerticais')} descricao={t('paginas.abas.textos.iconeEmCimaE')}>
+          <Abas variante="blocos" orientacao="vertical" painel="caixa" rotulo={t('paginas.abas.textos.blocosVerticais')}>
+            <Aba valor="inicio" rotulo={t('paginas.abas.textos.inicio')} icone="house">
               <Texto n={0} paragrafos={2} />
             </Aba>
-            <Aba valor="sobre" rotulo="Sobre" icone="phone">
+            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobre')} icone="phone">
               <Texto n={1} paragrafos={2} />
             </Aba>
-            <Aba valor="servicos" rotulo="Serviços" icone="briefcase">
+            <Aba valor="servicos" rotulo={t('paginas.abas.textos.servicos')} icone="briefcase">
               <Texto n={2} paragrafos={2} />
             </Aba>
           </Abas>
         </Bloco>
-        <Bloco titulo="Contorno vertical com ícone acima">
-          <Abas variante="contorno" orientacao="vertical" iconeAcima painel="caixa" rotulo="Equipe e clientes">
-            <Aba valor="func" rotulo="Funcionários" icone="map-pin">
+        <Bloco titulo={t('paginas.abas.secoes.contornoVerticalComIcone')}>
+          <Abas variante="contorno" orientacao="vertical" iconeAcima painel="caixa" rotulo={t('paginas.abas.textos.equipeEClientes')}>
+            <Aba valor="func" rotulo={t('paginas.abas.textos.funcionarios')} icone="map-pin">
               <Texto n={3} paragrafos={2} />
             </Aba>
-            <Aba valor="clientes" rotulo="Clientes" icone="users">
+            <Aba valor="clientes" rotulo={t('paginas.abas.textos.clientes')} icone="users">
               <Texto n={0} paragrafos={2} />
             </Aba>
-            <Aba valor="produtos" rotulo="Produtos" icone="package">
+            <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')} icone="package">
               <Texto n={1} paragrafos={2} />
             </Aba>
           </Abas>
         </Bloco>
       </div>
 
-      <Bloco titulo="Segmentado" descricao="Trilho cinza com a aba ativa destacada.">
-        <Abas variante="segmentado" painel="caixa" rotulo="Situação dos pedidos">
-          <Aba valor="pedidos" rotulo="Pedidos">
+      <Bloco titulo={t('paginas.abas.secoes.segmentado')} descricao={t('paginas.abas.textos.trilhoCinzaComA')}>
+        <Abas variante="segmentado" painel="caixa" rotulo={t('paginas.abas.textos.situacaoDosPedidos')}>
+          <Aba valor="pedidos" rotulo={t('paginas.abas.textos.pedidos')}>
             <Texto n={0} />
           </Aba>
-          <Aba valor="aceitos" rotulo="Aceitos">
+          <Aba valor="aceitos" rotulo={t('paginas.abas.textos.aceitos')}>
             <Texto n={1} />
           </Aba>
-          <Aba valor="recusados" rotulo="Recusados">
+          <Aba valor="recusados" rotulo={t('paginas.abas.textos.recusados')}>
             <Texto n={2} />
           </Aba>
         </Abas>
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Passos" descricao="Círculos numerados, para etapas.">
-          <Abas variante="passos" alinhamento="centro" painel="caixa" rotulo="Etapas">
-            <Aba valor="inicio" rotulo="Início">
+        <Bloco titulo={t('paginas.abas.secoes.passos')} descricao={t('paginas.abas.textos.circulosNumeradosParaEtapas')}>
+          <Abas variante="passos" alinhamento="centro" painel="caixa" rotulo={t('paginas.abas.textos.etapas')}>
+            <Aba valor="inicio" rotulo={t('paginas.abas.textos.inicio')}>
               <Texto n={0} />
             </Aba>
-            <Aba valor="sobre" rotulo="Sobre">
+            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobre')}>
               <Texto n={1} />
             </Aba>
-            <Aba valor="servicos" rotulo="Serviços">
+            <Aba valor="servicos" rotulo={t('paginas.abas.textos.servicos')}>
               <Texto n={2} />
             </Aba>
           </Abas>
         </Bloco>
-        <Bloco titulo="Sublinhado com ícone acima">
-          <Abas variante="sublinhado" alinhamento="justificado" iconeAcima painel="caixa" rotulo="Situação da entrega">
-            <Aba valor="pedido" rotulo="Pedido" icone="shopping-cart">
+        <Bloco titulo={t('paginas.abas.secoes.sublinhadoComIconeAcima')}>
+          <Abas variante="sublinhado" alinhamento="justificado" iconeAcima painel="caixa" rotulo={t('paginas.abas.textos.situacaoDaEntrega')}>
+            <Aba valor="pedido" rotulo={t('paginas.abas.textos.pedido')} icone="shopping-cart">
               <Texto n={0} />
             </Aba>
-            <Aba valor="confirmado" rotulo="Confirmado" icone="circle-check">
+            <Aba valor="confirmado" rotulo={t('paginas.abas.textos.confirmado')} icone="circle-check">
               <Texto n={1} />
             </Aba>
-            <Aba valor="enviado" rotulo="Enviado" icone="package">
+            <Aba valor="enviado" rotulo={t('paginas.abas.textos.enviado')} icone="package">
               <Texto n={2} />
             </Aba>
-            <Aba valor="entregue" rotulo="Entregue" icone="truck">
+            <Aba valor="entregue" rotulo={t('paginas.abas.textos.entregue')} icone="truck">
               <Texto n={3} />
             </Aba>
           </Abas>
@@ -225,8 +225,8 @@ export function PaginaAbasNavegacao() {
       </div>
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Pílulas com ícones">
-          <Abas variante="pilulas" rotulo="Catálogo">
+        <Bloco titulo={t('paginas.abas.secoes.pilulasComIcones')}>
+          <Abas variante="pilulas" rotulo={t('paginas.abas.textos.catalogo')}>
             {(
               [
                 ['produtos', 'Produtos', 'package'],
@@ -254,29 +254,29 @@ export function PaginaAbasNavegacao() {
           </Abas>
         </Bloco>
         <div className="demo-span-2">
-          <Bloco titulo="Vertical com perfil">
-            <Abas variante="pilulas" orientacao="vertical" rotulo="Conta">
-              <Aba valor="perfil" rotulo="Perfil" icone="user">
+          <Bloco titulo={t('paginas.abas.secoes.verticalComPerfil')}>
+            <Abas variante="pilulas" orientacao="vertical" rotulo={t('paginas.abas.textos.conta')}>
+              <Aba valor="perfil" rotulo={t('paginas.abas.textos.perfil')} icone="user">
                 <div className="demo-abas-perfil">
                   <Avatar nome="Adão Silva" foto={retrato('#1f5fe0', 'A')} formato="quadrado" tamanho="5rem" />
                   <div>
-                    <h3>Adão Silva</h3>
-                    <Detalhes rotulo="Cargo" valor="Designer de interfaces" disposicao="linha" />
-                    <Detalhes rotulo="Telefone" valor="(11) 91234-5678" disposicao="linha" />
-                    <Detalhes rotulo="E-mail" valor="adao@exemplo.com" disposicao="linha" />
+                    <h3>{t('paginas.abas.textos.adaoSilva')}</h3>
+                    <Detalhes rotulo={t('paginas.abas.textos.cargo')} valor="Designer de interfaces" disposicao="linha" />
+                    <Detalhes rotulo={t('paginas.abas.textos.telefone')} valor="(11) 91234-5678" disposicao="linha" />
+                    <Detalhes rotulo={t('paginas.abas.textos.eMail')} valor="adao@exemplo.com" disposicao="linha" />
                   </div>
                 </div>
               </Aba>
-              <Aba valor="senha" rotulo="Senha" icone="lock">
+              <Aba valor="senha" rotulo={t('paginas.abas.textos.senha')} icone="lock">
                 <Texto n={1} />
               </Aba>
-              <Aba valor="equipe" rotulo="Equipe" icone="users">
+              <Aba valor="equipe" rotulo={t('paginas.abas.textos.equipe')} icone="users">
                 <Texto n={2} />
               </Aba>
-              <Aba valor="cobranca" rotulo="Cobrança" icone="credit-card">
+              <Aba valor="cobranca" rotulo={t('paginas.abas.textos.cobranca')} icone="credit-card">
                 <Texto n={3} />
               </Aba>
-              <Aba valor="email" rotulo="E-mail" icone="mail">
+              <Aba valor="email" rotulo={t('paginas.abas.textos.eMail')} icone="mail">
                 <Texto n={0} />
               </Aba>
             </Abas>
@@ -285,76 +285,76 @@ export function PaginaAbasNavegacao() {
       </div>
 
       <div className="demo-colunas">
-        <Bloco titulo="Cartão" descricao="A aba ativa e o painel na mesma cor.">
-          <Abas variante="cartao" alinhamento="justificado" rotulo="Cartão">
+        <Bloco titulo={t('paginas.abas.secoes.cartao')} descricao={t('paginas.abas.textos.aAbaAtivaE')}>
+          <Abas variante="cartao" alinhamento="justificado" rotulo={t('paginas.abas.textos.cartao')}>
             {abasPadrao()}
           </Abas>
         </Bloco>
-        <Bloco titulo="Segmentado justificado">
-          <Abas variante="segmentado" alinhamento="justificado" painel="caixa" rotulo="Segmentado justificado">
+        <Bloco titulo={t('paginas.abas.secoes.segmentadoJustificado')}>
+          <Abas variante="segmentado" alinhamento="justificado" painel="caixa" rotulo={t('paginas.abas.textos.segmentadoJustificado')}>
             {abasPadrao()}
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Abas com menu" descricao="Abas vizinhas com o mesmo grupo viram uma aba com menu suspenso.">
-          <Abas variante="classica" painel="caixa" rotulo="Abas com menu">
-            <Aba valor="inicio" rotulo="Início">
+        <Bloco titulo={t('paginas.abas.secoes.abasComMenu')} descricao={t('paginas.abas.textos.abasVizinhasComO')}>
+          <Abas variante="classica" painel="caixa" rotulo={t('paginas.abas.textos.abasComMenu')}>
+            <Aba valor="inicio" rotulo={t('paginas.abas.textos.inicio')}>
               <Texto n={0} />
             </Aba>
-            <Aba valor="sobre" rotulo="Sobre nós" grupo="Empresa">
+            <Aba valor="sobre" rotulo={t('paginas.abas.textos.sobreNos')} grupo="Empresa">
               <Texto n={1} />
             </Aba>
-            <Aba valor="equipe" rotulo="Equipe" grupo="Empresa">
+            <Aba valor="equipe" rotulo={t('paginas.abas.textos.equipe')} grupo="Empresa">
               <Texto n={2} />
             </Aba>
-            <Aba valor="produtos" rotulo="Produtos">
+            <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')}>
               <Texto n={3} />
             </Aba>
-            <Aba valor="servicos" rotulo="Serviços" desabilitada />
+            <Aba valor="servicos" rotulo={t('paginas.abas.textos.servicos')} desabilitada />
           </Abas>
         </Bloco>
-        <Bloco titulo="Pílulas com menu">
-          <Abas variante="pilulas" painel="caixa" rotulo="Pílulas com menu">
-            <Aba valor="produtos" rotulo="Produtos">
+        <Bloco titulo={t('paginas.abas.secoes.pilulasComMenu')}>
+          <Abas variante="pilulas" painel="caixa" rotulo={t('paginas.abas.textos.pilulasComMenu')}>
+            <Aba valor="produtos" rotulo={t('paginas.abas.textos.produtos')}>
               <Texto n={3} />
             </Aba>
-            <Aba valor="carrinho" rotulo="Itens" grupo="Carrinho">
+            <Aba valor="carrinho" rotulo={t('paginas.abas.textos.itens')} grupo="Carrinho">
               <Texto n={0} />
             </Aba>
-            <Aba valor="frete" rotulo="Frete" grupo="Carrinho">
+            <Aba valor="frete" rotulo={t('paginas.abas.textos.frete')} grupo="Carrinho">
               <Texto n={1} />
             </Aba>
-            <Aba valor="pedidos" rotulo="Pedidos">
+            <Aba valor="pedidos" rotulo={t('paginas.abas.textos.pedidos')}>
               <Texto n={2} />
             </Aba>
-            <Aba valor="ofertas" rotulo="Ofertas" desabilitada />
+            <Aba valor="ofertas" rotulo={t('paginas.abas.textos.ofertas')} desabilitada />
           </Abas>
         </Bloco>
 
-        <Bloco titulo="Preencher" descricao="Ocupam a largura toda; cada aba cresce conforme o rótulo.">
-          <Abas variante="pilulas" alinhamento="preencher" rotulo="Preencher">
-            <Aba valor="ativa" rotulo="Ativa" />
-            <Aba valor="longo" rotulo="Link bem mais comprido" />
-            <Aba valor="link" rotulo="Link" />
-            <Aba valor="desab" rotulo="Desabilitada" desabilitada />
+        <Bloco titulo={t('paginas.abas.secoes.preencher')} descricao={t('paginas.abas.textos.ocupamALarguraToda')}>
+          <Abas variante="pilulas" alinhamento="preencher" rotulo={t('paginas.abas.textos.preencher')}>
+            <Aba valor="ativa" rotulo={t('paginas.abas.textos.ativa')} />
+            <Aba valor="longo" rotulo={t('paginas.abas.textos.linkBemMaisComprido')} />
+            <Aba valor="link" rotulo={t('paginas.abas.textos.link')} />
+            <Aba valor="desab" rotulo={t('paginas.abas.textos.desabilitada')} desabilitada />
           </Abas>
         </Bloco>
-        <Bloco titulo="Justificado" descricao="Ocupam a largura toda, todas do mesmo tamanho.">
-          <Abas variante="pilulas" alinhamento="justificado" rotulo="Justificado">
-            <Aba valor="ativa" rotulo="Ativa" />
-            <Aba valor="longo" rotulo="Link bem mais comprido" />
-            <Aba valor="link" rotulo="Link" />
-            <Aba valor="desab" rotulo="Desabilitada" desabilitada />
+        <Bloco titulo={t('paginas.abas.secoes.justificado')} descricao={t('paginas.abas.textos.ocupamALarguraToda2')}>
+          <Abas variante="pilulas" alinhamento="justificado" rotulo={t('paginas.abas.textos.justificado')}>
+            <Aba valor="ativa" rotulo={t('paginas.abas.textos.ativa')} />
+            <Aba valor="longo" rotulo={t('paginas.abas.textos.linkBemMaisComprido')} />
+            <Aba valor="link" rotulo={t('paginas.abas.textos.link')} />
+            <Aba valor="desab" rotulo={t('paginas.abas.textos.desabilitada')} desabilitada />
           </Abas>
         </Bloco>
       </div>
 
-      <Bloco titulo="Responsiva" descricao="Empilhadas no celular, lado a lado a partir de 36rem.">
-        <Abas variante="pilulas" orientacao="responsiva" alinhamento="preencher" rotulo="Responsiva">
-          <Aba valor="ativa" rotulo="Ativa" />
-          <Aba valor="longo" rotulo="Link bem mais comprido" />
-          <Aba valor="link" rotulo="Link" />
-          <Aba valor="desab" rotulo="Desabilitada" desabilitada />
+      <Bloco titulo={t('paginas.abas.secoes.responsiva')} descricao={t('paginas.abas.textos.empilhadasNoCelularLado')}>
+        <Abas variante="pilulas" orientacao="responsiva" alinhamento="preencher" rotulo={t('paginas.abas.textos.responsiva')}>
+          <Aba valor="ativa" rotulo={t('paginas.abas.textos.ativa')} />
+          <Aba valor="longo" rotulo={t('paginas.abas.textos.linkBemMaisComprido')} />
+          <Aba valor="link" rotulo={t('paginas.abas.textos.link')} />
+          <Aba valor="desab" rotulo={t('paginas.abas.textos.desabilitada')} desabilitada />
         </Abas>
       </Bloco>
     </div>

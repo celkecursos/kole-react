@@ -22,8 +22,8 @@ export function Secao({ id, titulo, children }: { id: string; titulo: string; ch
   );
 }
 
-/** Página da documentação no dicionário: `docs.<pagina>` (demo/i18n/pt-BR.ts). */
-export type PaginaDocChave = keyof TextosDemo['docs'];
+/** Página da documentação no dicionário: `docs.<pagina>` (demo/i18n/pt-BR/docs). `comum` são os textos de PaginaDoc/TabelaProps/Exemplo. */
+export type PaginaDocChave = Exclude<keyof TextosDemo['docs'], 'comum'>;
 
 /**
  * Título e resumo da página no idioma ativo: `docs.<pagina>.titulo` e
@@ -91,6 +91,7 @@ export function PaginaComponente({
   children,
   notas,
 }: PaginaComponenteProps) {
+  const { t } = useT();
   const cab = useCabecalhoDoc(pagina, resumo);
   const tabelas = [...(semPropsProprias ? [] : [componente]), ...outros, ...tipos];
   return (
@@ -98,13 +99,13 @@ export function PaginaComponente({
       <CabecalhoPagina titulo={cab.titulo} icone={icone} categoria={cab.t('menu.docs.componentes')} trilha>
         {cab.resumo}
       </CabecalhoPagina>
-      <Secao id="importar" titulo="Importar">
+      <Secao id="importar" titulo={t('docs.comum.secoes.importar')}>
         <Codigo codigo={linhaImport([componente, ...outros, ...importar])} />
       </Secao>
-      <Secao id="exemplos" titulo="Exemplos">
+      <Secao id="exemplos" titulo={t('docs.comum.secoes.exemplos')}>
         {children}
       </Secao>
-      <Secao id="props" titulo="Props">
+      <Secao id="props" titulo={t('docs.comum.secoes.props')}>
         {tabelas.length > 1 ? (
           tabelas.map((c) => (
             <div key={c} className="doc-props-bloco">
@@ -117,7 +118,7 @@ export function PaginaComponente({
         )}
       </Secao>
       {notas && (
-        <Secao id="notas" titulo="Boas práticas">
+        <Secao id="notas" titulo={t('docs.comum.secoes.notas')}>
           {notas}
         </Secao>
       )}

@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="imagem"
@@ -11,19 +13,13 @@ export default function Pagina() {
       outros={['Figura']}
       notas={
         <ul className="doc-lista">
-          <li>
-            <C>alt</C> é obrigatório: descreva o que a imagem mostra. Para imagem só decorativa, passe <C>alt=""</C>.
-          </li>
-          <li>
-            <C>proporcao</C> reserva o espaço antes de a imagem carregar, e a página não pula.
-          </li>
-          <li>
-            Fotos de pessoas ou registros, com várias imagens e ampliação, ficam melhor na <C>Foto</C>.
-          </li>
+          <li>{rico(t('docs.imagem.textos.altEObrigatorioDescreva'))}</li>
+          <li>{rico(t('docs.imagem.textos.proporcaoReservaOEspaco'))}</li>
+          <li>{rico(t('docs.imagem.textos.fotosDePessoasOu'))}</li>
         </ul>
       }
     >
-      <Exemplo id="imagem/Basico" titulo="Variações" />
+      <Exemplo id="imagem/Basico" titulo={t('docs.imagem.secoes.variacoes')} />
     </PaginaComponente>
   );
 }

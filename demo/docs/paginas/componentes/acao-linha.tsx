@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="acaoLinha"
@@ -10,17 +12,13 @@ export default function Pagina() {
       componente="AcaoLinha"
       notas={
         <ul className="doc-lista">
-          <li>
-            Use dentro da prop <C>acoes</C> da <C>Tabela</C>, que reserva a última coluna para elas.
-          </li>
-          <li>
-            O <C>rotulo</C> é obrigatório: vira o nome acessível e a dica do botão.
-          </li>
-          <li>Mantenha a mesma ordem e as mesmas cores em todas as telas (ver, editar, excluir).</li>
+          <li>{rico(t('docs.acaoLinha.textos.useDentroDaProp'))}</li>
+          <li>{rico(t('docs.acaoLinha.textos.oRotuloEObrigatorio'))}</li>
+          <li>{t('docs.acaoLinha.textos.mantenhaAMesmaOrdem')}</li>
         </ul>
       }
     >
-      <Exemplo id="acao-linha/Basico" titulo="Básico" />
+      <Exemplo id="acao-linha/Basico" titulo={t('docs.acaoLinha.secoes.basico')} />
     </PaginaComponente>
   );
 }

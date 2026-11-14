@@ -1,6 +1,8 @@
 import { Botao, GrupoBotoes, usePreferencias, type Densidade, type Tema } from '../../../src';
 import { C, Codigo } from '../Codigo';
 import { PaginaGuia, Secao } from '../PaginaDoc';
+import { useT } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 type Token = { nome: string; uso: string };
 const CORES: { grupo: string; tokens: Token[] }[] = [
@@ -93,6 +95,8 @@ const DENSIDADES: { id: Densidade; rotulo: string }[] = [
 ];
 
 export function DocTema() {
+  const { t } = useT();
+  const { t: tx } = useT();
   const { tema, densidade, definirTema, definirDensidade } = usePreferencias();
 
   return (
@@ -100,18 +104,18 @@ export function DocTema() {
       pagina="tema"
       icone="palette"
     >
-      <Secao id="experimente" titulo="Experimente">
-        <p className="doc-p">As amostras abaixo leem os tokens ao vivo: troque o tema e a densidade e veja os valores mudarem.</p>
+      <Secao id="experimente" titulo={t('docs.tema.secoes.experimente')}>
+        <p className="doc-p">{t('docs.tema.textos.asAmostrasAbaixoLeem')}</p>
         <div className="demo-linha">
           {/* o teste visual compara o tema "sistema" com a referência do escuro: o botão marcado é a única diferença */}
           <span data-visual-ignorar>
-            <GrupoBotoes rotulo="Tema" aparencia="contorno" tamanho="pequeno">
+            <GrupoBotoes rotulo={t('docs.tema.textos.tema')} aparencia="contorno" tamanho="pequeno">
               {TEMAS.map((t) => (
                 <Botao key={t.id} rotulo={t.rotulo} icone={t.icone} pressionado={tema === t.id} onClick={() => definirTema(t.id)} />
               ))}
             </GrupoBotoes>
           </span>
-          <GrupoBotoes rotulo="Densidade" aparencia="contorno" tamanho="pequeno">
+          <GrupoBotoes rotulo={t('docs.tema.textos.densidade')} aparencia="contorno" tamanho="pequeno">
             {DENSIDADES.map((d) => (
               <Botao key={d.id} rotulo={d.rotulo} pressionado={densidade === d.id} onClick={() => definirDensidade(d.id)} />
             ))}
@@ -119,7 +123,7 @@ export function DocTema() {
         </div>
       </Secao>
 
-      <Secao id="cores" titulo="Cores">
+      <Secao id="cores" titulo={t('docs.tema.secoes.cores')}>
         {CORES.map((g) => (
           <div key={g.grupo} className="doc-tokens">
             <h3 className="doc-tokens-grupo">{g.grupo}</h3>
@@ -138,12 +142,12 @@ export function DocTema() {
         ))}
       </Secao>
 
-      <Secao id="medidas" titulo="Raios, densidade e tipografia">
+      <Secao id="medidas" titulo={t('docs.tema.secoes.medidas')}>
         <div className="doc-tokens-grade">
           {MEDIDAS.map((t) => (
             <div key={t.nome} className="doc-token">
               <span className="doc-token-medida" style={t.nome.startsWith('--r-') ? { borderRadius: `var(${t.nome})` } : undefined}>
-                {t.nome.startsWith('--fs-') ? <span style={{ fontSize: `var(${t.nome})` }}>Aa</span> : null}
+                {t.nome.startsWith('--fs-') ? <span style={{ fontSize: `var(${t.nome})` }}>{tx('docs.tema.textos.aa')}</span> : null}
                 {t.nome.startsWith('--d-') ? <span className="doc-token-barra" style={{ height: `var(${t.nome})` }} /> : null}
               </span>
               <span>
@@ -153,24 +157,16 @@ export function DocTema() {
             </div>
           ))}
         </div>
-        <p className="doc-p">
-          A lista completa, com os valores dos dois temas, está em <C>@celke/kole-react/tokens.css</C>.
-        </p>
+        <p className="doc-p">{rico(t('docs.tema.textos.aListaCompletaCom'))}</p>
       </Secao>
 
-      <Secao id="marca" titulo="Trocar a cor da marca">
-        <p className="doc-p">
-          Redefina os tokens no CSS do app. O tema escuro tem valores próprios, então redefina lá também:
-        </p>
+      <Secao id="marca" titulo={t('docs.tema.secoes.marca')}>
+        <p className="doc-p">{t('docs.tema.textos.redefinaOsTokensNo')}</p>
         <Codigo linguagem="css" codigo={TROCAR_MARCA} />
       </Secao>
 
-      <Secao id="preferencias" titulo="Tema e densidade no app">
-        <p className="doc-p">
-          O tema vem do atributo <C>data-theme</C> no <C>{'<html>'}</C> (<C>light</C>, <C>dark</C> ou <C>system</C>), e a densidade, das
-          classes <C>density-compact</C>, <C>density-comfortable</C> e <C>density-cozy</C>. O <C>ProvedorUi</C> cuida disso; no app, use{' '}
-          <C>usePreferencias()</C>:
-        </p>
+      <Secao id="preferencias" titulo={t('docs.tema.secoes.preferencias')}>
+        <p className="doc-p">{rico(t('docs.tema.textos.oTemaVemDo'))}<C>{'<html>'}</C>{rico(t('docs.tema.textos.lightDarkOuSystem'))}</p>
         <Codigo codigo={PREFERENCIAS} />
       </Secao>
     </PaginaGuia>

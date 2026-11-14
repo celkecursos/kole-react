@@ -66,10 +66,10 @@ export function PaginaListagem({ navegar }: { navegar: (r: string) => void }) {
   ].filter(Boolean) as { campo: string; rotulo: string; aoRemover: () => void }[];
 
   const excluir = async (c: Pedido) => {
-    const ok = await confirmar.remover({ titulo: 'Excluir pedido?', mensagem: `O pedido ${c.numero} (${c.cliente}) será removido definitivamente.`, rotuloAceitar: 'Excluir' });
+    const ok = await confirmar.remover({ titulo: t('paginas.pedidos.textos.excluirPedido'), mensagem: t('paginas.pedidos.textos.oPedidoNumeroCliente', { numero: c.numero, cliente: c.cliente }), rotuloAceitar: 'Excluir' });
     if (!ok) return;
     setRegistros((l) => l.filter((x) => x.id !== c.id));
-    toast.ok('Pedido excluído', c.numero);
+    toast.ok(t('paginas.pedidos.textos.pedidoExcluido'), c.numero);
   };
 
   return (
@@ -81,9 +81,9 @@ export function PaginaListagem({ navegar }: { navegar: (r: string) => void }) {
         acoes={
           <>
             {selecionados.length > 0 && (
-              <Botao rotulo={`Exportar ${selecionados.length}`} icone="download" severidade="secundario" onClick={() => toast.info('Exportação iniciada')} />
+              <Botao rotulo={t('paginas.pedidos.textos.exportarN', { n: selecionados.length })} icone="download" severidade="secundario" onClick={() => toast.info(t('paginas.pedidos.textos.exportacaoIniciada'))} />
             )}
-            <Botao rotulo="Novo pedido" icone="plus" onClick={() => navegar('/pedidos/novo')} />
+            <Botao rotulo={t('paginas.pedidos.textos.novoPedido')} icone="plus" onClick={() => navegar('/pedidos/novo')} />
           </>
         }
       />
@@ -94,13 +94,13 @@ export function PaginaListagem({ navegar }: { navegar: (r: string) => void }) {
         alterado={alterado}
         aplicados={chips}
       >
-        <CampoTexto variante="inline" rotulo="Cliente" placeholder="Nome ou nº do pedido" valor={rascunho.cliente} aoMudar={(cliente) => setRascunho({ ...rascunho, cliente })} />
-        <CampoSelect variante="inline" rotulo="Pagamento" placeholder="Todos" opcoes={OPCOES_PAGAMENTO} valor={rascunho.pagamento} aoMudar={(pagamento) => setRascunho({ ...rascunho, pagamento })} botaoLimpar />
-        <CampoSelect variante="inline" rotulo="Situação" placeholder="Todas" opcoes={OPCOES_SITUACAO} valor={rascunho.situacao} aoMudar={(situacao) => setRascunho({ ...rascunho, situacao })} botaoLimpar />
+        <CampoTexto variante="inline" rotulo={t('paginas.pedidos.textos.cliente')} placeholder={t('paginas.pedidos.textos.nomeOuNDo')} valor={rascunho.cliente} aoMudar={(cliente) => setRascunho({ ...rascunho, cliente })} />
+        <CampoSelect variante="inline" rotulo={t('paginas.pedidos.textos.pagamento')} placeholder={t('paginas.pedidos.textos.todos')} opcoes={OPCOES_PAGAMENTO} valor={rascunho.pagamento} aoMudar={(pagamento) => setRascunho({ ...rascunho, pagamento })} botaoLimpar />
+        <CampoSelect variante="inline" rotulo={t('paginas.pedidos.textos.situacao')} placeholder={t('paginas.pedidos.textos.todas')} opcoes={OPCOES_SITUACAO} valor={rascunho.situacao} aoMudar={(situacao) => setRascunho({ ...rascunho, situacao })} botaoLimpar />
       </Filtros>
 
       <Tabela<Pedido>
-        rotulo="Pedidos"
+        rotulo={t('paginas.pedidos.textos.pedidos')}
         registros={paginaAtual}
         selecao="multipla"
         selecionados={selecionados}
@@ -111,23 +111,23 @@ export function PaginaListagem({ navegar }: { navegar: (r: string) => void }) {
         }
         acoes={(c) => (
           <>
-            <AcaoLinha icone="eye" rotulo="Visualizar" severidade="pri" onClick={() => toast.info(c.numero, c.cliente)} />
-            <AcaoLinha icone="pencil" rotulo="Editar" severidade="destaque" onClick={() => navegar('/pedidos/novo')} />
-            <AcaoLinha icone="trash-2" rotulo="Excluir" severidade="err" onClick={() => excluir(c)} />
+            <AcaoLinha icone="eye" rotulo={t('paginas.pedidos.textos.visualizar')} severidade="pri" onClick={() => toast.info(c.numero, c.cliente)} />
+            <AcaoLinha icone="pencil" rotulo={t('paginas.pedidos.textos.editar')} severidade="destaque" onClick={() => navegar('/pedidos/novo')} />
+            <AcaoLinha icone="trash-2" rotulo={t('paginas.pedidos.textos.excluir')} severidade="err" onClick={() => excluir(c)} />
           </>
         )}
         colunas={[
-          { campo: 'numero', rotulo: 'Pedido', ordenavel: true, destaque: true, largura: '9.5rem' },
-          { campo: 'cliente', rotulo: 'Cliente', ordenavel: true },
-          { campo: 'uf', rotulo: 'UF', alinhamento: 'centro' },
-          { campo: 'itens', rotulo: 'Itens', ordenavel: true, alinhamento: 'direita' },
-          { campo: 'total', rotulo: 'Total', ordenavel: true, alinhamento: 'direita', formato: (v) => BRL.format(v as number) },
-          { campo: 'pagamento', rotulo: 'Pagamento' },
-          { campo: 'entrega', rotulo: 'Entrega', ordenavel: true, formato: DATA },
-          { campo: 'situacao', rotulo: 'Situação', severidade: (c) => SEVERIDADE[c.situacao] },
+          { campo: 'numero', rotulo: t('paginas.pedidos.textos.pedido'), ordenavel: true, destaque: true, largura: '9.5rem' },
+          { campo: 'cliente', rotulo: t('paginas.pedidos.textos.cliente'), ordenavel: true },
+          { campo: 'uf', rotulo: t('paginas.pedidos.textos.uf'), alinhamento: 'centro' },
+          { campo: 'itens', rotulo: t('paginas.pedidos.textos.itens'), ordenavel: true, alinhamento: 'direita' },
+          { campo: 'total', rotulo: t('paginas.pedidos.textos.total'), ordenavel: true, alinhamento: 'direita', formato: (v) => BRL.format(v as number) },
+          { campo: 'pagamento', rotulo: t('paginas.pedidos.textos.pagamento') },
+          { campo: 'entrega', rotulo: t('paginas.pedidos.textos.entrega'), ordenavel: true, formato: DATA },
+          { campo: 'situacao', rotulo: t('paginas.pedidos.textos.situacao'), severidade: (c) => SEVERIDADE[c.situacao] },
         ]}
-        vazioDescricao="Ajuste os filtros e consulte de novo."
-        vazioAcoes={<Botao rotulo="Limpar filtros" severidade="secundario" onClick={() => consultar(VAZIO)} />}
+        vazioDescricao={t('paginas.pedidos.textos.ajusteOsFiltrosE')}
+        vazioAcoes={<Botao rotulo={t('paginas.pedidos.textos.limparFiltros')} severidade="secundario" onClick={() => consultar(VAZIO)} />}
         paginacao={{
           total: filtrados.length,
           pagina,

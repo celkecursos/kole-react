@@ -1,8 +1,11 @@
 import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="campoMarcacao"
@@ -10,21 +13,13 @@ export default function Pagina() {
       componente="CampoMarcacao"
       notas={
         <ul className="doc-lista">
-          <li>
-            Caixa para escolhas que valem ao salvar o formulário; <C>aparencia="chave"</C> para liga/desliga com efeito imediato.
-          </li>
-          <li>
-            <C>obrigatorio</C> mostra o asterisco e marca <C>aria-required</C>; quem impede salvar sem a caixa marcada (termos de uso) é o{' '}
-            <C>aoSalvar</C> do app, passando a mensagem em <C>erro</C>.
-          </li>
-          <li>
-            A chave continua um <C>{'<input type="checkbox">'}</C> com <C>role="switch"</C>: o leitor de tela anuncia "ligado" e
-            "desligado".
-          </li>
+          <li>{rico(t('docs.campoMarcacao.textos.caixaParaEscolhasQue'))}</li>
+          <li>{rico(t('docs.campoMarcacao.textos.obrigatorioMostraOAsterisco'))}</li>
+          <li>{t('docs.campoMarcacao.textos.aChaveContinuaUm')}<C>{'<input type="checkbox">'}</C>{rico(t('docs.campoMarcacao.textos.comRoleSwitchO'))}</li>
         </ul>
       }
     >
-      <Exemplo id="campo-marcacao/Basico" titulo="Caixa e chave" />
+      <Exemplo id="campo-marcacao/Basico" titulo={t('docs.campoMarcacao.secoes.caixaEChave')} />
     </PaginaComponente>
   );
 }

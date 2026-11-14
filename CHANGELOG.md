@@ -40,8 +40,16 @@ Novidades:
   `interpolar`/`pluralizar` da biblioteca, e teste de tipos que acusa chave
   usada sem texto em pt-BR. Trocar o idioma traduz o menu, a trilha, a busca
   Ctrl K, os títulos das páginas e da documentação, as legendas de `FormSecao`
-  e os títulos de `Card`, sem recarregar; o português não muda. O guia de
-  Instalação está inteiro traduzido, como modelo para os textos corridos.
+  e os títulos de `Card`, sem recarregar; o português não muda.
+- Demo: textos corridos em inglês e espanhol, página por página: blocos de
+  exemplo, parágrafos, rótulos, mensagens e toasts das telas da demo, do site
+  público e das telas de erro, e os textos da documentação (resumos, notas,
+  descrições dos exemplos e o cabeçalho da tabela de props). O dicionário fica
+  dividido por área (`demo/i18n/<idioma>/menu`, `paginas/<grupo>`,
+  `docs/<categoria>`), e os parágrafos com destaque usam `rico()` (crases e
+  `<strong>`/`<em>`/`<code>` na própria string). Ficam em português o código
+  dos exemplos, o CHANGELOG, as respostas simuladas do assistente e os dados de
+  exemplo das listas.
 - Teste visual: projeto `en` com as telas de texto da biblioteca (tabela vazia,
   paginação, calendário e o seletor aberto) e com a moldura traduzida da demo
   (documentação, formulário e cards); nas referências antigas, o seletor fica

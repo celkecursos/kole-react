@@ -1,6 +1,8 @@
 import { Alerta, Tabela } from '../../src';
 import { C } from './Codigo';
 import PROPS from './props.gerado.json';
+import { useT } from '../i18n/useT';
+import { rico } from '../i18n/rico';
 
 type Prop = { nome: string; tipo: string; obrigatorio: boolean; padrao?: string; descricao: string; de?: string };
 type Entrada = { interface: string; arquivo: string; externos: string[]; props: Prop[] };
@@ -30,42 +32,42 @@ function nativo(externo: string) {
  * que não sai da desestruturação (ex.: vem de um contexto).
  */
 export function TabelaProps({ componente, padroes = {} }: { componente: string; padroes?: Record<string, string> }) {
+  const { t } = useT();
   const entrada = TODAS[componente];
-  if (!entrada) return <Alerta severidade="err" mensagem={`Sem props geradas para ${componente}: rode npm run docs:props.`} />;
+  if (!entrada) return <Alerta severidade="err" mensagem={t('docs.comum.textos.semPropsGeradasPara', { componente })} />;
   if (!entrada.props.length)
     return (
       <p className="doc-props-nota">
-        <C>{componente}</C> não tem props próprias além de <C>children</C>.
-      </p>
+        <C>{componente}</C>{rico(t('docs.comum.textos.naoTemPropsProprias'))}</p>
     );
   const registros = entrada.props.map((p) => ({ ...p, id: p.nome, padrao: p.padrao ?? padroes[p.nome] }));
 
   return (
     <div className="doc-props">
       <Tabela
-        rotulo={`Props de ${componente}`}
+        rotulo={t('docs.comum.textos.propsDeComponente', { componente })}
         registros={registros}
         colunas={[
           {
             campo: 'nome',
-            rotulo: 'Prop',
+            rotulo: t('docs.comum.textos.prop'),
             largura: '11rem',
             render: (p) => (
               <span className="doc-props-nome">
                 <C>{p.nome}</C>
-                {p.obrigatorio && <span className="doc-props-obrig" title="Obrigatória">*</span>}
+                {p.obrigatorio && <span className="doc-props-obrig" title={t('docs.comum.textos.obrigatoria')}>*</span>}
               </span>
             ),
           },
-          { campo: 'tipo', rotulo: 'Tipo', render: (p) => <C>{p.tipo}</C> },
-          { campo: 'padrao', rotulo: 'Padrão', largura: '8rem', render: (p) => (p.padrao ? <C>{p.padrao}</C> : <span className="doc-props-vazio">—</span>) },
+          { campo: 'tipo', rotulo: t('docs.comum.textos.tipo'), render: (p) => <C>{p.tipo}</C> },
+          { campo: 'padrao', rotulo: t('docs.comum.textos.padrao'), largura: '8rem', render: (p) => (p.padrao ? <C>{p.padrao}</C> : <span className="doc-props-vazio">—</span>) },
           {
             campo: 'descricao',
-            rotulo: 'Descrição',
+            rotulo: t('docs.comum.textos.descricao'),
             render: (p) => (
               <>
                 <Texto texto={p.descricao} />
-                {p.de && <span className="doc-props-de"> (de {p.de})</span>}
+                {p.de && <span className="doc-props-de">{t('docs.comum.textos.deDe', { de: p.de })}</span>}
               </>
             ),
           },
@@ -76,12 +78,9 @@ export function TabelaProps({ componente, padroes = {} }: { componente: string; 
         return (
           <p key={externo} className="doc-props-nota">
             {tag ? (
-              <>
-                Aceita também os atributos nativos de <C>{`<${tag}>`}</C>
+              <>{t('docs.comum.textos.aceitaTambemOsAtributos')}<C>{`<${tag}>`}</C>
                 {fora?.length ? (
-                  <>
-                    {' '}
-                    (exceto {fora.map((f, i) => (
+                  <>{t('docs.comum.textos.exceto')}{fora.map((f, i) => (
                       <span key={f}>
                         {i > 0 && ', '}
                         <C>{f}</C>
@@ -89,19 +88,16 @@ export function TabelaProps({ componente, padroes = {} }: { componente: string; 
                     ))}
                     )
                   </>
-                ) : null}
-                , como <C>id</C>, <C>aria-*</C> e eventos.
-              </>
+                ) : null}{rico(t('docs.comum.textos.comoIdAriaE'))}</>
             ) : (
-              <>
-                Estende <C>{externo}</C>.
+              <>{t('docs.comum.textos.estende')}<C>{externo}</C>.
               </>
             )}
           </p>
         );
       })}
       <p className="doc-props-nota">
-        <span className="doc-props-obrig">*</span> obrigatória. Tabela gerada dos tipos em <C>{entrada.arquivo}</C>.
+        <span className="doc-props-obrig">*</span>{t('docs.comum.textos.obrigatoriaTabelaGeradaDos')}<C>{entrada.arquivo}</C>.
       </p>
     </div>
   );

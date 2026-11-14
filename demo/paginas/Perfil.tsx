@@ -94,7 +94,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
         titulo={t('paginas.perfil.titulo')}
         trilha
         icone="user"
-        acoes={<Botao rotulo="Editar" icone="pencil" severidade="warn" onClick={() => navegar('/perfil/editar')} />}
+        acoes={<Botao rotulo={t('paginas.perfil.textos.editar')} icone="pencil" severidade="warn" onClick={() => navegar('/perfil/editar')} />}
       />
 
       <div className="demo-perfil">
@@ -103,32 +103,30 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
             <div className="demo-perfil-id">
               <div className="demo-perfil-foto">
                 {perfil.foto ? <Foto nome={perfil.nome} fotos={perfil.foto} tamanho="md" ampliavel /> : <Avatar nome={perfil.nome} tom="escuro" tamanho="7.5rem" />}
-                <button type="button" className="demo-perfil-camera" aria-label="Editar foto" title="Editar foto" onClick={() => navegar('/perfil/foto')}>
+                <button type="button" className="demo-perfil-camera" aria-label={t('paginas.perfil.textos.editarFoto')} title={t('paginas.perfil.textos.editarFoto')} onClick={() => navegar('/perfil/foto')}>
                   <Icone icone="camera" />
                 </button>
               </div>
               <div className="demo-perfil-nome">
                 <h2>{perfil.nome}</h2>
-                {perfil.verificado && <Status rotulo="Verificado" severidade="ok" icone="circle-check" />}
+                {perfil.verificado && <Status rotulo={t('paginas.perfil.textos.verificado')} severidade="ok" icone="circle-check" />}
               </div>
               <span className="demo-perfil-cargo">{perfil.cargo}</span>
               <div className="demo-perfil-stat">
                 <strong title={String(atendidos)}>{formatarNumero(atendidos)}</strong>
-                <span>pedidos atendidos</span>
+                <span>{t('paginas.perfil.textos.pedidosAtendidos')}</span>
               </div>
             </div>
           </Card>
 
           <Card>
             <div className="demo-perfil-secao-titulo">
-              <Icone icone="user" />
-              Sobre mim
-            </div>
+              <Icone icone="user" />{t('paginas.perfil.textos.sobreMim')}</div>
             <div className="demo-pilha-p">
-              <Detalhes rotulo="Apelido" valor={perfil.apelido || 'Não informado'} disposicao="linha" />
-              <Detalhes rotulo="E-mail" valor={perfil.email} disposicao="linha" />
-              <Detalhes rotulo="CPF" valor={perfil.cpf || 'Não informado'} disposicao="linha" />
-              <Detalhes rotulo="Foto para a equipe" valor={perfil.fotoVisivel ? 'Visível' : 'Oculta'} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.apelido')} valor={perfil.apelido || 'Não informado'} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.eMail')} valor={perfil.email} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.cpf')} valor={perfil.cpf || 'Não informado'} disposicao="linha" />
+              <Detalhes rotulo={t('paginas.perfil.textos.fotoParaAEquipe')} valor={perfil.fotoVisivel ? 'Visível' : 'Oculta'} disposicao="linha" />
             </div>
           </Card>
         </div>
@@ -138,9 +136,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
             <div className="demo-perfil-secao-titulo">
               <span style={{ color: 'var(--pri)', display: 'inline-flex' }}>
                 <Icone icone="shopping-cart" />
-              </span>
-              Meus últimos pedidos
-            </div>
+              </span>{t('paginas.perfil.textos.meusUltimosPedidos')}</div>
             <ul className="demo-perfil-lista">
               {PEDIDOS_RECENTES.map((p) => (
                 <li key={p.numero}>
@@ -155,7 +151,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
               ))}
             </ul>
             <div className="demo-perfil-mais">
-              <Botao rotulo="Ver meus 128 pedidos" icone="list" severidade="secundario" onClick={() => navegar('/pedidos')} />
+              <Botao rotulo={t('paginas.perfil.textos.verMeus128Pedidos')} icone="list" severidade="secundario" onClick={() => navegar('/pedidos')} />
             </div>
           </Card>
 
@@ -163,9 +159,7 @@ function VisualizarPerfil({ navegar, perfil }: PaginaPerfilProps) {
             <div className="demo-perfil-secao-titulo">
               <span style={{ color: 'var(--destaque-ink)', display: 'inline-flex' }}>
                 <Icone icone="history" />
-              </span>
-              Atividades recentes
-            </div>
+              </span>{t('paginas.perfil.textos.atividadesRecentes')}</div>
             <ul className="demo-perfil-lista">
               {ATIVIDADES.map((a) => (
                 <li key={a.texto}>
@@ -206,7 +200,7 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
 
   const salvar = () => {
     if (pendencias) {
-      toast.warn('Há campos a corrigir', `${pendencias} campo(s) a revisar.`);
+      toast.warn(t('paginas.perfil.textos.haCamposACorrigir'), t('paginas.perfil.textos.pendenciasCampoSA', { pendencias }));
       return;
     }
     setSalvando(true);
@@ -214,14 +208,14 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
       setSalvando(false);
       if (atual === 'editar') {
         aoSalvar({ ...perfil, ...dados });
-        toast.ok('Perfil atualizado');
+        toast.ok(t('paginas.perfil.textos.perfilAtualizado'));
       } else if (atual === 'senha') {
         setSenha({ atual: '', nova: '', confirmar: '' });
-        toast.ok('Senha alterada', 'Use a nova senha no próximo acesso.');
+        toast.ok(t('paginas.perfil.textos.senhaAlterada'), t('paginas.perfil.textos.useANovaSenha'));
       } else {
         aoSalvar({ ...perfil, foto: novaFoto[0]?.url ?? perfil.foto, fotoVisivel: fotoVisivel === 'sim' });
         setNovaFoto([]);
-        toast.ok('Foto atualizada');
+        toast.ok(t('paginas.perfil.textos.fotoAtualizada'));
       }
     }, 900);
   };
@@ -232,38 +226,38 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
       icone="user"
       trilha={[{ rotulo: FORMULARIOS.find((f) => f.id === atual)!.rotulo }]}
       menu={menu}
-      menuTitulo="Configurações"
+      menuTitulo={t('paginas.perfil.textos.configuracoes')}
       menuAtivo={atual}
       aoSalvar={salvar}
       aoCancelar={() => navegar('/perfil')}
       salvando={salvando}
-      acoes={<Botao rotulo="Ver perfil" icone="eye" severidade="secundario" aparencia="texto" onClick={() => navegar('/perfil')} />}
+      acoes={<Botao rotulo={t('paginas.perfil.textos.verPerfil')} icone="eye" severidade="secundario" aparencia="texto" onClick={() => navegar('/perfil')} />}
     >
       {atual === 'editar' && (
         <FormSecao legenda={t('paginas.perfil.secoes.editarPerfil')} icone="user-pen">
           <CampoTexto
             className="lp-col-2"
-            rotulo="Nome"
+            rotulo={t('paginas.perfil.textos.nome')}
             obrigatorio
-            placeholder="Nome completo do usuário"
+            placeholder={t('paginas.perfil.textos.nomeCompletoDoUsuario')}
             valor={dados.nome}
             aoMudar={(nome) => setDados((d) => ({ ...d, nome }))}
           />
           <CampoEmail
             className="lp-col-2"
-            rotulo="E-mail"
+            rotulo={t('paginas.perfil.textos.eMail')}
             obrigatorio
-            placeholder="Melhor e-mail do usuário"
+            placeholder={t('paginas.perfil.textos.melhorEMailDo')}
             valor={dados.email}
             aoMudar={(email) => setDados((d) => ({ ...d, email }))}
           />
-          <CampoCpf className="lp-col-2" rotulo="CPF" obrigatorio valor={dados.cpf} aoMudar={(cpf) => setDados((d) => ({ ...d, cpf }))} />
+          <CampoCpf className="lp-col-2" rotulo={t('paginas.perfil.textos.cpf')} obrigatorio valor={dados.cpf} aoMudar={(cpf) => setDados((d) => ({ ...d, cpf }))} />
           <CampoTexto
             className="lp-col-2"
-            rotulo="Apelido"
+            rotulo={t('paginas.perfil.textos.apelido')}
             obrigatorio
-            placeholder="Como prefere ser chamado(a)"
-            dica="Aparece para a equipe e nas saudações."
+            placeholder={t('paginas.perfil.textos.comoPrefereSerChamado')}
+            dica={t('paginas.perfil.textos.apareceParaAEquipe')}
             valor={dados.apelido}
             aoMudar={(apelido) => setDados((d) => ({ ...d, apelido }))}
           />
@@ -274,29 +268,29 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
         <FormSecao legenda={t('paginas.perfil.secoes.alterarSenha')} icone="lock">
           <CampoSenha
             className="lp-col-2"
-            rotulo="Senha atual"
+            rotulo={t('paginas.perfil.textos.senhaAtual')}
             obrigatorio
-            placeholder="Digite sua senha atual"
+            placeholder={t('paginas.perfil.textos.digiteSuaSenhaAtual')}
             valor={senha.atual}
             aoMudar={(v) => setSenha((s) => ({ ...s, atual: v }))}
           />
           <div className="lp-col-2" />
           <CampoSenha
             className="lp-col-2"
-            rotulo="Nova senha"
+            rotulo={t('paginas.perfil.textos.novaSenha')}
             obrigatorio
             forca
             autoComplete="new-password"
-            placeholder="Mínimo de 8 caracteres"
+            placeholder={t('paginas.perfil.textos.minimoDe8Caracteres')}
             valor={senha.nova}
             aoMudar={(v) => setSenha((s) => ({ ...s, nova: v }))}
           />
           <CampoSenha
             className="lp-col-2"
-            rotulo="Confirmar nova senha"
+            rotulo={t('paginas.perfil.textos.confirmarNovaSenha')}
             obrigatorio
             autoComplete="new-password"
-            placeholder="Repita a nova senha"
+            placeholder={t('paginas.perfil.textos.repitaANovaSenha')}
             valor={senha.confirmar}
             aoMudar={(v) => setSenha((s) => ({ ...s, confirmar: v }))}
             validar={(v) => (v === senha.nova ? '' : 'As senhas não conferem')}
@@ -313,8 +307,8 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
             </div>
             <CampoAnexo
               className="lp-col-3"
-              rotulo="Escolher nova foto"
-              dica="JPG, PNG ou WEBP, até 2 MB. Prefira uma foto de rosto, com fundo claro."
+              rotulo={t('paginas.perfil.textos.escolherNovaFoto')}
+              dica={t('paginas.perfil.textos.jpgPngOuWebp')}
               accept="image/*"
               multiple={false}
               maxTamanho={2 * 1024 * 1024}
@@ -326,12 +320,12 @@ function EditarPerfil({ atual, navegar, perfil, aoSalvar }: PaginaPerfilProps & 
             <Escolha
               className="lp-col-full"
               aparencia="radio"
-              rotulo="Mostrar minha foto para a equipe (pedidos, atividades e comentários)"
+              rotulo={t('paginas.perfil.textos.mostrarMinhaFotoPara')}
               valor={fotoVisivel}
               aoMudar={setFotoNoRanking}
               opcoes={[
-                { valor: 'sim', rotulo: 'Exibir para a equipe' },
-                { valor: 'nao', rotulo: 'Não exibir' },
+                { valor: 'sim', rotulo: t('paginas.perfil.textos.exibirParaAEquipe') },
+                { valor: 'nao', rotulo: t('paginas.perfil.textos.naoExibir') },
               ]}
             />
           </FormSecao>

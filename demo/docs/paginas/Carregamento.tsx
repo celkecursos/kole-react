@@ -1,7 +1,8 @@
 import { Tabela } from '../../../src';
-import { C } from '../Codigo';
 import { Exemplo } from '../Exemplo';
 import { PaginaGuia, Secao } from '../PaginaDoc';
+import { useT } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 const QUAL_USAR = [
   { id: 1, situacao: 'Salvar um formulário', usar: 'Form com salvando', porque: 'O Salvar gira e recusa clique repetido; o Cancelar fica desabilitado.' },
@@ -17,70 +18,50 @@ const QUAL_USAR = [
 ];
 
 export function DocCarregamento() {
+  const { t } = useT();
   return (
     <PaginaGuia
       pagina="carregamento"
       icone="loader-circle"
     >
-      <Secao id="qual-usar" titulo="Qual usar">
+      <Secao id="qual-usar" titulo={t('docs.carregamento.secoes.qualUsar')}>
         <Tabela
-          rotulo="Qual loading usar em cada situação"
+          rotulo={t('docs.carregamento.textos.qualLoadingUsarEm')}
           registros={QUAL_USAR}
           colunas={[
-            { campo: 'situacao', rotulo: 'Situação', destaque: true },
-            { campo: 'usar', rotulo: 'Use' },
-            { campo: 'porque', rotulo: 'Por quê' },
+            { campo: 'situacao', rotulo: t('docs.carregamento.textos.situacao'), destaque: true },
+            { campo: 'usar', rotulo: t('docs.carregamento.textos.use') },
+            { campo: 'porque', rotulo: t('docs.carregamento.textos.porQue') },
           ]}
         />
-        <p className="doc-p">
-          Regra geral: prefira o loading mais local possível. Bloquear a tela inteira só quando a pessoa realmente não pode fazer mais
-          nada; silhueta quando se sabe o formato do que vem; girador quando não se sabe.
-        </p>
+        <p className="doc-p">{t('docs.carregamento.textos.regraGeralPrefiraO')}</p>
       </Secao>
 
-      <Secao id="formulario" titulo="Ao salvar">
-        <Exemplo id="carregamento/Formulario" titulo="Formulário salvando">
-          Clique em Salvar: <C>salvando</C> segura o formulário até a resposta.
-        </Exemplo>
-        <Exemplo id="carregamento/Botao" titulo="Botão e ação de linha">
-          Para ações fora de formulário. <C>carregando</C> mantém o foco no botão e recusa o segundo clique.
-        </Exemplo>
+      <Secao id="formulario" titulo={t('docs.carregamento.secoes.formulario')}>
+        <Exemplo id="carregamento/Formulario" titulo={t('docs.carregamento.secoes.formularioSalvando')}>{rico(t('docs.carregamento.textos.cliqueEmSalvarSalvando'))}</Exemplo>
+        <Exemplo id="carregamento/Botao" titulo={t('docs.carregamento.secoes.botaoEAcaoDe')}>{rico(t('docs.carregamento.textos.paraAcoesForaDe'))}</Exemplo>
       </Secao>
 
-      <Secao id="pagina" titulo="Ao abrir uma página">
-        <Exemplo id="carregamento/Pagina" titulo="Silhueta do conteúdo">
-          <C>Skeleton</C> no formato dos dados e <C>aria-busy</C> na área enquanto carrega.
-        </Exemplo>
-        <Exemplo id="carregamento/Area" titulo="Área e tela inteira">
-          <C>Carregando</C> numa área quando não há formato a imitar; <C>bloqueante</C> para operações que travam a tela.
-        </Exemplo>
+      <Secao id="pagina" titulo={t('docs.carregamento.secoes.pagina')}>
+        <Exemplo id="carregamento/Pagina" titulo={t('docs.carregamento.secoes.silhuetaDoConteudo')}>{rico(t('docs.carregamento.textos.skeletonNoFormatoDos'))}</Exemplo>
+        <Exemplo id="carregamento/Area" titulo={t('docs.carregamento.secoes.areaETelaInteira')}>{rico(t('docs.carregamento.textos.carregandoNumaAreaQuando'))}</Exemplo>
       </Secao>
 
-      <Secao id="listas" titulo="Em listas">
-        <Exemplo id="carregamento/Lista" titulo="Primeira carga e paginação">
-          <C>carregando</C> só na primeira vez; ao paginar ou filtrar, <C>atualizando</C> mantém o que já está na tela.
-        </Exemplo>
+      <Secao id="listas" titulo={t('docs.carregamento.secoes.listas')}>
+        <Exemplo id="carregamento/Lista" titulo={t('docs.carregamento.secoes.primeiraCargaEPaginacao')}>{rico(t('docs.carregamento.textos.carregandoSoNaPrimeira'))}</Exemplo>
       </Secao>
 
-      <Secao id="andamento" titulo="Andamento e painéis">
-        <Exemplo id="carregamento/Progresso" titulo="Com progresso">
-          Quando dá para medir: upload, importação, processamento em lotes.
-        </Exemplo>
-        <Exemplo id="carregamento/Painel" titulo="Indicadores e girador" />
+      <Secao id="andamento" titulo={t('docs.carregamento.secoes.andamento')}>
+        <Exemplo id="carregamento/Progresso" titulo={t('docs.carregamento.secoes.comProgresso')}>{t('docs.carregamento.textos.quandoDaParaMedir')}</Exemplo>
+        <Exemplo id="carregamento/Painel" titulo={t('docs.carregamento.secoes.indicadoresEGirador')} />
       </Secao>
 
-      <Secao id="acessibilidade" titulo="Acessibilidade">
+      <Secao id="acessibilidade" titulo={t('docs.carregamento.secoes.acessibilidade')}>
         <ul className="doc-lista">
-          <li>
-            <C>Carregando</C> e <C>Girador</C> têm <C>role="status"</C>: o leitor de tela anuncia a mensagem.
-          </li>
-          <li>
-            <C>Skeleton</C> é decorativo: marque a área com <C>aria-busy</C> enquanto carrega.
-          </li>
-          <li>
-            Botão com <C>carregando</C> ganha <C>aria-busy</C> e continua no Tab, em vez de sumir do foco como no <C>disabled</C>.
-          </li>
-          <li>Depois de carregar, avise o resultado quando ele não for óbvio na tela (toast de "Salvo", alerta de erro).</li>
+          <li>{rico(t('docs.carregamento.textos.carregandoEGiradorTem'))}</li>
+          <li>{rico(t('docs.carregamento.textos.skeletonEDecorativoMarque'))}</li>
+          <li>{rico(t('docs.carregamento.textos.botaoComCarregandoGanha'))}</li>
+          <li>{t('docs.carregamento.textos.depoisDeCarregarAvise')}</li>
         </ul>
       </Secao>
     </PaginaGuia>

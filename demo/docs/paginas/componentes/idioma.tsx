@@ -1,6 +1,8 @@
 import { C, Codigo } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaGuia, Secao } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 const PROVEDOR = `import { Estrutura, ProvedorUi } from '@celke/kole-react';
 
@@ -55,74 +57,43 @@ const SCRIPT = `// no <head> (SSR) — define <html lang> antes da primeira pint
 <script dangerouslySetInnerHTML={{ __html: scriptTemaInicial({ idiomaInicial: usuario.locale }) }} />`;
 
 export default function DocIdioma() {
+  const { t } = useT();
   return (
     <PaginaGuia
       pagina="idioma"
       icone="globe"
     >
-      <Secao id="ligar" titulo="Ligar o seletor">
-        <p className="doc-p">
-          O idioma fica no <C>ProvedorPreferencias</C> (ou <C>ProvedorUi</C>), junto com o tema e a densidade, e é lembrado no navegador.
-          Sem escolha salva nem <C>idiomaInicial</C>, é <C>pt-BR</C>: o idioma do navegador não é consultado. O seletor aparece na topbar
-          da <C>Estrutura</C> só com a prop <C>idiomas</C>.
-        </p>
+      <Secao id="ligar" titulo={t('docs.idioma.secoes.ligar')}>
+        <p className="doc-p">{rico(t('docs.idioma.textos.oIdiomaFicaNo'))}</p>
         <Codigo codigo={PROVEDOR} />
-        <Exemplo id="idioma/Seletor" titulo="Trocar o idioma (a página inteira muda, sem recarregar)" />
+        <Exemplo id="idioma/Seletor" titulo={t('docs.idioma.secoes.trocarOIdiomaA')} />
       </Secao>
 
-      <Secao id="o-que-muda" titulo="O que muda e o que não muda">
+      <Secao id="o-que-muda" titulo={t('docs.idioma.secoes.oQueMuda')}>
         <ul className="doc-lista">
-          <li>
-            Mudam os textos da biblioteca e a formatação de datas e números (<C>1.234,50</C> · <C>1,234.50</C>). A prioridade é: prop
-            passada pelo sistema, depois o dicionário do idioma, depois o pt-BR.
-          </li>
-          <li>
-            A moeda não muda com o idioma: <C>formatarMoeda</C> e <C>Valor</C> continuam em real (ou na <C>moeda</C> passada); o idioma muda só
-            o separador e a posição do símbolo.
-          </li>
-          <li>
-            Regras brasileiras ficam como são: máscaras e validação de CPF, CNPJ, CEP e telefone, placa, UFs, tipo de pessoa e os valores por
-            extenso. Só a mensagem de erro é traduzida.
-          </li>
-          <li>
-            Os textos do sistema não são traduzidos pela biblioteca: ela só informa o idioma escolhido (<C>aoMudarIdioma</C>,{' '}
-            <C>usePreferencias().idioma</C> ou <C>useIdioma()</C>) para o sistema trocar os dele.
-          </li>
-          <li>
-            Utilitários aceitam o idioma como parâmetro opcional, sempre com padrão <C>pt-BR</C>: <C>{'formatarNumero(v, { idioma })'}</C>,{' '}
-            <C>formatarMoeda</C>, <C>rotuloPeriodo</C>, <C>tempoRelativo(data, agora, idioma)</C>, <C>situacaoPrazo</C>, <C>validar</C>,{' '}
-            <C>validarSenha</C>, <C>saudacaoPorHora</C>, <C>listaPorExtenso</C> e <C>tituloDeEntidade</C>.
-          </li>
+          <li>{rico(t('docs.idioma.textos.mudamOsTextosDa'))}</li>
+          <li>{rico(t('docs.idioma.textos.aMoedaNaoMuda'))}</li>
+          <li>{t('docs.idioma.textos.regrasBrasileirasFicamComo')}</li>
+          <li>{rico(t('docs.idioma.textos.osTextosDoSistema'))}</li>
+          <li>{rico(t('docs.idioma.textos.utilitariosAceitamOIdioma'))}</li>
         </ul>
       </Secao>
 
-      <Secao id="sincronizar" titulo="Sincronizar com o sistema">
-        <p className="doc-p">
-          <C>aoMudarIdioma</C> é chamado ao montar e a cada troca: é o lugar de trocar o i18n do sistema e de gravar a escolha.
-        </p>
+      <Secao id="sincronizar" titulo={t('docs.idioma.secoes.sincronizar')}>
+        <p className="doc-p">{rico(t('docs.idioma.textos.aomudaridiomaEChamadoAo'))}</p>
         <Codigo codigo={I18NEXT} />
-        <p className="doc-p">
-          Com Laravel, guarde a escolha em <C>users.locale</C> e devolva no carregamento. O <C>idiomaInicial</C> vale enquanto a pessoa não
-          troca no navegador; depois, a escolha salva no navegador vence.
-        </p>
+        <p className="doc-p">{rico(t('docs.idioma.textos.comLaravelGuardeA'))}</p>
         <Codigo linguagem="php" codigo={LARAVEL} />
         <Codigo codigo={LARAVEL_REACT} />
       </Secao>
 
-      <Secao id="textos" titulo="Trocar textos ou acrescentar um idioma">
-        <p className="doc-p">
-          Os dicionários são exportados (<C>textosPtBR</C>, <C>textosEn</C>, <C>textosEs</C>) e organizados por componente (
-          <C>tabela.rotulo</C>, <C>paginacao.proxima</C>…). A prop <C>textos</C> do provedor recebe só o que muda, por idioma.
-        </p>
+      <Secao id="textos" titulo={t('docs.idioma.secoes.textos')}>
+        <p className="doc-p">{rico(t('docs.idioma.textos.osDicionariosSaoExportados'))}</p>
         <Codigo codigo={TEXTOS} />
       </Secao>
 
-      <Secao id="sem-piscar" titulo="Sem piscar ao abrir">
-        <p className="doc-p">
-          O <C>scriptTemaInicial</C> também define o <C>lang</C> do <C>&lt;html&gt;</C> antes da primeira pintura (só quando há idioma salvo ou{' '}
-          <C>idiomaInicial</C>; sem eles, fica o <C>lang</C> do HTML). Os textos já saem no idioma certo na primeira renderização, porque o
-          provedor lê a escolha salva ao montar.
-        </p>
+      <Secao id="sem-piscar" titulo={t('docs.idioma.secoes.semPiscar')}>
+        <p className="doc-p">{rico(t('docs.idioma.textos.oScripttemainicialTambemDefine'))}<C>&lt;html&gt;</C>{rico(t('docs.idioma.textos.antesDaPrimeiraPintura'))}</p>
         <Codigo codigo={SCRIPT} />
       </Secao>
     </PaginaGuia>

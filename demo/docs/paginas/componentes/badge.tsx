@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="badge"
@@ -10,22 +12,15 @@ export default function Pagina() {
       componente="Badge"
       notas={
         <ul className="doc-lista">
-          <li>
-            Para a situação de um registro (pago, cancelado) numa tabela, prefira a <C>severidade</C> da coluna da <C>Tabela</C>, que já
-            desenha o selo.
-          </li>
-          <li>
-            Contagem no canto de um avatar ou ícone é o <C>ComBadge</C>.
-          </li>
-          <li>A cor sozinha não comunica: o texto do badge precisa dizer o que ele significa.</li>
+          <li>{rico(t('docs.badge.textos.paraASituacaoDe'))}</li>
+          <li>{rico(t('docs.badge.textos.contagemNoCantoDe'))}</li>
+          <li>{t('docs.badge.textos.aCorSozinhaNao')}</li>
         </ul>
       }
     >
-      <Exemplo id="badge/Cores" titulo="Cores" />
-      <Exemplo id="badge/Aparencias" titulo="Aparência, formato e tamanho" />
-      <Exemplo id="badge/EmTitulo" titulo="Em títulos e botões">
-        <C>tamanho="herdar"</C> acompanha o texto em volta; <C>aparencia="inverso"</C> fica legível sobre um botão sólido.
-      </Exemplo>
+      <Exemplo id="badge/Cores" titulo={t('docs.badge.secoes.cores')} />
+      <Exemplo id="badge/Aparencias" titulo={t('docs.badge.secoes.aparenciaFormatoETamanho')} />
+      <Exemplo id="badge/EmTitulo" titulo={t('docs.badge.secoes.emTitulosEBotoes')}>{rico(t('docs.badge.textos.tamanhoHerdarAcompanhaO'))}</Exemplo>
     </PaginaComponente>
   );
 }

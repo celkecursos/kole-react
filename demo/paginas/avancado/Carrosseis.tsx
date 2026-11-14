@@ -30,31 +30,31 @@ export function PaginaCarrosseis() {
       <CabecalhoPagina titulo={t('paginas.carrossel.titulo')} icone="image" trilha />
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Só os slides" descricao="Avança sozinho; o botão no canto pausa.">
-          <Carrossel rotulo="Só os slides" slides={IMAGENS} />
+        <Bloco titulo={t('paginas.carrossel.secoes.soOsSlides')} descricao={t('paginas.carrossel.textos.avancaSozinhoOBotao')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.soOsSlides')} slides={IMAGENS} />
         </Bloco>
-        <Bloco titulo="Com controles" descricao="Setas de anterior e próximo.">
-          <Carrossel rotulo="Com controles" slides={IMAGENS} controles />
+        <Bloco titulo={t('paginas.carrossel.secoes.comControles')} descricao={t('paginas.carrossel.textos.setasDeAnteriorE')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.comControles')} slides={IMAGENS} controles />
         </Bloco>
-        <Bloco titulo="Com indicadores" descricao="Tracinhos que levam a cada slide.">
-          <Carrossel rotulo="Com indicadores" slides={IMAGENS} controles indicadores />
-        </Bloco>
-
-        <Bloco titulo="Com legendas">
-          <Carrossel rotulo="Com legendas" slides={comLegendas(IMAGENS)} controles indicadores />
-        </Bloco>
-        <Bloco titulo="Esmaecer" descricao="Troca com esmaecimento em vez de deslizar.">
-          <Carrossel rotulo="Esmaecer" slides={IMAGENS} controles transicao="esmaecer" />
-        </Bloco>
-        <Bloco titulo="Intervalo por slide" descricao="O primeiro fica 10 s, o segundo 2 s, o terceiro o padrão (5 s).">
-          <Carrossel rotulo="Intervalo por slide" slides={IMAGENS.map((s, i) => ({ ...s, intervalo: [10000, 2000, undefined][i] }))} controles />
+        <Bloco titulo={t('paginas.carrossel.secoes.comIndicadores')} descricao={t('paginas.carrossel.textos.tracinhosQueLevamA')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.comIndicadores')} slides={IMAGENS} controles indicadores />
         </Bloco>
 
-        <Bloco titulo="Sem arrastar" descricao="Desliga a troca por arraste; só pelos controles, sem avanço automático.">
-          <Carrossel rotulo="Sem arrastar" slides={IMAGENS} controles arrastar={false} automatico={false} />
+        <Bloco titulo={t('paginas.carrossel.secoes.comLegendas')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.comLegendas')} slides={comLegendas(IMAGENS)} controles indicadores />
         </Bloco>
-        <Bloco titulo="Variante escura" descricao="Controles e legendas escuros, para imagens claras.">
-          <Carrossel rotulo="Variante escura" slides={comLegendas(CLARAS)} controles indicadores escuro />
+        <Bloco titulo={t('paginas.carrossel.secoes.esmaecer')} descricao={t('paginas.carrossel.textos.trocaComEsmaecimentoEm')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.esmaecer')} slides={IMAGENS} controles transicao="esmaecer" />
+        </Bloco>
+        <Bloco titulo={t('paginas.carrossel.secoes.intervaloPorSlide')} descricao={t('paginas.carrossel.textos.oPrimeiroFica10')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.intervaloPorSlide')} slides={IMAGENS.map((s, i) => ({ ...s, intervalo: [10000, 2000, undefined][i] }))} controles />
+        </Bloco>
+
+        <Bloco titulo={t('paginas.carrossel.secoes.semArrastar')} descricao={t('paginas.carrossel.textos.desligaATrocaPor')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.semArrastar')} slides={IMAGENS} controles arrastar={false} automatico={false} />
+        </Bloco>
+        <Bloco titulo={t('paginas.carrossel.secoes.varianteEscura')} descricao={t('paginas.carrossel.textos.controlesELegendasEscuros')}>
+          <Carrossel rotulo={t('paginas.carrossel.textos.varianteEscura')} slides={comLegendas(CLARAS)} controles indicadores escuro />
         </Bloco>
       </div>
     </div>

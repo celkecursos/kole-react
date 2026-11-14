@@ -1,5 +1,7 @@
-import { C, Codigo } from '../../Codigo';
+import { Codigo } from '../../Codigo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 const USO = `import { useState } from 'react';
 import { Estrutura, type SecaoNav } from '@celke/kole-react';
@@ -64,6 +66,7 @@ function Layout() {
 }`;
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="estrutura"
@@ -73,34 +76,18 @@ export default function Pagina() {
       importar={['type SecaoNav', 'type ItemNav']}
       notas={
         <ul className="doc-lista">
-          <li>
-            <C>contexto</C> recebe um seletor (em geral o <C>SeletorContexto</C>: pessoal × empresa, filial) à esquerda do topo, visível
-            também no celular. <C>complementosTopbar</C> some no celular.
-          </li>
-          <li>
-            A <C>Estrutura</C> não troca de página sozinha: ela mostra <C>rotaAtual</C> e avisa por <C>aoNavegar</C>. Isso permite
-            usar qualquer roteador.
-          </li>
-          <li>
-            A busca do topo (Ctrl K) já procura nos itens do <C>nav</C>. Passe <C>aoBuscar</C> para buscar também no servidor, ou{' '}
-            <C>{'busca={false}'}</C> para tirar.
-          </li>
-          <li>
-            O <C>CabecalhoPagina</C> com <C>trilha</C> monta o caminho a partir do menu: a página não precisa saber onde está.
-          </li>
-          <li>
-            No celular, o menu vira um painel que abre pelo botão do topo. O estado recolhido do menu é lembrado no navegador.
-          </li>
+          <li>{rico(t('docs.estrutura.textos.contextoRecebeUmSeletor'))}</li>
+          <li>{rico(t('docs.estrutura.textos.aEstruturaNaoTroca'))}</li>
+          <li>{rico(t('docs.estrutura.textos.aBuscaDoTopo'))}</li>
+          <li>{rico(t('docs.estrutura.textos.oCabecalhopaginaComTrilha'))}</li>
+          <li>{t('docs.estrutura.textos.noCelularOMenu')}</li>
         </ul>
       }
     >
-      <p className="doc-p">
-        Esta documentação roda dentro de uma <C>Estrutura</C>: o menu à esquerda, a barra do topo e o rodapé são ela. Por isso os exemplos
-        abaixo são só código.
-      </p>
-      <h3 className="doc-exemplo-titulo">Uso básico</h3>
+      <p className="doc-p">{rico(t('docs.estrutura.textos.estaDocumentacaoRodaDentro'))}</p>
+      <h3 className="doc-exemplo-titulo">{t('docs.estrutura.textos.usoBasico')}</h3>
       <Codigo codigo={USO} />
-      <h3 className="doc-exemplo-titulo">Com React Router</h3>
+      <h3 className="doc-exemplo-titulo">{t('docs.estrutura.textos.comReactRouter')}</h3>
       <Codigo codigo={ROUTER} />
     </PaginaComponente>
   );

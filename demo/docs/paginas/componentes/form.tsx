@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="form"
@@ -11,28 +13,15 @@ export default function Pagina() {
       outros={['FormSecao']}
       notas={
         <ul className="doc-lista">
-          <li>
-            Ao salvar, o <C>Form</C> revela as pendências de todos os campos de dentro (obrigatório vazio, <C>validar</C> com erro), mesmo
-            os que ninguém tocou. A regra de negócio fica no <C>aoSalvar</C> do app.
-          </li>
-          <li>
-            Com <C>entidade="cliente"</C> e <C>modo</C>, o título sai sozinho: "Cadastrar cliente", "Editar cliente", "Visualizar
-            cliente".
-          </li>
-          <li>
-            Em página, <C>menu</C> + <C>menuAtivo</C> mostram as etapas ao lado, com contagem de <C>pendencias</C> por etapa.
-          </li>
-          <li>
-            Na grade da <C>FormSecao</C>, <C>lp-col-2</C>, <C>lp-col-3</C> e <C>lp-col-full</C> fazem o campo ocupar mais colunas. No
-            celular, tudo vira uma coluna.
-          </li>
+          <li>{rico(t('docs.form.textos.aoSalvarOForm'))}</li>
+          <li>{rico(t('docs.form.textos.comEntidadeClienteE'))}</li>
+          <li>{rico(t('docs.form.textos.emPaginaMenuMenuativo'))}</li>
+          <li>{rico(t('docs.form.textos.naGradeDaFormsecao'))}</li>
         </ul>
       }
     >
-      <Exemplo id="form/Modal" titulo="Em modal">
-        Clique em Salvar sem preencher para ver as pendências aparecerem.
-      </Exemplo>
-      <Exemplo id="form/Secoes" titulo="Seções e grade" />
+      <Exemplo id="form/Modal" titulo={t('docs.form.secoes.emModal')}>{t('docs.form.textos.cliqueEmSalvarSem')}</Exemplo>
+      <Exemplo id="form/Secoes" titulo={t('docs.form.secoes.secoesEGrade')} />
     </PaginaComponente>
   );
 }

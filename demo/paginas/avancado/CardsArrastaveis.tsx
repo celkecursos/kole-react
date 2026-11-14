@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { Avatar, Badge, Botao, CabecalhoPagina, Card, QuadroArrastavel, type ColunaArrastavel } from '../../../src';
 import { cena, retrato } from '../Bloco';
 import { useT, type TradutorDemo } from '../../i18n/useT';
+import { rico } from '../../i18n/rico';
 
 interface ItemCard {
   id: string;
@@ -40,17 +41,13 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
   switch (item.id) {
     case 'tela-cheia':
       return (
-        <Card titulo={t('paginas.cardsArrastaveis.secoes.telaCheia')} telaCheia ferramentas={alca} rodape={<Botao rotulo="Ler mais" tamanho="pequeno" formato="retangulo" />}>
-          <strong>Card em tela cheia</strong>
-          <p className="demo-arrasta-texto">{TEXTO}</p>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.telaCheia')} telaCheia ferramentas={alca} rodape={<Botao rotulo={t('paginas.cardsArrastaveis.textos.lerMais')} tamanho="pequeno" formato="retangulo" />}>{rico(t('paginas.cardsArrastaveis.textos.cardEmTelaCheia'))}<p className="demo-arrasta-texto">{TEXTO}</p>
         </Card>
       );
     case 'citacao':
       return (
         <Card cor="pri" alinhamento="centro" acoes={alca}>
-          <p className="demo-arrasta-citacao">“As coisas mais lindas do mundo não podem ser vistas nem tocadas: precisam ser sentidas com o coração.”</p>
-          <small>— Helen Keller</small>
-        </Card>
+          <p className="demo-arrasta-citacao">{t('paginas.cardsArrastaveis.textos.asCoisasMaisLindas')}</p>{rico(t('paginas.cardsArrastaveis.textos.helenKeller'))}</Card>
       );
     case 'imagem-1':
     case 'imagem-2':
@@ -61,18 +58,14 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
           titulo={t('paginas.cardsArrastaveis.secoes.imagensVeu')}
           acoes={alca}
         >
-          <p className="demo-arrasta-texto">{TEXTO}</p>
-          <small>Atualizado há 2 min</small>
-        </Card>
+          <p className="demo-arrasta-texto">{TEXTO}</p>{rico(t('paginas.cardsArrastaveis.textos.atualizadoHa2Min'))}</Card>
       );
     case 'perfil-1':
       return (
         <Card acoes={alca}>
           <div className="demo-arrasta-perfil">
             <Avatar nome="Atharva Simão" foto={retrato('#7c3aed', 'A')} tamanho="3rem" />
-            <div>
-              <strong>Atharva Simão</strong>
-              <span>Professor correspondente</span>
+            <div>{rico(t('paginas.cardsArrastaveis.textos.atharvaSimao'))}<span>{t('paginas.cardsArrastaveis.textos.professorCorrespondente')}</span>
             </div>
           </div>
         </Card>
@@ -82,12 +75,10 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
         <Card borda="info" acoes={alca}>
           <div className="demo-arrasta-perfil">
             <Avatar nome="Alícia Keller" foto={retrato('#0b72aa', 'A')} tamanho="3rem" />
-            <div>
-              <strong>Alícia Keller</strong>
-              <span>Departamento comercial</span>
+            <div>{rico(t('paginas.cardsArrastaveis.textos.aliciaKeller'))}<span>{t('paginas.cardsArrastaveis.textos.departamentoComercial')}</span>
               <span className="demo-arrasta-badges">
-                <Badge cor="info" aparencia="suave" rotulo="24 anos" />
-                <Badge cor="destaque" aparencia="suave" rotulo="Vendas" />
+                <Badge cor="info" aparencia="suave" rotulo={t('paginas.cardsArrastaveis.textos.t24Anos')} />
+                <Badge cor="destaque" aparencia="suave" rotulo={t('paginas.cardsArrastaveis.textos.vendas')} />
               </span>
             </div>
           </div>
@@ -98,25 +89,19 @@ function conteudo(item: ItemCard, alca: ReactNode, t: TradutorDemo['t']) {
         <Card cor="ok" acoes={alca}>
           <div className="demo-arrasta-perfil">
             <Avatar nome="Samanta Dias" foto={retrato('#15803d', 'S')} tamanho="3rem" />
-            <div>
-              <strong>Samanta Dias</strong>
-              <span>De licença por 1 mês</span>
+            <div>{rico(t('paginas.cardsArrastaveis.textos.samantaDias'))}<span>{t('paginas.cardsArrastaveis.textos.deLicencaPor1')}</span>
             </div>
           </div>
         </Card>
       );
     case 'recolher':
       return (
-        <Card titulo={t('paginas.cardsArrastaveis.secoes.recolhivel')} recolhivel ferramentas={alca}>
-          <strong>Card recolhível</strong>
-          <p className="demo-arrasta-texto">{TEXTO}</p>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.recolhivel')} recolhivel ferramentas={alca}>{rico(t('paginas.cardsArrastaveis.textos.cardRecolhivel'))}<p className="demo-arrasta-texto">{TEXTO}</p>
         </Card>
       );
     default:
       return (
-        <Card titulo={t('paginas.cardsArrastaveis.secoes.fecha')} dispensavel ferramentas={alca}>
-          <strong>Card fechável</strong>
-          <p className="demo-arrasta-texto">{TEXTO}</p>
+        <Card titulo={t('paginas.cardsArrastaveis.secoes.fecha')} dispensavel ferramentas={alca}>{rico(t('paginas.cardsArrastaveis.textos.cardFechavel'))}<p className="demo-arrasta-texto">{TEXTO}</p>
         </Card>
       );
   }
@@ -129,13 +114,10 @@ export function PaginaCardsArrastaveis() {
   return (
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.cardsArrastaveis.titulo')} icone="grip-vertical" trilha />
-      <p className="demo-bloco-desc demo-arrasta-ajuda">
-        Arraste pela alça <span aria-hidden="true">⋮⋮</span> para reordenar ou trocar de coluna. No teclado: foque a alça, Espaço pega e solta, as setas
-        movem e Esc cancela.
-      </p>
+      <p className="demo-bloco-desc demo-arrasta-ajuda">{t('paginas.cardsArrastaveis.textos.arrastePelaAlca')}<span aria-hidden="true">⋮⋮</span>{t('paginas.cardsArrastaveis.textos.paraReordenarOuTrocar')}</p>
       <QuadroArrastavel colunas={colunas} aoMudar={setColunas} renderItem={(item, alca) => conteudo(item, alca, t)} nomeItem={(i) => i.nome} />
       <div>
-        <Botao rotulo="Voltar à ordem inicial" icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setColunas(INICIAL)} />
+        <Botao rotulo={t('paginas.cardsArrastaveis.textos.voltarAOrdemInicial')} icone="rotate-cw" aparencia="texto" formato="retangulo" onClick={() => setColunas(INICIAL)} />
       </div>
     </div>
   );

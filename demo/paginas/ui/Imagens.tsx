@@ -28,38 +28,38 @@ export function PaginaImagens() {
       <CabecalhoPagina titulo={t('paginas.imagens.titulo')} icone="image" trilha />
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Imagem responsiva" descricao="Encolhe para caber no container e nunca estoura a largura.">
+        <Bloco titulo={t('paginas.imagens.secoes.imagemResponsiva')} descricao={t('paginas.imagens.textos.encolheParaCaberNo')}>
           <div>
-            <Imagem src={IMG.mar} alt="Paisagem azul com sol e morros" proporcao="1 / 1" largura="12.5rem" />
+            <Imagem src={IMG.mar} alt={t('paginas.imagens.textos.paisagemAzulComSol')} proporcao="1 / 1" largura="12.5rem" />
           </div>
         </Bloco>
-        <Bloco titulo="Com cantos arredondados" descricao={<>cantos=&quot;arredondado&quot;</>}>
+        <Bloco titulo={t('paginas.imagens.secoes.comCantosArredondados')} descricao={<>cantos=&quot;arredondado&quot;</>}>
           <div>
-            <Imagem src={IMG.tarde} alt="Paisagem ao entardecer" cantos="arredondado" proporcao="1 / 1" largura="12.5rem" />
+            <Imagem src={IMG.tarde} alt={t('paginas.imagens.textos.paisagemAoEntardecer')} cantos="arredondado" proporcao="1 / 1" largura="12.5rem" />
           </div>
         </Bloco>
-        <Bloco titulo="Imagem redonda" descricao={<>cantos=&quot;circulo&quot; com proporção 1 / 1.</>}>
+        <Bloco titulo={t('paginas.imagens.secoes.imagemRedonda')} descricao={<>cantos=&quot;circulo&quot; com proporção 1 / 1.</>}>
           <div>
-            <Imagem src={IMG.campo} alt="Paisagem de campo" cantos="circulo" proporcao="1 / 1" largura="12.5rem" />
+            <Imagem src={IMG.campo} alt={t('paginas.imagens.textos.paisagemDeCampo')} cantos="circulo" proporcao="1 / 1" largura="12.5rem" />
           </div>
         </Bloco>
       </div>
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Alinhada à esquerda">
+        <Bloco titulo={t('paginas.imagens.secoes.alinhadaAEsquerda')}>
           <div className="demo-img-fluxo">
-            <Imagem src={IMG.rosa} alt="Paisagem rosada" cantos="arredondado" alinhamento="esquerda" proporcao="1 / 1" largura="8rem" />
+            <Imagem src={IMG.rosa} alt={t('paginas.imagens.textos.paisagemRosada')} cantos="arredondado" alinhamento="esquerda" proporcao="1 / 1" largura="8rem" />
             <p>{TEXTO}</p>
           </div>
         </Bloco>
-        <Bloco titulo="Centralizada">
+        <Bloco titulo={t('paginas.imagens.secoes.centralizada')}>
           <div>
-            <Imagem src={IMG.floresta} alt="Paisagem verde" cantos="arredondado" alinhamento="centro" proporcao="1 / 1" largura="12.5rem" />
+            <Imagem src={IMG.floresta} alt={t('paginas.imagens.textos.paisagemVerde')} cantos="arredondado" alinhamento="centro" proporcao="1 / 1" largura="12.5rem" />
           </div>
         </Bloco>
-        <Bloco titulo="Alinhada à direita">
+        <Bloco titulo={t('paginas.imagens.secoes.alinhadaADireita')}>
           <div className="demo-img-fluxo">
-            <Imagem src={IMG.deserto} alt="Paisagem de deserto" cantos="arredondado" alinhamento="direita" proporcao="1 / 1" largura="8rem" />
+            <Imagem src={IMG.deserto} alt={t('paginas.imagens.textos.paisagemDeDeserto')} cantos="arredondado" alinhamento="direita" proporcao="1 / 1" largura="8rem" />
             <p>{TEXTO}</p>
           </div>
         </Bloco>
@@ -67,13 +67,13 @@ export function PaginaImagens() {
 
       <div className="demo-colunas-4">
         <div className="demo-span-2">
-          <Bloco titulo="Figuras" descricao="Imagem com legenda; a legenda pode alinhar ao início, centro ou fim.">
+          <Bloco titulo={t('paginas.imagens.secoes.figuras')} descricao={t('paginas.imagens.textos.imagemComLegendaA')}>
             <div className="demo-img-fluxo">
-              <Figura src={IMG.noite} alt="Paisagem noturna" legenda="Uma legenda para a imagem acima." proporcao="4 / 3" largura="12rem" />
+              <Figura src={IMG.noite} alt={t('paginas.imagens.textos.paisagemNoturna')} legenda={t('paginas.imagens.textos.umaLegendaParaA')} proporcao="4 / 3" largura="12rem" />
               <Figura
                 src={IMG.mar}
-                alt="Paisagem azul"
-                legenda="Uma legenda para a imagem acima."
+                alt={t('paginas.imagens.textos.paisagemAzul')}
+                legenda={t('paginas.imagens.textos.umaLegendaParaA')}
                 alinhamentoLegenda="fim"
                 alinhamento="direita"
                 proporcao="4 / 3"
@@ -82,28 +82,28 @@ export function PaginaImagens() {
             </div>
           </Bloco>
         </div>
-        <Bloco titulo="Miniatura" descricao="Borda fina e respiro em volta.">
+        <Bloco titulo={t('paginas.imagens.secoes.miniatura')} descricao={t('paginas.imagens.textos.bordaFinaERespiro')}>
           <div>
-            <Imagem src={IMG.campo} alt="Paisagem de campo" miniatura proporcao="1 / 1" largura="10rem" />
+            <Imagem src={IMG.campo} alt={t('paginas.imagens.textos.paisagemDeCampo')} miniatura proporcao="1 / 1" largura="10rem" />
           </div>
         </Bloco>
-        <Bloco titulo="Miniatura redonda">
+        <Bloco titulo={t('paginas.imagens.secoes.miniaturaRedonda')}>
           <div>
-            <Imagem src={IMG.tarde} alt="Paisagem ao entardecer" miniatura cantos="circulo" proporcao="1 / 1" largura="10rem" />
+            <Imagem src={IMG.tarde} alt={t('paginas.imagens.textos.paisagemAoEntardecer')} miniatura cantos="circulo" proporcao="1 / 1" largura="10rem" />
           </div>
         </Bloco>
       </div>
 
-      <Bloco titulo="Recorte em proporção" descricao="A mesma imagem recortada sem distorcer (object-fit: cover).">
+      <Bloco titulo={t('paginas.imagens.secoes.recorteEmProporcao')} descricao={t('paginas.imagens.textos.aMesmaImagemRecortada')}>
         <div className="demo-linha">
           {['1 / 1', '4 / 3', '16 / 9', '3 / 4'].map((p) => (
-            <Figura key={p} src={IMG.deserto} alt={`Recorte ${p}`} legenda={p} alinhamentoLegenda="centro" proporcao={p} largura="11rem" />
+            <Figura key={p} src={IMG.deserto} alt={t('paginas.imagens.textos.recorteP', { p })} legenda={p} alinhamentoLegenda="centro" proporcao={p} largura="11rem" />
           ))}
         </div>
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Avatares" descricao="Iniciais do nome quando não há foto; tom, formato e tamanho.">
+        <Bloco titulo={t('paginas.imagens.secoes.avatares')} descricao={t('paginas.imagens.textos.iniciaisDoNomeQuando')}>
           <div className="demo-linha demo-linha--centro">
             <Avatar nome="Ana Pereira" />
             <Avatar nome="Bruno Lima" tom="escuro" />
@@ -111,7 +111,7 @@ export function PaginaImagens() {
             <Avatar nome="Daniel Moreira" foto={retrato('#15803d', 'DM')} tamanho="3rem" />
           </div>
         </Bloco>
-        <Bloco titulo="Foto" descricao="Tamanhos sm, md e lg; a do meio é ampliável (abre a galeria com as 3 fotos). Sem foto: avatar com iniciais, ou o conteúdo de semFoto.">
+        <Bloco titulo={t('paginas.imagens.secoes.foto')} descricao={t('paginas.imagens.textos.tamanhosSmMdE')}>
           <div className="demo-linha">
             <Foto nome="Ana Pereira" fotos={FOTOS[0].url} tamanho="sm" />
             <Foto
@@ -120,13 +120,13 @@ export function PaginaImagens() {
               ampliavel
               sobreposto={
                 <span style={{ position: 'absolute', left: 6, top: 6 }}>
-                  <Status rotulo="3 fotos" severidade="info" />
+                  <Status rotulo={t('paginas.imagens.textos.t3Fotos')} severidade="info" />
                 </span>
               }
             />
             <Foto nome="Ana Pereira" fotos={FOTOS[2]} tamanho="lg" ampliavel />
             <Foto nome="Bruno Lima" />
-            <Foto nome="Carla Dias" semFoto={<span style={{ fontSize: 'var(--fs-caption)', color: 'var(--t4)' }}>Foto indisponível</span>} />
+            <Foto nome="Carla Dias" semFoto={<span style={{ fontSize: 'var(--fs-caption)', color: 'var(--t4)' }}>{t('paginas.imagens.textos.fotoIndisponivel')}</span>} />
           </div>
         </Bloco>
       </div>

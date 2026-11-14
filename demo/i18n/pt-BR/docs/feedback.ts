@@ -1,0 +1,130 @@
+export const docsFeedback = {
+  alerta: {
+    titulo: 'Alerta',
+    textos: {
+      resumo: 'Mensagem fixa na página: informação, sucesso, atenção ou erro. Para avisos passageiros, use o toast.',
+      dispensavelSomeSozinhoAo: '`dispensavel` some sozinho ao clicar no ×; com `aoFechar`, quem decide é o app (por exemplo, lembrar que a pessoa já dispensou).',
+      oIconeVemDa: 'O ícone vem da severidade. Troque com `icone` ou tire com `icone={false}`.',
+      retornoDeUmaAcao: 'Retorno de uma ação (salvou, excluiu) é toast; o alerta é para o que precisa continuar visível.',
+      descricao: 'Mensagem fixa na página',
+    },
+    secoes: { severidades: 'Severidades', aparencias: 'Aparências', comAcaoEFechar: 'Com ação e fechar' },
+  },
+  toast: {
+    titulo: 'Toast',
+    textos: {
+      resumo: 'Aviso passageiro no canto da tela: retorno de uma ação (salvou, excluiu, falhou). Sai sozinho depois de alguns segundos.',
+      usetoastJaFuncionaDentro: '`useToast()` já funciona dentro do `ProvedorUi`. Os atalhos são `ok`, `info`, `warn` e `err` (título, detalhe); `mostrar` aceita todas as opções.',
+      passarOMouseOu: 'Passar o mouse ou o foco sobre o toast pausa o tempo; o × fecha na hora.',
+      oQuePrecisaContinuar: 'O que precisa continuar visível (aviso de vencimento, erro de carga) é `Alerta`, não toast.',
+      oComponenteToastTambem: 'O componente `Toast` também pode ser usado direto, como aviso fixo na página.',
+      descricao: 'Aviso passageiro',
+    },
+    secoes: {
+      severidades: 'Severidades',
+      aparenciaPosicaoEDuracao: 'Aparência, posição e duração',
+      cartaoFixoNaPagina: 'Cartão fixo na página',
+    },
+  },
+  confirmacao: {
+    titulo: 'Confirmação',
+    textos: {
+      resumo: 'O diálogo de \'tem certeza?\' como uma função: await confirmar(...) devolve true ou false. Inclui o atalho de remoção e o aviso de um botão só.',
+      oProvedoruiJaInclui: 'O `ProvedorUi` já inclui o `ProvedorConfirmacao`: no app, basta `useConfirmacao()`.',
+      confirmarRemoverESempre: '`confirmar.remover` é sempre vermelho e com lixeira, para a exclusão parecer igual em todo o sistema.',
+      confirmarAvisarTemUm: '`confirmar.avisar` tem um botão só (OK) e devolve uma Promise que resolve ao fechar.',
+      escECliqueFora: 'Esc e clique fora contam como recusar.',
+      descricao: 'Tem certeza? e remoção',
+    },
+    secoes: { confirmarRemoverEAvisar: 'Confirmar, remover e avisar' },
+  },
+  dialogo: {
+    titulo: 'Diálogo',
+    textos: {
+      resumo: 'Janela sobre a página para uma tarefa curta: cadastro rápido, detalhes, filtros. Pode ser central ou lateral (gaveta).',
+      eControladoOApp: 'É controlado: o app guarda o `aberto` e fecha em `aoFechar` (Esc, clique fora e o ×). Com `dispensavel={false}`, só os botões fecham.',
+      oFocoEntraNo: 'O foco entra no diálogo ao abrir, fica preso dentro dele e volta ao botão que abriu ao fechar.',
+      paraTemCertezaUse: 'Para "tem certeza?", use `useConfirmacao()`, que já monta o diálogo de confirmação.',
+      emTelasPequenasTelacheiaabaixo: 'Em telas pequenas, `telaCheiaAbaixo="md"` abre em tela cheia.',
+      aparenciaLateralEncostaO: '`aparencia="lateral"` encosta o diálogo à direita; `tom="escuro"` pinta o cabeçalho com a cor da marca.',
+      descricao: 'Modal central ou lateral',
+    },
+    secoes: { basico: 'Básico', lateralGaveta: 'Lateral (gaveta)' },
+  },
+  dica: {
+    titulo: 'Dica',
+    textos: {
+      resumo: 'Balão curto que aparece ao passar o mouse ou focar o elemento: o nome de um botão só com ícone, uma explicação rápida.',
+      envolvaUmUnicoElemento: 'Envolva um único elemento focável (botão, link). A dica é só visual (`aria-hidden`): o nome acessível precisa estar no próprio elemento, por `aria-label` ou texto.',
+      apareceNoHoverE: 'Aparece no hover e no foco do teclado; Esc esconde. Em botão desabilitado, a dica continua acessível pelo Tab.',
+      nadaDeConteudoInterativo: 'Nada de conteúdo interativo dentro da dica: para isso, use o `Balao`, que abre no clique.',
+      descricao: 'Balão no hover e no foco',
+    },
+    secoes: { posicoes: 'Posições' },
+  },
+  balao: {
+    titulo: 'Balão',
+    textos: {
+      resumo: 'Conteúdo flutuante preso a um elemento: explicação mais longa, detalhes de um item. Abre no clique (padrão), no foco ou ao passar o mouse.',
+      comOGatilhoPadrao: 'Com o gatilho padrão (`clique`), o balão fica aberto até clicar fora ou apertar Esc.',
+      fraseCurtaQueSo: 'Frase curta que só nomeia o botão é `Dica`; ações e formulários pedem `MenuSuspenso` ou `Dialogo`.',
+      oBalaoTrocaDe: 'O balão troca de lado sozinho quando não cabe na `posicao` pedida.',
+      descricao: 'Conteúdo flutuante no clique',
+    },
+    secoes: { cliqueEPassar: 'Clique e passar' },
+  },
+  carregando: {
+    titulo: 'Carregando',
+    textos: {
+      resumo: 'Aviso de espera com animação e mensagem, numa área ou cobrindo a tela inteira (bloqueante).',
+      bloqueanteEParaQuando: '`bloqueante` é para quando nada na tela pode ser usado (gerar arquivo, trocar de empresa): segura o foco e devolve ao terminar.',
+      naPrimeiraCargaDe: 'Na primeira carga de listas, prefira o `carregando` da `Tabela` e da `ListaCards`, que mostram silhuetas (`Skeleton`).',
+      temRoleStatusO: 'Tem `role="status"`: o leitor de tela anuncia a mensagem. `logo` troca a animação pelo logotipo do app.',
+      descricao: 'Tela ou área ocupada',
+    },
+    secoes: { emAreaEBloqueante: 'Em área e bloqueante' },
+  },
+  girador: {
+    titulo: 'Girador',
+    textos: {
+      resumo: 'Indicador de atividade em três formas (anel, pulso, pontos), com cor e tamanho.',
+      oRotuloESempre: 'O `rotulo` é sempre anunciado ao leitor de tela (`role="status"`); `mostrarRotulo` também o mostra na tela.',
+      dentroDeBotaoUse: 'Dentro de botão, use o `carregando` do `Botao`, que já troca o ícone pelo girador.',
+      tamanhoAceitaTambemUma: '`tamanho` aceita também uma medida CSS (`"3rem"`).',
+      descricao: 'Indicador de atividade',
+    },
+    secoes: { formasCoresETamanhos: 'Formas, cores e tamanhos' },
+  },
+  skeleton: {
+    titulo: 'Skeleton',
+    textos: {
+      resumo: 'Silhueta animada no lugar do conteúdo que ainda está carregando, para a página não pular quando os dados chegam.',
+      eDecorativoAriaHidden: 'É decorativo (`aria-hidden`): anuncie a espera de outro jeito, como `aria-busy` na área ou um `Girador`.',
+      facaASilhuetaDo: 'Faça a silhueta do tamanho do conteúdo real: mesmo número de linhas, mesma altura.',
+      tabelaEListacardsJa: '`Tabela` e `ListaCards` já mostram silhuetas com `carregando`.',
+      descricao: 'Silhueta do conteúdo',
+    },
+    secoes: { cartaoCarregando: 'Cartão carregando' },
+  },
+  progresso: {
+    titulo: 'Progresso',
+    textos: {
+      resumo: 'Barra de andamento: envio, meta, etapas. Mostra o valor de vários jeitos e aceita segmentos coloridos.',
+      passeSempreRotuloE: 'Passe sempre `rotulo`: é o nome da barra (`role="progressbar"`) para o leitor de tela.',
+      formatarTrocaOTexto: '`formatar` troca o texto do valor (ex.: "3 de 8 etapas"). `marcos` desenha marcas na trilha.',
+      semSaberQuantoFalta: 'Sem saber quanto falta, use `Girador` ou `Carregando` em vez de uma barra que não anda.',
+      descricao: 'Barra de andamento',
+    },
+    secoes: { variacoes: 'Variações' },
+  },
+  vazio: {
+    titulo: 'Vazio',
+    textos: {
+      resumo: 'O que mostrar quando não há nada: lista sem registros, busca sem resultado, caixa de entrada limpa.',
+      digaOQueAconteceria: 'Diga o que aconteceria aqui e qual é o próximo passo; quando houver, ofereça a ação em botão.',
+      tabelaEListacardsJa: '`Tabela` e `ListaCards` já têm o estado vazio pelas props `vazioTitulo`, `vazioDescricao` e `vazioAcoes`.',
+      descricao: 'Nada para mostrar',
+    },
+    secoes: { comESemAcao: 'Com e sem ação' },
+  },
+};

@@ -21,41 +21,39 @@ export function PaginaAvaliacoes() {
       <CabecalhoPagina titulo={t('paginas.avaliacoes.titulo')} icone="star" trilha />
 
       <div className="demo-colunas">
-        <Bloco titulo="Básica">
+        <Bloco titulo={t('paginas.avaliacoes.secoes.basica')}>
           <div className="demo-aval">
-            <p>
-              Mostre um pouco de <Icone icone="heart" className="demo-aval-coracao" /> avaliando
-            </p>
-            <Avaliacao rotulo="Avaliação básica" valor={basica} aoMudar={setBasica} />
+            <p>{t('paginas.avaliacoes.textos.mostreUmPoucoDe')}<Icone icone="heart" className="demo-aval-coracao" />{t('paginas.avaliacoes.textos.avaliando')}</p>
+            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoBasica')} valor={basica} aoMudar={setBasica} />
           </div>
         </Bloco>
-        <Bloco titulo="Meias estrelas" descricao="Com passo 0,5, a metade esquerda da estrela vale meio ponto.">
+        <Bloco titulo={t('paginas.avaliacoes.secoes.meiasEstrelas')} descricao={t('paginas.avaliacoes.textos.comPasso05')}>
           <div className="demo-aval">
-            <p>Não se esqueça de avaliar o produto</p>
-            <Avaliacao rotulo="Avaliação do produto" valor={meia} aoMudar={setMeia} passo={0.5} />
+            <p>{t('paginas.avaliacoes.textos.naoSeEsquecaDe')}</p>
+            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoDoProduto')} valor={meia} aoMudar={setMeia} passo={0.5} />
             <code className="demo-util-res">valor: {meia}</code>
           </div>
         </Bloco>
 
-        <Bloco titulo="Mensagens por nota">
+        <Bloco titulo={t('paginas.avaliacoes.secoes.mensagensPorNota')}>
           <div className="demo-aval">
-            <p>Sua avaliação é muito importante 👏</p>
-            <Avaliacao rotulo="Avaliação com mensagem" valor={mensagem} aoMudar={setMensagem} mensagens={MENSAGENS} />
+            <p>{t('paginas.avaliacoes.textos.suaAvaliacaoEMuito')}</p>
+            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoComMensagem')} valor={mensagem} aoMudar={setMensagem} mensagens={MENSAGENS} />
           </div>
         </Bloco>
-        <Bloco titulo="Salvando no servidor" descricao="aoMudar devolve uma Promise: o componente espera e mostra o texto de ocupado.">
+        <Bloco titulo={t('paginas.avaliacoes.secoes.salvandoNoServidor')} descricao={t('paginas.avaliacoes.textos.aomudarDevolveUmaPromise')}>
           <div className="demo-aval">
-            <p>Obrigado por avaliar</p>
+            <p>{t('paginas.avaliacoes.textos.obrigadoPorAvaliar')}</p>
             <Avaliacao
-              rotulo="Avaliação salva no servidor"
+              rotulo={t('paginas.avaliacoes.textos.avaliacaoSalvaNoServidor')}
               valor={servidor}
-              textoOcupado="Enviando sua nota..."
+              textoOcupado={t('paginas.avaliacoes.textos.enviandoSuaNota')}
               aoMudar={(v) =>
                 // servidor de mentira: responde em 1,5 s
                 new Promise<void>((ok) =>
                   window.setTimeout(() => {
                     setServidor(v);
-                    toast.ok('Nota registrada', `${v} de 5`);
+                    toast.ok(t('paginas.avaliacoes.textos.notaRegistrada'), t('paginas.avaliacoes.textos.vDe5', { v }));
                     ok();
                   }, 1500),
                 )
@@ -64,27 +62,26 @@ export function PaginaAvaliacoes() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Ao passar o mouse" descricao="aoPassar avisa a nota sob o ponteiro.">
+        <Bloco titulo={t('paginas.avaliacoes.secoes.aoPassarOMouse')} descricao={t('paginas.avaliacoes.textos.aopassarAvisaANota')}>
           <div className="demo-aval">
-            <p>
-              Dê a sua nota: <strong className="demo-aval-num">{passando ?? notaPassar}</strong>
+            <p>{t('paginas.avaliacoes.textos.deASuaNota')}<strong className="demo-aval-num">{passando ?? notaPassar}</strong>
             </p>
-            <Avaliacao rotulo="Avaliação com evento de passar" valor={notaPassar} aoMudar={setNotaPassar} aoPassar={setPassando} icone="heart" />
+            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoComEventoDe')} valor={notaPassar} aoMudar={setNotaPassar} aoPassar={setPassando} icone="heart" />
           </div>
         </Bloco>
-        <Bloco titulo="Limpar" descricao="limpavel mostra o botão para zerar a nota.">
+        <Bloco titulo={t('paginas.avaliacoes.secoes.limpar')} descricao={t('paginas.avaliacoes.textos.limpavelMostraOBotao')}>
           <div className="demo-aval">
-            <p>Muito obrigado pelo seu apoio!</p>
-            <Avaliacao rotulo="Avaliação que pode ser limpa" valor={limpar} aoMudar={setLimpar} limpavel />
+            <p>{t('paginas.avaliacoes.textos.muitoObrigadoPeloSeu')}</p>
+            <Avaliacao rotulo={t('paginas.avaliacoes.textos.avaliacaoQuePodeSer')} valor={limpar} aoMudar={setLimpar} limpavel />
           </div>
         </Bloco>
       </div>
 
-      <Bloco titulo="Só leitura, com quantas estrelas quiser" descricao="Aceita frações (ex.: 7,5 de 10).">
+      <Bloco titulo={t('paginas.avaliacoes.secoes.soLeituraComQuantas')} descricao={t('paginas.avaliacoes.textos.aceitaFracoesEx7')}>
         <div className="demo-aval demo-aval--leitura">
-          <Avaliacao rotulo="Nota do fornecedor" valor={7.5} max={10} somenteLeitura />
-          <Avaliacao rotulo="Nota média" valor={3.7} somenteLeitura tamanho="grande" />
-          <Avaliacao rotulo="Nota da entrega" valor={4.2} somenteLeitura tamanho="pequeno" />
+          <Avaliacao rotulo={t('paginas.avaliacoes.textos.notaDoFornecedor')} valor={7.5} max={10} somenteLeitura />
+          <Avaliacao rotulo={t('paginas.avaliacoes.textos.notaMedia')} valor={3.7} somenteLeitura tamanho="grande" />
+          <Avaliacao rotulo={t('paginas.avaliacoes.textos.notaDaEntrega')} valor={4.2} somenteLeitura tamanho="pequeno" />
         </div>
       </Bloco>
     </div>

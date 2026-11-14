@@ -55,7 +55,7 @@ export function PagarReceber() {
 
   const baixar = (l: Lancamento) => {
     acoes.marcarPago([l.id]);
-    toast.ok(l.tipo === 'receita' ? 'Recebimento registrado' : 'Pagamento registrado', `${l.descricao} · ${formatarMoeda(l.valor)}`);
+    toast.ok(l.tipo === 'receita' ? t('paginas.finPagarReceber.textos.recebimentoRegistrado') : t('paginas.finPagarReceber.textos.pagamentoRegistrado'), `${l.descricao} · ${formatarMoeda(l.valor)}`);
   };
 
   const totalPagar = soma(pendentes.filter((l) => !aReceber(l) && dias(l) <= 30));
@@ -69,22 +69,22 @@ export function PagarReceber() {
         ariaLabel="Mostrar"
         className="fin-lado"
         opcoes={[
-          { valor: 'pagar', rotulo: `A pagar · ${moeda(totalPagar, { centavos: false })}` },
-          { valor: 'receber', rotulo: `A receber · ${moeda(totalReceber, { centavos: false })}` },
+          { valor: 'pagar', rotulo: t('paginas.finPagarReceber.textos.aPagarValor', { valor: moeda(totalPagar, { centavos: false }) }) },
+          { valor: 'receber', rotulo: t('paginas.finPagarReceber.textos.aReceberValor', { valor: moeda(totalReceber, { centavos: false }) }) },
         ]}
         valor={lado}
         aoMudar={setLado}
       />
 
       <Indicadores>
-        <Indicador rotulo="Atrasados" icone="circle-alert" cor="var(--err-solid)" valor={moeda(soma(contar('atrasados')))} descricao={qtdLancamentos(contar('atrasados').length)} aoClicar={() => setJanela('atrasados')} />
-        <Indicador rotulo="Vencem hoje" icone="clock" cor="var(--warn-solid)" valor={moeda(soma(contar('hoje')))} descricao={qtdLancamentos(contar('hoje').length)} aoClicar={() => setJanela('hoje')} />
-        <Indicador rotulo="Próximos 7 dias" icone="calendar" cor="var(--info-solid)" valor={moeda(soma(contar('semana').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('semana').filter((l) => dias(l) >= 0).length)} aoClicar={() => setJanela('semana')} />
-        <Indicador rotulo="Próximos 30 dias" icone="calendar-range" cor="var(--graf-1)" valor={moeda(soma(contar('mes').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('mes').filter((l) => dias(l) >= 0).length)} aoClicar={() => setJanela('mes')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.atrasados')} icone="circle-alert" cor="var(--err-solid)" valor={moeda(soma(contar('atrasados')))} descricao={qtdLancamentos(contar('atrasados').length)} aoClicar={() => setJanela('atrasados')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.vencemHoje')} icone="clock" cor="var(--warn-solid)" valor={moeda(soma(contar('hoje')))} descricao={qtdLancamentos(contar('hoje').length)} aoClicar={() => setJanela('hoje')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.proximos7Dias')} icone="calendar" cor="var(--info-solid)" valor={moeda(soma(contar('semana').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('semana').filter((l) => dias(l) >= 0).length)} aoClicar={() => setJanela('semana')} />
+        <Indicador rotulo={t('paginas.finPagarReceber.textos.proximos30Dias')} icone="calendar-range" cor="var(--graf-1)" valor={moeda(soma(contar('mes').filter((l) => dias(l) >= 0)))} descricao={qtdLancamentos(contar('mes').filter((l) => dias(l) >= 0).length)} aoClicar={() => setJanela('mes')} />
       </Indicadores>
 
       <FiltroPilulas<Janela>
-        rotulo="Vencimento"
+        rotulo={t('paginas.finPagarReceber.textos.vencimento')}
         disposicao="rolar"
         valor={janela}
         aoMudar={setJanela}
@@ -94,11 +94,11 @@ export function PagarReceber() {
       <Card corpoSemEspaco>
         {grupos.length === 0 ? (
           <Vazio
-            titulo={lado === 'pagar' ? 'Nada a pagar aqui' : 'Nada a receber aqui'}
-            descricao="Nenhum lançamento pendente nesta janela de vencimento."
+            titulo={lado === 'pagar' ? t('paginas.finPagarReceber.textos.nadaAPagarAqui') : t('paginas.finPagarReceber.textos.nadaAReceberAqui')}
+            descricao={t('paginas.finPagarReceber.textos.nenhumLancamentoPendenteNesta')}
             icone="circle-check"
           >
-            <Botao rotulo={lado === 'pagar' ? 'Nova despesa' : 'Nova receita'} icone="plus" onClick={() => abrir(lado === 'pagar' ? 'despesa' : 'receita', { pago: false })} />
+            <Botao rotulo={lado === 'pagar' ? t('paginas.finPagarReceber.textos.novaDespesa') : t('paginas.finPagarReceber.textos.novaReceita')} icone="plus" onClick={() => abrir(lado === 'pagar' ? 'despesa' : 'receita', { pago: false })} />
           </Vazio>
         ) : (
           grupos.map((g) => (
@@ -124,9 +124,9 @@ export function PagarReceber() {
                           {l.parcela && ` · parcela ${l.parcela.numero}/${l.parcela.total}`}
                         </small>
                       </button>
-                      {d < 0 && <Status rotulo={`${s.rotulo} há ${-d} ${d === -1 ? 'dia' : 'dias'}`} severidade={s.severidade} icone={s.icone} className="fin-linha-status" />}
+                      {d < 0 && <Status rotulo={t('paginas.finPagarReceber.textos.rotuloHaVV2', { rotulo: s.rotulo, v: -d, v2: d === -1 ? 'dia' : 'dias' })} severidade={s.severidade} icone={s.icone} className="fin-linha-status" />}
                       <Valor valor={l.valor} tipo={lado === 'receber' ? 'receita' : 'despesa'} forte />
-                      <Botao rotulo={lado === 'receber' ? 'Receber' : 'Pagar'} icone="check" tamanho="pequeno" aparencia="suave" severidade="ok" onClick={() => baixar(l)} aria-label={`${lado === 'receber' ? 'Receber' : 'Pagar'} ${l.descricao}`} />
+                      <Botao rotulo={lado === 'receber' ? t('paginas.finPagarReceber.textos.receber') : t('paginas.finPagarReceber.textos.pagar')} icone="check" tamanho="pequeno" aparencia="suave" severidade="ok" onClick={() => baixar(l)} aria-label={`${lado === 'receber' ? 'Receber' : 'Pagar'} ${l.descricao}`} />
                     </li>
                   );
                 })}

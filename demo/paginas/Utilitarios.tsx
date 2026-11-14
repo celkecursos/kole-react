@@ -91,18 +91,18 @@ export function PaginaUtilitarios() {
     <div className="demo-pilha">
       <CabecalhoPagina titulo={t('paginas.utilitarios.titulo')} icone="code" trilha />
 
-      <Bloco titulo="Validadores e tipos de campo" descricao="validar(tipo, valor) devolve '' quando vazio ou válido; separa 'incompleto' de 'inválido'.">
+      <Bloco titulo={t('paginas.utilitarios.secoes.validadoresETiposDe')} descricao={t('paginas.utilitarios.textos.validarTipoValorDevolve')}>
         <div className="demo-grade">
-          <CampoSelect<TipoDeCampo> rotulo="Tipo" opcoes={TIPOS_DE_CAMPO.map((t) => ({ valor: t, rotulo: t }))} valor={tipo} aoMudar={setTipo} />
+          <CampoSelect<TipoDeCampo> rotulo={t('paginas.utilitarios.textos.tipo')} opcoes={TIPOS_DE_CAMPO.map((t) => ({ valor: t, rotulo: t }))} valor={tipo} aoMudar={setTipo} />
           <CampoTexto
             className="lp-col-2"
-            rotulo="Valor"
+            rotulo={t('paginas.utilitarios.textos.valor')}
             valor={valorTipo}
             aoMudar={(v) => setValorTipo(meta?.mascara ? aplicarMascara(v, meta.mascara) : v)}
             placeholder={meta?.placeholder}
           />
           <div style={{ alignSelf: 'end' }}>
-            {valorTipo.trim() ? <Status rotulo={msg || 'Válido'} severidade={msg ? 'err' : 'ok'} /> : <Status rotulo="Vazio (válido)" />}
+            {valorTipo.trim() ? <Status rotulo={msg || t('paginas.utilitarios.textos.valido')} severidade={msg ? 'err' : 'ok'} /> : <Status rotulo={t('paginas.utilitarios.textos.vazioValido')} />}
           </div>
         </div>
         <div className="demo-util">
@@ -111,11 +111,11 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Por extenso (documentos)">
+      <Bloco titulo={t('paginas.utilitarios.secoes.porExtensoDocumentos')}>
         <div className="demo-grade">
-          <CampoTexto rotulo="Número" valor={numero} aoMudar={(v) => setNumero(v.replace(/[^\d-]/g, ''))} inputMode="numeric" />
-          <CampoMoeda rotulo="Valor em reais" valor={moeda} aoMudar={setMoeda} />
-          <CampoTexto className="lp-col-2" rotulo="Itens (separados por vírgula)" valor={itens} aoMudar={setItens} />
+          <CampoTexto rotulo={t('paginas.utilitarios.textos.numero')} valor={numero} aoMudar={(v) => setNumero(v.replace(/[^\d-]/g, ''))} inputMode="numeric" />
+          <CampoMoeda rotulo={t('paginas.utilitarios.textos.valorEmReais')} valor={moeda} aoMudar={setMoeda} />
+          <CampoTexto className="lp-col-2" rotulo={t('paginas.utilitarios.textos.itensSeparadosPorVirgula')} valor={itens} aoMudar={setItens} />
         </div>
         <div className="demo-util">
           <Linha codigo={`numeroPorExtenso(${numero || 0})`}>{numeroPorExtenso(Number(numero) || 0)}</Linha>
@@ -125,9 +125,9 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Texto e nomes">
+      <Bloco titulo={t('paginas.utilitarios.secoes.textoENomes')}>
         <div className="demo-grade">
-          <CampoTexto className="lp-col-2" rotulo="Nome" valor={nome} aoMudar={setNome} />
+          <CampoTexto className="lp-col-2" rotulo={t('paginas.utilitarios.textos.nome')} valor={nome} aoMudar={setNome} />
         </div>
         <div className="demo-util">
           <Linha codigo="nomeProprio(nome)">{nomeProprio(nome)}</Linha>
@@ -139,18 +139,18 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Datas pt-BR" descricao="Validação por ida e volta: 31/02 não vira 3 de março.">
+      <Bloco titulo={t('paginas.utilitarios.secoes.datasPtBr')} descricao={t('paginas.utilitarios.textos.validacaoPorIdaE')}>
         <div className="demo-grade">
-          <CampoTexto rotulo="Data" mascara="00/00/0000" placeholder="dd/mm/aaaa" valor={data} aoMudar={setData} />
+          <CampoTexto rotulo={t('paginas.utilitarios.textos.data')} mascara="00/00/0000" placeholder={t('paginas.utilitarios.textos.ddMmAaaa')} valor={data} aoMudar={setData} />
         </div>
         <div className="demo-util">
           <Linha codigo={`parseDataBr('${data}')`}>{dataBr ? dataBr.toString() : 'null'}</Linha>
         </div>
       </Bloco>
 
-      <Bloco titulo="Tempo relativo e prazos" descricao="Datas AAAA-MM-DD valem no fuso local; o prazo vira 'em breve' 2 dias antes.">
+      <Bloco titulo={t('paginas.utilitarios.secoes.tempoRelativoEPrazos')} descricao={t('paginas.utilitarios.textos.datasAaaaMmDd')}>
         <div className="demo-grade">
-          <CampoTexto rotulo="Vencimento" type="date" valor={vencimento} aoMudar={setVencimento} />
+          <CampoTexto rotulo={t('paginas.utilitarios.textos.vencimento')} type="date" valor={vencimento} aoMudar={setVencimento} />
         </div>
         <div className="demo-util">
           <Linha codigo="tempoRelativo(agora - 5 min)">{tempoRelativo(new Date(Date.now() - 5 * 60_000))}</Linha>
@@ -162,18 +162,18 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Entidade e títulos de tela" descricao="Verbo + substantivo, sem artigo; a entidade declara a frase inteira quando a regra não serve.">
+      <Bloco titulo={t('paginas.utilitarios.secoes.entidadeETitulosDe')} descricao={t('paginas.utilitarios.textos.verboSubstantivoSemArtigo')}>
         <div className="demo-grade">
-          <CampoTexto rotulo="Entidade" valor={entidade} aoMudar={setEntidade} />
+          <CampoTexto rotulo={t('paginas.utilitarios.textos.entidade')} valor={entidade} aoMudar={setEntidade} />
           <Escolha
             className="lp-col-2"
-            rotulo="Modo"
+            rotulo={t('paginas.utilitarios.textos.modo')}
             valor={modo}
             aoMudar={setModo}
             opcoes={[
-              { valor: 'novo', rotulo: 'novo' },
-              { valor: 'editar', rotulo: 'editar' },
-              { valor: 'leitura', rotulo: 'leitura' },
+              { valor: 'novo', rotulo: t('paginas.utilitarios.textos.novo') },
+              { valor: 'editar', rotulo: t('paginas.utilitarios.textos.editar') },
+              { valor: 'leitura', rotulo: t('paginas.utilitarios.textos.leitura') },
             ]}
           />
         </div>
@@ -184,10 +184,10 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Anexos">
+      <Bloco titulo={t('paginas.utilitarios.secoes.anexos')}>
         <div className="demo-grade">
-          <CampoTexto rotulo="Bytes" valor={bytes} aoMudar={(v) => setBytes(v.replace(/\D/g, ''))} inputMode="numeric" />
-          <CampoTexto rotulo="Nome do arquivo" valor={arquivo} aoMudar={setArquivo} />
+          <CampoTexto rotulo={t('paginas.utilitarios.textos.bytes')} valor={bytes} aoMudar={(v) => setBytes(v.replace(/\D/g, ''))} inputMode="numeric" />
+          <CampoTexto rotulo={t('paginas.utilitarios.textos.nomeDoArquivo')} valor={arquivo} aoMudar={setArquivo} />
         </div>
         <div className="demo-util">
           <Linha codigo={`formatBytes(${bytes || 0})`}>{formatBytes(Number(bytes))}</Linha>
@@ -198,8 +198,8 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="JWT" descricao="Só lê o payload — não confere a assinatura.">
-        <CampoTexto rotulo="Token" valor={jwt} aoMudar={setJwt} />
+      <Bloco titulo={t('paginas.utilitarios.secoes.jwt')} descricao={t('paginas.utilitarios.textos.soLeOPayload')}>
+        <CampoTexto rotulo={t('paginas.utilitarios.textos.token')} valor={jwt} aoMudar={setJwt} />
         <div className="demo-util">
           <Linha codigo="decodificarJwt(token)">{payload ? JSON.stringify(payload) : 'null'}</Linha>
           <Linha codigo="expiracaoJwt(token)">{exp ? exp.toLocaleString('pt-BR') : 'null'}</Linha>
@@ -207,9 +207,9 @@ export function PaginaUtilitarios() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Constantes e severidades">
+      <Bloco titulo={t('paginas.utilitarios.secoes.constantesESeveridades')}>
         <div className="demo-util">
-          <Linha codigo="ESTADOS.length">{ESTADOS.length} (26 estados + DF)</Linha>
+          <Linha codigo="ESTADOS.length">{t('paginas.utilitarios.textos.n26EstadosDf', { n: ESTADOS.length })}</Linha>
           <Linha codigo="ESTADOS.find(e => e.uf === 'PR')">{JSON.stringify(ESTADOS.find((e) => e.uf === 'PR'))}</Linha>
           <Linha codigo="TIPOS_PESSOA">{JSON.stringify(TIPOS_PESSOA)}</Linha>
           <Linha codigo="severidadeCor(sev)">

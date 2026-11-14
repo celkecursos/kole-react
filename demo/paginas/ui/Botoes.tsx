@@ -36,66 +36,66 @@ export function PaginaBotoes() {
       <CabecalhoPagina titulo={t('paginas.botoes.titulo')} icone="square-mouse-pointer" trilha />
 
       <div className="demo-colunas">
-        <Bloco titulo="Padrão" descricao={'formato="retangulo"'}>
+        <Bloco titulo={t('paginas.botoes.secoes.padrao')} descricao={t('paginas.botoes.textos.formatoRetangulo')}>
           <Todas formato="retangulo" />
           <div className="demo-linha">
-            <Botao rotulo="Link" aparencia="texto" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.link')} aparencia="texto" formato="retangulo" />
           </div>
         </Bloco>
-        <Bloco titulo="Arredondados" descricao="Pílula é o formato padrão do layout.">
+        <Bloco titulo={t('paginas.botoes.secoes.arredondados')} descricao={t('paginas.botoes.textos.pilulaEOFormato')}>
           <Todas />
           <div className="demo-linha">
-            <Botao rotulo="Link" aparencia="texto" />
+            <Botao rotulo={t('paginas.botoes.textos.link')} aparencia="texto" />
           </div>
         </Bloco>
 
-        <Bloco titulo="Suaves" descricao={'aparencia="suave"'}>
+        <Bloco titulo={t('paginas.botoes.secoes.suaves')} descricao={t('paginas.botoes.textos.aparenciaSuave')}>
           <Todas aparencia="suave" formato="retangulo" />
         </Bloco>
-        <Bloco titulo="Suaves arredondados">
+        <Bloco titulo={t('paginas.botoes.secoes.suavesArredondados')}>
           <Todas aparencia="suave" />
         </Bloco>
 
-        <Bloco titulo="Contorno">
+        <Bloco titulo={t('paginas.botoes.secoes.contorno')}>
           <Todas aparencia="contorno" formato="retangulo" />
         </Bloco>
-        <Bloco titulo="Contorno arredondados">
+        <Bloco titulo={t('paginas.botoes.secoes.contornoArredondados')}>
           <Todas aparencia="contorno" />
         </Bloco>
 
-        <Bloco titulo="Gradiente">
+        <Bloco titulo={t('paginas.botoes.secoes.gradiente')}>
           <Todas aparencia="gradiente" formato="retangulo" />
         </Bloco>
-        <Bloco titulo="Gradiente arredondados">
+        <Bloco titulo={t('paginas.botoes.secoes.gradienteArredondados')}>
           <Todas aparencia="gradiente" />
         </Bloco>
 
-        <Bloco titulo="Desabilitados">
+        <Bloco titulo={t('paginas.botoes.secoes.desabilitados')}>
           <div className="demo-linha">
-            <Botao rotulo="Principal" disabled />
-            <Botao rotulo="Secundário" severidade="secundario" disabled />
-            <Botao rotulo="Principal" aparencia="contorno" disabled />
-            <Botao rotulo="Erro" severidade="err" aparencia="contorno" disabled />
+            <Botao rotulo={t('paginas.botoes.textos.principal')} disabled />
+            <Botao rotulo={t('paginas.botoes.textos.secundario')} severidade="secundario" disabled />
+            <Botao rotulo={t('paginas.botoes.textos.principal')} aparencia="contorno" disabled />
+            <Botao rotulo={t('paginas.botoes.textos.erro')} severidade="err" aparencia="contorno" disabled />
           </div>
         </Bloco>
 
-        <Bloco titulo="Alternância" descricao={'pressionado liga e desliga (aria-pressed).'}>
+        <Bloco titulo={t('paginas.botoes.secoes.alternancia')} descricao={t('paginas.botoes.textos.pressionadoLigaEDesliga')}>
           <div className="demo-linha">
-            <Botao rotulo={alternado ? 'Ligado' : 'Desligado'} icone={alternado ? 'check' : 'x'} pressionado={alternado} onClick={() => setAlternado((x) => !x)} />
-            <Botao rotulo="Sempre pressionado" severidade="destaque" pressionado />
-            <Botao rotulo="Alternância desabilitada" severidade="info" disabled />
+            <Botao rotulo={alternado ? t('paginas.botoes.textos.ligado') : t('paginas.botoes.textos.desligado')} icone={alternado ? 'check' : 'x'} pressionado={alternado} onClick={() => setAlternado((x) => !x)} />
+            <Botao rotulo={t('paginas.botoes.textos.semprePressionado')} severidade="destaque" pressionado />
+            <Botao rotulo={t('paginas.botoes.textos.alternanciaDesabilitada')} severidade="info" disabled />
           </div>
         </Bloco>
       </div>
 
-      <Bloco titulo="Carregando" descricao="O spinner substitui o ícone e o clique é recusado; o botão continua focável.">
+      <Bloco titulo={t('paginas.botoes.secoes.carregando')} descricao={t('paginas.botoes.textos.oSpinnerSubstituiO')}>
         <div className="demo-linha">
-          <Botao rotulo="Carregando" carregando />
-          <Botao rotulo="Carregando" severidade="destaque" aparencia="contorno" carregando />
-          <Botao rotulo="Carregando" severidade="info" aparencia="suave" carregando />
-          <Botao rotulo="Carregando" severidade="warn" aparencia="suave" carregando posicaoIcone="direita" />
+          <Botao rotulo={t('paginas.botoes.textos.carregando')} carregando />
+          <Botao rotulo={t('paginas.botoes.textos.carregando')} severidade="destaque" aparencia="contorno" carregando />
+          <Botao rotulo={t('paginas.botoes.textos.carregando')} severidade="info" aparencia="suave" carregando />
+          <Botao rotulo={t('paginas.botoes.textos.carregando')} severidade="warn" aparencia="suave" carregando posicaoIcone="direita" />
           <Botao
-            rotulo={carregandoDemo ? 'Salvando…' : 'Clique para salvar'}
+            rotulo={carregandoDemo ? t('paginas.botoes.textos.salvando') : t('paginas.botoes.textos.cliqueParaSalvar')}
             icone="save"
             severidade="ok"
             carregando={carregandoDemo}
@@ -103,14 +103,14 @@ export function PaginaBotoes() {
               setCarregandoDemo(true);
               setTimeout(() => {
                 setCarregandoDemo(false);
-                toast.ok('Salvo');
+                toast.ok(t('paginas.botoes.textos.salvo'));
               }, 1500);
             }}
           />
         </div>
       </Bloco>
 
-      <Bloco titulo="Só ícone" descricao="Sem rótulo, o botão fica quadrado/redondo; use dica e aria-label para dar nome a ele.">
+      <Bloco titulo={t('paginas.botoes.secoes.soIcone')} descricao={t('paginas.botoes.textos.semRotuloOBotao')}>
         <div className="demo-linha">
           {(
             [
@@ -134,25 +134,25 @@ export function PaginaBotoes() {
       </Bloco>
 
       <div className="demo-colunas">
-        <Bloco titulo="Fantasma" descricao="Contorno discreto que se preenche no hover.">
+        <Bloco titulo={t('paginas.botoes.secoes.fantasma')} descricao={t('paginas.botoes.textos.contornoDiscretoQueSe')}>
           <Todas aparencia="fantasma" formato="retangulo" />
         </Bloco>
-        <Bloco titulo="Tipos" descricao="type do botão HTML (button, submit, reset).">
-          <form className="demo-linha" onSubmit={(e) => (e.preventDefault(), toast.info('Formulário enviado (submit)'))} onReset={() => toast.info('Formulário limpo (reset)')}>
-            <Botao rotulo="Botão" formato="retangulo" />
-            <Botao rotulo="Enviar" type="submit" severidade="ok" formato="retangulo" />
-            <Botao rotulo="Limpar" type="reset" severidade="secundario" formato="retangulo" />
+        <Bloco titulo={t('paginas.botoes.secoes.tipos')} descricao={t('paginas.botoes.textos.typeDoBotaoHtml')}>
+          <form className="demo-linha" onSubmit={(e) => (e.preventDefault(), toast.info(t('paginas.botoes.textos.formularioEnviadoSubmit')))} onReset={() => toast.info(t('paginas.botoes.textos.formularioLimpoReset'))}>
+            <Botao rotulo={t('paginas.botoes.textos.botao')} formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.enviar')} type="submit" severidade="ok" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.limpar')} type="reset" severidade="secundario" formato="retangulo" />
           </form>
         </Bloco>
 
-        <Bloco titulo="Tamanhos">
+        <Bloco titulo={t('paginas.botoes.secoes.tamanhos')}>
           <div className="demo-linha demo-linha--centro">
-            <Botao rotulo="Pequeno" tamanho="pequeno" />
-            <Botao rotulo="Médio (padrão)" severidade="destaque" />
-            <Botao rotulo="Grande" tamanho="grande" severidade="ok" />
+            <Botao rotulo={t('paginas.botoes.textos.pequeno')} tamanho="pequeno" />
+            <Botao rotulo={t('paginas.botoes.textos.medioPadrao')} severidade="destaque" />
+            <Botao rotulo={t('paginas.botoes.textos.grande')} tamanho="grande" severidade="ok" />
           </div>
         </Bloco>
-        <Bloco titulo="Larguras" descricao="Largura mínima via style (ex.: minWidth: '8rem').">
+        <Bloco titulo={t('paginas.botoes.secoes.larguras')} descricao={t('paginas.botoes.textos.larguraMinimaViaStyle')}>
           <div className="demo-linha">
             {(['5rem', '7rem', '9rem', '11rem'] as const).map((w, i) => (
               <Botao key={w} rotulo={['P', 'M', 'G', 'GG'][i]} severidade={(['pri', 'destaque', 'warn', 'info'] as const)[i]} formato="retangulo" style={{ minWidth: w }} />
@@ -160,58 +160,58 @@ export function PaginaBotoes() {
           </div>
         </Bloco>
 
-        <Bloco titulo="Sombras">
+        <Bloco titulo={t('paginas.botoes.secoes.sombras')}>
           <div className="demo-linha demo-linha--centro">
-            <Botao rotulo="Pequena" sombra="pequena" formato="retangulo" />
-            <Botao rotulo="Média" sombra="media" formato="retangulo" />
-            <Botao rotulo="Grande" sombra="grande" formato="retangulo" />
-            <Botao rotulo="Pequena" severidade="destaque" tamanho="pequeno" sombra="pequena" formato="retangulo" />
-            <Botao rotulo="Média" severidade="info" sombra="media" formato="retangulo" />
-            <Botao rotulo="Grande" severidade="ok" tamanho="grande" sombra="grande" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.pequena')} sombra="pequena" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.media')} sombra="media" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.grande')} sombra="grande" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.pequena')} severidade="destaque" tamanho="pequeno" sombra="pequena" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.media')} severidade="info" sombra="media" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.grande')} severidade="ok" tamanho="grande" sombra="grande" formato="retangulo" />
           </div>
         </Bloco>
-        <Bloco titulo="Elevados" descricao={'sombra="elevado": sombra da cor, que sobe no hover.'}>
+        <Bloco titulo={t('paginas.botoes.secoes.elevados')} descricao={t('paginas.botoes.textos.sombraElevadoSombraDa')}>
           <Todas sombra="elevado" formato="retangulo" />
         </Bloco>
 
-        <Bloco titulo="Com ícone destacado" descricao="iconeDestacado põe o ícone num segmento mais escuro.">
+        <Bloco titulo={t('paginas.botoes.secoes.comIconeDestacado')} descricao={t('paginas.botoes.textos.iconedestacadoPoeOIcone')}>
           <div className="demo-linha">
-            <Botao rotulo="Principal" icone="message-square" iconeDestacado formato="retangulo" />
-            <Botao rotulo="Destaque" icone="settings" severidade="destaque" iconeDestacado formato="retangulo" />
-            <Botao rotulo="Atenção" icone="circle-alert" severidade="warn" iconeDestacado />
-            <Botao rotulo="Info" icone="phone" severidade="info" iconeDestacado />
-            <Botao rotulo="Sucesso" icone="check" severidade="ok" iconeDestacado posicaoIcone="direita" formato="retangulo" />
-            <Botao rotulo="Cancelar" icone="x" severidade="err" iconeDestacado posicaoIcone="direita" />
+            <Botao rotulo={t('paginas.botoes.textos.principal')} icone="message-square" iconeDestacado formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.destaque')} icone="settings" severidade="destaque" iconeDestacado formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.atencao')} icone="circle-alert" severidade="warn" iconeDestacado />
+            <Botao rotulo={t('paginas.botoes.textos.info')} icone="phone" severidade="info" iconeDestacado />
+            <Botao rotulo={t('paginas.botoes.textos.sucesso')} icone="check" severidade="ok" iconeDestacado posicaoIcone="direita" formato="retangulo" />
+            <Botao rotulo={t('paginas.botoes.textos.cancelar')} icone="x" severidade="err" iconeDestacado posicaoIcone="direita" />
           </div>
         </Bloco>
-        <Bloco titulo="Com ícone">
+        <Bloco titulo={t('paginas.botoes.secoes.comIcone')}>
           <div className="demo-linha">
-            <Botao rotulo="Novo pedido" icone="plus" />
-            <Botao rotulo="Exportar" icone="download" severidade="secundario" />
-            <Botao rotulo="Próximo" icone="arrow-right" posicaoIcone="direita" aparencia="contorno" />
-            <Botao rotulo="Excluir" icone="trash-2" severidade="err" aparencia="suave" />
+            <Botao rotulo={t('paginas.botoes.textos.novoPedido')} icone="plus" />
+            <Botao rotulo={t('paginas.botoes.textos.exportar')} icone="download" severidade="secundario" />
+            <Botao rotulo={t('paginas.botoes.textos.proximo')} icone="arrow-right" posicaoIcone="direita" aparencia="contorno" />
+            <Botao rotulo={t('paginas.botoes.textos.excluir')} icone="trash-2" severidade="err" aparencia="suave" />
           </div>
         </Bloco>
       </div>
 
-      <Bloco titulo="Ações de linha" descricao="AcaoLinha: botão só de ícone, com dica, para a coluna de ações de tabelas e cards.">
+      <Bloco titulo={t('paginas.botoes.secoes.acoesDeLinha')} descricao={t('paginas.botoes.textos.acaolinhaBotaoSoDe')}>
         <div className="demo-linha">
-          <AcaoLinha icone="eye" rotulo="Visualizar" severidade="pri" />
-          <AcaoLinha icone="pencil" rotulo="Editar" severidade="destaque" />
-          <AcaoLinha icone="trash-2" rotulo="Excluir" severidade="err" />
+          <AcaoLinha icone="eye" rotulo={t('paginas.botoes.textos.visualizar')} severidade="pri" />
+          <AcaoLinha icone="pencil" rotulo={t('paginas.botoes.textos.editar')} severidade="destaque" />
+          <AcaoLinha icone="trash-2" rotulo={t('paginas.botoes.textos.excluir')} severidade="err" />
         </div>
       </Bloco>
 
-      <Bloco titulo="Bloco" descricao="bloco ocupa toda a largura disponível.">
-        <Botao rotulo="Finalizar pedido" icone="check" bloco formato="retangulo" />
-        <Botao rotulo="Continuar comprando" severidade="destaque" bloco formato="retangulo" />
+      <Bloco titulo={t('paginas.botoes.secoes.bloco')} descricao={t('paginas.botoes.textos.blocoOcupaTodaA')}>
+        <Botao rotulo={t('paginas.botoes.textos.finalizarPedido')} icone="check" bloco formato="retangulo" />
+        <Botao rotulo={t('paginas.botoes.textos.continuarComprando')} severidade="destaque" bloco formato="retangulo" />
         <div className="demo-botoes-meio">
-          <Botao rotulo="Salvar rascunho" severidade="err" aparencia="suave" bloco formato="retangulo" />
-          <Botao rotulo="Agendar envio" severidade="warn" bloco formato="retangulo" />
+          <Botao rotulo={t('paginas.botoes.textos.salvarRascunho')} severidade="err" aparencia="suave" bloco formato="retangulo" />
+          <Botao rotulo={t('paginas.botoes.textos.agendarEnvio')} severidade="warn" bloco formato="retangulo" />
         </div>
         <div className="demo-linha" style={{ justifyContent: 'flex-end' }}>
-          <Botao rotulo="Cancelar" severidade="secundario" formato="retangulo" />
-          <Botao rotulo="Confirmar" severidade="info" formato="retangulo" />
+          <Botao rotulo={t('paginas.botoes.textos.cancelar')} severidade="secundario" formato="retangulo" />
+          <Botao rotulo={t('paginas.botoes.textos.confirmar')} severidade="info" formato="retangulo" />
         </div>
       </Bloco>
     </div>

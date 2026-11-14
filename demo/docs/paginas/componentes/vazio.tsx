@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="vazio"
@@ -10,15 +12,12 @@ export default function Pagina() {
       componente="Vazio"
       notas={
         <ul className="doc-lista">
-          <li>Diga o que aconteceria aqui e qual é o próximo passo; quando houver, ofereça a ação em botão.</li>
-          <li>
-            <C>Tabela</C> e <C>ListaCards</C> já têm o estado vazio pelas props <C>vazioTitulo</C>, <C>vazioDescricao</C> e{' '}
-            <C>vazioAcoes</C>.
-          </li>
+          <li>{t('docs.vazio.textos.digaOQueAconteceria')}</li>
+          <li>{rico(t('docs.vazio.textos.tabelaEListacardsJa'))}</li>
         </ul>
       }
     >
-      <Exemplo id="vazio/Basico" titulo="Com e sem ação" />
+      <Exemplo id="vazio/Basico" titulo={t('docs.vazio.secoes.comESemAcao')} />
     </PaginaComponente>
   );
 }

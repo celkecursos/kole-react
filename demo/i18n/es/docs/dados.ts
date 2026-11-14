@@ -1,0 +1,227 @@
+import type { TextosDemoParciais } from '../../tipos';
+import type { docsDados as Pt } from '../../pt-BR/docs/dados';
+
+export const docsDados: TextosDemoParciais<typeof Pt> = {
+  tabela: {
+    titulo: 'Tabla',
+    textos: {
+      resumo: 'Listado de registros con columnas con formato, sello de situación, acciones por fila, ordenación, selección, paginación y los estados de carga, vacío y error.',
+      aTabelaNaoOrdena: 'La tabla no ordena ni pagina sola: muestra `ordenacao` y `paginacao` y avisa por `aoOrdenar` y `aoMudarPagina`. Así, el mismo código sirve para datos del servidor.',
+      campoAceitaCaminhoCom: '`campo` acepta una ruta con punto (`endereco.cidade`). `formato` da formato al valor; `render` dibuja la celda entera.',
+      carregandoMostraSilhuetasNa: '`carregando` muestra siluetas en la primera carga; `atualizando` atenúa la tabla ya completa al paginar u ordenar.',
+      emTelaEstreitaA: 'En pantalla angosta, la tabla se desplaza en horizontal dentro de su propio marco; la página no gana desplazamiento lateral.',
+      paraRegistrosQueLeem: 'Para registros que se leen mejor como tarjeta (productos, personas), vea la `ListaCards`.',
+      descricao: 'Ordenación, selección, acciones y estados',
+    },
+    secoes: {
+      colunasSituacaoEAcoes: 'Columnas, situación y acciones',
+      ordenacaoSelecaoEPaginacao: 'Ordenación, selección y paginación',
+      carregandoVaziaEErro: 'Cargando, vacía y error',
+    },
+  },
+  listaCards: {
+    titulo: 'Lista de tarjetas',
+    textos: {
+      resumo: 'El mismo listado de la Tabela, en cuadrícula de tarjetas: con paginación y los estados de carga, vacío y error.',
+      cardDesenhaCadaItem: '`card` dibuja cada elemento; la cuadrícula se ajusta al ancho por la `larguraMin` de cada tarjeta.',
+      alturacardEAAltura: '`alturaCard` es la altura de las siluetas mientras carga, para que la página no salte cuando llegan los datos.',
+      useQuandoORegistro: 'Úsela cuando el registro tiene imagen o pocos campos; con muchas columnas para comparar, la `Tabela` es mejor.',
+      descricao: 'Listado en cuadrícula de tarjetas',
+    },
+    secoes: { basicoComPaginacao: 'Básico con paginación' },
+  },
+  paginacao: {
+    titulo: 'Paginación',
+    textos: {
+      resumo: 'Navegación entre páginas de un listado, con el total de registros y la elección de elementos por página.',
+      aTabelaEA: 'La `Tabela` y la `ListaCards` ya dibujan la paginación por la prop `paginacao`: use este componente solo en otras listas.',
+      paginaComecaEm1: '`pagina` empieza en 1. Al cambiar el tamaño, vuelva a la primera página.',
+      semAomudartamanhoAEscolha: 'Sin `aoMudarTamanho`, la elección de elementos por página no aparece.',
+      descricao: 'Páginas y elementos por página',
+    },
+    secoes: { basico: 'Básico' },
+  },
+  lista: {
+    titulo: 'Lista',
+    textos: {
+      resumo: 'Lista de elementos con icono, título, contenido al inicio y al final, elemento activo, enlaces y marcación (casilla o radio).',
+      itemComOnclickVira: 'Un elemento con `onClick` se vuelve botón, y con `href`, enlace: los dos entran en el Tab.',
+      comMarcacaoOItem: 'Con `marcacao`, el elemento entero es la etiqueta del input. En el radio, pase el mismo `nome` en todos los elementos.',
+      numeradaUsa: '`numerada` usa ',
+      horizontalDeitaALista: '; `horizontal` acuesta la lista a partir de un ancho (`sm` a `xl`).',
+      descricao: 'Elementos con icono, marcación y enlaces',
+    },
+    secoes: {
+      itensAtivoEDesabilitado: 'Elementos, activo y deshabilitado',
+      comCaixaERadio: 'Con casilla y radio',
+    },
+  },
+  detalhes: {
+    titulo: 'Detalles',
+    textos: {
+      resumo: 'Par etiqueta y valor para pantallas de visualización: resumen de pedido, perfil, diálogo de detalles.',
+      oValorPodeSer: 'El valor puede ser texto (`valor`) o cualquier contenido (`children`): estado, enlace, insignia.',
+      valorVazioMostraUm: 'Un valor vacío muestra un guion, para no dejar la etiqueta suelta.',
+      numFormComModo: 'En un `Form` con `modo="leitura"`, Guardar desaparece y Cancelar se vuelve Cerrar: bueno para un diálogo de visualización.',
+      descricao: 'Pares etiqueta y valor',
+    },
+    secoes: { colunaELinha: 'Columna y fila' },
+  },
+  indicador: {
+    titulo: 'Indicador',
+    textos: {
+      resumo: 'Número destacado del panel: etiqueta, valor, icono, variación sobre el período anterior y minigráfico de tendencia.',
+      coloqueOsIndicadoresDentro: 'Coloque los indicadores dentro de `Indicadores`, que arma la cuadrícula y salta las filas en el celular.',
+      variacaoEEmPontos: '`variacao` está en puntos porcentuales. El color (verde o rojo) sigue `variacaoBoa`: en cancelaciones, bajar es bueno.',
+      comHrefOuAoclicar: 'Con `href` o `aoClicar`, la tarjeta entera se vuelve enlace al listado detallado.',
+      tendenciaDesenhaUmMinigrafico: '`tendencia` dibuja un `Minigrafico`; también puede usarse solo, en una celda de tabla.',
+      descricao: 'Número de panel con variación',
+    },
+    secoes: { painelDeIndicadores: 'Panel de indicadores' },
+  },
+  graficos: {
+    titulo: 'Gráficos',
+    textos: {
+      resumo: 'Gráficos en SVG propio, sin biblioteca externa: línea, barras, combinado (barras y línea con dos ejes), dispersión, dona y mapa de calor. Siguen el tema y la densidad.',
+      dadosEUmaLista: '`dados` es una lista de objetos; `eixoX.chave` y cada `series[].chave` apuntan a los campos. Fechas en ISO (`2026-06` o `2026-06-15`) con `tipo: \'data\'`.',
+      tituloEDescricaoViram: '`titulo` y `descricao` se vuelven el nombre y la descripción del gráfico para el lector de pantalla. El botón de ver datos (`verDados`, activado por defecto) alterna a una tabla con los mismos números.',
+      graficoroscaMostraAParticipacao: '`GraficoRosca` muestra la participación de cada parte: la porción activa (mouse, toque o flechas) aparece en el centro del anillo, la leyenda trae valor y porcentaje y oculta porciones, `maxFatias` junta las menores en “Outros” y `aoEscolher` recibe el clic o el Enter en una porción.',
+      noGraficocombinadoALinha: 'En el `GraficoCombinado`, la línea con `eixo: \'esquerdo\'` comparte el eje de las barras y el eje derecho no aparece.',
+      valorNullEFalta: 'Un valor `null` es falta de dato: la línea se interrumpe en vez de caer a cero.',
+      asCoresVemDos: 'Los colores vienen de los tokens `--graf-1` a `--graf-6` (series), `--graf-pos`/`--graf-neg` (barras divergentes) y `--graf-seq-1` a `--graf-seq-5` (mapa de calor), con versión para el tema oscuro.',
+      descricao: 'Línea, barras, dona, dispersión y mapa de calor',
+    },
+    secoes: {
+      linhaComAreaE: 'Línea con área y meta',
+      barras: 'Barras',
+      barrasELinhaDois: 'Barras y línea, dos ejes',
+      roscaParticipacaoPorCategoria: 'Dona: participación por categoría',
+      mapaDeCalor: 'Mapa de calor',
+    },
+  },
+  valor: {
+    titulo: 'Valor y dinero',
+    textos: {
+      resumo: 'Valor en dinero con signo y color de entrada y salida, números alineados en columna y el “ocultar valores” de las apps de finanzas. Junto vienen los formateadores de moneda y porcentaje.',
+      guardeOsValoresSempre: 'Guarde los valores siempre positivos e indique el sentido con `tipo`: `receita` sale en verde con `+`, `despesa` en rojo con `−`, `neutro` (transferencia) sin color. Sin `tipo`, `colorir` pinta según el signo del número.',
+      todoValorDentroDe: 'Todo `Valor` dentro de un `ProvedorValores` obedece al `BotaoOcultarValores`. Con `chave`, la elección queda recordada en el navegador. Para textos fuera del componente (un `Indicador`, el eje de un gráfico), lea `useValoresOcultos().ocultos`.',
+      formatarmoedaUsaOSinal: '`formatarMoeda` usa el signo menos tipográfico (`−R$ 80,00`), espacio de no separación después del `R$` y nunca muestra `−0,00`. `dividirEmParcelas` cierra los centavos (la diferencia va a la primera cuota) y `somarMoeda` suma en centavos, sin el error del punto flotante.',
+      descricao: 'Moneda con signo, color y ocultar valores',
+    },
+    secoes: { sentidoTamanhosEOcultar: 'Sentido, tamaños y ocultar', formatadores: 'Formateadores' },
+  },
+  navegadorPeriodo: {
+    titulo: 'Navegador de período',
+    textos: {
+      resumo: '“‹ Noviembre de 2026 ›”: las flechas avanzan de mes en mes (o trimestre, año, intervalo), y la etiqueta abre atajos y un intervalo libre desde/hasta. Para informes, extractos y paneles.',
+      periodoETipoDe: '`Periodo` es `{ tipo, de, ate }` con fechas `AAAA-MM-DD` en la zona horaria local, las mismas del `CampoData`. Envíe `de` y `ate` directo a la API.',
+      utilitariosPeriododeMesTrimestre: 'Utilidades: `periodoDe(\'mes\' | \'trimestre\' | \'ano\', data)`, `moverPeriodo(p, passos)` (el personalizado avanza por su propio tamaño), `noPeriodo(data, p)`, `rotuloPeriodo(p)`, `mesesDoPeriodo(p)` y `dataIso(date)`.',
+      atalhosTrocaALista: '`atalhos` cambia la lista del panel (ej.: “Safra 2025/26”); `personalizado={false}` quita el intervalo libre.',
+      descricao: 'Mes a mes, atajos e intervalo',
+    },
+    secoes: { mesAMesAtalhos: 'Mes a mes, atajos e intervalo' },
+  },
+  calendario: {
+    titulo: 'Calendario',
+    textos: {
+      resumo: 'Agenda de eventos en las vistas mes, semana, día y lista, en portugués de Brasil, con arrastrar, eventos que se repiten y el MiniCalendario para la columna lateral. La app guarda y busca los eventos; el calendario muestra y avisa los cambios.',
+      aomudarperiodoAvisaOPeriodo: '`aoMudarPeriodo` avisa el período visible (al abrir y en cada cambio de mes, semana, día o vista): busque solo los eventos de ese período.',
+      naSemanaENo: 'En la semana y en el día, los eventos quedan por hora, lado a lado cuando se superponen; los de `diaInteiro` van a la franja superior, y la línea roja marca la hora actual. `aoClicarHorario` recibe el horario pulsado, redondeado a la media hora.',
+      corUsaOsTokens: '`cor` usa los tokens: `pri`, `ok`, `warn`, `err`, `info`, `destaque` y `graf-1` a `graf-6`.',
+      comAoalterareventoOsEventos: 'Con `aoAlterarEvento`, los eventos se pueden arrastrar a otro día u horario (de 15 en 15 minutos) y el borde inferior del bloque estira la duración. En pantalla táctil, mantenga presionado el evento antes de arrastrar; Esc cancela. La app guarda y devuelve la lista nueva;`fixo` bloquea un evento.',
+      cadastroAoselecionarhorarioRecebeO: 'Registro: `aoSelecionarHorario` recibe el intervalo elegido en la semana y en el día (arrastrando sobre horarios vacíos, de 15 en 15 minutos; un clic elige la media hora; en el cursor, Shift+↑↓ amplían y Enter confirma). Abra el formulario con él y pase los datos en `rascunho`: el evento aparece punteado mientras el diálogo está abierto. El formulario queda en la app; el ejemplo "Cadastro e edição" trae uno listo para copiar.',
+      eventosQueSeRepetem: 'Los eventos que se repiten los calcula la app: `repetirEvento(base, regra, periodo)` devuelve las ocurrencias del período (diaria, semanal con `diasSemana`, mensual o anual, con `intervalo`, `ate`, `vezes` y `excecoes`). Cada una trae `serie` con el id de la base. Para cambiar solo una ocurrencia, ponga el día en `excecoes` y cree un evento suelto.',
+      minicalendarioEscolheODia: '`MiniCalendario` elige el día (`aoEscolher`), muestra puntitos en los `marcados` y destaca la semana visible (`destaque`). Vincule el día elegido a la prop `data` del calendario.',
+      tecladoNoMesSetas: 'Teclado: en el mes, las flechas recorren los días y Page Up/Down cambian de mes; en la semana y en el día, un cursor de 30 minutos avanza con las flechas y Enter elige el horario. En un evento, Alt+flechas mueven y Alt+Shift+↑↓ estiran.',
+      descricao: 'Agenda en mes, semana, día y lista',
+    },
+    secoes: {
+      visaoMes: 'Vista mes',
+      visaoSemana: 'Vista semana',
+      visaoLista: 'Vista lista',
+      arrastarEEsticar: 'Arrastrar y estirar',
+      serieSemanalEMinicalendario: 'Serie semanal y minicalendario',
+      cadastroEEdicaoCom: 'Registro y edición (con Repite)',
+    },
+  },
+  status: {
+    titulo: 'Estado',
+    textos: {
+      resumo: 'Sello de la situación de un registro: pagado, en análisis, cancelado. Color e icono vienen de la severidad.',
+      naTabelaAProp: 'En la `Tabela`, la prop `severidade` de la columna dibuja este sello sin necesidad de `render`.',
+      statusESituacaoEstado: 'Status es situación (estado del registro); `Badge` es etiqueta (categoría, conteo, novedad).',
+      mantenhaAMesmaSeveridade: 'Mantenga la misma severidad para la misma situación en todo el sistema.',
+      descricao: 'Situación de un registro',
+    },
+    secoes: { severidades: 'Severidades' },
+  },
+  badge: {
+    titulo: 'Insignia',
+    textos: {
+      resumo: 'Etiqueta corta para conteo, categoría o novedad.',
+      paraASituacaoDe: 'Para la situación de un registro (pagado, cancelado) en una tabla, prefiera la `severidade` de la columna de la `Tabela`, que ya dibuja el sello.',
+      contagemNoCantoDe: 'El conteo en la esquina de un avatar o icono es el `ComBadge`.',
+      aCorSozinhaNao: 'El color solo no comunica: el texto de la insignia tiene que decir lo que significa.',
+      tamanhoHerdarAcompanhaO: '`tamanho="herdar"` acompaña el texto de alrededor; `aparencia="inverso"` queda legible sobre un botón sólido.',
+      descricao: 'Etiqueta y conteo',
+    },
+    secoes: {
+      cores: 'Colores',
+      aparenciaFormatoETamanho: 'Apariencia, formato y tamaño',
+      emTitulosEBotoes: 'En títulos y botones',
+    },
+  },
+  chip: {
+    titulo: 'Chip',
+    textos: {
+      resumo: 'Píldora de un filtro aplicado o valor elegido, con el campo, el valor y el botón de quitar.',
+      comAoremoverApareceO: 'Con `aoRemover`, aparece el botón ×, con nombre accesible "Remover" seguido del filtro.',
+      osFiltrosJaDesenham: 'Los `Filtros` ya dibujan los chips por la prop `aplicados`.',
+      descricao: 'Filtro aplicado removible',
+    },
+    secoes: { removiveis: 'Removibles' },
+  },
+  avatar: {
+    titulo: 'Avatar',
+    textos: {
+      resumo: 'Foto o iniciales de una persona o empresa, con conteo o punto de estado en la esquina (ComBadge) y avatares superpuestos con +N (GrupoAvatares).',
+      semFotoOuSe: 'Sin `foto`, o si la imagen falla, muestra las `iniciais` del `nome`.',
+      oNomeViraO: 'El `nome` se vuelve el texto alternativo. Páselo siempre, incluso con foto.',
+      combadgeValeParaQualquer: '`ComBadge` sirve para cualquier elemento (icono, botón). La `descricao` es lo que anuncia el lector de pantalla ("5 mensajes no leídos"); por encima de `max`, se vuelve "99+".',
+      grupoavataresMostraAteMax: '`GrupoAvatares` muestra hasta `max` personas (predeterminado: 3) y junta el resto en "+N". El lector de pantalla escucha el `rotulo` seguido de todos los nombres ("Responsáveis: Ana, Bruno e Carla").',
+      descricao: 'Foto o iniciales',
+    },
+    secoes: { fotoIniciaisEBadge: 'Foto, iniciales e insignia', grupoDeAvatares: 'Grupo de avatares' },
+  },
+  placa: {
+    titulo: 'Matrícula',
+    textos: {
+      resumo: 'Matrícula de vehículo en el estándar Mercosur, para registros de flota, entregas y estacionamiento.',
+      oNumeroSaiSempre: 'El `numero` sale siempre en mayúsculas. Para escribir la matrícula, use el `CampoPlaca`.',
+      oLeitorDeTela: 'El lector de pantalla anuncia "Placa BRA2E19, PR" (`role="img"` con `aria-label`), sin deletrear la franja azul.',
+      descricao: 'Matrícula de vehículo Mercosur',
+    },
+    secoes: { basico: 'Básico' },
+  },
+  citacao: {
+    titulo: 'Cita',
+    textos: {
+      resumo: 'Fragmento destacado con autor y fuente: regla de negocio, testimonio, nota de manual.',
+      usa: 'Usa ',
+      oLeitorDeTela: ': el lector de pantalla anuncia que es una cita.',
+      depoimentoDeClienteNo: 'El testimonio de cliente en el sitio público es el `CardDepoimento`.',
+      descricao: 'Fragmento destacado con autor',
+    },
+    secoes: { simplesECartao: 'Simple y tarjeta' },
+  },
+  referencias: {
+    titulo: 'Referencias',
+    textos: {
+      resumo: 'Lista plegable de las fuentes de una respuesta (asistente, búsqueda): título, detalle, fragmento y enlace.',
+      combinaComAMensagem: 'Combina con la `Mensagem` de la `Conversa`: páselo en el `rodape` del mensaje del asistente.',
+      oTrechoLongoFica: 'El fragmento largo queda cortado, con "Mostrar trecho completo". Cambie los textos con `rotulo`, `rotuloMostrarMais` y `rotuloMostrarMenos`.',
+      descricao: 'Fuentes de una respuesta',
+    },
+    secoes: { basico: 'Básico' },
+  },
+};

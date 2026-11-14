@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="avaliacao"
@@ -10,18 +12,14 @@ export default function Pagina() {
       componente="Avaliacao"
       notas={
         <ul className="doc-lista">
-          <li>
-            O <C>rotulo</C> é obrigatório: dá nome ao grupo de rádios que está por trás das estrelas.
-          </li>
-          <li>Cada estrela é um rádio nativo: Tab entra no grupo e as setas mudam a nota.</li>
-          <li>
-            Com <C>aoMudar</C> devolvendo uma Promise, o componente fica ocupado até a resposta e mostra o <C>textoOcupado</C>.
-          </li>
+          <li>{rico(t('docs.avaliacao.textos.oRotuloEObrigatorio'))}</li>
+          <li>{t('docs.avaliacao.textos.cadaEstrelaEUm')}</li>
+          <li>{rico(t('docs.avaliacao.textos.comAomudarDevolvendoUma'))}</li>
         </ul>
       }
     >
-      <Exemplo id="avaliacao/Basico" titulo="Variações" />
-      <Exemplo id="avaliacao/Servidor" titulo="Salvando no servidor" />
+      <Exemplo id="avaliacao/Basico" titulo={t('docs.avaliacao.secoes.variacoes')} />
+      <Exemplo id="avaliacao/Servidor" titulo={t('docs.avaliacao.secoes.salvandoNoServidor')} />
     </PaginaComponente>
   );
 }

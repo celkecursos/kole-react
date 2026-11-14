@@ -1,8 +1,10 @@
-import { C } from '../../Codigo';
 import { Exemplo } from '../../Exemplo';
 import { PaginaComponente } from '../../PaginaDoc';
+import { useT } from '../../../i18n/useT';
+import { rico } from '../../../i18n/rico';
 
 export default function Pagina() {
+  const { t } = useT();
   return (
     <PaginaComponente
       pagina="boasVindas"
@@ -10,17 +12,12 @@ export default function Pagina() {
       componente="BoasVindas"
       notas={
         <ul className="doc-lista">
-          <li>
-            A saudação usa o primeiro e o último nome (<C>nomeCurto</C>) e é calculada uma vez, ao abrir. Sem <C>foto</C>, entram as
-            iniciais.
-          </li>
-          <li>
-            <C>ultimoAcesso</C> ajuda a pessoa a notar um acesso que não foi dela.
-          </li>
+          <li>{rico(t('docs.boasVindas.textos.aSaudacaoUsaO'))}</li>
+          <li>{rico(t('docs.boasVindas.textos.ultimoacessoAjudaAPessoa'))}</li>
         </ul>
       }
     >
-      <Exemplo id="boas-vindas/Basico" titulo="Básico" />
+      <Exemplo id="boas-vindas/Basico" titulo={t('docs.boasVindas.secoes.basico')} />
     </PaginaComponente>
   );
 }

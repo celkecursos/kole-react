@@ -51,13 +51,13 @@ export function PaginaModais() {
   const fechar = () => setAberto(null);
   const rodapePadrao = (
     <>
-      <Botao rotulo="Fechar" severidade="secundario" formato="retangulo" onClick={fechar} />
+      <Botao rotulo={t('paginas.modais.textos.fechar')} severidade="secundario" formato="retangulo" onClick={fechar} />
       <Botao
-        rotulo="Salvar alterações"
+        rotulo={t('paginas.modais.textos.salvarAlteracoes')}
         formato="retangulo"
         onClick={() => {
           fechar();
-          toast.ok('Alterações salvas');
+          toast.ok(t('paginas.modais.textos.alteracoesSalvas'));
         }}
       />
     </>
@@ -70,59 +70,59 @@ export function PaginaModais() {
       <CabecalhoPagina titulo={t('paginas.modais.titulo')} icone="app-window" trilha />
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Básico">
+        <Bloco titulo={t('paginas.modais.secoes.basico')}>
           <div>
-            <Botao rotulo="Abrir diálogo" formato="retangulo" onClick={abrir('basico')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirDialogo')} formato="retangulo" onClick={abrir('basico')} />
           </div>
         </Bloco>
-        <Bloco titulo="Fundo estático" descricao="Não fecha com clique fora nem com Esc.">
+        <Bloco titulo={t('paginas.modais.secoes.fundoEstatico')} descricao={t('paginas.modais.textos.naoFechaComClique')}>
           <div>
-            <Botao rotulo="Abrir com fundo estático" formato="retangulo" onClick={abrir('estatico')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirComFundoEstatico')} formato="retangulo" onClick={abrir('estatico')} />
           </div>
         </Bloco>
-        <Bloco titulo="Conteúdo longo" descricao="O diálogo cresce e a página rola.">
+        <Bloco titulo={t('paginas.modais.secoes.conteudoLongo')} descricao={t('paginas.modais.textos.oDialogoCresceE')}>
           <div>
-            <Botao rotulo="Abrir conteúdo longo" formato="retangulo" onClick={abrir('longo')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirConteudoLongo')} formato="retangulo" onClick={abrir('longo')} />
           </div>
         </Bloco>
 
-        <Bloco titulo="No topo" descricao="Por padrão o diálogo fica centralizado.">
+        <Bloco titulo={t('paginas.modais.secoes.noTopo')} descricao={t('paginas.modais.textos.porPadraoODialogo')}>
           <div className="demo-linha">
-            <Botao rotulo="Centralizado" formato="retangulo" onClick={abrir('centro')} />
-            <Botao rotulo="No topo" aparencia="contorno" formato="retangulo" onClick={abrir('topo')} />
+            <Botao rotulo={t('paginas.modais.textos.centralizado')} formato="retangulo" onClick={abrir('centro')} />
+            <Botao rotulo={t('paginas.modais.textos.noTopo')} aparencia="contorno" formato="retangulo" onClick={abrir('topo')} />
           </div>
         </Bloco>
-        <Bloco titulo="Rolagem no corpo" descricao="Cabeçalho e rodapé fixos; só o miolo rola.">
+        <Bloco titulo={t('paginas.modais.secoes.rolagemNoCorpo')} descricao={t('paginas.modais.textos.cabecalhoERodapeFixos')}>
           <div>
-            <Botao rotulo="Abrir com rolagem no corpo" formato="retangulo" onClick={abrir('corpo')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirComRolagemNo')} formato="retangulo" onClick={abrir('corpo')} />
           </div>
         </Bloco>
-        <Bloco titulo="Dicas e balões" descricao="Funcionam dentro do diálogo.">
+        <Bloco titulo={t('paginas.modais.secoes.dicasEBaloes')} descricao={t('paginas.modais.textos.funcionamDentroDoDialogo')}>
           <div>
-            <Botao rotulo="Abrir diálogo" formato="retangulo" onClick={abrir('dicas')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirDialogo')} formato="retangulo" onClick={abrir('dicas')} />
           </div>
         </Bloco>
 
-        <Bloco titulo="Usando a grade">
+        <Bloco titulo={t('paginas.modais.secoes.usandoAGrade')}>
           <div>
-            <Botao rotulo="Abrir diálogo" formato="retangulo" onClick={abrir('grade')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirDialogo')} formato="retangulo" onClick={abrir('grade')} />
           </div>
         </Bloco>
-        <Bloco titulo="Alternar entre diálogos" descricao="Um diálogo abre o outro.">
+        <Bloco titulo={t('paginas.modais.secoes.alternarEntreDialogos')} descricao={t('paginas.modais.textos.umDialogoAbreO')}>
           <div>
-            <Botao rotulo="Abrir o primeiro" formato="retangulo" onClick={abrir('primeiro')} />
+            <Botao rotulo={t('paginas.modais.textos.abrirOPrimeiro')} formato="retangulo" onClick={abrir('primeiro')} />
           </div>
         </Bloco>
-        <Bloco titulo="Tamanhos">
+        <Bloco titulo={t('paginas.modais.secoes.tamanhos')}>
           <div className="demo-linha">
-            <Botao rotulo="Extragrande" formato="retangulo" onClick={abrir('xg')} />
-            <Botao rotulo="Grande" formato="retangulo" onClick={abrir('g')} />
-            <Botao rotulo="Pequeno" formato="retangulo" onClick={abrir('p')} />
+            <Botao rotulo={t('paginas.modais.textos.extragrande')} formato="retangulo" onClick={abrir('xg')} />
+            <Botao rotulo={t('paginas.modais.textos.grande')} formato="retangulo" onClick={abrir('g')} />
+            <Botao rotulo={t('paginas.modais.textos.pequeno')} formato="retangulo" onClick={abrir('p')} />
           </div>
         </Bloco>
       </div>
 
-      <Bloco titulo="Tela cheia" descricao="Sempre, ou só abaixo de uma largura de tela.">
+      <Bloco titulo={t('paginas.modais.secoes.telaCheia')} descricao={t('paginas.modais.textos.sempreOuSoAbaixo')}>
         <div className="demo-linha">
           {TELA_CHEIA.map(([chave, rotulo]) => (
             <Botao key={chave} rotulo={rotulo} formato="retangulo" onClick={abrir(`cheia-${chave}`)} />
@@ -130,12 +130,12 @@ export function PaginaModais() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Conteúdo variável" descricao="O mesmo diálogo, preenchido conforme o botão.">
+      <Bloco titulo={t('paginas.modais.secoes.conteudoVariavel')} descricao={t('paginas.modais.textos.oMesmoDialogoPreenchido')}>
         <div className="demo-linha">
           {['@ana', '@bruno', '@celke'].map((d, i) => (
             <Botao
               key={d}
-              rotulo={`Mensagem para ${d}`}
+              rotulo={t('paginas.modais.textos.mensagemParaD', { d })}
               severidade={(['pri', 'destaque', 'secundario'] as const)[i]}
               aparencia="contorno"
               formato="retangulo"
@@ -148,7 +148,7 @@ export function PaginaModais() {
         </div>
       </Bloco>
 
-      <Bloco titulo="Efeitos de entrada" descricao={<>animacao no Dialogo; desligados para quem prefere menos movimento.</>}>
+      <Bloco titulo={t('paginas.modais.secoes.efeitosDeEntrada')} descricao={<>animacao no Dialogo; desligados para quem prefere menos movimento.</>}>
         <div className="demo-modais-efeitos">
           {ANIMACOES.map(([chave, rotulo]) => (
             <Botao key={chave} rotulo={rotulo} aparencia="contorno" formato="retangulo" bloco onClick={abrir(`anim-${chave}`)} />
@@ -157,17 +157,17 @@ export function PaginaModais() {
       </Bloco>
 
       <div className="demo-colunas-3">
-        <Bloco titulo="Botão de fechar">
+        <Bloco titulo={t('paginas.modais.secoes.botaoDeFechar')}>
           <div>
             <BotaoFechar />
           </div>
         </Bloco>
-        <Bloco titulo="Desabilitado">
+        <Bloco titulo={t('paginas.modais.secoes.desabilitado')}>
           <div>
             <BotaoFechar disabled />
           </div>
         </Bloco>
-        <Bloco titulo="Variante clara" descricao="Para fundos escuros.">
+        <Bloco titulo={t('paginas.modais.secoes.varianteClara')} descricao={t('paginas.modais.textos.paraFundosEscuros')}>
           <div className="demo-modais-escuro">
             <BotaoFechar variante="claro" />
             <BotaoFechar variante="claro" disabled />
@@ -176,81 +176,71 @@ export function PaginaModais() {
       </div>
 
       {/* ---- os diálogos ---- */}
-      <Dialogo {...props('basico')} titulo="Título do diálogo" rodape={rodapePadrao}>
+      <Dialogo {...props('basico')} titulo={t('paginas.modais.textos.tituloDoDialogo')} rodape={rodapePadrao}>
         <p className="demo-modais-texto">{PARAGRAFO}</p>
       </Dialogo>
-      <Dialogo {...props('estatico')} titulo="Fundo estático" dispensavel={false} rodape={rodapePadrao}>
-        <p className="demo-modais-texto">Clique fora ou aperte Esc: este diálogo não fecha. Use os botões.</p>
+      <Dialogo {...props('estatico')} titulo={t('paginas.modais.textos.fundoEstatico')} dispensavel={false} rodape={rodapePadrao}>
+        <p className="demo-modais-texto">{t('paginas.modais.textos.cliqueForaOuAperte')}</p>
       </Dialogo>
-      <Dialogo {...props('longo')} titulo="Conteúdo longo" rolagem="pagina" rodape={rodapePadrao}>
+      <Dialogo {...props('longo')} titulo={t('paginas.modais.textos.conteudoLongo')} rolagem="pagina" rodape={rodapePadrao}>
         <div className="demo-modais-texto">{texto(14)}</div>
       </Dialogo>
-      <Dialogo {...props('centro')} titulo="Centralizado" rodape={rodapePadrao}>
-        <p className="demo-modais-texto">Este diálogo fica no meio da tela.</p>
+      <Dialogo {...props('centro')} titulo={t('paginas.modais.textos.centralizado')} rodape={rodapePadrao}>
+        <p className="demo-modais-texto">{t('paginas.modais.textos.esteDialogoFicaNo')}</p>
       </Dialogo>
-      <Dialogo {...props('topo')} titulo="No topo" posicao="topo" rodape={rodapePadrao}>
-        <p className="demo-modais-texto">Este diálogo fica perto do topo da tela.</p>
+      <Dialogo {...props('topo')} titulo={t('paginas.modais.textos.noTopo')} posicao="topo" rodape={rodapePadrao}>
+        <p className="demo-modais-texto">{t('paginas.modais.textos.esteDialogoFicaPerto')}</p>
       </Dialogo>
-      <Dialogo {...props('corpo')} titulo="Rolagem no corpo" rodape={rodapePadrao}>
+      <Dialogo {...props('corpo')} titulo={t('paginas.modais.textos.rolagemNoCorpo')} rodape={rodapePadrao}>
         <div className="demo-modais-texto">{texto(14)}</div>
       </Dialogo>
-      <Dialogo {...props('dicas')} titulo="Dicas e balões" rodape={rodapePadrao}>
+      <Dialogo {...props('dicas')} titulo={t('paginas.modais.textos.dicasEBaloes')} rodape={rodapePadrao}>
         <div className="demo-modais-texto">
+          <p>{t('paginas.modais.textos.este')}<Balao titulo={t('paginas.modais.textos.tituloDoBalao')} conteudo={t('paginas.modais.textos.oConteudoDoBalao')} posicao="direita">
+              <Botao rotulo={t('paginas.modais.textos.botao')} tamanho="pequeno" aparencia="suave" formato="retangulo" />
+            </Balao>{t('paginas.modais.textos.abreUmBalaoAo')}</p>
           <p>
-            Este{' '}
-            <Balao titulo="Título do balão" conteudo="O conteúdo do balão fica aqui." posicao="direita">
-              <Botao rotulo="botão" tamanho="pequeno" aparencia="suave" formato="retangulo" />
-            </Balao>{' '}
-            abre um balão ao clicar.
-          </p>
-          <p>
-            <Dica texto="Dica">
-              <a href="#/avancado/modais" onClick={(e) => e.preventDefault()}>
-                Este link
-              </a>
+            <Dica texto={t('paginas.modais.textos.dica')}>
+              <a href="#/avancado/modais" onClick={(e) => e.preventDefault()}>{t('paginas.modais.textos.esteLink')}</a>
             </Dica>{' '}
             e{' '}
-            <Dica texto="Outra dica">
-              <a href="#/avancado/modais" onClick={(e) => e.preventDefault()}>
-                este outro
-              </a>
-            </Dica>{' '}
-            mostram dicas ao passar o mouse.
-          </p>
+            <Dica texto={t('paginas.modais.textos.outraDica')}>
+              <a href="#/avancado/modais" onClick={(e) => e.preventDefault()}>{t('paginas.modais.textos.esteOutro')}</a>
+            </Dica>{t('paginas.modais.textos.mostramDicasAoPassar')}</p>
         </div>
       </Dialogo>
-      <Dialogo {...props('grade')} titulo="Usando a grade" tamanho="grande" rodape={rodapePadrao}>
+      <Dialogo {...props('grade')} titulo={t('paginas.modais.textos.usandoAGrade')} tamanho="grande" rodape={rodapePadrao}>
         <div className="demo-modais-grade">
-          <div className="demo-modais-cel demo-modais-cel--6">.col-6</div>
-          <div className="demo-modais-cel demo-modais-cel--6">.col-6</div>
-          <div className="demo-modais-cel demo-modais-cel--4">.col-4</div>
-          <div className="demo-modais-cel demo-modais-cel--4">.col-4</div>
-          <div className="demo-modais-cel demo-modais-cel--4">.col-4</div>
-          <div className="demo-modais-cel demo-modais-cel--3">.col-3</div>
-          <div className="demo-modais-cel demo-modais-cel--9">.col-9</div>
+          <div className="demo-modais-cel demo-modais-cel--6">{t('paginas.modais.textos.col6')}</div>
+          <div className="demo-modais-cel demo-modais-cel--6">{t('paginas.modais.textos.col6')}</div>
+          <div className="demo-modais-cel demo-modais-cel--4">{t('paginas.modais.textos.col4')}</div>
+          <div className="demo-modais-cel demo-modais-cel--4">{t('paginas.modais.textos.col4')}</div>
+          <div className="demo-modais-cel demo-modais-cel--4">{t('paginas.modais.textos.col4')}</div>
+          <div className="demo-modais-cel demo-modais-cel--3">{t('paginas.modais.textos.col3')}</div>
+          <div className="demo-modais-cel demo-modais-cel--9">{t('paginas.modais.textos.col9')}</div>
         </div>
       </Dialogo>
       <Dialogo
         {...props('primeiro')}
-        titulo="Primeiro diálogo"
-        rodape={<Botao rotulo="Abrir o segundo" formato="retangulo" onClick={abrir('segundo')} />}
+        titulo={t('paginas.modais.textos.primeiroDialogo')}
+        rodape={<Botao rotulo={t('paginas.modais.textos.abrirOSegundo')} formato="retangulo" onClick={abrir('segundo')} />}
       >
-        <p className="demo-modais-texto">Mostre um segundo diálogo e esconda este com o botão abaixo.</p>
+        <p className="demo-modais-texto">{t('paginas.modais.textos.mostreUmSegundoDialogo')}</p>
       </Dialogo>
       <Dialogo
         {...props('segundo')}
-        titulo="Segundo diálogo"
-        rodape={<Botao rotulo="Voltar ao primeiro" formato="retangulo" onClick={abrir('primeiro')} />}
+        titulo={t('paginas.modais.textos.segundoDialogo')}
+        rodape={<Botao rotulo={t('paginas.modais.textos.voltarAoPrimeiro')} formato="retangulo" onClick={abrir('primeiro')} />}
       >
-        <p className="demo-modais-texto">Esconda este diálogo e mostre o primeiro com o botão abaixo.</p>
+        <p className="demo-modais-texto">{t('paginas.modais.textos.escondaEsteDialogoE')}</p>
       </Dialogo>
-      <Dialogo {...props('xg')} titulo="Diálogo extragrande" tamanho="extragrande">
+      <Dialogo {...props('xg')} titulo={t('paginas.modais.textos.dialogoExtragrande')} tamanho="extragrande">
         <p className="demo-modais-texto">{PARAGRAFO}</p>
       </Dialogo>
-      <Dialogo {...props('g')} titulo="Diálogo grande" tamanho="grande">
+      <Dialogo {...props('g')} titulo={t('paginas.modais.textos.dialogoGrande')} tamanho="grande">
         <p className="demo-modais-texto">{PARAGRAFO}</p>
       </Dialogo>
-      <Dialogo {...props('p')} titulo="Diálogo pequeno" tamanho="pequeno">
+      <Dialogo {...props('p')} titulo={t('paginas.modais.textos.dialogoPequeno')} tamanho="pequeno">
         <p className="demo-modais-texto">{PARAGRAFO}</p>
       </Dialogo>
       {TELA_CHEIA.map(([chave, rotulo]) => (
@@ -268,25 +258,25 @@ export function PaginaModais() {
       ))}
       <Dialogo
         {...props('mensagem')}
-        titulo={`Nova mensagem para ${destinatario}`}
+        titulo={t('paginas.modais.textos.novaMensagemParaDestinatario', { destinatario })}
         rodape={
           <>
-            <Botao rotulo="Fechar" severidade="secundario" formato="retangulo" onClick={fechar} />
+            <Botao rotulo={t('paginas.modais.textos.fechar')} severidade="secundario" formato="retangulo" onClick={fechar} />
             <Botao
-              rotulo="Enviar mensagem"
+              rotulo={t('paginas.modais.textos.enviarMensagem')}
               icone="send"
               formato="retangulo"
               onClick={() => {
                 fechar();
-                toast.ok('Mensagem enviada', `Para ${destinatario}`);
+                toast.ok(t('paginas.modais.textos.mensagemEnviada'), t('paginas.modais.textos.paraDestinatario', { destinatario }));
               }}
             />
           </>
         }
       >
         <div className="demo-pilha-p">
-          <CampoTexto rotulo="Destinatário" valor={destinatario} aoMudar={setDestinatario} />
-          <CampoTextarea rotulo="Mensagem" />
+          <CampoTexto rotulo={t('paginas.modais.textos.destinatario')} valor={destinatario} aoMudar={setDestinatario} />
+          <CampoTextarea rotulo={t('paginas.modais.textos.mensagem')} />
         </div>
       </Dialogo>
       {ANIMACOES.map(([chave, rotulo]) => (
