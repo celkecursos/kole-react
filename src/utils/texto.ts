@@ -4,14 +4,14 @@
  * Os números e valores por extenso seguem as regras do português (documentos
  * brasileiros) e não mudam com o idioma.
  */
-import { formatoLista, formatoNumero, type Idioma } from '../i18n/idiomas';
+import { formatoLista, formatoNumero, idiomaAtivo, type Idioma } from '../i18n/idiomas';
 import { textosDe } from '../i18n/textos';
 
 /**
  * `['A']` → `A` · `['A','B']` → `A e B` · `['A','B','C']` → `A, B e C`.
  * Em outro `idioma`, a conjunção dele (`A, B and C`).
  */
-export function listaPorExtenso(itens: readonly string[], idioma: Idioma = 'pt-BR'): string {
+export function listaPorExtenso(itens: readonly string[], idioma: Idioma = idiomaAtivo()): string {
   const l = itens.map((i) => i.trim()).filter(Boolean);
   if (l.length <= 1) return l[0] ?? '';
   if (idioma !== 'pt-BR') return formatoLista(idioma).format(l);
@@ -100,13 +100,13 @@ export function lerCampo(obj: unknown, caminho: string): unknown {
     .reduce<unknown>((o, k) => (o !== null && typeof o === 'object' ? (o as Record<string, unknown>)[k] : undefined), obj);
 }
 
-/** `1243` → `1.243` · compacto: `12400` → `12,4 mil` (deixe o valor cheio no `title`). `idioma` padrão: `pt-BR`. */
+/** `1243` → `1.243` · compacto: `12400` → `12,4 mil` (deixe o valor cheio no `title`). `idioma` padrão: o idioma ativo do app, `en` fora do provedor. */
 export function formatarNumero(valor: number, opcoes?: { compacto?: boolean; idioma?: Idioma }): string {
-  return formatoNumero(opcoes?.idioma ?? 'pt-BR', opcoes?.compacto ? { notation: 'compact', maximumFractionDigits: 1 } : undefined).format(valor);
+  return formatoNumero(opcoes?.idioma ?? idiomaAtivo(), opcoes?.compacto ? { notation: 'compact', maximumFractionDigits: 1 } : undefined).format(valor);
 }
 
-/** 5–11h Bom dia · 12–17h Boa tarde · demais Boa noite (no `idioma`, padrão `pt-BR`). */
-export function saudacaoPorHora(agora: Date = new Date(), idioma: Idioma = 'pt-BR'): string {
+/** 5–11h Bom dia · 12–17h Boa tarde · demais Boa noite (no `idioma`, padrão: o idioma ativo do app, `en` fora do provedor). */
+export function saudacaoPorHora(agora: Date = new Date(), idioma: Idioma = idiomaAtivo()): string {
   const t = textosDe(idioma).tempo;
   const h = agora.getHours();
   if (h >= 5 && h < 12) return t.bomDia;

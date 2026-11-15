@@ -39,8 +39,9 @@ import {
 import { ROTAS } from './rotas';
 import { useT } from '../../../i18n/useT';
 import { rico } from '../../../i18n/rico';
+import { dataNoIdioma } from '../../../i18n/formatos';
 
-const MES_CURTO = new Intl.DateTimeFormat('pt-BR', { month: 'short' });
+const MES_CURTO = dataNoIdioma({ month: 'short' });
 
 /** Fim de cada um dos `n` meses até o mês de `ate` (o mês corrente para em hoje). */
 function fimDosMeses(ate: string, n: number): string[] {

@@ -3,7 +3,7 @@
  * Lógica pura, sem React. A máscara de cada tipo mora em `tiposCampo.ts`.
  * As regras são as brasileiras em qualquer idioma; só a mensagem é traduzida.
  */
-import type { Idioma } from '../i18n/idiomas';
+import { idiomaAtivo, type Idioma } from '../i18n/idiomas';
 import { textosDe } from '../i18n/textos';
 
 export const TIPOS_DE_CAMPO = [
@@ -151,7 +151,7 @@ export function isDataHora(v: string): boolean {
  * Telefone, opcionalmente restrito a um formato. Vazio é válido
  * (obrigatoriedade é assunto do campo, não do validador).
  */
-export function validarTelefone(v: string, tipo?: 'fixo' | 'celular', idioma: Idioma = 'pt-BR'): string {
+export function validarTelefone(v: string, tipo?: 'fixo' | 'celular', idioma: Idioma = idiomaAtivo()): string {
   const n = digitos(v).length;
   if (!n) return '';
   const t = textosDe(idioma).validacao;
@@ -164,7 +164,7 @@ export function validarTelefone(v: string, tipo?: 'fixo' | 'celular', idioma: Id
  * Mensagem de validação do tipo, ou `''` quando vazio ou válido.
  * Separa "incompleto" (ainda digitando) de "inválido" (errado).
  */
-export function validar(tipo: TipoDeCampo, valor: string, idioma: Idioma = 'pt-BR'): string {
+export function validar(tipo: TipoDeCampo, valor: string, idioma: Idioma = idiomaAtivo()): string {
   const v = (valor ?? '').trim();
   if (!v) return '';
   const n = digitos(v).length;

@@ -1,7 +1,8 @@
 import { Fragment } from 'react';
 import { dividirEmParcelas, formatarMoeda, formatarPercentual, somarMoeda, variacaoPercentual } from '../../../../src';
 
-const LINHAS: [string, string][] = [
+// dentro do componente: os utilitários usam o idioma do provedor, que só existe ao desenhar
+const linhas = (): [string, string][] => [
   ["formatarMoeda(1234.5)", formatarMoeda(1234.5)],
   ["formatarMoeda(-80)", formatarMoeda(-80)],
   ["formatarMoeda(10, { sinal: true })", formatarMoeda(10, { sinal: true })],
@@ -16,7 +17,7 @@ const LINHAS: [string, string][] = [
 export default function Exemplo() {
   return (
     <div className="demo-util">
-      {LINHAS.map(([codigo, res]) => (
+      {linhas().map(([codigo, res]) => (
         <Fragment key={codigo}>
           <code>{codigo}</code>
           <div className="demo-util-res">{res}</div>

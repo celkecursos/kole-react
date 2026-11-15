@@ -4,10 +4,11 @@ import { dia, type Lancamento } from './dados';
 import { CabecalhoFinancas, dataBr, useMoeda } from './comum';
 import { contasDo, doEspaco, efeito, saldoConta, useFinancas } from './estado';
 import { useT } from '../../../i18n/useT';
+import { dataNoIdioma } from '../../../i18n/formatos';
 
 type Horizonte = '30' | '60' | '90';
 const PASSADO = 30;
-const CURTA = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' });
+const CURTA = dataNoIdioma({ day: '2-digit', month: '2-digit' });
 
 interface Semana {
   id: string;

@@ -6,7 +6,7 @@ import { validar, type TipoDeCampo } from './validadores';
 export interface MetaTipoCampo {
   mascara?: Mascara;
   placeholder?: string;
-  /** Mensagem do erro (vazia se válido), no `idioma` (padrão `pt-BR`). */
+  /** Mensagem do erro (vazia se válido), no `idioma` (padrão: o idioma ativo do app, `en` fora do provedor). */
   validar: (valor: string, idioma?: Idioma) => string;
   /** `true` = sempre maiúscula (placa) · `false` = nunca (e-mail). */
   caixaAlta?: boolean;

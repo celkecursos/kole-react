@@ -36,10 +36,13 @@ confirmação (`useConfirmacao`).
 
 ### Idioma
 
-Os textos da própria biblioteca saem em português do Brasil (padrão), inglês ou
-espanhol. Ligue o seletor na topbar com `idiomas` e sincronize o i18n do seu
-sistema em `aoMudarIdioma` (chamado ao montar e a cada troca). A biblioteca não
-traduz os textos do sistema: ela só informa o idioma escolhido.
+Os textos da própria biblioteca saem em inglês (padrão), português do Brasil
+ou espanhol. Para português, passe `idiomaInicial="pt-BR"` ao provedor. Ligue o
+seletor na topbar com `idiomas` e sincronize o i18n do seu sistema em
+`aoMudarIdioma` (chamado ao montar e a cada troca). A biblioteca não traduz os
+textos do sistema: ela só informa o idioma escolhido. Os utilitários
+(`formatarMoeda`, `tempoRelativo`, `validar`…) usam o idioma do provedor quando
+o `idioma` não é passado (`idiomaAtivo()`; `en` fora do provedor).
 
 ```tsx
 <ProvedorUi idiomaInicial={usuario.locale} aoMudarIdioma={(idioma) => i18n.changeLanguage(idioma)}>
@@ -47,7 +50,7 @@ traduz os textos do sistema: ela só informa o idioma escolhido.
 </ProvedorUi>
 ```
 
-Prioridade dos textos: prop passada > dicionário do idioma > pt-BR. Para trocar
+Prioridade dos textos: prop passada > dicionário do idioma > inglês. Para trocar
 um texto ou acrescentar um idioma, passe `textos` ao provedor
 (`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`). Regras brasileiras (máscaras e
 validação de CPF, CNPJ, CEP e telefone) e a moeda não mudam com o idioma; só a

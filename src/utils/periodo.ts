@@ -2,7 +2,7 @@
  * Períodos de relatório (mês, trimestre, ano ou intervalo livre) com datas
  * `AAAA-MM-DD` no fuso local — as mesmas do `CampoData` e do `paraData`.
  */
-import { formatoData, interpolar, type Idioma } from '../i18n/idiomas';
+import { formatoData, idiomaAtivo, interpolar, type Idioma } from '../i18n/idiomas';
 import { textosDe } from '../i18n/textos';
 import { paraData } from './tempo';
 
@@ -59,10 +59,10 @@ export function noPeriodo(data: Date | string, p: Periodo): boolean {
 /**
  * "novembro de 2026" · "3º trimestre de 2026" · "2026" · "5 de nov. a 14 de nov. de 2026".
  * `curto` tira o ano do mês e do trimestre quando é o ano de `agora`.
- * `idioma` (padrão `pt-BR`): "November 2026", "Q3 2026", "Nov 5 – Nov 14, 2026".
+ * `idioma` (padrão: o idioma ativo do app, `en` fora do provedor): "November 2026", "Q3 2026", "Nov 5 – Nov 14, 2026".
  */
 export function rotuloPeriodo(p: Periodo, opcoes: { curto?: boolean; agora?: Date; idioma?: Idioma } = {}): string {
-  const idioma = opcoes.idioma ?? 'pt-BR';
+  const idioma = opcoes.idioma ?? idiomaAtivo();
   const t = textosDe(idioma).periodo;
   const mes = (d: Date) => formatoData(idioma, { month: 'long' }).format(d);
   const diaMes = (d: Date) => formatoData(idioma, { day: 'numeric', month: 'short' }).format(d);

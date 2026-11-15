@@ -1,5 +1,6 @@
 import type { ColunaKanban, CorKanban, EtiquetaKanban, PessoaAvatar, Prioridade, SituacaoTarefa, TarefaLista } from '../../../src';
 import { cena, retrato } from '../Bloco';
+import { localeAtivo } from '../../i18n/formatos';
 
 /*
  * Dados fictícios das telas de Kanban e Tarefas. As datas saem de "hoje" (o
@@ -316,7 +317,7 @@ export function quadrosIniciais(): QuadroDemo[] {
   ];
 }
 
-export const formatarMoeda = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+export const formatarMoeda = (v: number) => v.toLocaleString(localeAtivo(), { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 
 // ---------------------------------------------------------------- tarefas
 

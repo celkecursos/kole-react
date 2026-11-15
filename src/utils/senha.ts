@@ -1,4 +1,4 @@
-import { interpolar, type Idioma } from '../i18n/idiomas';
+import { idiomaAtivo, interpolar, type Idioma } from '../i18n/idiomas';
 import { textosDe } from '../i18n/textos';
 
 /** Política de senha: o app declara só o que muda sobre `POLITICA_PADRAO`. */
@@ -29,7 +29,7 @@ const CLASSES = {
 };
 
 /** Primeira regra violada (tamanho → minúscula → maiúscula → dígito → símbolo), ou `''`. */
-export function validarSenha(senha: string, politica: PoliticaSenha = POLITICA_PADRAO, idioma: Idioma = 'pt-BR'): string {
+export function validarSenha(senha: string, politica: PoliticaSenha = POLITICA_PADRAO, idioma: Idioma = idiomaAtivo()): string {
   if (!senha) return '';
   const t = textosDe(idioma).senha;
   if (senha.length < politica.minimo) return interpolar(t.minimo, { n: politica.minimo });

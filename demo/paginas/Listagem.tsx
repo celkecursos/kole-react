@@ -13,9 +13,10 @@ import {
 } from '../../src';
 import { OPCOES_PAGAMENTO, OPCOES_SITUACAO, PEDIDOS, SEVERIDADE, type Pedido } from './dados';
 import { useT } from '../i18n/useT';
+import { localeAtivo, numeroNoIdioma } from '../i18n/formatos';
 
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-const DATA = (iso: unknown) => new Date(`${iso}T00:00`).toLocaleDateString('pt-BR');
+const BRL = numeroNoIdioma({ style: 'currency', currency: 'BRL' });
+const DATA = (iso: unknown) => new Date(`${iso}T00:00`).toLocaleDateString(localeAtivo());
 
 interface Criterios {
   cliente: string;

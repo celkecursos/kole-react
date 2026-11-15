@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.7.0
+
+Mudanças que podem alterar quem já usa a biblioteca:
+
+- O idioma padrão passou de `pt-BR` para `en`. Sem escolha salva e sem
+  `idiomaInicial`, os textos da biblioteca saem em inglês (rótulos, listas
+  vazias, validações, datas e números). **Para continuar em português, passe
+  `idiomaInicial="pt-BR"` ao `ProvedorUi` (ou `ProvedorPreferencias`)** e, se
+  usar o script do `<head>`, a `scriptTemaInicial({ idiomaInicial: 'pt-BR' })`.
+  Quem já escolheu um idioma no seletor continua nele.
+- Os utilitários chamados sem `idioma` (`formatarMoeda`, `formatarNumero`,
+  `formatarPercentual`, `rotuloPeriodo`, `dataCurta`, `tempoRelativo`,
+  `situacaoPrazo`, `validar`, `validarTelefone`, `validarSenha`,
+  `saudacaoPorHora`, `listaPorExtenso`, `tituloDeEntidade` e `textosDe`)
+  passam a usar o idioma ativo do app: o do provedor e, fora dele, `en`. Com
+  `idiomaInicial="pt-BR"`, continuam em português. A moeda não muda:
+  `formatarMoeda` continua em real (BRL) até o app passar `moeda`. Chamadas
+  no nível do módulo (fora de componente, antes de o provedor montar) saem
+  em `en`: passe o `idioma` ou faça a chamada dentro do componente.
+- Componentes fora do provedor saem em inglês, e um idioma acrescentado por
+  `textos` usa o inglês no que faltar (antes, o português).
+
+Novidades:
+
+- `IDIOMA_INICIAL` (`'en'`) e `idiomaAtivo()` (o idioma do provedor, que os
+  utilitários usam como padrão) exportados.
+- Demo: abre em inglês (`lang="en"`); o seletor da topbar troca para português
+  ou espanhol. Datas e valores das páginas seguem o idioma (`R$1,234.50` em
+  inglês), com a moeda em real.
+- Teste visual: as telas da demo saem em inglês, e o projeto `en` virou
+  `pt-BR`, com as telas de texto da biblioteca em português.
+
 ## 0.6.0
 
 Novidades:

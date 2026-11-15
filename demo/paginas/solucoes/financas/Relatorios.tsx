@@ -4,8 +4,9 @@ import type { GrupoDre, Lancamento } from './dados';
 import { CabecalhoFinancas, useMoeda } from './comum';
 import { categoriasDo, doEspaco, noIntervalo, useFinancas } from './estado';
 import { useT } from '../../../i18n/useT';
+import { dataNoIdioma } from '../../../i18n/formatos';
 
-const MES = new Intl.DateTimeFormat('pt-BR', { month: 'short', year: '2-digit' });
+const MES = dataNoIdioma({ month: 'short', year: '2-digit' });
 
 interface Linha {
   id: string;

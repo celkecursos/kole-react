@@ -1,8 +1,9 @@
 import { Alerta, BoasVindas, Botao, Icone, Indicador, Indicadores, Status, Tabela, formatarNumero } from '../../src';
 import { PEDIDOS, SEVERIDADE } from './dados';
 import { useT } from '../i18n/useT';
+import { numeroNoIdioma } from '../i18n/formatos';
 
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+const BRL = numeroNoIdioma({ style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 
 export function PaginaPainel({ navegar }: { navegar: (r: string) => void }) {
   const { t, idioma, tc } = useT();
