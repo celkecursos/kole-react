@@ -1,8 +1,6 @@
 # Changelog
 
-## No publicado
-
-Versión objetivo: 0.7.0.
+## 0.7.0
 
 Cambios que pueden afectar a quien ya usa la biblioteca:
 

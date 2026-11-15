@@ -1,8 +1,6 @@
 # Changelog
 
-## Não publicado
-
-Versão alvo: 0.7.0.
+## 0.7.0
 
 Mudanças que podem alterar quem já usa a biblioteca:
 

@@ -1,8 +1,6 @@
 # Changelog
 
-## Unreleased
-
-Target version: 0.7.0.
+## 0.7.0
 
 Changes that may affect those already using the library:
 
