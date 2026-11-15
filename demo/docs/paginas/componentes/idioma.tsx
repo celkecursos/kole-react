@@ -7,7 +7,7 @@ import { rico } from '../../../i18n/rico';
 const PROVEDOR = `import { Estrutura, ProvedorUi } from '@celke/kole-react';
 
 <ProvedorUi
-  idiomaInicial={usuario.locale}             // 'pt-BR' | 'en' | 'es' (sem ele: pt-BR)
+  idiomaInicial={usuario.locale}             // 'pt-BR' | 'en' | 'es' (sem ele: en)
   aoMudarIdioma={(idioma) => api.salvarIdioma(idioma)}
 >
   <Estrutura idiomas={['pt-BR', 'en', 'es']} {/* sem a prop, o seletor não aparece */}>
@@ -46,7 +46,7 @@ const TEXTOS = `<ProvedorUi
   textos={{
     // troca um texto da biblioteca
     'pt-BR': { tabela: { rotulo: 'Lista de registros' } },
-    // acrescenta um idioma (o que faltar sai em pt-BR)
+    // acrescenta um idioma (o que faltar sai em inglês)
     fr: { idioma: { nome: 'Français', seletor: 'Langue', atual: 'Langue : {nome}' }, comum: { fechar: 'Fermer' } },
   }}
 >

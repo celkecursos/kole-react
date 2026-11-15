@@ -30,6 +30,7 @@ import {
 import { CENTROS_CUSTO, CONTATOS, ESPACOS, dia, novoId, type Categoria, type Conta, type Espaco, type Lancamento, type TipoConta, type TipoLancamento } from './dados';
 import { acoes, categoriasDo, contasDo, useFinancas } from './estado';
 import { useT, type TradutorDemo } from '../../../i18n/useT';
+import { dataNoIdioma, localeAtivo } from '../../../i18n/formatos';
 
 // ícones das categorias: o app registra os que a biblioteca não traz
 registrarIcones({
@@ -45,8 +46,8 @@ registrarIcones({
   zap: Zap,
 });
 
-export const DATA = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-export const DIA_SEMANA = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+export const DATA = dataNoIdioma({ day: '2-digit', month: '2-digit', year: 'numeric' });
+export const DIA_SEMANA = dataNoIdioma({ weekday: 'long', day: 'numeric', month: 'long' });
 export const dataBr = (iso: string) => DATA.format(paraData(iso));
 
 /** `formatarMoeda` que respeita o "ocultar valores" (para textos fora do `Valor`: indicadores, eixos). */
@@ -301,7 +302,7 @@ function DialogoLancamento({ inicial, novo, aoFechar }: { inicial: Lancamento; n
                 valor={vezes}
                 aoMudar={setVezes}
                 erro={mostrar(erros.vezes)}
-                dica={repetir === 'parcelado' && l.valor > 0 && !erros.vezes ? t('paginas.financas.textos.nDeValor', { n, valor: dividirEmParcelas(l.valor, n).at(-1)!.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }) : undefined}
+                dica={repetir === 'parcelado' && l.valor > 0 && !erros.vezes ? t('paginas.financas.textos.nDeValor', { n, valor: dividirEmParcelas(l.valor, n).at(-1)!.toLocaleString(localeAtivo(), { style: 'currency', currency: 'BRL' }) }) : undefined}
               />
             ) : (
               <span />

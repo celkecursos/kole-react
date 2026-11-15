@@ -76,13 +76,13 @@ export const docsTelas = {
   idioma: {
     titulo: 'Idioma',
     textos: {
-      resumo: 'Os textos da própria biblioteca (rótulos padrão, listas vazias, aria-labels, validações, datas e números) em português do Brasil, inglês ou espanhol. O padrão continua pt-BR: nada muda até o sistema pedir.',
-      oIdiomaFicaNo: 'O idioma fica no `ProvedorPreferencias` (ou `ProvedorUi`), junto com o tema e a densidade, e é lembrado no navegador. Sem escolha salva nem `idiomaInicial`, é `pt-BR`: o idioma do navegador não é consultado. O seletor aparece na topbar da `Estrutura` só com a prop `idiomas`.',
-      mudamOsTextosDa: 'Mudam os textos da biblioteca e a formatação de datas e números (`1.234,50` · `1,234.50`). A prioridade é: prop passada pelo sistema, depois o dicionário do idioma, depois o pt-BR.',
+      resumo: 'Os textos da própria biblioteca (rótulos padrão, listas vazias, aria-labels, validações, datas e números) em português do Brasil, inglês ou espanhol. O padrão é o inglês; para português, `idiomaInicial="pt-BR"`.',
+      oIdiomaFicaNo: 'O idioma fica no `ProvedorPreferencias` (ou `ProvedorUi`), junto com o tema e a densidade, e é lembrado no navegador. Sem escolha salva nem `idiomaInicial`, é `en`: o idioma do navegador não é consultado. O seletor aparece na topbar da `Estrutura` só com a prop `idiomas`.',
+      mudamOsTextosDa: 'Mudam os textos da biblioteca e a formatação de datas e números (`1.234,50` · `1,234.50`). A prioridade é: prop passada pelo sistema, depois o dicionário do idioma, depois o inglês.',
       aMoedaNaoMuda: 'A moeda não muda com o idioma: `formatarMoeda` e `Valor` continuam em real (ou na `moeda` passada); o idioma muda só o separador e a posição do símbolo.',
       regrasBrasileirasFicamComo: 'Regras brasileiras ficam como são: máscaras e validação de CPF, CNPJ, CEP e telefone, placa, UFs, tipo de pessoa e os valores por extenso. Só a mensagem de erro é traduzida.',
       osTextosDoSistema: 'Os textos do sistema não são traduzidos pela biblioteca: ela só informa o idioma escolhido (`aoMudarIdioma`, `usePreferencias().idioma` ou `useIdioma()`) para o sistema trocar os dele.',
-      utilitariosAceitamOIdioma: 'Utilitários aceitam o idioma como parâmetro opcional, sempre com padrão `pt-BR`: `formatarNumero(v, { idioma })`, `formatarMoeda`, `rotuloPeriodo`, `tempoRelativo(data, agora, idioma)`, `situacaoPrazo`, `validar`, `validarSenha`, `saudacaoPorHora`, `listaPorExtenso` e `tituloDeEntidade`.',
+      utilitariosAceitamOIdioma: 'Utilitários aceitam o idioma como parâmetro opcional; sem ele, usam o idioma ativo do app (`idiomaAtivo()`, `en` fora do provedor): `formatarNumero(v, { idioma })`, `formatarMoeda`, `rotuloPeriodo`, `tempoRelativo(data, agora, idioma)`, `situacaoPrazo`, `validar`, `validarSenha`, `saudacaoPorHora`, `listaPorExtenso` e `tituloDeEntidade`.',
       aomudaridiomaEChamadoAo: '`aoMudarIdioma` é chamado ao montar e a cada troca: é o lugar de trocar o i18n do sistema e de gravar a escolha.',
       comLaravelGuardeA: 'Com Laravel, guarde a escolha em `users.locale` e devolva no carregamento. O `idiomaInicial` vale enquanto a pessoa não troca no navegador; depois, a escolha salva no navegador vence.',
       osDicionariosSaoExportados: 'Os dicionários são exportados (`textosPtBR`, `textosEn`, `textosEs`) e organizados por componente (`tabela.rotulo`, `paginacao.proxima`…). A prop `textos` do provedor recebe só o que muda, por idioma.',

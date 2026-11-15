@@ -1,5 +1,40 @@
 # Changelog
 
+## No publicado
+
+Versión objetivo: 0.7.0.
+
+Cambios que pueden afectar a quien ya usa la biblioteca:
+
+- El idioma predeterminado pasó de `pt-BR` a `en`. Sin elección guardada y sin
+  `idiomaInicial`, los textos de la biblioteca salen en inglés (etiquetas,
+  listas vacías, validaciones, fechas y números). **Para seguir en portugués,
+  pase `idiomaInicial="pt-BR"` al `ProvedorUi` (o `ProvedorPreferencias`)** y,
+  si usa el script del `<head>`, a `scriptTemaInicial({ idiomaInicial: 'pt-BR' })`.
+  Quien ya eligió un idioma en el selector sigue con él.
+- Las utilidades llamadas sin `idioma` (`formatarMoeda`, `formatarNumero`,
+  `formatarPercentual`, `rotuloPeriodo`, `dataCurta`, `tempoRelativo`,
+  `situacaoPrazo`, `validar`, `validarTelefone`, `validarSenha`,
+  `saudacaoPorHora`, `listaPorExtenso`, `tituloDeEntidade` y `textosDe`) pasan
+  a usar el idioma activo de la app: el del proveedor y, fuera de él, `en`. Con
+  `idiomaInicial="pt-BR"`, siguen en portugués. La moneda no cambia:
+  `formatarMoeda` sigue en reales (BRL) hasta que la app pase `moeda`. Las
+  llamadas a nivel de módulo (fuera de un componente, antes de que se monte
+  el proveedor) salen en `en`: pase el `idioma` o haga la llamada dentro del
+  componente.
+- Los componentes fuera del proveedor salen en inglés, y un idioma agregado
+  por `textos` usa el inglés en lo que falte (antes, el portugués).
+
+Novedades:
+
+- `IDIOMA_INICIAL` (`'en'`) e `idiomaAtivo()` (el idioma del proveedor, que las
+  utilidades usan como predeterminado) exportados.
+- Demo: abre en inglés (`lang="en"`); el selector de la barra superior cambia a
+  portugués o español. Las fechas y los valores de las páginas siguen el idioma
+  (`R$1,234.50` en inglés), con la moneda en reales.
+- Prueba visual: las pantallas de la demo salen en inglés, y el proyecto `en`
+  pasó a ser `pt-BR`, con las pantallas de texto de la biblioteca en portugués.
+
 ## 0.6.0
 
 Novedades:

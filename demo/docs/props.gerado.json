@@ -8230,7 +8230,7 @@
         "nome": "validar",
         "tipo": "(valor: string, idioma?: Idioma) => string",
         "obrigatorio": true,
-        "descricao": "Mensagem do erro (vazia se válido), no `idioma` (padrão `pt-BR`)."
+        "descricao": "Mensagem do erro (vazia se válido), no `idioma` (padrão: o idioma ativo do app, `en` fora do provedor)."
       },
       {
         "nome": "caixaAlta",
@@ -8826,7 +8826,7 @@
         "nome": "idioma",
         "tipo": "Idioma",
         "obrigatorio": false,
-        "descricao": "Idioma da formatação. Padrão `pt-BR`."
+        "descricao": "Idioma da formatação. Padrão: o idioma ativo do app, `en` fora do provedor."
       }
     ]
   },
@@ -8857,7 +8857,7 @@
         "nome": "idioma",
         "tipo": "Idioma",
         "obrigatorio": false,
-        "descricao": "Idioma da formatação. Padrão `pt-BR`."
+        "descricao": "Idioma da formatação. Padrão: o idioma ativo do app, `en` fora do provedor."
       }
     ]
   },
@@ -9424,7 +9424,7 @@
         "nome": "idioma",
         "tipo": "Idioma",
         "obrigatorio": true,
-        "descricao": "Idioma dos textos da biblioteca (padrão `pt-BR`)."
+        "descricao": "Idioma dos textos da biblioteca (padrão `en`)."
       },
       {
         "nome": "definirTema",
@@ -9686,7 +9686,7 @@
         "nome": "idiomaInicial",
         "tipo": "Idioma",
         "obrigatorio": false,
-        "descricao": "Idioma enquanto a pessoa não escolhe outro (ex.: o `users.locale` do servidor). Padrão: `pt-BR`. O navegador não é consultado."
+        "descricao": "Idioma enquanto a pessoa não escolhe outro (ex.: o `users.locale` do servidor). Padrão: `en`; para português, `idiomaInicial=\"pt-BR\"`. O navegador não é consultado."
       },
       {
         "nome": "aoMudarIdioma",
@@ -9698,7 +9698,7 @@
         "nome": "textos",
         "tipo": "Partial<Record<Idioma, TextosParciais>>",
         "obrigatorio": false,
-        "descricao": "Textos por idioma, por cima dos da biblioteca: troca um texto (`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`) ou acrescenta um idioma (`{ fr: { … } }`; o que faltar sai em pt-BR)."
+        "descricao": "Textos por idioma, por cima dos da biblioteca: troca um texto (`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`) ou acrescenta um idioma (`{ fr: { … } }`; o que faltar sai em inglês)."
       }
     ]
   },
@@ -11309,7 +11309,7 @@
         "nome": "idioma",
         "tipo": "Idioma",
         "obrigatorio": false,
-        "descricao": "Idioma da formatação. Padrão `pt-BR`.",
+        "descricao": "Idioma da formatação. Padrão: o idioma ativo do app, `en` fora do provedor.",
         "de": "OpcoesMoeda"
       }
     ]

@@ -23,8 +23,9 @@ import {
   type Cidade,
   type Estado,
 } from './dados';
+import { numeroNoIdioma } from '../i18n/formatos';
 
-const NUM = new Intl.NumberFormat('pt-BR');
+const NUM = numeroNoIdioma();
 
 function Bloco({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
@@ -49,7 +50,7 @@ interface ConfigTabela<T> {
   ordemInicial: string;
 }
 
-const PCT = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const PCT = numeroNoIdioma({ minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const CATEGORIAS = (t: TradutorDemo['t'], tc: TradutorDemo['tc']): ConfigTabela<Categoria> => ({
   titulo: t('paginas.tabelas.textos.categorias'),

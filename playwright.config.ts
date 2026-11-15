@@ -39,8 +39,8 @@ export default defineConfig({
     // tema "sistema" com o sistema no escuro: tem que sair igual ao escuro (compara com a mesma referência;
     // fica fora do visual:referencia, que só grava claro e escuro)
     { name: 'sistema', use: { colorScheme: 'dark' }, testMatch: 'demo.spec.ts', snapshotPathTemplate: '{testDir}/__referencia__/{platform}/escuro/{arg}{ext}' },
-    // textos da biblioteca em inglês: só as telas com texto da lib (idioma.spec.ts)
-    { name: 'en', use: { colorScheme: 'light' }, testMatch: 'idioma.spec.ts' },
+    // textos da biblioteca em português (o padrão é o inglês): só as telas com texto da lib (idioma.spec.ts)
+    { name: 'pt-BR', use: { colorScheme: 'light' }, testMatch: 'idioma.spec.ts' },
   ],
   webServer: externo
     ? undefined

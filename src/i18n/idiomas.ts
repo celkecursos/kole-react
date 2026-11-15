@@ -9,11 +9,33 @@ export type IdiomaPadrao = 'pt-BR' | 'en' | 'es';
 /**
  * Idioma ativo. Além dos três prontos, o sistema pode acrescentar outro (ex.:
  * `'fr'`) passando os textos dele em `textos` do `ProvedorPreferencias`; o que
- * faltar sai em pt-BR.
+ * faltar sai em inglês.
  */
 export type Idioma = IdiomaPadrao | (string & {});
 
 export const IDIOMAS_PADRAO: readonly IdiomaPadrao[] = ['pt-BR', 'en', 'es'];
+
+/**
+ * Idioma da biblioteca quando o sistema não escolhe outro: o padrão do
+ * `idiomaInicial`, dos componentes fora do provedor e dos utilitários.
+ */
+export const IDIOMA_INICIAL: IdiomaPadrao = 'en';
+
+let idiomaAtual: Idioma = IDIOMA_INICIAL;
+
+/**
+ * O idioma ativo do app: o do `ProvedorPreferencias` (ou `ProvedorUi`) e,
+ * fora dele, `en`. É o padrão dos utilitários (`formatarMoeda`,
+ * `tempoRelativo`, `validar`…) quando o `idioma` não é passado.
+ */
+export function idiomaAtivo(): Idioma {
+  return idiomaAtual;
+}
+
+/** Interno: o `ProvedorPreferencias` registra aqui o idioma ativo. */
+export function registrarIdioma(idioma: Idioma): void {
+  idiomaAtual = idioma;
+}
 
 /** Formas do plural (categorias do `Intl.PluralRules`); `other` é obrigatória e serve de reserva. */
 export interface Plural {

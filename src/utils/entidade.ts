@@ -1,4 +1,4 @@
-import type { Idioma } from '../i18n/idiomas';
+import { idiomaAtivo, type Idioma } from '../i18n/idiomas';
 import { textosDe } from '../i18n/textos';
 
 /**
@@ -19,8 +19,8 @@ export interface Entidade {
   readonly leitura?: string;
 }
 
-/** Título da tela: a frase declarada do modo ou `Verbo nome` (o verbo no `idioma`, padrão `pt-BR`). */
-export function tituloDeEntidade(entidade: string | Entidade, modo: Modo, idioma: Idioma = 'pt-BR'): string {
+/** Título da tela: a frase declarada do modo ou `Verbo nome` (o verbo no `idioma`, padrão: o idioma ativo do app, `en` fora do provedor). */
+export function tituloDeEntidade(entidade: string | Entidade, modo: Modo, idioma: Idioma = idiomaAtivo()): string {
   const e: Entidade = typeof entidade === 'string' ? { nome: entidade } : entidade;
   const declarada = e[modo]?.trim();
   return declarada || `${textosDe(idioma).entidade[modo]} ${e.nome}`.trim();

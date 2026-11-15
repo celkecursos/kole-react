@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ContextoIdioma } from '../../i18n/contexto';
 import { registrarTextos, textosDe, type TextosParciais } from '../../i18n/textos';
-import type { Idioma } from '../../i18n/idiomas';
+import { IDIOMA_INICIAL, registrarIdioma, type Idioma } from '../../i18n/idiomas';
 import { ProvedorConfirmacao } from '../Confirmacao/Confirmacao';
 import { ProvedorToast } from '../Toast/Toast';
 
@@ -31,7 +31,7 @@ export interface Preferencias {
   /** O tema que está na tela: com `sistema`, o do sistema operacional agora. */
   escuro: boolean;
   densidade: Densidade;
-  /** Idioma dos textos da biblioteca (padrão `pt-BR`). */
+  /** Idioma dos textos da biblioteca (padrão `en`). */
   idioma: Idioma;
   definirTema: (t: Tema) => void;
   alternarTema: () => void;
@@ -110,7 +110,8 @@ export interface ProvedorPreferenciasProps {
   densidadeInicial?: Densidade;
   /**
    * Idioma enquanto a pessoa não escolhe outro (ex.: o `users.locale` do
-   * servidor). Padrão: `pt-BR`. O navegador não é consultado.
+   * servidor). Padrão: `en`; para português, `idiomaInicial="pt-BR"`. O
+   * navegador não é consultado.
    */
   idiomaInicial?: Idioma;
   /**
@@ -121,7 +122,7 @@ export interface ProvedorPreferenciasProps {
   /**
    * Textos por idioma, por cima dos da biblioteca: troca um texto
    * (`{ 'pt-BR': { tabela: { rotulo: 'Lista' } } }`) ou acrescenta um idioma
-   * (`{ fr: { … } }`; o que faltar sai em pt-BR).
+   * (`{ fr: { … } }`; o que faltar sai em inglês).
    */
   textos?: Partial<Record<Idioma, TextosParciais>>;
 }
@@ -138,7 +139,7 @@ export function ProvedorPreferencias({ children, temaInicial, densidadeInicial =
   // para o `idiomaInicial` do servidor continuar valendo enquanto a pessoa não troca.
   const [{ idioma, escolhido }, setIdioma] = useState<{ idioma: Idioma; escolhido: boolean }>(() => {
     const salvo = ler().idioma;
-    return { idioma: salvo ?? idiomaInicial ?? 'pt-BR', escolhido: !!salvo };
+    return { idioma: salvo ?? idiomaInicial ?? IDIOMA_INICIAL, escolhido: !!salvo };
   });
   const explicito = escolhido || !!idiomaInicial;
   const definirIdioma = useCallback((i: Idioma) => setIdioma({ idioma: i, escolhido: true }), []);
@@ -175,6 +176,7 @@ export function ProvedorPreferencias({ children, temaInicial, densidadeInicial =
   }, [idioma]);
 
   registrarTextos(textos);
+  registrarIdioma(idioma);
   const valorIdioma = useMemo(() => ({ idioma, textos: textosDe(idioma) }), [idioma, textos]);
 
   // alterna o que está na tela: no `sistema`, sai dele para o oposto do atual

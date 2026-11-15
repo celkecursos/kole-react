@@ -12,7 +12,7 @@ for (const rota of ROTAS) {
     const tema = info.project.name;
     // a escolha salva vale nas duas versões comparadas (a referência pode ser de antes do tema "sistema")
     await page.addInitScript((t) => localStorage.setItem('lp-preferencias', JSON.stringify({ tema: t, densidade: 'confortavel' })), tema);
-    // o seletor de idioma da topbar fica fora destas referências (o projeto `en`, em idioma.spec.ts, cobre o idioma);
+    // o seletor de idioma da topbar fica fora destas referências (o projeto `pt-BR`, em idioma.spec.ts, cobre o idioma);
     // escondido desde a primeira pintura, para a topbar medir o grupo da direita já sem ele
     await page.addInitScript(() => {
       const css = document.createElement('style');

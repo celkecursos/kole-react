@@ -1,10 +1,10 @@
 /**
- * Dicionários sem React: a mescla pt-BR › idioma › textos do sistema, que os
+ * Dicionários sem React: a mescla base › idioma › textos do sistema, que os
  * utilitários (`validar`, `situacaoPrazo`…) também usam.
  */
 import { textosEn } from './en';
 import { textosEs } from './es';
-import type { Idioma } from './idiomas';
+import { idiomaAtivo, type Idioma } from './idiomas';
 import { textosPtBR, type Textos } from './pt-BR';
 
 /** Qualquer parte dos textos: cada componente e cada texto dele ficam opcionais. */
@@ -41,14 +41,15 @@ export function registrarTextos(extras?: Partial<Record<Idioma, TextosParciais>>
 }
 
 /**
- * O dicionário de um idioma: pt-BR por baixo (o que faltar sai em português),
- * o dicionário pronto do idioma por cima e, por último, os textos do sistema.
+ * O dicionário de um idioma (padrão: o idioma ativo do app). Os prontos
+ * (pt-BR, en, es) vêm completos; num idioma que o sistema acrescentou, o que
+ * faltar sai em inglês. Por último, os textos do sistema.
  */
-export function textosDe(idioma: Idioma = 'pt-BR'): Textos {
+export function textosDe(idioma: Idioma = idiomaAtivo()): Textos {
   let t = cache.get(idioma);
   if (!t) {
     const pronto = (DICIONARIOS as Record<string, Textos | undefined>)[idioma];
-    t = mesclar(pronto ? mesclar(textosPtBR, pronto as TextosParciais) : textosPtBR, extrasAtivos?.[idioma]);
+    t = mesclar(pronto ? mesclar(textosPtBR, pronto as TextosParciais) : mesclar(textosPtBR, textosEn as TextosParciais), extrasAtivos?.[idioma]);
     cache.set(idioma, t);
   }
   return t;

@@ -26,8 +26,9 @@ import {
 } from '../../src';
 import type { ChaveTexto } from '../i18n/tipos';
 import { useT, type TradutorDemo } from '../i18n/useT';
+import { numeroNoIdioma } from '../i18n/formatos';
 
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const BRL = numeroNoIdioma({ style: 'currency', currency: 'BRL' });
 
 // Cada item do menu é um formulário próprio, com rota e botão Salvar independentes.
 const FORMULARIOS = [

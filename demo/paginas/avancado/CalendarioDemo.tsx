@@ -17,6 +17,7 @@ import {
 import { DialogoEvento, useAgenda } from '../../docs/exemplos/calendario/Cadastro';
 import { Bloco } from '../Bloco';
 import { useT, type TradutorDemo } from '../../i18n/useT';
+import { dataNoIdioma } from '../../i18n/formatos';
 
 /*
  * Agenda fictícia de vendas, montada a partir do mês atual (o teste visual fixa
@@ -159,8 +160,8 @@ function AgendaEditavel() {
   );
 }
 
-const DATA = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-const HORA = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' });
+const DATA = dataNoIdioma({ weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const HORA = dataNoIdioma({ hour: '2-digit', minute: '2-digit' });
 
 export function PaginaCalendario() {
   const { t, tc } = useT();

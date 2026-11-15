@@ -1,5 +1,40 @@
 # Changelog
 
+## Unreleased
+
+Target version: 0.7.0.
+
+Changes that may affect those already using the library:
+
+- The default language changed from `pt-BR` to `en`. With no saved choice and
+  no `idiomaInicial`, the library's texts come out in English (labels, empty
+  lists, validations, dates and numbers). **To keep Portuguese, pass
+  `idiomaInicial="pt-BR"` to `ProvedorUi` (or `ProvedorPreferencias`)** and, if
+  you use the `<head>` script, to `scriptTemaInicial({ idiomaInicial: 'pt-BR' })`.
+  Whoever already picked a language in the selector keeps it.
+- Utilities called without `idioma` (`formatarMoeda`, `formatarNumero`,
+  `formatarPercentual`, `rotuloPeriodo`, `dataCurta`, `tempoRelativo`,
+  `situacaoPrazo`, `validar`, `validarTelefone`, `validarSenha`,
+  `saudacaoPorHora`, `listaPorExtenso`, `tituloDeEntidade` and `textosDe`) now
+  use the app's active language: the provider's and, outside it, `en`. With
+  `idiomaInicial="pt-BR"`, they stay in Portuguese. The currency doesn't
+  change: `formatarMoeda` stays in reais (BRL) until the app passes `moeda`.
+  Calls at module level (outside a component, before the provider mounts)
+  come out in `en`: pass `idioma` or make the call inside the component.
+- Components outside the provider come out in English, and a language added
+  through `textos` falls back to English for whatever is missing (before,
+  Portuguese).
+
+New:
+
+- `IDIOMA_INICIAL` (`'en'`) and `idiomaAtivo()` (the provider's language,
+  which the utilities use as the default) exported.
+- Demo: opens in English (`lang="en"`); the topbar selector switches to
+  Portuguese or Spanish. Dates and amounts on the pages follow the language
+  (`R$1,234.50` in English), with the currency in reais.
+- Visual test: the demo screens come out in English, and the `en` project
+  became `pt-BR`, with the library text screens in Portuguese.
+
 ## 0.6.0
 
 New:

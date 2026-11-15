@@ -26,6 +26,7 @@ import {
 import { retrato } from './Bloco';
 import type { ChaveTexto } from '../i18n/tipos';
 import { useT, type TradutorDemo } from '../i18n/useT';
+import { numeroNoIdioma } from '../i18n/formatos';
 
 export interface DadosPerfil {
   nome: string;
@@ -49,7 +50,7 @@ export const PERFIL_INICIAL: DadosPerfil = {
   verificado: true,
 };
 
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const BRL = numeroNoIdioma({ style: 'currency', currency: 'BRL' });
 
 const PEDIDOS_RECENTES = [
   { numero: 'PED-2026-0057', cliente: 'Mercado Bom Preço', total: 4870.4 },

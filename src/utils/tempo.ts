@@ -4,7 +4,7 @@
  * local (não em UTC, como o `new Date('2026-11-13')` faria).
  */
 
-import { formatoData, interpolar, pluralizar, type Idioma } from '../i18n/idiomas';
+import { formatoData, idiomaAtivo, interpolar, pluralizar, type Idioma } from '../i18n/idiomas';
 import { textosDe } from '../i18n/textos';
 
 const DIA_MS = 86_400_000;
@@ -27,7 +27,7 @@ export function diasEntre(de: Date | string, ate: Date | string): number {
 }
 
 /** `13/11` no mesmo ano de `agora`; `13/11/2025` em outro. */
-export function dataCurta(valor: Date | string, agora: Date = new Date(), idioma: Idioma = 'pt-BR'): string {
+export function dataCurta(valor: Date | string, agora: Date = new Date(), idioma: Idioma = idiomaAtivo()): string {
   const d = paraData(valor);
   const mesmoAno = d.getFullYear() === agora.getFullYear();
   return formatoData(idioma, { day: '2-digit', month: '2-digit', ...(mesmoAno ? {} : { year: 'numeric' }) }).format(d);
@@ -42,7 +42,7 @@ function dataNumerica(d: Date, idioma: Idioma): string {
  * Quanto tempo falta ou passou: "agora mesmo", "há 5 min", "há 2 h",
  * "ontem", "há 3 dias", "há 2 meses", "em 10 min", "amanhã", "em 4 dias"…
  */
-export function tempoRelativo(valor: Date | string, agora: Date = new Date(), idioma: Idioma = 'pt-BR'): string {
+export function tempoRelativo(valor: Date | string, agora: Date = new Date(), idioma: Idioma = idiomaAtivo()): string {
   const t = textosDe(idioma).tempo;
   const d = paraData(valor);
   const seg = (agora.getTime() - d.getTime()) / 1000;
@@ -77,7 +77,7 @@ export interface Prazo {
  * Situação de um vencimento em relação a hoje. `emBreve` = quantos dias
  * antes passa a ser "em breve" (padrão: 2).
  */
-export function situacaoPrazo(vencimento: Date | string, agora: Date = new Date(), emBreve = 2, idioma: Idioma = 'pt-BR'): Prazo {
+export function situacaoPrazo(vencimento: Date | string, agora: Date = new Date(), emBreve = 2, idioma: Idioma = idiomaAtivo()): Prazo {
   const t = textosDe(idioma).tempo;
   const d = paraData(vencimento);
   const dias = diasEntre(agora, d);

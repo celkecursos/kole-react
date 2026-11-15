@@ -19,6 +19,8 @@ export * from './utils/periodo';
 // Idioma
 export {
   IDIOMAS_PADRAO,
+  IDIOMA_INICIAL,
+  idiomaAtivo,
   diasDaSemana,
   formatoData,
   formatoLista,

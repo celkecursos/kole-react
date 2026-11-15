@@ -17,6 +17,7 @@ import { Bloco } from '../Bloco';
 import { PEDIDOS, TABELA_CATEGORIAS, TABELA_PAGAMENTOS } from '../dados';
 import { useT } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
+import { numeroNoIdioma } from '../../i18n/formatos';
 
 /*
  * Dados FICTÍCIOS e fixos, no mesmo tema das páginas de pedidos e tabelas: um
@@ -35,8 +36,8 @@ function sorteio(semente: number) {
 const arred = (v: number, casas = 0) => Number(v.toFixed(casas));
 const mes = (ano: number, m: number) => `${ano}-${String(m + 1).padStart(2, '0')}`;
 
-const REAL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
-const CENTAVOS = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const REAL = numeroNoIdioma({ style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+const CENTAVOS = numeroNoIdioma({ style: 'currency', currency: 'BRL' });
 const emReais = (v: number) => REAL.format(v);
 const emCentavos = (v: number) => CENTAVOS.format(v);
 

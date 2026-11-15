@@ -41,6 +41,7 @@ import {
 } from '../../src';
 import { Bloco } from './Bloco';
 import { useT, type TradutorDemo } from '../i18n/useT';
+import { localeAtivo } from '../i18n/formatos';
 
 function Linha({ codigo, children }: { codigo: string; children: ReactNode }) {
   return (
@@ -202,7 +203,7 @@ export function PaginaUtilitarios() {
         <CampoTexto rotulo={t('paginas.utilitarios.textos.token')} valor={jwt} aoMudar={setJwt} />
         <div className="demo-util">
           <Linha codigo="decodificarJwt(token)">{payload ? JSON.stringify(payload) : 'null'}</Linha>
-          <Linha codigo="expiracaoJwt(token)">{exp ? exp.toLocaleString('pt-BR') : 'null'}</Linha>
+          <Linha codigo="expiracaoJwt(token)">{exp ? exp.toLocaleString(localeAtivo()) : 'null'}</Linha>
           <Linha codigo="jwtExpirado(token, 60)">{String(jwtExpirado(jwt, 60))}</Linha>
         </div>
       </Bloco>

@@ -4,7 +4,7 @@
  * O idioma muda só a formatação (`R$ 1.234,50` · `R$1,234.50`); a moeda vem
  * de `moeda` (BRL por padrão).
  */
-import { formatoNumero, type Idioma } from '../i18n/idiomas';
+import { formatoNumero, idiomaAtivo, type Idioma } from '../i18n/idiomas';
 
 export interface OpcoesMoeda {
   /** Código ISO 4217. Padrão `BRL`. */
@@ -17,7 +17,7 @@ export interface OpcoesMoeda {
   centavos?: boolean;
   /** Sem o símbolo: `1.234,56`. */
   semSimbolo?: boolean;
-  /** Idioma da formatação. Padrão `pt-BR`. */
+  /** Idioma da formatação. Padrão: o idioma ativo do app, `en` fora do provedor. */
   idioma?: Idioma;
 }
 
@@ -29,7 +29,7 @@ export const MENOS = '−';
  * O espaço depois de `R$` é inseparável (não quebra a linha no meio do valor).
  */
 export function formatarMoeda(valor: number, opcoes: OpcoesMoeda = {}): string {
-  const { moeda = 'BRL', sinal, compacto, centavos = true, semSimbolo, idioma = 'pt-BR' } = opcoes;
+  const { moeda = 'BRL', sinal, compacto, centavos = true, semSimbolo, idioma = idiomaAtivo() } = opcoes;
   const casas = compacto ? undefined : centavos ? 2 : 0;
   const f = formatoNumero(idioma, {
     ...(semSimbolo ? {} : { style: 'currency', currency: moeda }),
@@ -51,13 +51,13 @@ export interface OpcoesPercentual {
   sinal?: boolean;
   /** `valor` já está em fração (`0.125` = 12,5%). Padrão: em pontos (`12.5`). */
   fracao?: boolean;
-  /** Idioma da formatação. Padrão `pt-BR`. */
+  /** Idioma da formatação. Padrão: o idioma ativo do app, `en` fora do provedor. */
   idioma?: Idioma;
 }
 
 /** `12.5` → `12,5%` · `-3` → `−3,0%` · com `fracao`: `0.125` → `12,5%`. */
 export function formatarPercentual(valor: number, opcoes: OpcoesPercentual = {}): string {
-  const { casas = 1, sinal, fracao, idioma = 'pt-BR' } = opcoes;
+  const { casas = 1, sinal, fracao, idioma = idiomaAtivo() } = opcoes;
   const f = formatoNumero(idioma, { minimumFractionDigits: casas, maximumFractionDigits: casas });
   const pontos = fracao ? valor * 100 : valor;
   const texto = `${f.format(Math.abs(pontos))}%`;

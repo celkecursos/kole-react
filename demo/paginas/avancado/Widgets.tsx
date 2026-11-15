@@ -23,8 +23,9 @@ import {
 import { retrato } from '../Bloco';
 import { useT } from '../../i18n/useT';
 import { rico } from '../../i18n/rico';
+import { localeAtivo, numeroNoIdioma } from '../../i18n/formatos';
 
-const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const BRL = numeroNoIdioma({ style: 'currency', currency: 'BRL' });
 
 const PESSOAS = [
   { nome: 'Ana Pereira', cor: '#1f5fe0', cidade: 'São Paulo' },
@@ -316,7 +317,7 @@ export function PaginaWidgets() {
                   </span>
                 </td>
                 <td>
-                  {v.toLocaleString('pt-BR')}{' '}
+                  {v.toLocaleString(localeAtivo())}{' '}
                   <Icone icone={subiu ? 'arrow-up' : 'arrow-down'} className={subiu ? 'demo-wid-sobe' : 'demo-wid-desce'} />
                 </td>
                 <td className="demo-wid-col-prog">
